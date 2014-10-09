@@ -84,7 +84,7 @@ public class GameScreen extends dScreen {
 	
 	/**
 	 * Reconstructs the seed sent by the host for map gen use
-	 * @param message recieved message
+	 * @param message
 	 */
 	public void constructSeed(byte[] message)
 	{

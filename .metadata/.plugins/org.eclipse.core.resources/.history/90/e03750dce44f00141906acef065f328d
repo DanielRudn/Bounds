@@ -82,10 +82,6 @@ public class GameScreen extends dScreen {
 		requestHandler.sendReliableMessage(message);
 	}
 	
-	/**
-	 * Reconstructs the seed sent by the host for map gen use
-	 * @param message recieved message
-	 */
 	public void constructSeed(byte[] message)
 	{
 		int length = message[1];
