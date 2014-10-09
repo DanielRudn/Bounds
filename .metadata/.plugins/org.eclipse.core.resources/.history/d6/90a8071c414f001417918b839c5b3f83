@@ -1,0 +1,32 @@
+package com.dr.bounds.maps;
+
+import com.DR.dLib.dObject;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+public class dObstacle extends dObject {
+
+	public dObstacle(float x, float y, Texture texture) {
+		super(x, y, texture);
+		// TODO Auto-generated constructor stub
+	}
+
+	public dObstacle(float x, float y, Sprite sprite) {
+		super(x, y, sprite);
+		// TODO Auto-generated constructor stub
+	}
+	
+	@Override
+	public void update(float delta) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void render(SpriteBatch batch) {
+		// TODO Auto-generated method stub
+		
+	}
+}

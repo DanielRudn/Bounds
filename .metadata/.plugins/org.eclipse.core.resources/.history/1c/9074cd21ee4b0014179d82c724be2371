@@ -1,0 +1,10 @@
+package com.dr.bounds;
+
+import com.badlogic.gdx.graphics.Texture;
+
+public class SkinLoader {
+
+	private static Texture skins = new Texture("skins.png");
+	
+	
+}

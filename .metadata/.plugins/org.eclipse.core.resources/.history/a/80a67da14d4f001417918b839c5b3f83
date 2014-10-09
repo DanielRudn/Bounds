@@ -1,0 +1,105 @@
+package com.dr.bounds.screens;
+
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dr.bounds.MainGame;
+import com.dr.bounds.Player;
+import com.dr.bounds.RequestHandler;
+import com.dr.bounds.maps.MapGenerator;
+
+public class GameScreen extends dScreen {
+	
+	// current clients player
+	private Player player;
+	// opponents object
+	private Player opponent;
+	// camera's speed in pixels per second (camera moves upward)
+	private static final float CAMERA_SPEED = 300f; 
+	// used to interact with android device
+	private RequestHandler requestHandler;
+	// Generate the map
+	MapGenerator mapGen;
+
+	public GameScreen(float x, float y, Texture texture, RequestHandler rq) {
+		super(x, y, texture);
+		setColor(Color.MAROON);
+		
+		requestHandler = rq;
+		
+		player = new Player(MainGame.VIRTUAL_WIDTH/2f-32f,MainGame.VIRTUAL_HEIGHT/2f-32f, 8);
+		
+		opponent = new Player(MainGame.VIRTUAL_WIDTH/2f-32f,MainGame.VIRTUAL_HEIGHT/2f-32f,2);
+		opponent.setControllable(false);	
+		// fix the texture part
+		mapGen = new MapGenerator(MapGenerator.TYPE_DEFAULT, new Texture("obstacle.png"));
+		
+		if(requestHandler.isHost())
+		{
+			decodeAndSendSeed(mapGen.getSeed());
+		}
+	}
+	
+	@Override
+	public void update(float delta)
+	{
+		if(isPaused() == false)
+		{
+			super.update(delta);
+			player.update(delta);
+			opponent.update(delta);
+			mapGen.update(delta);
+			
+			// move camera upward
+			MainGame.setCameraPos(MainGame.camera.position.x, MainGame.camera.position.y - CAMERA_SPEED * delta);
+			// attaches the player and opponent to the camera speed so that they always move upward as well
+			player.setY(player.getY() - CAMERA_SPEED * delta);
+			opponent.setY(opponent.getY() - CAMERA_SPEED * delta);
+		}
+	}
+	
+	@Override
+	public void render(SpriteBatch batch)
+	{
+		super.render(batch);
+		opponent.render(batch);
+		player.render(batch);
+		mapGen.render(batch);
+	}
+	
+	private void decodeAndSendSeed(long seed)
+	{
+		
+	}
+	
+	public void setPlayerSkin(int id)
+	{
+		player.setSkinID(id);
+	}
+	
+	public int getPlayerSkinID()
+	{
+		return player.getSkinID();
+	}
+	
+	public void setOpponentSkin(int id)
+	{
+		opponent.setSkinID(id);
+	}
+	
+	public int getOpponentSkinID()
+	{
+		return opponent.getSkinID();
+	}
+	
+	public Player getPlayer()
+	{
+		return player;
+	}
+	
+	public Player getOpponent()
+	{
+		return opponent;
+	}
+
+}

@@ -1,0 +1,10 @@
+package com.dr.bounds;
+
+public interface RequestHandler {
+
+	public void requestSignIn();
+	
+	public void requestSignOut();
+	
+	public String getCurrentAccountName();
+}

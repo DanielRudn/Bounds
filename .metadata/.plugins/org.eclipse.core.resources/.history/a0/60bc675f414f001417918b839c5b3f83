@@ -1,0 +1,64 @@
+package com.dr.bounds.maps;
+
+import com.DR.dLib.dObject;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+public class dObstacle extends dObject {
+	
+	private float objWidth = 0, objHeight = 0;
+
+	public dObstacle(float x, float y, Texture texture) {
+		super(x, y, texture);
+		objWidth = texture.getWidth();
+		objHeight = texture.getHeight();
+	}
+
+	public dObstacle(float x, float y, Sprite sprite) {
+		super(x, y, sprite);
+		objWidth = sprite.getWidth();
+		objHeight = sprite.getHeight();
+	}
+	
+	@Override
+	public void update(float delta) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void render(SpriteBatch batch) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void setWidth(float w)
+	{
+		setScaleX(w / getWidth());
+		objWidth = w;
+	}
+	
+	public void setHeight(float h)
+	{
+		setScaleY(h / getHeight());
+		objHeight = h;
+	}
+	
+	public void setDimensions(float w, float h)
+	{
+		setWidth(w);
+		setHeight(h);
+	}
+	
+	public float getWidth()
+	{
+		return objWidth;
+	}
+	
+	public float getHeight()
+	{
+		return objHeight;
+	}
+}

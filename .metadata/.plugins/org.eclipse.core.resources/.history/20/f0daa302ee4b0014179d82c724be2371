@@ -1,0 +1,6 @@
+package com.dr.bounds;
+
+public class SkinLoader {
+
+	private Texture skins = new Texture("skins.png");
+}

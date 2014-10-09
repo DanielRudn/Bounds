@@ -1,0 +1,15 @@
+package com.dr.bounds;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+
+public class SkinLoader {
+
+	private static Texture skins = new Texture("skins.png");
+	private final static int SKINS_PER_LINE = 8, NUM_LINES = 8;
+	
+	public static TextureRegion getTextureForSkinID(int id)
+	{
+		TextureRegion skin = null;
+	}
+}
