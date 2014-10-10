@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.OrthographicCamera"/>
-<fullyQualifiedTypeName name="com.badlogic.gdx.math.Rectangle"/>
 <fullyQualifiedTypeName name="com.DR.dLib.dValues"/>
 <fullyQualifiedTypeName name="com.google.android.gms.games.multiplayer.realtime.RoomConfig"/>
 <fullyQualifiedTypeName name="android.view.WindowManager"/>
@@ -17,25 +16,28 @@
 <fullyQualifiedTypeName name="com.badlogic.gdx.Gdx"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.TextureRegion"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.Input.Keys"/>
-<fullyQualifiedTypeName name="com.DR.dLib.dImage"/>
-<fullyQualifiedTypeName name="com.DR.dLib.dText"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Texture.TextureFilter"/>
 <fullyQualifiedTypeName name="com.google.android.gms.games.Games"/>
-<fullyQualifiedTypeName name="com.DR.dLib.dUICard"/>
 <fullyQualifiedTypeName name="com.dr.bounds.RequestHandler"/>
-<fullyQualifiedTypeName name="com.dr.bounds.Player"/>
 <fullyQualifiedTypeName name="screens.GameScreen"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.math.Vector2"/>
-<fullyQualifiedTypeName name="com.DR.dLib.dTweener"/>
 <fullyQualifiedTypeName name="com.DR.dLib.dObject"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.Sprite"/>
-<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.SpriteBatch"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Texture"/>
 <fullyQualifiedTypeName name="java.util.Random"/>
-<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Color"/>
 <fullyQualifiedTypeName name="com.dr.bounds.maps.MapGenerator"/>
-<fullyQualifiedTypeName name="com.dr.bounds.MainGame"/>
 <fullyQualifiedTypeName name="java.lang.Math"/>
 <fullyQualifiedTypeName name="com.dr.bounds.screens.GameScreen"/>
+<fullyQualifiedTypeName name="com.dr.bounds.Player"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.math.Intersector"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.math.Rectangle"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.SpriteBatch"/>
+<fullyQualifiedTypeName name="com.DR.dLib.dUICard"/>
+<fullyQualifiedTypeName name="com.DR.dLib.dText"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Color"/>
+<fullyQualifiedTypeName name="com.DR.dLib.dTweener"/>
+<fullyQualifiedTypeName name="com.DR.dLib.dImage"/>
+<fullyQualifiedTypeName name="com.dr.bounds.SkinLoader"/>
+<fullyQualifiedTypeName name="com.dr.bounds.MainGame"/>
 </qualifiedTypeNameHistroy>

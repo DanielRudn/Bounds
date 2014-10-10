@@ -1,7 +1,12 @@
 package com.dr.bounds.screens;
 
+import com.DR.dLib.dButton;
+import com.DR.dLib.dText;
+import com.DR.dLib.dUICard;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
@@ -26,6 +31,9 @@ public class GameScreen extends dScreen {
 	private GameOverScreen gameOverScreen;
 	// keep track of players score
 	private int playerScore = 0;
+	
+	// test
+	private DialogBoxScreen dialog;
 
 	public GameScreen(float x, float y, Texture texture, Texture obstacle, RequestHandler rq) {
 		super(x, y, texture);
@@ -41,6 +49,22 @@ public class GameScreen extends dScreen {
 		
 		gameOverScreen = new GameOverScreen(getX(), getY(), texture, player.getSkinID());
 		gameOverScreen.hide();
+		
+		dialog = new DialogBoxScreen(0,0,texture);
+		dButton dialogButton = new dButton(0,0, new Sprite(texture),"yes");
+		dialogButton.setColor(Color.LIGHT_GRAY);
+		dialogButton.setDimensions(dialog.getDialogBox().getWidth() / 2f - 1, 64f);
+		dialogButton.setTextSize(64f);
+		dButton dialogButton2 = new dButton(0,0, new Sprite(texture),"no");
+		dialogButton2.setColor(Color.LIGHT_GRAY);
+		dialogButton2.setDimensions(dialog.getDialogBox().getWidth() / 2f - 1, 64f);
+		dialogButton2.setTextSize(64f);
+		dText prompt = new dText(0,0,48f,"GAME OVER\n////////////////\n  continue?");
+		prompt.setMultiline(true);
+		prompt.setColor(0,0,0,0.5f);
+		dialog.getDialogBox().addObject(dialogButton, dUICard.RIGHT_NO_PADDING, dUICard.BOTTOM_NO_PADDING);
+		dialog.getDialogBox().addObject(dialogButton2, dUICard.LEFT_NO_PADDING, dUICard.BOTTOM_NO_PADDING);
+		dialog.getDialogBox().addObject(prompt, dUICard.CENTER, dUICard.TOP);
 	}
 	
 	@Override
@@ -53,10 +77,25 @@ public class GameScreen extends dScreen {
 			opponent.update(delta);
 			mapGen.update(delta);
 			gameOverScreen.update(delta);
+			dialog.update(delta);
 			
-			if(mapGen.hadCollision() && gameOverScreen.isVisible() == false)
+			if(mapGen.hadCollision() && dialog.isVisible() == false && dialog.isHiding() == false)
 			{
-				gameOverScreen.show();
+			//	gameOverScreen.show();
+				dialog.show();
+			}
+			else if(mapGen.hadCollision())
+			{
+				if(dialog.isVisible() && ((dButton)dialog.getDialogBox().getObject(0)).isClicked())
+				{
+					dialog.hide();
+				}
+				if(dialog.isVisible() == false)
+				{
+					mapGen.setHadCollision(false);
+					player.reset();
+					dialog.setIsHiding(false);
+				}
 			}
 			else if(!mapGen.hadCollision())
 			{
@@ -74,6 +113,7 @@ public class GameScreen extends dScreen {
 		opponent.render(batch);
 		player.render(batch);
 		gameOverScreen.render(batch);
+		dialog.render(batch);
 	}
 	
 	/**

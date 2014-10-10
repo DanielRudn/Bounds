@@ -2,22 +2,23 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="leave" key="selection"/>
-		<item value="false" key="casesensitive"/>
+		<item value="debug" key="selection"/>
+		<item value="true" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="debu"/>
+			<item value="debug"/>
+			<item value="debughide"/>
+			<item value="x"/>
+			<item value="&#x09;&#x09;if(obstacles.get(x).shouldRegenerate())"/>
+			<item value="decode"/>
 			<item value="leave"/>
 			<item value="send invite"/>
-			<item value="skinloader"/>
-			<item value="skinlaoder"/>
-			<item value="animate"/>
-			<item value="waitingroomscreen"/>
-			<item value="yVel"/>
-			<item value="xVel"/>
 		</list>
 		<list key="replacehistory">
+			<item value="index"/>
 			<item value="playerVelocity.y"/>
 			<item value="playerVelocity.x"/>
 			<item value="gameScreen.getPlayer()"/>
@@ -25,7 +26,6 @@
 			<item value=""/>
 			<item value="buttonColor"/>
 			<item value="texture"/>
-			<item value="MainGame.VIRTUAL_HEIGHT"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">

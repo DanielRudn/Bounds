@@ -5,3 +5,5 @@
 1412809758773	Move compilation units
 1412809764253	Delete element
 1412809968210	Rename package 'com.dr.bounds.mapgeneration'
+1412976501699	Rename field 'show'
+1412976911477	Rename field 'finishedShow'

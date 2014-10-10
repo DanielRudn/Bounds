@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
@@ -154,7 +155,7 @@ public class MapGenerator {
 	
 	public void generateSeed()
 	{
-		setSeed(Math.abs(rng.nextLong()));
+		setSeed(Math.abs(MathUtils.random.nextLong())); // uses mathutils random so that the actual seed doesn't affect it
 	}
 	
 	public void setMapType(int mapType)
@@ -167,6 +168,13 @@ public class MapGenerator {
 		{
 			currentType = mapType;
 		}
+	}
+	
+	public void setHadCollision(boolean c)
+	{
+		hadCollision = c;
+		MainGame.setCameraPos(MainGame.VIRTUAL_WIDTH/2f, MainGame.VIRTUAL_HEIGHT / 2f);
+		generateSeed();
 	}
 	
 	public int getMapType()

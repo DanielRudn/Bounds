@@ -179,6 +179,13 @@ public class Player extends dObject {
 		return false;
 	}
 	
+	public void reset()
+	{
+		setPos(MainGame.VIRTUAL_WIDTH / 2f - getWidth()/2f, MainGame.VIRTUAL_HEIGHT / 2f - getHeight() / 2f);
+		moveCenter = false;
+		startY = getY();
+	}
+	
 	public void setMovementMessage(byte[] message)//when player is NOT controllable, it sends opponents touches and acts accordingly
 	{
 		if(moveCenter == false)
