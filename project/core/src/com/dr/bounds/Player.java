@@ -7,11 +7,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.dr.bounds.screens.GameScreen;
 
 public class Player extends dObject {
 	
+	private final int SKIN_DIMENSIONS = 64;
 	private int skinID = MainGame.PLACEHOLDER_SKIN_ID;
 	private boolean controllable = true;
 	private boolean moveCenter = false;
@@ -22,6 +24,8 @@ public class Player extends dObject {
 	private boolean squeezed = true;
 	// y position when the user taps the screen
 	private float startY = 0;
+	// bounding rectangle used for collisions
+	private Rectangle boundingRect = new Rectangle(SKIN_DIMENSIONS, SKIN_DIMENSIONS,SKIN_DIMENSIONS,SKIN_DIMENSIONS);
 	
 	private RequestHandler requestHandler;
 	
@@ -72,12 +76,9 @@ public class Player extends dObject {
 
 	@Override
 	public void update(float delta) {
-		// add velocity
-		setPosition(getX() + playerVelocity.x, getY() + playerVelocity.y);
-		
 		if(controllable)
 		{
-			if(Gdx.input.isTouched() && moveCenter == false)
+			if(Gdx.input.justTouched() && moveCenter == false)
 			{
 				if(touchedLeftSide())// user touched left half of screen
 				{
@@ -115,19 +116,23 @@ public class Player extends dObject {
 				squeezed = false;
 			}
 		}
+		
+		// add velocity
+		setPosition(getX() + playerVelocity.x, getY() + playerVelocity.y);
+		boundingRect.set(getX() + 8f, getY() + 8f, getWidth()-16f, getHeight()-16f);
 	}
 	
 	private void changeVelocity(float delta)
 	{
-		playerVelocity.set(dTweener.MoveToAndSlow(playerVelocity.x, targetVelocity.x, delta/8f), dTweener.MoveToAndSlow(playerVelocity.y, targetVelocity.y, delta/32f));
-		setY(getY() - GameScreen.CAMERA_SPEED * delta/1.1f);
+		playerVelocity.set(dTweener.MoveToAndSlow(playerVelocity.x, targetVelocity.x, delta/12f), dTweener.MoveToAndSlow(playerVelocity.y, targetVelocity.y, delta/32f));
+		setY(getY() - GameScreen.CAMERA_SPEED * delta);
 		// check if passed bounds and need to move back to center
 		checkBounds();
 	}
 	
 	private void checkBounds()
 	{
-		if(getX() <= -15 || getX() >= MainGame.VIRTUAL_WIDTH - getWidth() + 15)// changes with +- 15 to account for ball squeezing
+		if(getX() <= -20 || getX() >= MainGame.VIRTUAL_WIDTH - getWidth() + 20)// changes with +- 20 to account for ball squeezing
 		{
 			moveCenter = true;
 			changeVelocity = false;
@@ -139,42 +144,24 @@ public class Player extends dObject {
 		}
 	}
 	
-	/*
+	
 	private void moveLeft(float delta)
 	{
-		if(getX() > 4f)
-		{
-			playerVelocity.x = dTweener.MoveToAndSlow(playerVelocity.x, -12f*32f, 12f*delta);
-		}
-		else
-		{
-			moveCenter = true;
-			moveLeft = false;
-			moveRight = false;
-			playerVelocity.x = 0;
-		}
+			playerVelocity.x = dTweener.MoveToAndSlow(playerVelocity.x, -12f*32f, delta/12f);
+			checkBounds();
 	}
 	
 	private void moveRight(float delta)
 	{
-		if(getX() < MainGame.VIRTUAL_WIDTH - getWidth() - 4f)
-		{
-			playerVelocity.x = dTweener.MoveToAndSlow(playerVelocity.x, 12f*32f, 12f*delta);
-		}
-		else
-		{
-			moveCenter = true;
-			moveRight = false;
-			moveLeft = false;
-			playerVelocity.x = 0;
-		}
+			playerVelocity.x = dTweener.MoveToAndSlow(playerVelocity.x, 12f*32f, delta/12f);
+			checkBounds();
 	}
-	*/
+	
 	private void moveCenter(float delta)
 	{
-		if(getX() < MainGame.VIRTUAL_WIDTH/2f - getWidth()/2f - 7f || getX() > MainGame.VIRTUAL_WIDTH/2f - getWidth()/2f + 7f)
+		if(getX() < MainGame.VIRTUAL_WIDTH/2f - getWidth()/2f - 14f || getX() > MainGame.VIRTUAL_WIDTH/2f - getWidth()/2f + 14f)
 		{
-		//	setPosition(dTweener.MoveToAndSlow(getX(), MainGame.VIRTUAL_WIDTH/2f - getWidth()/2f, 4f*delta),getY());
+			//setPosition(dTweener.MoveToAndSlow(getX(), MainGame.VIRTUAL_WIDTH/2f - getWidth()/2f, 4f*delta),getY());
 			setPosition(dTweener.MoveToAndSlow(getX(), MainGame.VIRTUAL_WIDTH/2f - getWidth()/2f, 4f*delta), dTweener.MoveToAndSlow(getY(), startY - 450f, 4f*delta));
 		}
 		else
@@ -205,8 +192,8 @@ public class Player extends dObject {
 				targetVelocity.set(12f*32f,0);
 			}
 			changeVelocity = true;
-			startY = getY();
 		}
+		startY = getY();
 	}
 
 	public void setControllable(boolean c)
@@ -232,5 +219,11 @@ public class Player extends dObject {
 			return new byte[]{'M','L'};
 		}
 		return new byte[]{'M','R'};
+	}
+	
+	@Override
+	public Rectangle getBoundingRectangle()
+	{
+		return boundingRect;
 	}
 }

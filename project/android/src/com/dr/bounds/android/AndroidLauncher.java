@@ -144,6 +144,10 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 			// set this player as host
 			isHost = true;
 			
+			// show waiting room (test, might have to remove)
+		  // 	shouldShowWaitingRoom = true;
+		   	
+			
 			// prevent sleep
 			preventSleep();
 		}
@@ -186,6 +190,9 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 			
 			// join room
 			Games.RealTimeMultiplayer.join(apiClient, roomConfig);
+			
+			// show waiting room (test, might have to remove)
+		 //  	shouldShowWaitingRoom = true;
 			
 			// prevent sleep
 			preventSleep();

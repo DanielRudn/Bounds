@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 import com.dr.bounds.RequestHandler;
+import com.dr.bounds.SkinLoader;
 import com.dr.bounds.maps.MapGenerator;
 
 public class GameScreen extends dScreen {
@@ -20,25 +21,26 @@ public class GameScreen extends dScreen {
 	// used to interact with android device
 	private RequestHandler requestHandler;
 	// Generate the map
-	MapGenerator mapGen;
+	private MapGenerator mapGen;
+	// screen that will show when game ends
+	private GameOverScreen gameOverScreen;
+	// keep track of players score
+	private int playerScore = 0;
 
 	public GameScreen(float x, float y, Texture texture, Texture obstacle, RequestHandler rq) {
 		super(x, y, texture);
-		setColor(Color.MAROON);
 		
 		requestHandler = rq;
 		
-		player = new Player(MainGame.VIRTUAL_WIDTH/2f-32f,MainGame.VIRTUAL_HEIGHT/2f-32f, 9, rq);
+		player = new Player(MainGame.VIRTUAL_WIDTH/2f-32f,MainGame.VIRTUAL_HEIGHT/2f-32f, 3, rq);
 		
 		opponent = new Player(MainGame.VIRTUAL_WIDTH/2f-32f,MainGame.VIRTUAL_HEIGHT/2f-32f,2, rq);
 		opponent.setControllable(false);	
-		// fix the texture part
-		mapGen = new MapGenerator(MapGenerator.TYPE_DEFAULT,obstacle);
+
+		mapGen = new MapGenerator(MapGenerator.TYPE_DEFAULT,obstacle, player);
 		
-		if(requestHandler.isHost())
-		{
-			decodeAndSendSeed(mapGen.getSeed());
-		}
+		gameOverScreen = new GameOverScreen(getX(), getY(), texture, player.getSkinID());
+		gameOverScreen.hide();
 	}
 	
 	@Override
@@ -50,9 +52,17 @@ public class GameScreen extends dScreen {
 			player.update(delta);
 			opponent.update(delta);
 			mapGen.update(delta);
+			gameOverScreen.update(delta);
 			
+			if(mapGen.hadCollision() && gameOverScreen.isVisible() == false)
+			{
+				gameOverScreen.show();
+			}
+			else if(!mapGen.hadCollision())
+			{
 			// move camera upward
-			MainGame.setCameraPos(MainGame.camera.position.x, MainGame.camera.position.y - CAMERA_SPEED * delta);
+				MainGame.setCameraPos(MainGame.camera.position.x, MainGame.camera.position.y - CAMERA_SPEED * delta);
+			}
 		}
 	}
 	
@@ -63,6 +73,7 @@ public class GameScreen extends dScreen {
 		mapGen.render(batch);
 		opponent.render(batch);
 		player.render(batch);
+		gameOverScreen.render(batch);
 	}
 	
 	/**

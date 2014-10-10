@@ -1,0 +1,42 @@
+package com.dr.bounds.screens;
+
+import com.DR.dLib.dText;
+import com.DR.dLib.dUICard;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dr.bounds.MainGame;
+
+public class GameOverScreen extends dScreen {
+
+	private dUICard scoreCard;
+	
+	public GameOverScreen(float x, float y, Texture texture) {
+		super(x, y, texture);
+		setColor(52f/256f, 152f/256f, 219f/256f,1f);
+		
+		scoreCard = new dUICard(0,0,texture);
+		scoreCard.setColor(41f/256f, 128f/256f, 185f/256f, 1f);
+		scoreCard.setHasShadow(false);
+		scoreCard.setDimensions(MainGame.VIRTUAL_WIDTH, 128f);
+		scoreCard.setPaddingLeft(32f);
+		dText scoreCardText = new dText(0,0,64f, "Score:                0");
+		scoreCardText.setColor(Color.WHITE);
+		scoreCard.addObject(scoreCardText, dUICard.LEFT, dUICard.CENTER);
+		
+		addObject(scoreCard,dUICard.LEFT_NO_PADDING,dUICard.CENTER);
+	}
+	
+	@Override
+	public void update(float delta)
+	{
+		super.update(delta);
+	}
+	
+	@Override
+	public void render(SpriteBatch batch)
+	{
+		super.render(batch);
+	}
+
+}

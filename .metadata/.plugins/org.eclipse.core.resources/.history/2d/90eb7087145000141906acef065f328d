@@ -1,0 +1,25 @@
+package com.dr.bounds.screens;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+public class GameOverScreen extends dScreen {
+
+	public GameOverScreen(float x, float y, Texture texture) {
+		super(x, y, texture);
+		setColor(52f/256f, 152f/256f, 219f/256f,1f);
+	}
+	
+	@Override
+	public void update(float delta)
+	{
+		super.update(delta);
+	}
+	
+	@Override
+	public void render(SpriteBatch batch)
+	{
+		super.render(batch);
+	}
+
+}

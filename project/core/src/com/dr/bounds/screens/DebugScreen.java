@@ -23,6 +23,7 @@ public class DebugScreen extends dScreen {
 	public DebugScreen(float x, float y, Texture texture, Texture button, RequestHandler rq) {
 		super(x, y, texture);
 		requestHandler = rq;
+		setAlpha(0);
 
 		buttonsCard = new dUICard(MainGame.VIRTUAL_WIDTH-250,0, texture);
 		buttonsCard.setDimensions(256f,MainGame.VIRTUAL_HEIGHT);
