@@ -24,9 +24,9 @@ public class WaitingRoomScreen extends dScreen {
 	public static final int STATUS_NOT_YET_INVITED = 0, STATUS_INVITED = 1, STATUS_JOINED = 2, STATUS_DECLINED = 3, STATUS_LEFT  = 4, STATUS_UNRESPONSIVE = 6;
 	private int currentStatus = 0;
 	
-	public WaitingRoomScreen(float x, float y, Texture texture, Texture icon, RequestHandler rq) {
+	public WaitingRoomScreen(float x, float y, Texture texture, Texture icon) {
 		super(x, y, texture);
-		requestHandler = rq;
+		requestHandler = MainGame.requestHandler;
 		setColor(52f/256f, 73f/256f, 94f/256f,1f);
 		setPadding(32f);
 		

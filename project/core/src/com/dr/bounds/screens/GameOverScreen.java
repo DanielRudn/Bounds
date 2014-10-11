@@ -27,6 +27,10 @@ public class GameOverScreen extends dScreen {
 	private dButton replayButton;
 	// when user clicks replay, this turns false and resets the game
 	private boolean wantsReplay = false;
+	// if opponent wants to play again
+	private boolean opponentReplay = false;
+	// text to let user know opponent wants to play again
+	private dText rematchText;
 	// Text at the top E.G (Game Over, You Win, You lose...)
 	private dText topText;
 	// Timer for sliding card in
@@ -47,7 +51,7 @@ public class GameOverScreen extends dScreen {
 		Texture burstTexture = new Texture("burst.png");
 		burstTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		playerBurst = new dImage(0,0, burstTexture);
-		playerBurst.setColor(Color.YELLOW);
+		playerBurst.setColor(Color.ORANGE);
 		playerBurst.setDimensions(512f, 512f);
 		playerBurst.setOriginCenter();
 		
@@ -79,6 +83,9 @@ public class GameOverScreen extends dScreen {
 		replayButton.setDimensions(192f, 192f);
 		replayButton.setColor(moneyCard.getColor());
 		
+		rematchText = new dText(0,0,48f,"");
+		rematchText.setColor(Color.WHITE);
+		
 		addObject(playerBurst,dUICard.CENTER, dUICard.TOP);
 		addObject(topText,dUICard.CENTER,dUICard.TOP);
 		addObject(playerImage,dUICard.CENTER, dUICard.TOP);
@@ -89,6 +96,7 @@ public class GameOverScreen extends dScreen {
 		addObjectOnTopOf(scoreCard,getIndexOf(moneyCard));
 		addObject(replayButton, dUICard.RIGHT, dUICard.BOTTOM);
 		replayButton.setOriginCenter();
+		addObject(rematchText,dUICard.CENTER,dUICard.CENTER);
 	}
 	
 	@Override
@@ -122,17 +130,15 @@ public class GameOverScreen extends dScreen {
 			{
 				setY(0);
 				MainGame.camera.position.y = MainGame.VIRTUAL_HEIGHT / 2f;
+				// send message to opponent requesting rematch
+				MainGame.requestHandler.sendUnreliableMessage(new byte[]{'G'});
 				wantsReplay = true;
 			}
 			
-			if(wantsReplay)
+			if(wantsReplay && opponentReplay)
 			{
 				replayButton.getSprite().setRotation(dTweener.MoveToAndSlow(replayButton.getSprite().getRotation(), 360f, 5f*delta));
 				setX(dTweener.MoveToAndSlow(getX(), 0 + MainGame.VIRTUAL_WIDTH * 2f,2f*delta));
-				if(getX() >= MainGame.VIRTUAL_WIDTH)
-				{
-					reset();
-				}
 			}
 		}
 	}
@@ -153,11 +159,31 @@ public class GameOverScreen extends dScreen {
 	
 	public void reset()
 	{
-		replayButton.getSprite().setRotation(0);
 		wantsReplay = false;
+		setOpponentReplay(false);
+		replayButton.getSprite().setRotation(0);
 		hide();
 		currentScore = 0;
 		currentMoney = 0;
+		rematchText.setText("");
+	}
+	
+	public void setOpponentReplay(boolean opp)
+	{
+		opponentReplay = opp;
+		rematchText.setText("rematch requested");
+		updateObjectPosition();
+	}
+	
+	public void setTitleMessage(String title)
+	{
+		topText.setText(title);
+		updateObjectPosition();
+	}
+	
+	public void setWinnerSkinID(int id)
+	{
+		playerImage.getSprite().setRegion(SkinLoader.getTextureForSkinID(id));
 	}
 	
 	public boolean wantsReplay()

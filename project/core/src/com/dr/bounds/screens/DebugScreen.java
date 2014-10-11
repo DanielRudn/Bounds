@@ -20,9 +20,9 @@ public class DebugScreen extends dScreen {
 	private RequestHandler requestHandler;
 	private final Color buttonColor = Color.NAVY;
 	
-	public DebugScreen(float x, float y, Texture texture, Texture button, RequestHandler rq) {
+	public DebugScreen(float x, float y, Texture texture, Texture button) {
 		super(x, y, texture);
-		requestHandler = rq;
+		requestHandler = MainGame.requestHandler;
 		setAlpha(0);
 
 		buttonsCard = new dUICard(MainGame.VIRTUAL_WIDTH-250,0, texture);

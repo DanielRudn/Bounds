@@ -67,6 +67,10 @@ public class MapGenerator {
 				{
 					obstacles.get(x).setColor(Color.BLUE);
 					hadCollision = true;
+					// send message to let opponent know that i have lost
+					MainGame.requestHandler.sendReliableMessage(new byte[]{'L'});
+					// test might have to remove
+					break;
 				}
 			}
 			else if(currentType == TYPE_SPACE)

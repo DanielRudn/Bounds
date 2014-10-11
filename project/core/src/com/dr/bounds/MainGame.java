@@ -20,7 +20,7 @@ public class MainGame extends ApplicationAdapter {
 	private SpriteBatch batch;
 	public static final float VIRTUAL_WIDTH = 720f, VIRTUAL_HEIGHT = 1280f, ASPECT_RATIO = VIRTUAL_WIDTH / VIRTUAL_HEIGHT;
 	public static final int PLACEHOLDER_SKIN_ID = 0;
-	private RequestHandler requestHandler;
+	public static RequestHandler requestHandler;
 	private Texture card, button, icon, obstacle;
 	public static boolean isPlaying = false;
 	private float cameraTime = 0;
@@ -55,12 +55,12 @@ public class MainGame extends ApplicationAdapter {
 		obstacle = new Texture("obstacle.png");
 		obstacle.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		
-		debugCard = new DebugScreen(0,0,card,button,requestHandler);
-		debugCard.hide();
-		waitingRoomScreen = new WaitingRoomScreen(0,-VIRTUAL_HEIGHT,card,icon,requestHandler);
-		waitingRoomScreen.hide();
-		gameScreen = new GameScreen(0,0,card, obstacle, requestHandler);
-		//gameScreen.pause();
+		debugCard = new DebugScreen(0,0,card,button);
+		//debugCard.hide();
+		waitingRoomScreen = new WaitingRoomScreen(0,-VIRTUAL_HEIGHT,card,icon);
+		//waitingRoomScreen.hide();
+		gameScreen = new GameScreen(0,0,card, obstacle);
+		gameScreen.pause();
 		
 		batch = new SpriteBatch();
 	}
@@ -125,6 +125,14 @@ public class MainGame extends ApplicationAdapter {
 			{
 				gameScreen.constructSeed(requestHandler.getRecievedMessage());
 			}
+			else if(requestHandler.getRecievedMessage()[0] == 'G')// opponent wants to play again
+			{
+				gameScreen.setWantsRematch(true);
+			}
+			else if(requestHandler.getRecievedMessage()[0] == 'L')// opponent lost
+			{
+				gameScreen.setOpponentLost(true);
+			}
 			requestHandler.clearRecievedMessage();
 		}
 		if(requestHandler.hasNewInvite())
@@ -156,7 +164,7 @@ public class MainGame extends ApplicationAdapter {
 		if(waitingRoomScreen.getHideTime() >= 2f)
 		{
 			gameScreen.resume();
-			//debugCard.hide();
+			debugCard.hide();
 			// move to gameScreen.resume() 
 			if(requestHandler.isHost())
 			{
