@@ -61,10 +61,10 @@ public class MapGenerator {
 			obstacles.get(x).update(delta);
 			if(currentType == TYPE_DEFAULT)
 			{
-				if(obstacles.get(x).shouldRegenerate())
+				if(obstacles.get(index).shouldRegenerate())
 				{
 					generateDefault(x);
-					obstacles.get(x).setRegenerate(false);
+					obstacles.get(index).setRegenerate(false);
 				}
 				// check if player had collision
 				if(Intersector.intersectRectangles(player.getBoundingRectangle(), obstacles.get(x).getBoundingRectangle(), useless)) // FIX

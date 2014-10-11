@@ -61,11 +61,7 @@ public class MapGenerator {
 			obstacles.get(x).update(delta);
 			if(currentType == TYPE_DEFAULT)
 			{
-				if(obstacles.get(x).shouldRegenerate())
-				{
-					generateDefault(x);
-					obstacles.get(x).setRegenerate(false);
-				}
+				generateDefault(x);
 				// check if player had collision
 				if(Intersector.intersectRectangles(player.getBoundingRectangle(), obstacles.get(x).getBoundingRectangle(), useless)) // FIX
 				{
@@ -86,6 +82,8 @@ public class MapGenerator {
 	
 	private void generateDefault(int index)
 	{
+		if(obstacles.get(index).shouldRegenerate())
+		{
 			obstacles.get(index).setColor(Color.RED);
 			int side = rng.nextInt(2); // 0 is LEFT, 1 is RIGHT
 			if(side == 0)// left
@@ -108,6 +106,9 @@ public class MapGenerator {
 					obstacles.get(index).setY(obstacles.get(index).getY() - MIN_DISTANCE);
 				}
 			}
+			
+			obstacles.get(index).setRegenerate(false);
+		}
 	}
 	
 	private void generateFirstSet()
