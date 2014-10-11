@@ -88,7 +88,6 @@ public class DialogBoxScreen extends dScreen {
 		dialogBox.setX(getX() + getWidth() + 15f);
 		setAlpha(0);
 		isHiding = false;
-		System.out.println("called");
 	}
 	
 	@Override

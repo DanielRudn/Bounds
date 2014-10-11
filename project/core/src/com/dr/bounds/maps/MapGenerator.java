@@ -155,7 +155,7 @@ public class MapGenerator {
 	
 	public void generateSeed()
 	{
-		setSeed(Math.abs(MathUtils.random.nextLong())); // uses mathutils random so that the actual seed doesn't affect it
+		setSeed(Math.abs(rng.nextLong()));
 	}
 	
 	public void setMapType(int mapType)
@@ -173,7 +173,13 @@ public class MapGenerator {
 	public void setHadCollision(boolean c)
 	{
 		hadCollision = c;
-		MainGame.setCameraPos(MainGame.VIRTUAL_WIDTH/2f, MainGame.VIRTUAL_HEIGHT / 2f);
+		//MainGame.setCameraPos(MainGame.VIRTUAL_WIDTH/2f, MainGame.VIRTUAL_HEIGHT / 2f);
+		// reset obstacles
+		for(int x = 0; x < obstacles.size(); x++)
+		{
+			obstacles.get(x).setY(MainGame.camera.position.y + MainGame.VIRTUAL_HEIGHT);
+			obstacles.get(x).setColor(Color.RED);
+		}
 		generateSeed();
 	}
 	

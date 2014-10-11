@@ -40,7 +40,7 @@ public class GameScreen extends dScreen {
 		
 		requestHandler = rq;
 		
-		player = new Player(MainGame.VIRTUAL_WIDTH/2f-32f,MainGame.VIRTUAL_HEIGHT/2f-32f, 3, rq);
+		player = new Player(MainGame.VIRTUAL_WIDTH/2f-32f,MainGame.VIRTUAL_HEIGHT/2f-32f, 8, rq);
 		
 		opponent = new Player(MainGame.VIRTUAL_WIDTH/2f-32f,MainGame.VIRTUAL_HEIGHT/2f-32f,2, rq);
 		opponent.setControllable(false);	
@@ -79,27 +79,22 @@ public class GameScreen extends dScreen {
 			gameOverScreen.update(delta);
 			dialog.update(delta);
 			
-			if(mapGen.hadCollision() && dialog.isVisible() == false && dialog.isHiding() == false)
+			if(mapGen.hadCollision() && gameOverScreen.isVisible() == false )
 			{
-			//	gameOverScreen.show();
-				dialog.show();
+				gameOverScreen.show();
+				//dialog.show();
 			}
 			else if(mapGen.hadCollision())
 			{
-				if(dialog.isVisible() && ((dButton)dialog.getDialogBox().getObject(0)).isClicked())
-				{
-					dialog.hide();
-				}
-				if(dialog.isVisible() == false)
+				if(gameOverScreen.wantsReplay())
 				{
 					mapGen.setHadCollision(false);
 					player.reset();
-					dialog.setIsHiding(false);
 				}
 			}
 			else if(!mapGen.hadCollision())
 			{
-			// move camera upward
+				// move camera upward
 				MainGame.setCameraPos(MainGame.camera.position.x, MainGame.camera.position.y - CAMERA_SPEED * delta);
 			}
 		}
