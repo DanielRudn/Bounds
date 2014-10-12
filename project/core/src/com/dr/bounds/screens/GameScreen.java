@@ -34,10 +34,6 @@ public class GameScreen extends dScreen {
 	private int playerScore = 0;
 	// used to display player's score
 	private dText scoreText;
-	// whether or not opponent wants rematch
-	private boolean opponentReplay = false;
-	// whether opponent lost or player lost
-	private boolean opponentLost = false;
 	// animate score changing
 	private float scoreTime = 0;
 	
@@ -95,70 +91,34 @@ public class GameScreen extends dScreen {
 	public void update(float delta)
 	{
 		debug.setPos(MainGame.camera.position.x - MainGame.VIRTUAL_WIDTH / 2f  + 2f, MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT /2f + 2f);
-		debug.setText("DEBUG:\nseed: " + getSeed() + "\nhadCollision: " + mapGen.hadCollision() + "\nopponentReplay: " + opponentReplay + "\nopponentLost: "
-				+ opponentLost + "\nwantsReplay: "+ gameOverScreen.wantsReplay());
+		debug.setText("DEBUG:\nseed: " + getSeed() + "\nhadCollision: " + mapGen.hadCollision() + "\nwantsReplay: "+ gameOverScreen.wantsReplay());
 		if(isPaused() == false)
 		{
 			super.update(delta);
 			mapGen.update(delta);
-			gameOverScreen.update(delta);
 			dialog.update(delta);
+			gameOverScreen.update(delta);
 			
-			if((mapGen.hadCollision() || opponentLost) && gameOverScreen.isVisible() == false)
+			if(mapGen.hadCollision() && gameOverScreen.isVisible() == false)
 			{
-				// game ended, set the winner skin for the game over screen
-				if(opponentLost)
-				{
-					gameOverScreen.setWinnerSkinID(player.getSkinID());
-					gameOverScreen.setTitleMessage("You win!");
-				}
-				else
-				{
-					gameOverScreen.setWinnerSkinID(opponent.getSkinID());
-					gameOverScreen.setTitleMessage(requestHandler.getOpponentName() + " Wins!");
-				}
 				gameOverScreen.setScore(playerScore);
 				gameOverScreen.show();
-				//dialog.show();
+				//dialog.show();'
 			}
-			else if(mapGen.hadCollision() || opponentLost)
+			else if(mapGen.hadCollision() && gameOverScreen.wantsReplay())
 			{
 				// player wants a replay
-				if(gameOverScreen.wantsReplay())
-				{
-					 //opponent wants a rematch
-					if(requestHandler.isMultiplayer() && opponentReplay)
+					player.reset();
+					opponent.reset();
+					mapGen.setHadCollision(false);
+					// send seed to opponent
+					if(requestHandler.isHost())
 					{
-						gameOverScreen.reset();
-						opponentReplay = false;
-						opponentLost = false;
-						mapGen.setHadCollision(false);
-						player.reset();
-						opponent.reset();
-						// send seed to opponent
-						if(requestHandler.isHost())
-						{
-							decodeAndSendSeed(getSeed());
-						}
+						decodeAndSendSeed(getSeed());
 					}
-					else if(requestHandler.isMultiplayer() == false)// user is playing single-player
-					{
-						player.reset();
-						opponent.reset();
-						mapGen.setHadCollision(false);
-						// send seed to opponent
-						if(requestHandler.isHost())
-						{
-							decodeAndSendSeed(getSeed());
-						}
-						opponentReplay = false;
-						opponentLost = false;
-						scoreText.setText(Integer.toString(0));
-						gameOverScreen.reset();
-					}
-				}
+					scoreText.setText(Integer.toString(0));
 			}
-			else if(!mapGen.hadCollision() || opponentLost == false)
+			else if(!mapGen.hadCollision() && gameOverScreen.isVisible() == false)
 			{
 				// only update player and opponent if game is running
 				player.update(delta);
@@ -228,23 +188,12 @@ public class GameScreen extends dScreen {
 			seed += message[x+2];
 		}
 		mapGen.setSeed(Long.parseLong(seed));
+		mapGen.generateFirstSet();
 	}
 	
 	public long getSeed()
 	{
 		return mapGen.getSeed();
-	}
-	
-	// opponent wants to play again
-	public void setWantsRematch(boolean rematch)
-	{
-		opponentReplay = rematch;
-		gameOverScreen.setOpponentReplay(rematch);
-	}
-	
-	public void setOpponentLost(boolean lost)
-	{
-		opponentLost = lost;
 	}
 	
 	public void setPlayerSkin(int id)

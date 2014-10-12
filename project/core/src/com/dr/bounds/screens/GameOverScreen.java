@@ -29,8 +29,6 @@ public class GameOverScreen extends dScreen {
 	private dButton replayButton;
 	// when user clicks replay, this turns false and resets the game
 	private boolean wantsReplay = false;
-	// if opponent wants to play again
-	private boolean opponentReplay = false;
 	// text to let user know opponent wants to play again
 	private dText rematchText;
 	// Text at the top E.G (Game Over, You Win, You lose...)
@@ -105,7 +103,7 @@ public class GameOverScreen extends dScreen {
 	public void update(float delta)
 	{
 		super.update(delta);
-		
+		// spin replay button on click
 		if(isVisible())
 		{
 			if(showTime <= SHOW_DURATION)
@@ -127,21 +125,26 @@ public class GameOverScreen extends dScreen {
 				playerBurst.getSprite().setRotation(0);
 			}
 			
-			if(wantsReplay && opponentReplay)
+			if(replayButton.isClicked())
+			{
+				setY(0);
+				MainGame.camera.position.y = MainGame.VIRTUAL_HEIGHT / 2f;
+				if(wantsReplay == false)
+				{
+					wantsReplay = true;
+				}
+			}
+			
+			if(wantsReplay)
 			{
 				replayButton.getSprite().setRotation(dTweener.MoveToAndSlow(replayButton.getSprite().getRotation(), 360f, 5f*delta));
-				setX(dTweener.MoveToAndSlow(getX(), 0 + MainGame.VIRTUAL_WIDTH * 2f,2f*delta));
+				setX(dTweener.MoveToAndSlow(getX(), 0 + MainGame.VIRTUAL_WIDTH * 2f,3f*delta));
+				if(getX() >= MainGame.VIRTUAL_WIDTH)
+				{
+					reset();
+				}
 			}
-		}
-		
-		// spin replay button on click
-		if(replayButton.isClicked())
-		{
-			setY(0);
-			MainGame.camera.position.y = MainGame.VIRTUAL_HEIGHT / 2f;
-			// send message to opponent requesting rematch
-			MainGame.requestHandler.sendUnreliableMessage(new byte[]{'G'});
-			wantsReplay = true;
+			
 		}
 	}
 	
@@ -162,20 +165,12 @@ public class GameOverScreen extends dScreen {
 	public void reset()
 	{
 		wantsReplay = false;
-		setOpponentReplay(false);
-		replayButton.getSprite().setRotation(0);
 		hide();
+		replayButton.getSprite().setRotation(0);
 		currentScore = 0;
 		currentMoney = 0;
 		playerScore = 0;
 		rematchText.setText("");
-	}
-	
-	public void setOpponentReplay(boolean opp)
-	{
-		opponentReplay = opp;
-		rematchText.setText("rematch requested");
-		updateObjectPosition();
 	}
 	
 	public void setTitleMessage(String title)

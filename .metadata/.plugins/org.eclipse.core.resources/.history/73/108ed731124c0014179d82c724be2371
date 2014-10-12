@@ -1,7 +1,0 @@
-package com.dr.bounds;
-
-import com.DR.dLib.dUICard;
-
-public abstract class dScreen extends dUICard {
-
-}

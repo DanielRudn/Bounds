@@ -57,11 +57,11 @@ public class MainGame extends ApplicationAdapter {
 		obstacle.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		
 		debugCard = new DebugScreen(0,0,card,button);
-		//debugCard.hide();
+		debugCard.hide();
 		waitingRoomScreen = new WaitingRoomScreen(0,-VIRTUAL_HEIGHT,card,icon);
-		//waitingRoomScreen.hide();
+		waitingRoomScreen.hide();
 		gameScreen = new GameScreen(0,0,card, obstacle);
-		gameScreen.pause();
+	//	gameScreen.pause();
 		
 		batch = new SpriteBatch();
 	}
@@ -127,14 +127,6 @@ public class MainGame extends ApplicationAdapter {
 			else if(requestHandler.getRecievedMessage()[0] == 'Z')// seed received
 			{
 				gameScreen.constructSeed(requestHandler.getRecievedMessage());
-			}
-			else if(requestHandler.getRecievedMessage()[0] == 'G')// opponent wants to play again
-			{
-				gameScreen.setWantsRematch(true);
-			}
-			else if(requestHandler.getRecievedMessage()[0] == 'L')// opponent lost
-			{
-				gameScreen.setOpponentLost(true);
 			}
 			requestHandler.clearRecievedMessage();
 		}

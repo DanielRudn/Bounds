@@ -1,7 +1,0 @@
-package com.dr.bounds.maps;
-
-import com.DR.dLib.dObject;
-
-public class dObstacle extends dObject {
-
-}

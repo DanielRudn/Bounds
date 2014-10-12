@@ -26,13 +26,10 @@
 <fullyQualifiedTypeName name="com.dr.bounds.maps.MapGenerator"/>
 <fullyQualifiedTypeName name="java.lang.Math"/>
 <fullyQualifiedTypeName name="com.dr.bounds.screens.GameScreen"/>
-<fullyQualifiedTypeName name="com.dr.bounds.Player"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.math.Intersector"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.math.Rectangle"/>
-<fullyQualifiedTypeName name="com.DR.dLib.dImage"/>
 <fullyQualifiedTypeName name="com.dr.bounds.SkinLoader"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.SpriteBatch"/>
-<fullyQualifiedTypeName name="com.DR.dLib.dTweener"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Color"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.Gdx"/>
@@ -42,5 +39,8 @@
 <fullyQualifiedTypeName name="com.DR.dLib.dButton"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.Sprite"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Texture.TextureFilter"/>
+<fullyQualifiedTypeName name="com.DR.dLib.dImage"/>
+<fullyQualifiedTypeName name="com.dr.bounds.Player"/>
 <fullyQualifiedTypeName name="com.dr.bounds.MainGame"/>
+<fullyQualifiedTypeName name="com.DR.dLib.dTweener"/>
 </qualifiedTypeNameHistroy>

@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
+import com.dr.bounds.screens.GameScreen;
 
 public class MapGenerator {
 
@@ -50,6 +51,8 @@ public class MapGenerator {
 	{
 		setMapType(mapType);
 		this.player = player;
+		setSeed(seed);
+		generateSeed();
 		// add 6 obstacles to start with
 		for(int x = 0; x < 6; x++)
 		{
@@ -59,9 +62,6 @@ public class MapGenerator {
 		}
 		obstacles.get(0).setY(MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT/2f - MIN_DISTANCE - rng.nextInt(MAX_DISTANCE));
 		obstacles.get(0).setRegenerate(false);
-		generateSeed();
-	//	generateFirstSet();
-		
 		//TEST FOR MACHINE MAP TYPE
 		firstBG = new dImage(0,0, new Texture("MACHINE_BG.png"));
 		secondBG = new dImage(0,-MainGame.VIRTUAL_HEIGHT, new Texture("MACHINE_BG.png"));
@@ -89,7 +89,7 @@ public class MapGenerator {
 					obstacles.get(x).setRegenerate(false);
 				}
 				// check if player had collision
-				if(Intersector.intersectRectangles(player.getBoundingRectangle(), obstacles.get(x).getBoundingRectangle(), useless)) // FIX
+				if(Intersector.intersectRectangles(player.getBoundingRectangle(), obstacles.get(x).getBoundingRectangle(), useless) && hadCollision == false) // FIX
 				{
 					//obstacles.get(x).setColor(Color.BLUE);
 					hadCollision = true;
@@ -155,7 +155,7 @@ public class MapGenerator {
 			}*/
 	}
 	
-	private void generateFirstSet()
+	public void generateFirstSet()
 	{
 		for(int x = 0; x < obstacles.size(); x++)
 		{
@@ -204,7 +204,6 @@ public class MapGenerator {
 	{
 		seed = s;
 		rng.setSeed(seed);
-		generateFirstSet();
 	}
 	
 	public void generateSeed()
@@ -228,6 +227,10 @@ public class MapGenerator {
 	{
 		hadCollision = c;
 		//MainGame.setCameraPos(MainGame.VIRTUAL_WIDTH/2f, MainGame.VIRTUAL_HEIGHT / 2f);
+		if(MainGame.requestHandler.isHost())
+		{
+			generateSeed();
+		}
 		// reset obstacles
 		for(int x = 0; x < obstacles.size(); x++)
 		{
@@ -239,7 +242,6 @@ public class MapGenerator {
 		}
 		obstacles.get(0).setY(MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT/2f - MIN_DISTANCE - rng.nextInt(MAX_DISTANCE));
 		obstacles.get(0).setRegenerate(false);
-		generateSeed();
 		// reset backgrounds
 		firstBG.setPos(0,0);
 		secondBG.setPos(0,-MainGame.VIRTUAL_HEIGHT);
