@@ -22,7 +22,7 @@ public class GameScreen extends dScreen {
 	private Player opponent;
 	// camera's speed in pixels per second (camera moves upward)
 	//public static final float CAMERA_SPEED = 300f; 
-	public static final float CAMERA_SPEED = 100f;
+	public static final float CAMERA_SPEED = 400f;
 	// used to interact with android device
 	private RequestHandler requestHandler;
 	// Generate the map
@@ -150,7 +150,7 @@ public class GameScreen extends dScreen {
 		player.render(batch);
 		gameOverScreen.render(batch);
 		dialog.render(batch);
-		debug.render(batch);
+	//	debug.render(batch);
 	}
 	
 	/**

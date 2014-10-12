@@ -25,9 +25,9 @@ public class MapGenerator {
 	// seed for random number generator
 	private long seed = 123456789;
 	// Minimum  and maximum vertical(y) distance between obstacles
-	private final int MIN_DISTANCE = 75, MAX_DISTANCE = (int) MainGame.VIRTUAL_HEIGHT;
+	private final int MIN_DISTANCE = 256, MAX_DISTANCE = (int) MainGame.VIRTUAL_HEIGHT - 256;
 	// minimum / maximum width of blocks
-	private final int MIN_WIDTH = 128, MAX_WIDTH = (int)MainGame.VIRTUAL_WIDTH - 192;
+	private final int MIN_WIDTH = 192, MAX_WIDTH = (int)MainGame.VIRTUAL_WIDTH - 256;
 	// player object to determine collisions
 	private Player player;
 	// useless REMOVE PLEASE
@@ -42,15 +42,15 @@ public class MapGenerator {
 	public MapGenerator(int mapType, Texture obstacleTexture, Player player)
 	{
 		setMapType(mapType);
-		generateSeed();
+		//generateSeed();
 		this.player = player;
-		// add 5 obstacles to start with
-		for(int x = 0; x <= 10; x++)
+		// add 7 obstacles to start with
+		for(int x = 0; x < 7; x++)
 		{
 			obstacles.add(new dObstacle(0,MainGame.camera.position.y + MainGame.VIRTUAL_HEIGHT, obstacleTexture));
 			obstacles.get(x).setColor(Color.RED);
-			generateFirstSet();
 		}
+		generateFirstSet();
 	}
 	
 	public void update(float delta)
@@ -90,15 +90,24 @@ public class MapGenerator {
 			int side = rng.nextInt(2); // 0 is LEFT, 1 is RIGHT
 			if(side == 0)// left
 			{
-				obstacles.get(index).setX(0);
 				obstacles.get(index).setWidth(MIN_WIDTH + rng.nextInt(MAX_WIDTH));
+				obstacles.get(index).setX(0);
 			}
 			else if(side == 1)// right
 			{
-				obstacles.get(index).setX(MainGame.VIRTUAL_WIDTH - obstacles.get(index).getWidth());
 				obstacles.get(index).setWidth(MIN_WIDTH + rng.nextInt(MAX_WIDTH));
+				obstacles.get(index).setX(MainGame.VIRTUAL_WIDTH - obstacles.get(index).getWidth());
 			}
-			obstacles.get(index).setY(MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT/2f - MIN_DISTANCE - rng.nextInt(MAX_DISTANCE));
+			System.out.println("index: " + index + " next: " + getNextIndex(index) + " prev: " + getPreviousIndex(index));
+			obstacles.get(index).setY(obstacles.get(getNextIndex(index)).getY() - MIN_DISTANCE - rng.nextInt(MAX_DISTANCE));
+		/*	if(obstacles.get(getNextIndex(index)).getY() < MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT / 4f)
+			{
+				obstacles.get(index).setY(obstacles.get(getNextIndex(index)).getY() - MIN_DISTANCE - rng.nextInt(MAX_DISTANCE));
+			}
+			else
+			{
+				obstacles.get(index).setY(MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT/2f - MIN_DISTANCE - rng.nextInt(MAX_DISTANCE));
+			}
 	
 			//make sure it's not vertically close to any other objects
 			for(int y = 0; y < obstacles.size(); y++)
@@ -106,15 +115,30 @@ public class MapGenerator {
 				if(getVerticalDistance(obstacles.get(index), obstacles.get(y)) < MIN_DISTANCE)
 				{
 					obstacles.get(index).setY(obstacles.get(index).getY() - MIN_DISTANCE);
+					System.out.println("near");
 				}
-			}
+			}*/
 	}
 	
 	private void generateFirstSet()
 	{
 		for(int x = 0; x < obstacles.size(); x++)
 		{
-			generateDefault(x);
+		//	generateDefault(x);
+			obstacles.get(x).setColor(Color.RED);
+			int side = rng.nextInt(2); // 0 is LEFT, 1 is RIGHT
+			if(side == 0)// left
+			{
+				obstacles.get(x).setWidth(MIN_WIDTH + rng.nextInt(MAX_WIDTH));
+				obstacles.get(x).setX(0);
+			}
+			else if(side == 1)// right
+			{
+				obstacles.get(x).setWidth(MIN_WIDTH + rng.nextInt(MAX_WIDTH));
+				obstacles.get(x).setX(MainGame.VIRTUAL_WIDTH - obstacles.get(x).getWidth());
+			}
+			obstacles.get(x).setY(MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT/2f - MIN_DISTANCE - rng.nextInt(MAX_DISTANCE));
+			
 		}
 	}
 	
@@ -129,7 +153,7 @@ public class MapGenerator {
 		{
 			return 0;
 		}
-		return i++;
+		return i+1;
 	}
 	
 	private int getPreviousIndex(int i)
@@ -138,7 +162,7 @@ public class MapGenerator {
 		{
 			return obstacles.size() - 1;
 		}
-		return i--;
+		return i-1;
 	}
 	
 	public void render(SpriteBatch batch)

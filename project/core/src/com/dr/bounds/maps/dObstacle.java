@@ -19,12 +19,15 @@ public class dObstacle extends dObject{
 		super(x, y, texture);
 		objWidth = texture.getWidth();
 		objHeight = texture.getHeight();
+		// set origin 0,0
+		setOrigin(0,0);
 	}
 
 	public dObstacle(float x, float y, Sprite sprite) {
 		super(x, y, sprite);
 		objWidth = sprite.getWidth();
 		objHeight = sprite.getHeight();
+		setOrigin(0,0);
 	}
 	
 	@Override
@@ -55,13 +58,13 @@ public class dObstacle extends dObject{
 	
 	public void setWidth(float w)
 	{
-		setScaleX(w / getWidth());
+		setScaleX(w / getSprite().getRegionWidth());
 		objWidth = w;
 	}
 	
 	public void setHeight(float h)
 	{
-		setScaleY(h / getHeight());
+		setScaleY(h / getSprite().getRegionHeight());
 		objHeight = h;
 	}
 	
