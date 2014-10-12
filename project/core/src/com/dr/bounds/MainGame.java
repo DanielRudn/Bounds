@@ -52,15 +52,16 @@ public class MainGame extends ApplicationAdapter {
 		card = new Texture("card.png");
 		icon = new Texture("playerIcon.png");
 		icon.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		obstacle = new Texture("obstacle.png");
+		//obstacle = new Texture("obstacle.png");
+		obstacle = new Texture("girder.png");
 		obstacle.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		
 		debugCard = new DebugScreen(0,0,card,button);
-		debugCard.hide();
+		//debugCard.hide();
 		waitingRoomScreen = new WaitingRoomScreen(0,-VIRTUAL_HEIGHT,card,icon);
-		waitingRoomScreen.hide();
+		//waitingRoomScreen.hide();
 		gameScreen = new GameScreen(0,0,card, obstacle);
-		//gameScreen.pause();
+		gameScreen.pause();
 		
 		batch = new SpriteBatch();
 	}
@@ -68,7 +69,9 @@ public class MainGame extends ApplicationAdapter {
 	@Override
 	public void render () {
 		Gdx.gl.glViewport(0,0, (int)Gdx.graphics.getWidth(), (int)Gdx.graphics.getHeight());
-		Gdx.gl.glClearColor(1,1, 1, 1);
+		//Gdx.gl.glClearColor(1,1, 1, 1);		
+		//Gdx.gl.glClearColor(149f/256f, 165f/256f, 166f/256f, 1f);
+		Gdx.gl.glClearColor(189f/256f, 195f/256f, 199f/256f,1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 	
 		// UPDATE

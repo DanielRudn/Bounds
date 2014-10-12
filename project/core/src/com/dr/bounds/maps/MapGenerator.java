@@ -3,6 +3,7 @@ package com.dr.bounds.maps;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.DR.dLib.dImage;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,7 +16,7 @@ import com.dr.bounds.Player;
 public class MapGenerator {
 
 	// map generation type
-	public static final int TYPE_DEFAULT = 1515, TYPE_SPACE = 3030;
+	public static final int TYPE_DEFAULT = 1515, TYPE_SPACE = 3030, TYPE_MACHINERY = 6060;
 	// the current map generation type
 	private int currentType = TYPE_DEFAULT; 
 	// ArrayList of obstacles in map, in an arraylist for easy adding/removing and modifying
@@ -27,13 +28,19 @@ public class MapGenerator {
 	// Minimum  and maximum vertical(y) distance between obstacles
 	private final int MIN_DISTANCE = 256, MAX_DISTANCE = (int) MainGame.VIRTUAL_HEIGHT - 256;
 	// minimum / maximum width of blocks
-	private final int MIN_WIDTH = 192, MAX_WIDTH = (int)MainGame.VIRTUAL_WIDTH - 256;
+	private final int MIN_WIDTH = 192, MAX_WIDTH = (int)MainGame.VIRTUAL_WIDTH - 350;
 	// player object to determine collisions
 	private Player player;
 	// useless REMOVE PLEASE
 	Rectangle useless = new Rectangle();
 	// whether or not the player had a collision
 	private boolean hadCollision = false;
+	// tilable backgrounds for current map type
+	private dImage firstBG, secondBG;
+	// player score to give to game screen
+	private int score = 0;
+	// used to let gamescreen know that it should show the score change animation
+	private boolean scoreChanged = false;
 	
 	/**
 	 * Creates a new generator and sets the level type
@@ -42,15 +49,22 @@ public class MapGenerator {
 	public MapGenerator(int mapType, Texture obstacleTexture, Player player)
 	{
 		setMapType(mapType);
-		//generateSeed();
 		this.player = player;
-		// add 7 obstacles to start with
-		for(int x = 0; x < 7; x++)
+		// add 6 obstacles to start with
+		for(int x = 0; x < 6; x++)
 		{
-			obstacles.add(new dObstacle(0,MainGame.camera.position.y + MainGame.VIRTUAL_HEIGHT, obstacleTexture));
-			obstacles.get(x).setColor(Color.RED);
+			obstacles.add(new dObstacle(0,0, obstacleTexture, player));
+			obstacles.get(x).setRegenerate(true);
+		//	obstacles.get(x).setColor(Color.RED);
 		}
-		generateFirstSet();
+		obstacles.get(0).setY(MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT/2f - MIN_DISTANCE - rng.nextInt(MAX_DISTANCE));
+		obstacles.get(0).setRegenerate(false);
+		generateSeed();
+	//	generateFirstSet();
+		
+		//TEST FOR MACHINE MAP TYPE
+		firstBG = new dImage(0,0, new Texture("MACHINE_BG.png"));
+		secondBG = new dImage(0,-MainGame.VIRTUAL_HEIGHT, new Texture("MACHINE_BG.png"));
 	}
 	
 	public void update(float delta)
@@ -59,6 +73,14 @@ public class MapGenerator {
 		for(int x = 0; x < obstacles.size(); x++)
 		{
 			obstacles.get(x).update(delta);
+			//check players score
+			if(obstacles.get(x).hasPassed() && obstacles.get(x).hasIncrementedScore() == false)
+			{
+				score++;
+				obstacles.get(x).setIncrementedScore(true);
+				scoreChanged = true;
+			}
+			
 			if(currentType == TYPE_DEFAULT)
 			{
 				if(obstacles.get(x).shouldRegenerate())
@@ -69,7 +91,7 @@ public class MapGenerator {
 				// check if player had collision
 				if(Intersector.intersectRectangles(player.getBoundingRectangle(), obstacles.get(x).getBoundingRectangle(), useless)) // FIX
 				{
-					obstacles.get(x).setColor(Color.BLUE);
+					//obstacles.get(x).setColor(Color.BLUE);
 					hadCollision = true;
 					// send message to let opponent know that i have lost
 					MainGame.requestHandler.sendReliableMessage(new byte[]{'L'});
@@ -82,11 +104,24 @@ public class MapGenerator {
 				
 			}
 		}
+		
+		
+		// update backgrounds
+		if(firstBG.getY() >= MainGame.camera.position.y + MainGame.VIRTUAL_HEIGHT / 2f)
+		{
+			firstBG.setY(secondBG.getY() - firstBG.getHeight());
+		}
+		if(secondBG.getY() >= MainGame.camera.position.y + MainGame.VIRTUAL_HEIGHT / 2f)
+		{
+			secondBG.setY(firstBG.getY() - secondBG.getHeight());
+		}
 	}
 	
 	private void generateDefault(int index)
 	{
-			obstacles.get(index).setColor(Color.RED);
+		//	obstacles.get(index).setColor(Color.RED);
+			//reset passed for this obstacles
+			obstacles.get(index).setPassed(false);
 			int side = rng.nextInt(2); // 0 is LEFT, 1 is RIGHT
 			if(side == 0)// left
 			{
@@ -98,9 +133,9 @@ public class MapGenerator {
 				obstacles.get(index).setWidth(MIN_WIDTH + rng.nextInt(MAX_WIDTH));
 				obstacles.get(index).setX(MainGame.VIRTUAL_WIDTH - obstacles.get(index).getWidth());
 			}
-			System.out.println("index: " + index + " next: " + getNextIndex(index) + " prev: " + getPreviousIndex(index));
 			obstacles.get(index).setY(obstacles.get(getNextIndex(index)).getY() - MIN_DISTANCE - rng.nextInt(MAX_DISTANCE));
-		/*	if(obstacles.get(getNextIndex(index)).getY() < MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT / 4f)
+			
+		/*	if(!(obstacles.get(getNextIndex(index)).getY() < MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f))
 			{
 				obstacles.get(index).setY(obstacles.get(getNextIndex(index)).getY() - MIN_DISTANCE - rng.nextInt(MAX_DISTANCE));
 			}
@@ -124,21 +159,11 @@ public class MapGenerator {
 	{
 		for(int x = 0; x < obstacles.size(); x++)
 		{
-		//	generateDefault(x);
-			obstacles.get(x).setColor(Color.RED);
-			int side = rng.nextInt(2); // 0 is LEFT, 1 is RIGHT
-			if(side == 0)// left
+			if(obstacles.get(x).shouldRegenerate())
 			{
-				obstacles.get(x).setWidth(MIN_WIDTH + rng.nextInt(MAX_WIDTH));
-				obstacles.get(x).setX(0);
+				generateDefault(x);
+				obstacles.get(x).setRegenerate(false);
 			}
-			else if(side == 1)// right
-			{
-				obstacles.get(x).setWidth(MIN_WIDTH + rng.nextInt(MAX_WIDTH));
-				obstacles.get(x).setX(MainGame.VIRTUAL_WIDTH - obstacles.get(x).getWidth());
-			}
-			obstacles.get(x).setY(MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT/2f - MIN_DISTANCE - rng.nextInt(MAX_DISTANCE));
-			
 		}
 	}
 	
@@ -167,6 +192,8 @@ public class MapGenerator {
 	
 	public void render(SpriteBatch batch)
 	{
+		firstBG.render(batch);
+		secondBG.render(batch);
 		for(int x = 0; x < obstacles.size(); x++)
 		{
 			obstacles.get(x).render(batch);
@@ -204,10 +231,34 @@ public class MapGenerator {
 		// reset obstacles
 		for(int x = 0; x < obstacles.size(); x++)
 		{
-			obstacles.get(x).setY(MainGame.camera.position.y + MainGame.VIRTUAL_HEIGHT);
-			obstacles.get(x).setColor(Color.RED);
+			obstacles.get(x).setY(0);
+			obstacles.get(x).setRegenerate(true);
+			//obstacles.get(x).setColor(Color.RED);
+			obstacles.get(x).setPassed(false);
+			obstacles.get(x).setIncrementedScore(true);
 		}
+		obstacles.get(0).setY(MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT/2f - MIN_DISTANCE - rng.nextInt(MAX_DISTANCE));
+		obstacles.get(0).setRegenerate(false);
 		generateSeed();
+		// reset backgrounds
+		firstBG.setPos(0,0);
+		secondBG.setPos(0,-MainGame.VIRTUAL_HEIGHT);
+		score = 0;
+	}
+	
+	public void setScoreChanged(boolean scoreChanged)
+	{
+		this.scoreChanged = scoreChanged;
+	}
+	
+	public boolean hasScoreChanged()
+	{
+		return scoreChanged;
+	}
+	
+	public int getScore()
+	{
+		return score;
 	}
 	
 	public int getMapType()

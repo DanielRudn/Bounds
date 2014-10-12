@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dr.bounds.MainGame;
+import com.dr.bounds.Player;
 
 public class dObstacle extends dObject{
 	
@@ -14,20 +15,28 @@ public class dObstacle extends dObject{
 	private boolean regenerate = false;
 	// whether or not the player[s] have passed the obstacle and need to be given a point
 	private boolean passed = false;
+	// whether or not we counted the score for this obstacle
+	private boolean incrementedScore = false;
+	// player object to check for score updates
+	private Player player;
 
-	public dObstacle(float x, float y, Texture texture) {
+	public dObstacle(float x, float y, Texture texture, Player p) {
 		super(x, y, texture);
 		objWidth = texture.getWidth();
 		objHeight = texture.getHeight();
 		// set origin 0,0
 		setOrigin(0,0);
+		
+		player = p;
 	}
 
-	public dObstacle(float x, float y, Sprite sprite) {
+	public dObstacle(float x, float y, Sprite sprite, Player p) {
 		super(x, y, sprite);
 		objWidth = sprite.getWidth();
 		objHeight = sprite.getHeight();
 		setOrigin(0,0);
+		
+		player = p;
 	}
 	
 	@Override
@@ -38,7 +47,10 @@ public class dObstacle extends dObject{
 			regenerate = true;
 		}
 		// check if player passed and needs to be awarded point
-		
+		if(player.getY() < getY())
+		{
+			passed = true;
+		}
 	}
 
 	public boolean shouldRegenerate()
@@ -72,6 +84,30 @@ public class dObstacle extends dObject{
 	{
 		setWidth(w);
 		setHeight(h);
+	}
+	
+	public void setPassed(boolean passed)
+	{
+		if(passed == false)
+		{
+			incrementedScore = false;
+		}
+		this.passed = passed;
+	}
+	
+	public void setIncrementedScore(boolean score)
+	{
+		incrementedScore = score;
+	}
+	
+	public boolean hasPassed()
+	{
+		return passed;
+	}
+	
+	public boolean hasIncrementedScore()
+	{
+		return incrementedScore;
 	}
 	
 	@Override

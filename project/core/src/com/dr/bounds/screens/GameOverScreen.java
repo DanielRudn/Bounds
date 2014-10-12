@@ -19,6 +19,8 @@ public class GameOverScreen extends dScreen {
 	private dUICard scoreCard, moneyCard;
 	// the counters that will be displayed on screen
 	private float currentScore = 0, currentMoney = 0;
+	// players final score for score counter
+	private float playerScore = 0;
 	// image of the player's skin (or winner if multiplayer)
 	private dImage playerImage;
 	// burst behind player image
@@ -111,9 +113,9 @@ public class GameOverScreen extends dScreen {
 				showTime+=delta;
 				setY(dTweener.ElasticOut(showTime, MainGame.camera.position.y + MainGame.VIRTUAL_HEIGHT / 2f, -MainGame.VIRTUAL_HEIGHT, SHOW_DURATION, 8f));
 			}
-			currentScore = dTweener.MoveToAndSlow(currentScore, 9, 4f* delta);
+			currentScore = dTweener.MoveToAndSlow(currentScore, playerScore, 2f* delta);
 			((dText)scoreCard.getObject(0)).setText("score: " + Float.toString((int)currentScore+1));
-			currentMoney = dTweener.MoveToAndSlow(currentMoney, 30, 4f * delta);
+			currentMoney = dTweener.MoveToAndSlow(currentMoney, 30, 2f * delta);
 			((dText)moneyCard.getObject(0)).setText("$$$: " + Float.toString((int)currentMoney+1));
 			
 			if(playerBurst.getSprite().getRotation() <= 359f)
@@ -125,21 +127,21 @@ public class GameOverScreen extends dScreen {
 				playerBurst.getSprite().setRotation(0);
 			}
 			
-			// spin replay button on click
-			if(replayButton.isClicked())
-			{
-				setY(0);
-				MainGame.camera.position.y = MainGame.VIRTUAL_HEIGHT / 2f;
-				// send message to opponent requesting rematch
-				MainGame.requestHandler.sendUnreliableMessage(new byte[]{'G'});
-				wantsReplay = true;
-			}
-			
 			if(wantsReplay && opponentReplay)
 			{
 				replayButton.getSprite().setRotation(dTweener.MoveToAndSlow(replayButton.getSprite().getRotation(), 360f, 5f*delta));
 				setX(dTweener.MoveToAndSlow(getX(), 0 + MainGame.VIRTUAL_WIDTH * 2f,2f*delta));
 			}
+		}
+		
+		// spin replay button on click
+		if(replayButton.isClicked())
+		{
+			setY(0);
+			MainGame.camera.position.y = MainGame.VIRTUAL_HEIGHT / 2f;
+			// send message to opponent requesting rematch
+			MainGame.requestHandler.sendUnreliableMessage(new byte[]{'G'});
+			wantsReplay = true;
 		}
 	}
 	
@@ -165,6 +167,7 @@ public class GameOverScreen extends dScreen {
 		hide();
 		currentScore = 0;
 		currentMoney = 0;
+		playerScore = 0;
 		rematchText.setText("");
 	}
 	
@@ -179,6 +182,11 @@ public class GameOverScreen extends dScreen {
 	{
 		topText.setText(title);
 		updateObjectPosition();
+	}
+	
+	public void setScore(int score)
+	{
+		playerScore = score;
 	}
 	
 	public void setWinnerSkinID(int id)

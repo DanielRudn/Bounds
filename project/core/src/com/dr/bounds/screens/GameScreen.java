@@ -2,6 +2,7 @@ package com.dr.bounds.screens;
 
 import com.DR.dLib.dButton;
 import com.DR.dLib.dText;
+import com.DR.dLib.dTweener;
 import com.DR.dLib.dUICard;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -22,7 +23,7 @@ public class GameScreen extends dScreen {
 	private Player opponent;
 	// camera's speed in pixels per second (camera moves upward)
 	//public static final float CAMERA_SPEED = 300f; 
-	public static final float CAMERA_SPEED = 400f;
+	public static final float CAMERA_SPEED = 300f;
 	// used to interact with android device
 	private RequestHandler requestHandler;
 	// Generate the map
@@ -31,10 +32,14 @@ public class GameScreen extends dScreen {
 	private GameOverScreen gameOverScreen;
 	// keep track of players score
 	private int playerScore = 0;
+	// used to display player's score
+	private dText scoreText;
 	// whether or not opponent wants rematch
 	private boolean opponentReplay = false;
 	// whether opponent lost or player lost
 	private boolean opponentLost = false;
+	// animate score changing
+	private float scoreTime = 0;
 	
 	// debug
 	private dText debug = new dText(0,0,64f,"debug:");
@@ -47,7 +52,7 @@ public class GameScreen extends dScreen {
 		
 		requestHandler = MainGame.requestHandler;
 		
-		player = new Player(MainGame.VIRTUAL_WIDTH/2f-32f,MainGame.VIRTUAL_HEIGHT/2f-32f, 4, requestHandler);
+		player = new Player(MainGame.VIRTUAL_WIDTH/2f-32f,MainGame.VIRTUAL_HEIGHT/2f-32f, 5, requestHandler);
 		
 		opponent = new Player(MainGame.VIRTUAL_WIDTH/2f-32f,MainGame.VIRTUAL_HEIGHT/2f-32f,2, requestHandler);
 		opponent.setControllable(false);	
@@ -80,6 +85,10 @@ public class GameScreen extends dScreen {
 		
 		debug.setMultiline(true);
 		
+		scoreText = new dText(0,0,128f,"0");
+		scoreText.setColor(0,0,0,0.5f);
+		addObject(scoreText,dUICard.CENTER, dUICard.TOP);
+		
 	}
 	
 	@Override
@@ -108,26 +117,45 @@ public class GameScreen extends dScreen {
 					gameOverScreen.setWinnerSkinID(opponent.getSkinID());
 					gameOverScreen.setTitleMessage(requestHandler.getOpponentName() + " Wins!");
 				}
-				
+				gameOverScreen.setScore(playerScore);
 				gameOverScreen.show();
 				//dialog.show();
 			}
 			else if(mapGen.hadCollision() || opponentLost)
 			{
-				// player wants a replay and opponent wants a rematch
-				if(gameOverScreen.wantsReplay() && opponentReplay)
+				// player wants a replay
+				if(gameOverScreen.wantsReplay())
 				{
-					mapGen.setHadCollision(false);
-					player.reset();
-					opponent.reset();
-					// send seed to opponent
-					if(requestHandler.isHost())
+					 //opponent wants a rematch
+					if(requestHandler.isMultiplayer() && opponentReplay)
 					{
-						decodeAndSendSeed(getSeed());
+						gameOverScreen.reset();
+						opponentReplay = false;
+						opponentLost = false;
+						mapGen.setHadCollision(false);
+						player.reset();
+						opponent.reset();
+						// send seed to opponent
+						if(requestHandler.isHost())
+						{
+							decodeAndSendSeed(getSeed());
+						}
 					}
-					opponentReplay = false;
-					opponentLost = false;
-					gameOverScreen.reset();
+					else if(requestHandler.isMultiplayer() == false)// user is playing single-player
+					{
+						player.reset();
+						opponent.reset();
+						mapGen.setHadCollision(false);
+						// send seed to opponent
+						if(requestHandler.isHost())
+						{
+							decodeAndSendSeed(getSeed());
+						}
+						opponentReplay = false;
+						opponentLost = false;
+						scoreText.setText(Integer.toString(0));
+						gameOverScreen.reset();
+					}
 				}
 			}
 			else if(!mapGen.hadCollision() || opponentLost == false)
@@ -135,8 +163,24 @@ public class GameScreen extends dScreen {
 				// only update player and opponent if game is running
 				player.update(delta);
 				opponent.update(delta);
+				// get players score from the map gen
+				playerScore = mapGen.getScore();
+				scoreText.setY(MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f + 48f);
+				if(mapGen.hasScoreChanged())
+				{
+					scoreText.setText(Integer.toString(playerScore));
+					scoreText.setX(getX() + getWidth()/2f - scoreText.getWidth()/2f - 12f);
+					scoreTime = 0;
+					mapGen.setScoreChanged(false);
+				}
+				if(scoreTime <= 1.5f)
+				{
+					scoreTime+=delta;
+					scoreText.setSize(dTweener.ElasticOut(scoreTime, 192f, 128f - 192f, 1.5f));
+				}
 				// move camera upward
 				MainGame.setCameraPos(MainGame.camera.position.x, MainGame.camera.position.y - CAMERA_SPEED * delta);
+			
 			}
 		}
 	}
@@ -148,9 +192,10 @@ public class GameScreen extends dScreen {
 		mapGen.render(batch);
 		opponent.render(batch);
 		player.render(batch);
+		scoreText.render(batch);
 		gameOverScreen.render(batch);
 		dialog.render(batch);
-	//	debug.render(batch);
+		debug.render(batch);
 	}
 	
 	/**

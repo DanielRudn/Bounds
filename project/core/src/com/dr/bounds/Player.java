@@ -81,7 +81,7 @@ public class Player extends dObject {
 			if(Gdx.input.justTouched() && moveCenter == false)
 			{
 				// temp
-				playerVelocity.x = 0;
+			//	playerVelocity.x = 0;
 				if(touchedLeftSide())// user touched left half of screen
 				{
 					targetVelocity.set(-12f*32f,0);
@@ -127,7 +127,7 @@ public class Player extends dObject {
 	private void changeVelocity(float delta)
 	{
 		playerVelocity.set(dTweener.MoveToAndSlow(playerVelocity.x, targetVelocity.x, delta/12f), dTweener.MoveToAndSlow(playerVelocity.y, targetVelocity.y, delta/32f));
-		setY(getY() - GameScreen.CAMERA_SPEED * delta);
+		setY(getY() - GameScreen.CAMERA_SPEED * delta * 1.25f);
 		// check if passed bounds and need to move back to center
 		checkBounds();
 	}
@@ -164,7 +164,7 @@ public class Player extends dObject {
 		if(getX() < MainGame.VIRTUAL_WIDTH/2f - getWidth()/2f - 14f || getX() > MainGame.VIRTUAL_WIDTH/2f - getWidth()/2f + 14f)
 		{
 			//setPosition(dTweener.MoveToAndSlow(getX(), MainGame.VIRTUAL_WIDTH/2f - getWidth()/2f, 4f*delta),getY());
-			setPosition(dTweener.MoveToAndSlow(getX(), MainGame.VIRTUAL_WIDTH/2f - getWidth()/2f, 4f*delta), dTweener.MoveToAndSlow(getY(), startY - 450f, 4f*delta));
+			setPosition(dTweener.MoveToAndSlow(getX(), MainGame.VIRTUAL_WIDTH/2f - getWidth()/2f, 4f*delta), dTweener.MoveToAndSlow(getY(), startY - 500f, 4f*delta));
 		}
 		else
 		{

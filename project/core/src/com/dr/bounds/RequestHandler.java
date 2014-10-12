@@ -16,6 +16,8 @@ public interface RequestHandler {
 	
 	public String getOpponentName();
 	
+	public boolean isMultiplayer();
+	
 	public boolean justJoined();
 	
 	public boolean shouldShowWaitingRoom();

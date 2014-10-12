@@ -343,6 +343,13 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 	}
 	
 	@Override
+	public boolean isMultiplayer()
+	{
+		// currentRoom becomes null if the user leaves/disconnects from a room, or it is never assigned a room
+		return (currentRoom != null);
+	}
+	
+	@Override
 	public boolean justJoined()
 	{
 		return justJoined;

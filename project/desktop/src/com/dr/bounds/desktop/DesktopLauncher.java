@@ -140,4 +140,10 @@ public class DesktopLauncher implements RequestHandler {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public boolean isMultiplayer() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
