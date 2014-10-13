@@ -95,67 +95,63 @@ public class DebugScreen extends dScreen {
 	@Override
 	public void update(float delta)
 	{
-		if(isVisible())
-		{
-			super.update(delta);
-			
-			uptime+=Gdx.graphics.getDeltaTime();
-			debug.setText("DEBUG:\n------------------------------------------\n"
-					+ "FPS: " + Gdx.graphics.getFramesPerSecond() + "\nDeltaTime: " + Gdx.graphics.getDeltaTime() + "\nUptime: " + uptime +
-					"\n------------------------------------------"
-					+ debugText);
-			
-			buttonsCard.update(Gdx.graphics.getDeltaTime());
-			if(clearButton.isClicked())
-			{
-				debugText = "";
-			}
-			else if(inviteButton.isClicked())
-			{
-				debugText+="\nInvite Clicked!";
-				requestHandler.requestInviteActivity();
-			}
-			else if(inboxButton.isClicked())
-			{
-				debugText+="\nInbox Clicked!";
-				requestHandler.requestInboxActivity();
-			}
-			else if(leaveButton.isClicked())
-			{
-				debugText+="\nLeave Clicked!";
-				requestHandler.leaveRoom();
-			}
-			else if(sendFirstButton.isClicked())
-			{
-				debugText+="\nSent '5'";
-				requestHandler.sendReliableMessage(new byte[]{5});
-			}
-			else if(sendSecondButton.isClicked())
-			{
-				debugText+="\nSent '7'";
-				requestHandler.sendReliableMessage(new byte[]{7});
-			}
-			else if(signInButton.isClicked())
-			{
-				debugText+="\nSigning in...";
-				requestHandler.requestSignIn();
-			}
-			else if(hideButton.isClicked())
-			{
-				this.hide();
-				buttonsCard.hide();
-			}
-			else if(statusButton.isClicked())
-			{
-				debugText+="\nisConnected: " + requestHandler.isConnected() + "\nisConnecting: " + requestHandler.isConnecting();
-			}
+		super.update(delta);
 		
-			if(MainGame.getVirtualMouseY() < 10f)
-			{
-			//	this.show();
-			//	buttonsCard.show();
-			}
-			
+		uptime+=Gdx.graphics.getDeltaTime();
+		debug.setText("DEBUG:\n------------------------------------------\n"
+				+ "FPS: " + Gdx.graphics.getFramesPerSecond() + "\nDeltaTime: " + Gdx.graphics.getDeltaTime() + "\nUptime: " + uptime +
+				"\n------------------------------------------"
+				+ debugText);
+		
+		buttonsCard.update(Gdx.graphics.getDeltaTime());
+		if(clearButton.isClicked())
+		{
+			debugText = "";
+		}
+		else if(inviteButton.isClicked())
+		{
+			debugText+="\nInvite Clicked!";
+			requestHandler.requestInviteActivity();
+		}
+		else if(inboxButton.isClicked())
+		{
+			debugText+="\nInbox Clicked!";
+			requestHandler.requestInboxActivity();
+		}
+		else if(leaveButton.isClicked())
+		{
+			debugText+="\nLeave Clicked!";
+			requestHandler.leaveRoom();
+		}
+		else if(sendFirstButton.isClicked())
+		{
+			debugText+="\nSent '5'";
+			requestHandler.sendReliableMessage(new byte[]{5});
+		}
+		else if(sendSecondButton.isClicked())
+		{
+			debugText+="\nSent '7'";
+			requestHandler.sendReliableMessage(new byte[]{7});
+		}
+		else if(signInButton.isClicked())
+		{
+			debugText+="\nSigning in...";
+			requestHandler.requestSignIn();
+		}
+		else if(hideButton.isClicked())
+		{
+			this.hide();
+			buttonsCard.hide();
+		}
+		else if(statusButton.isClicked())
+		{
+			debugText+="\nisConnected: " + requestHandler.isConnected() + "\nisConnecting: " + requestHandler.isConnecting();
+		}
+	
+		if(MainGame.getVirtualMouseY() < 10f)
+		{
+		//	this.show();
+		//	buttonsCard.show();
 		}
 	}
 	

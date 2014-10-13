@@ -29,6 +29,8 @@ public class GameOverScreen extends dScreen {
 	private dButton replayButton;
 	// when user clicks replay, this turns false and resets the game
 	private boolean wantsReplay = false;
+	// opponent wants a rematch
+	private boolean opponentRematch = false;
 	// text to let user know opponent wants to play again
 	private dText rematchText;
 	// Text at the top E.G (Game Over, You Win, You lose...)
@@ -132,8 +134,8 @@ public class GameOverScreen extends dScreen {
 				if(wantsReplay == false)
 				{
 					wantsReplay = true;
+					showTime = SHOW_DURATION + 1f;
 				}
-				showTime = SHOW_DURATION + 1f;
 				// send message to oppenent requesting a rematch
 				if(MainGame.requestHandler.isMultiplayer())
 				{
@@ -141,7 +143,18 @@ public class GameOverScreen extends dScreen {
 				}
 			}
 			
-			if(wantsReplay)
+			// single player reset
+			if(wantsReplay && MainGame.requestHandler.isMultiplayer() == false)
+			{
+				replayButton.getSprite().setRotation(dTweener.MoveToAndSlow(replayButton.getSprite().getRotation(), 360f, 5f*delta));
+				setX(dTweener.MoveToAndSlow(getX(), 0 + MainGame.VIRTUAL_WIDTH * 2f,3f*delta));
+				if(getX() >= MainGame.VIRTUAL_WIDTH)
+				{
+					reset();
+				}
+			}
+			// multiplayer reset
+			else if(wantsReplay && opponentRematch && MainGame.requestHandler.isMultiplayer())
 			{
 				replayButton.getSprite().setRotation(dTweener.MoveToAndSlow(replayButton.getSprite().getRotation(), 360f, 5f*delta));
 				setX(dTweener.MoveToAndSlow(getX(), 0 + MainGame.VIRTUAL_WIDTH * 2f,3f*delta));
@@ -171,6 +184,7 @@ public class GameOverScreen extends dScreen {
 	public void reset()
 	{
 		wantsReplay = false;
+		opponentRematch = false;
 		hide();
 		replayButton.getSprite().setRotation(0);
 		currentScore = 0;
@@ -193,6 +207,11 @@ public class GameOverScreen extends dScreen {
 	public void setWinnerSkinID(int id)
 	{
 		playerImage.getSprite().setRegion(SkinLoader.getTextureForSkinID(id));
+	}
+	
+	public void setOpponentWantsRematch(boolean rematch)
+	{
+		opponentRematch = rematch;
 	}
 	
 	public boolean wantsReplay()

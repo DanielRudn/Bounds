@@ -219,6 +219,7 @@ public class GameScreen extends dScreen {
 	
 	public void setOpponentWantsRematch(boolean rematch)
 	{
+		gameOverScreen.setOpponentWantsRematch(rematch);
 		opponentRematch = rematch;
 	}
 	
