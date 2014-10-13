@@ -51,7 +51,6 @@ public class MapGenerator {
 	{
 		setMapType(mapType);
 		this.player = player;
-		setSeed(seed);
 		generateSeed();
 		// add 6 obstacles to start with
 		for(int x = 0; x < 6; x++)
@@ -93,7 +92,7 @@ public class MapGenerator {
 				{
 					//obstacles.get(x).setColor(Color.BLUE);
 					hadCollision = true;
-					// send message to let opponent know that i have lost
+					// send message to opponent saying player lost
 					MainGame.requestHandler.sendReliableMessage(new byte[]{'L'});
 					// test might have to remove
 					break;
@@ -242,6 +241,7 @@ public class MapGenerator {
 		}
 		obstacles.get(0).setY(MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT/2f - MIN_DISTANCE - rng.nextInt(MAX_DISTANCE));
 		obstacles.get(0).setRegenerate(false);
+		generateFirstSet();
 		// reset backgrounds
 		firstBG.setPos(0,0);
 		secondBG.setPos(0,-MainGame.VIRTUAL_HEIGHT);

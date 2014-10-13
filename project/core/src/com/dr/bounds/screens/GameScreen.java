@@ -36,6 +36,10 @@ public class GameScreen extends dScreen {
 	private dText scoreText;
 	// animate score changing
 	private float scoreTime = 0;
+	// whether opponent wants rematch
+	private boolean opponentRematch = false;
+	// whether opponent has lost
+	private boolean opponentLost = false;
 	
 	// debug
 	private dText debug = new dText(0,0,64f,"debug:");
@@ -91,7 +95,8 @@ public class GameScreen extends dScreen {
 	public void update(float delta)
 	{
 		debug.setPos(MainGame.camera.position.x - MainGame.VIRTUAL_WIDTH / 2f  + 2f, MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT /2f + 2f);
-		debug.setText("DEBUG:\nseed: " + getSeed() + "\nhadCollision: " + mapGen.hadCollision() + "\nwantsReplay: "+ gameOverScreen.wantsReplay());
+		debug.setText("DEBUG:\nseed: " + getSeed() + "\nhadCollision: " + mapGen.hadCollision() + "\nwantsReplay: "+ gameOverScreen.wantsReplay()
+				+ "\nopponentRematch: " + opponentRematch + "\nopponentLost: " + opponentLost);
 		if(isPaused() == false)
 		{
 			super.update(delta);
@@ -99,13 +104,14 @@ public class GameScreen extends dScreen {
 			dialog.update(delta);
 			gameOverScreen.update(delta);
 			
-			if(mapGen.hadCollision() && gameOverScreen.isVisible() == false)
+			if((mapGen.hadCollision() || opponentLost) && gameOverScreen.isVisible() == false)
 			{
 				gameOverScreen.setScore(playerScore);
 				gameOverScreen.show();
 				//dialog.show();'
 			}
-			else if(mapGen.hadCollision() && gameOverScreen.wantsReplay())
+			// single player game over screen
+			else if(mapGen.hadCollision() && gameOverScreen.wantsReplay() && MainGame.requestHandler.isMultiplayer() == false)
 			{
 				// player wants a replay
 					player.reset();
@@ -118,7 +124,22 @@ public class GameScreen extends dScreen {
 					}
 					scoreText.setText(Integer.toString(0));
 			}
-			else if(!mapGen.hadCollision() && gameOverScreen.isVisible() == false)
+			// multiplayer game over screen
+			else if((mapGen.hadCollision() || opponentLost) && MainGame.requestHandler.isMultiplayer() && gameOverScreen.wantsReplay() && opponentRematch)
+			{
+				player.reset();
+				opponent.reset();
+				mapGen.setHadCollision(false);
+				// send seed to opponent
+				if(requestHandler.isHost())
+				{
+					decodeAndSendSeed(getSeed());
+				}
+				scoreText.setText(Integer.toString(0));
+				opponentRematch = false;
+				opponentLost = false;
+			}
+			else if(!mapGen.hadCollision() && gameOverScreen.isVisible() == false && opponentLost == false)
 			{
 				// only update player and opponent if game is running
 				player.update(delta);
@@ -194,6 +215,16 @@ public class GameScreen extends dScreen {
 	public long getSeed()
 	{
 		return mapGen.getSeed();
+	}
+	
+	public void setOpponentWantsRematch(boolean rematch)
+	{
+		opponentRematch = rematch;
+	}
+	
+	public void setOpponentLost(boolean lost)
+	{
+		opponentLost = lost;
 	}
 	
 	public void setPlayerSkin(int id)

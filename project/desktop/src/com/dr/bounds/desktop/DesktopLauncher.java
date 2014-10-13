@@ -138,7 +138,7 @@ public class DesktopLauncher implements RequestHandler {
 	@Override
 	public boolean isHost() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
