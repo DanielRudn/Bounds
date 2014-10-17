@@ -192,8 +192,6 @@ public class Player extends dObject {
 	{
 		if(moveCenter == false)
 		{
-			// temp
-			playerVelocity.x = 0;
 			if(message[1] == 'L')//left
 			{
 				targetVelocity.set(-12f*32f,0);

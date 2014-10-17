@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dr.bounds.LoadingIcon;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.RequestHandler;
 import com.dr.bounds.SkinLoader;
@@ -23,13 +24,16 @@ public class WaitingRoomScreen extends dScreen {
 	private int playerSkinID = MainGame.PLACEHOLDER_SKIN_ID, opponentSkinID = MainGame.PLACEHOLDER_SKIN_ID;
 	public static final int STATUS_NOT_YET_INVITED = 0, STATUS_INVITED = 1, STATUS_JOINED = 2, STATUS_DECLINED = 3, STATUS_LEFT  = 4, STATUS_UNRESPONSIVE = 6;
 	private int currentStatus = 0;
+	// loading icon to show user that something is happening
+	private LoadingIcon loadingIcon;
 	
-	public WaitingRoomScreen(float x, float y, Texture texture, Texture icon) {
+	public WaitingRoomScreen(float x, float y, Texture texture, Texture icon, Texture loadingIconTexture) {
 		super(x, y, texture);
 		requestHandler = MainGame.requestHandler;
 		setColor(52f/256f, 73f/256f, 94f/256f,1f);
 		setPadding(32f);
 		
+		loadingIcon = new LoadingIcon(getWidth()/2f - 128f,getHeight() / 2f - 128f,loadingIconTexture);
 		
 		playerIcon = new dImage(0,0,icon);
 		playerIcon.setHasShadow(true);
@@ -85,7 +89,8 @@ public class WaitingRoomScreen extends dScreen {
 		addObject(playerName,dUICard.LEFT,dUICard.TOP);
 		playerName.setPos(-1000f, playerNameCard.getY() - playerNameCard.getHeight() - getPadding()*2f);
 		addObject(divider,dUICard.LEFT_NO_PADDING,dUICard.CENTER);
-		addObject(versusText,dUICard.CENTER,dUICard.CENTER);
+		// addObject(versusText,dUICard.CENTER,dUICard.CENTER);
+		// addObject(loadingIcon, dUICard.CENTER, dUICard.CENTER);
 		addObjectUnder(opponentIcon, dUICard.LEFT, getIndexOf(divider));
 		addObjectToRightOf(opponentBall, getIndexOf(opponentIcon));
 		opponentBall.setPos(opponentIcon.getX() + 32f, opponentIcon.getY()+32f);
@@ -104,6 +109,7 @@ public class WaitingRoomScreen extends dScreen {
 	public void update(float delta)
 	{
 		super.update(delta);
+		loadingIcon.update(delta);
 		// waiting room started, show animation and own info
 		if(showElements)
 		{
@@ -131,6 +137,7 @@ public class WaitingRoomScreen extends dScreen {
 					playerNameCard.setWidth(dTweener.ElasticOut(extraTime, 0.1f, -MainGame.VIRTUAL_WIDTH + 128f, 2f,6f));
 					playerName.setX(dTweener.ElasticOut(extraTime,getX() - playerName.getWidth(), (playerIcon.getX() - playerIcon.getWidth() - getPadding() - playerName.getWidth()) - (getX() - playerName.getWidth()), 2f,6f));
 					//opponentNameCard.setWidth(dTweener.ElasticOut(extraTime, 0.1f, MainGame.VIRTUAL_WIDTH - 128f, 2f,6f));
+					loadingIcon.start();
 				}
 			}
 		}
@@ -170,6 +177,7 @@ public class WaitingRoomScreen extends dScreen {
 		// check whether opponent is ready
 		if(opponentReady && opponentExtraTime >= 2f && extraTime >= 2f)
 		{
+			loadingIcon.stop();
 			this.animateHide();
 		}
 		
@@ -192,6 +200,7 @@ public class WaitingRoomScreen extends dScreen {
 	public void render(SpriteBatch batch)
 	{
 		super.render(batch);
+		loadingIcon.render(batch);
 	}
 	
 	public void animateHide()
@@ -317,6 +326,11 @@ public class WaitingRoomScreen extends dScreen {
 		{
 			opponentName.setText(name);
 		}
+	}
+	
+	public void setLoadingIconImage(Texture texture)
+	{
+		
 	}
 	
 	public void setOpponentReady()

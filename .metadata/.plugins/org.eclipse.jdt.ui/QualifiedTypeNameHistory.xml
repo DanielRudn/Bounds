@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.OrthographicCamera"/>
-<fullyQualifiedTypeName name="com.DR.dLib.dValues"/>
 <fullyQualifiedTypeName name="com.google.android.gms.games.multiplayer.realtime.RoomConfig"/>
 <fullyQualifiedTypeName name="android.view.WindowManager"/>
 <fullyQualifiedTypeName name="android.view.WindowManager.LayoutParams"/>
@@ -15,7 +14,6 @@
 <fullyQualifiedTypeName name="com.badlogic.gdx.Game"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.TextureRegion"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.Input.Keys"/>
-<fullyQualifiedTypeName name="com.google.android.gms.games.Games"/>
 <fullyQualifiedTypeName name="com.dr.bounds.RequestHandler"/>
 <fullyQualifiedTypeName name="screens.GameScreen"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.math.Vector2"/>
@@ -43,4 +41,6 @@
 <fullyQualifiedTypeName name="com.DR.dLib.dTweener"/>
 <fullyQualifiedTypeName name="com.dr.bounds.screens.GameScreen"/>
 <fullyQualifiedTypeName name="com.dr.bounds.MainGame"/>
+<fullyQualifiedTypeName name="com.DR.dLib.dValues"/>
+<fullyQualifiedTypeName name="com.google.android.gms.games.Games"/>
 </qualifiedTypeNameHistroy>

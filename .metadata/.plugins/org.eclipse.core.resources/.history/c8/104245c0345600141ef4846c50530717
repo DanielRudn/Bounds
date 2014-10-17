@@ -1,0 +1,66 @@
+package com.dr.bounds;
+
+import com.DR.dLib.dImage;
+import com.DR.dLib.dObject;
+import com.DR.dLib.dTweener;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+public class LoadingIcon extends dObject {
+
+	private dImage circleOne, circleTwo;
+	// the circle that is currently expanding;
+	private dImage currentCircle;
+	private boolean isLoading = false;
+	private float expandTime = 0;
+	private final float EXPAND_DURATION = .4f;
+	
+	public LoadingIcon(float x, float y, Texture texture)
+	{
+		super(x,y);
+		circleOne = new dImage(x,y,texture);
+		circleOne.setOriginCenter();
+		circleOne.setDimensions(0, 0);
+		circleOne.setPos(x,y);
+		circleOne.setColor(Color.RED);
+		circleTwo = new dImage(x+64,y+64,texture);
+		circleTwo.setDimensions(0, 0);
+		circleTwo.setColor(Color.YELLOW);
+		
+		currentCircle = circleOne;
+	}
+
+	@Override
+	public void render(SpriteBatch batch) {
+		if(isLoading)
+		{
+			circleOne.render(batch);
+			circleTwo.render(batch);
+		}
+	}
+
+	@Override
+	public void update(float delta) {
+		if(isLoading)
+		{
+			if(expandTime <= EXPAND_DURATION)
+			{
+				expandTime+=delta;
+				circleOne.setDimensions(dTweener.LinearEase(expandTime, 0, 128f, EXPAND_DURATION), dTweener.LinearEase(expandTime, 0, 128f, EXPAND_DURATION));
+				circleOne.setOriginCenter();
+			}
+		}
+	}
+	
+	public void start()
+	{
+		isLoading = true;
+	}
+	
+	public void stop()
+	{
+		isLoading = false;
+	}
+}
+

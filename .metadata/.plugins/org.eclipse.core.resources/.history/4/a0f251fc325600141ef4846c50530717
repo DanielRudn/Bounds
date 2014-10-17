@@ -1,0 +1,6 @@
+package com.dr.bounds;
+
+public class LoadingIcon {
+
+	dImage circleOne, circleTwo;
+}

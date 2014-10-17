@@ -1,0 +1,13 @@
+package com.dr.bounds;
+
+import com.DR.dLib.dImage;
+
+public class LoadingIcon {
+
+	dImage circleOne, circleTwo;
+	
+	public LoadingIcon(float x, float y, Texture texture)
+	{
+		
+	}
+}
