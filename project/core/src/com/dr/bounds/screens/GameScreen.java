@@ -1,6 +1,7 @@
 package com.dr.bounds.screens;
 
 import com.DR.dLib.dButton;
+import com.DR.dLib.dScreen;
 import com.DR.dLib.dText;
 import com.DR.dLib.dTweener;
 import com.DR.dLib.dUICard;
@@ -176,6 +177,16 @@ public class GameScreen extends dScreen {
 		scoreText.render(batch);
 		gameOverScreen.render(batch);
 		//debug.render(batch);
+	}
+	
+	@Override
+	public void resume()
+	{
+		super.resume();
+		if(requestHandler.isHost())
+		{
+			decodeAndSendSeed(getSeed());
+		}
 	}
 	
 	/**

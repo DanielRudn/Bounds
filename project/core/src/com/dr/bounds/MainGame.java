@@ -1,10 +1,16 @@
 package com.dr.bounds;
 
+import java.util.ArrayList;
+
+import com.DR.dLib.dText;
 import com.DR.dLib.dTweener;
+import com.DR.dLib.dUICard;
+import com.DR.dLib.dUICardList;
 import com.DR.dLib.dValues;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,7 +20,7 @@ import com.dr.bounds.screens.DebugScreen;
 import com.dr.bounds.screens.GameScreen;
 import com.dr.bounds.screens.WaitingRoomScreen;
 
-public class MainGame extends ApplicationAdapter {
+public class MainGame extends ApplicationAdapter implements MultiplayerListener {
 
 	public static OrthographicCamera camera;
 	private SpriteBatch batch;
@@ -24,7 +30,7 @@ public class MainGame extends ApplicationAdapter {
 	private Texture card, button, icon, obstacle, circle;
 	public static boolean isPlaying = false;
 	private float cameraTime = 0;
-	private GameScreen gameScreen;
+	private static GameScreen gameScreen;
 	private WaitingRoomScreen waitingRoomScreen;
 	private DebugScreen debugCard;
 	
@@ -71,8 +77,6 @@ public class MainGame extends ApplicationAdapter {
 	@Override
 	public void render () {
 		Gdx.gl.glViewport(0,0, (int)Gdx.graphics.getWidth(), (int)Gdx.graphics.getHeight());
-		//Gdx.gl.glClearColor(1,1, 1, 1);		
-		//Gdx.gl.glClearColor(149f/256f, 165f/256f, 166f/256f, 1f);
 		Gdx.gl.glClearColor(189f/256f, 195f/256f, 199f/256f,1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 	
@@ -81,19 +85,9 @@ public class MainGame extends ApplicationAdapter {
 		while(accumulator >= DELTA)
 		{
 			update(DELTA);
-			waitingRoomScreen.update(DELTA);
-			debugCard.update(DELTA);
-			gameScreen.update(DELTA);
-			camera.update();
-			if(Gdx.input.isKeyJustPressed(Keys.BACK))
-			{
-				gameScreen.pause();
-				camera.position.set(VIRTUAL_WIDTH/2f,VIRTUAL_HEIGHT/2f, camera.position.z);
-			}
 			accumulator -= DELTA;
 		}
-		
-		
+	
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		gameScreen.render(batch);
@@ -108,79 +102,23 @@ public class MainGame extends ApplicationAdapter {
 	
 	public void update(float delta)
 	{
-		if(requestHandler.getRecievedMessage() != null)
-		{
-			debugCard.addText("\nMESSAGE RECIEVED: " + requestHandler.getRecievedMessage()[0]);
-			if(requestHandler.getRecievedMessage()[0] == 'M')// movement received
-			{
-				gameScreen.getOpponent().setMovementMessage(requestHandler.getRecievedMessage());
-			}
-			else if(requestHandler.getRecievedMessage()[0] == 'S')// skin received
-			{
-				gameScreen.getOpponent().setSkinID((int)requestHandler.getRecievedMessage()[1]);
-				waitingRoomScreen.showOpponentElements(gameScreen.getOpponentSkinID(), requestHandler.getOpponentName());
-			}
-			else if(requestHandler.getRecievedMessage()[0] == 'R')// ready in waiting room
-			{
-				waitingRoomScreen.setOpponentReady();
-				//once opponent is ready, set the screen in the back to be the game screen
-				gameScreen.setPos(0,0);
-			}
-			else if(requestHandler.getRecievedMessage()[0] == 'Z')// seed received
-			{
-				gameScreen.constructSeed(requestHandler.getRecievedMessage());
-			}
-			else if(requestHandler.getRecievedMessage()[0] == 'L')// opponent lost
-			{
-				gameScreen.setOpponentLost(true);
-			}
-			else if(requestHandler.getRecievedMessage()[0] == 'P')// opponent wants a rematch
-			{
-				gameScreen.setOpponentWantsRematch(true);
-			}
-			requestHandler.clearRecievedMessage();
-		}
-		if(requestHandler.hasNewInvite())
-		{
-			//debugCard.addText("\nNew Invite from: " + requestHandler.getInviterName());
-		}
-		
-		if(Gdx.input.justTouched())
-		{
-		//	requestHandler.sendUnreliableMessage(gameScreen.getPlayer().getMovementMessage());
-		}
-	
-		if(requestHandler.justJoined())
-		{
-			requestHandler.sendReliableMessage(new byte[]{'S',(byte)gameScreen.getPlayerSkinID()});
-			requestHandler.setJoined(false);
-		}
-		
-		if(requestHandler.shouldShowWaitingRoom())
-		{
-			waitingRoomScreen.show();
-			showWaitingRoom(2.5f,Gdx.graphics.getDeltaTime());
-			if(Gdx.input.isButtonPressed(Keys.BACK))
-			{
-				//camera.position.set(VIRTUAL_WIDTH/2f,  VIRTUAL_HEIGHT/2f, camera.position.z);
-			}
-		}
-		
+		// update screens
+		waitingRoomScreen.update(DELTA);
+		debugCard.update(DELTA);
+		gameScreen.update(DELTA);
+		//update camera
+		camera.update();
+		// waiting room has moved away, start playing.
 		if(waitingRoomScreen.getHideTime() >= 2f)
 		{
 			gameScreen.resume();
 			debugCard.hide();
-			// move to gameScreen.resume() 
-			if(requestHandler.isHost())
-			{
-				gameScreen.decodeAndSendSeed(gameScreen.getSeed());
-			}
 		}
 	}
 	
 	public static int getVirtualMouseX()
 	{
-		return (int)(camera.position.x - VIRTUAL_WIDTH / 2f + (Gdx.input.getX() / (Gdx.graphics.getWidth() / VIRTUAL_WIDTH)));
+		return (int) (camera.position.x - VIRTUAL_WIDTH / 2f + (Gdx.input.getX() / (Gdx.graphics.getWidth() / VIRTUAL_WIDTH)));
 	}
 	
 	public static int getVirtualMouseY()
@@ -193,25 +131,93 @@ public class MainGame extends ApplicationAdapter {
 		camera.position.set(x,y, camera.position.z);
 	}
 	
-	private void showWaitingRoom(float duration, float delta)
+
+	public static int getPlayerSkinID()
 	{
-		if(cameraTime < duration)
+		return gameScreen.getPlayer().getSkinID();
+	}
+
+	@Override
+	public void onJoinedRoom() {
+		waitingRoomScreen.show();
+	}
+
+	@Override
+	public void onLeftRoom() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRoomConnected() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRoomCreated() {
+		waitingRoomScreen.show();
+	}
+
+	@Override
+	public void onRealTimeMessageRecieved(byte[] msg) {
+		debugCard.addText("\nMESSAGE RECIEVED: " + msg[0]);
+		if(msg[0] == 'M')// movement received
 		{
-			cameraTime+=delta;
-			//camera.position.set(dTweener.ElasticOut(cameraTime, VIRTUAL_WIDTH/2f, VIRTUAL_WIDTH, duration,4f),dTweener.ElasticOut(cameraTime, VIRTUAL_HEIGHT/2f, 0, duration,6f), camera.position.z);
-			//camera.position.set(camera.position.x,dTweener.ElasticOut(cameraTime, VIRTUAL_HEIGHT/2f, VIRTUAL_HEIGHT, duration,6f), camera.position.z);
-			waitingRoomScreen.setY(dTweener.ElasticOut(cameraTime, -VIRTUAL_HEIGHT, VIRTUAL_HEIGHT, duration, 6f));
-		//	currentTime = 0;
-			if(cameraTime >= duration/4f && cameraTime <= duration/3.5f)
-			{
-				waitingRoomScreen.showPlayerElements(gameScreen.getPlayerSkinID()); // show info regarding player
-			}
+			gameScreen.getOpponent().setMovementMessage(msg);
 		}
-		else
+		else if(msg[0] == 'S')// skin received
 		{
-			requestHandler.setShowWaitingRoom(false);
-			cameraTime = 0;
-			duration = 0;
+			gameScreen.getOpponent().setSkinID((int)msg[1]);
+			waitingRoomScreen.showOpponentElements(gameScreen.getOpponentSkinID(), requestHandler.getOpponentName());
 		}
+		else if(msg[0] == 'R')// ready in waiting room
+		{
+			waitingRoomScreen.setOpponentReady();
+			//once opponent is ready, set the screen in the back to be the game screen
+			gameScreen.setPos(0,0);
+		}
+		else if(msg[0] == 'Z')// seed received
+		{
+			gameScreen.constructSeed(msg);
+		}
+		else if(msg[0] == 'L')// opponent lost
+		{
+			gameScreen.setOpponentLost(true);
+		}
+		else if(msg[0] == 'P')// opponent wants a rematch
+		{
+			gameScreen.setOpponentWantsRematch(true);
+		}
+	}
+
+	@Override
+	public void onPeerLeft() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onPeersConnected() {
+		//opponent just connected
+		requestHandler.sendReliableMessage(new byte[]{'S',(byte)gameScreen.getPlayerSkinID()});
+	}
+
+	@Override
+	public void onPeersDisconnected() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onInvitationReceived() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onInvitationRemoved() {
+		// TODO Auto-generated method stub
+		
 	}
 }

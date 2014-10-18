@@ -1,6 +1,7 @@
 package com.dr.bounds.screens;
 
 import com.DR.dLib.dImage;
+import com.DR.dLib.dScreen;
 import com.DR.dLib.dText;
 import com.DR.dLib.dTweener;
 import com.DR.dLib.dUICard;
@@ -26,6 +27,11 @@ public class WaitingRoomScreen extends dScreen {
 	private int currentStatus = 0;
 	// loading icon to show user that something is happening
 	private LoadingIcon loadingIcon;
+	// time for room to show
+	private float showTime = 0;
+	private final float SHOW_DURATION = 2.5f;
+	// whether to play the show animation
+	private boolean showScreen = false;
 	
 	public WaitingRoomScreen(float x, float y, Texture texture, Texture icon, Texture loadingIconTexture) {
 		super(x, y, texture);
@@ -110,6 +116,20 @@ public class WaitingRoomScreen extends dScreen {
 	{
 		super.update(delta);
 		loadingIcon.update(delta);
+		// bring in room from the top
+		if(showScreen && showTime < SHOW_DURATION)
+		{
+			showTime+=delta;
+			//camera.position.set(dTweener.ElasticOut(cameraTime, VIRTUAL_WIDTH/2f, VIRTUAL_WIDTH, SHOW_DURATION,4f),dTweener.ElasticOut(cameraTime, VIRTUAL_HEIGHT/2f, 0, SHOW_DURATION,6f), camera.position.z);
+			//camera.position.set(camera.position.x,dTweener.ElasticOut(cameraTime, VIRTUAL_HEIGHT/2f, VIRTUAL_HEIGHT, SHOW_DURATION,6f), camera.position.z);
+			setY(dTweener.ElasticOut(showTime, -MainGame.VIRTUAL_HEIGHT, MainGame.VIRTUAL_HEIGHT, SHOW_DURATION, 6f));
+		//	currentTime = 0;
+			if(showTime >= SHOW_DURATION/4f && showTime <= SHOW_DURATION/3.5f)
+			{
+				showPlayerElements(MainGame.getPlayerSkinID()); // show info regarding player
+			}
+		}
+		
 		// waiting room started, show animation and own info
 		if(showElements)
 		{
@@ -203,6 +223,13 @@ public class WaitingRoomScreen extends dScreen {
 		loadingIcon.render(batch);
 	}
 	
+	@Override
+	public void show()
+	{
+		super.show();
+		showScreen = true;
+	}
+	
 	public void animateHide()
 	{
 		hide = true;
@@ -215,11 +242,12 @@ public class WaitingRoomScreen extends dScreen {
 		// reset values
 		reinit();
 	}
-	
 
 	private void reinit()
 	{
 		setPosition(0,-MainGame.VIRTUAL_HEIGHT);
+		showTime = 0;
+		showScreen = false;
 		showElements = false;
 		showOpponent = false;
 		currentTime = 0;
@@ -298,7 +326,7 @@ public class WaitingRoomScreen extends dScreen {
 		}
 	}
 
-	public void showPlayerElements(int pSkinID)
+	private void showPlayerElements(int pSkinID)
 	{
 		showElements = true;
 		playerSkinID = pSkinID;
