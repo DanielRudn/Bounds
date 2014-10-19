@@ -121,6 +121,7 @@ public class InviteScreen extends dUICardList {
 		showCards = true;
 		showCardTime = 0;
 		loadingIcon.stop();
+		System.out.println("BOUNDS: SHOWCARDS() CALLED, LENGTH: " + getSize());
 	}
 	
 	@Override

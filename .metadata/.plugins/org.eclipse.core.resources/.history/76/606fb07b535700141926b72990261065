@@ -42,7 +42,7 @@ public class InviteScreen extends dUICardList {
 		dText titleText = new dText(0,0,64f,"INVITE");
 		titleText.setColor(Color.WHITE);
 		titleCard.addObject(titleText, dUICard.CENTER, dUICard.CENTER);
-		setTitleCard(titleCard);
+		// setTitleCard(titleCard);
 		// move title card upwards so that it can slide in for the show animation
 		titleCard.setY(titleCard.getY() - titleCard.getHeight() - getPadding());
 		// move the list up too
@@ -121,13 +121,13 @@ public class InviteScreen extends dUICardList {
 		showCards = true;
 		showCardTime = 0;
 		loadingIcon.stop();
+		System.out.println("BOUNDS: SHOWCARDS() CALLED, LENGTH: " + getSize());
 	}
 	
 	@Override
 	public void show()
 	{
 		super.show();
-		setTitleCard(titleCard);
 		showAnimation = true;
 		circleCover.setDimensions(0, 0);
 		circleCover.setOriginCenter();

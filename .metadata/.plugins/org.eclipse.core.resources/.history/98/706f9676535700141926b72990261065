@@ -121,13 +121,13 @@ public class InviteScreen extends dUICardList {
 		showCards = true;
 		showCardTime = 0;
 		loadingIcon.stop();
+		System.out.println("BOUNDS: SHOWCARDS() CALLED, LENGTH: " + getSize());
 	}
 	
 	@Override
 	public void show()
 	{
 		super.show();
-		setTitleCard(titleCard);
 		showAnimation = true;
 		circleCover.setDimensions(0, 0);
 		circleCover.setOriginCenter();
