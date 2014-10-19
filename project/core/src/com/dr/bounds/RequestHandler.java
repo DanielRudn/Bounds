@@ -28,7 +28,20 @@ public interface RequestHandler {
 	
 	public String getInviterName();
 	
+	public void submitToLeaderboard(int data, String leaderboardID);
+	
+	public void showLeaderboard(String leaderboardID);
+	
 	public void sendReliableMessage(byte[] message);
 	
 	public void sendUnreliableMessage(byte[] message);
+	
+	public void loadRecentlyPlayedWithPlayers();
+	
+	public void loadInvitablePlayers();
+	
+	// return the name of a recent player, given an index, relies on loadRecentlyPlayedWithPlayers
+	public String getRecentPlayerName(int index);
+	
+	public String getInvitablePlayerName(int index);
 }

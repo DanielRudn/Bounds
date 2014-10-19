@@ -3343,3 +3343,6 @@ This warning can be switched off on the Team > Git > Confirmations and Warnings 
 
 !ENTRY com.android.ide.eclipse.adt 1 0 2014-10-18 15:59:25.267
 !MESSAGE com.android.ide.eclipse.adt
+
+!ENTRY com.android.ide.eclipse.adt 1 0 2014-10-18 17:27:09.501
+!MESSAGE com.android.ide.eclipse.adt

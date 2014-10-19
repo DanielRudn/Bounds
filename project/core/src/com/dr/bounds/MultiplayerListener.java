@@ -3,6 +3,11 @@ package com.dr.bounds;
 public interface MultiplayerListener {
 
 	/*
+	 * Connection updates
+	 */
+	public void onConnected();
+	
+	/*
 	 * Room updates
 	 */
 	public void onJoinedRoom();
@@ -27,4 +32,10 @@ public interface MultiplayerListener {
 	 */
 	public void onInvitationReceived();
 	public void onInvitationRemoved();
+	
+	/*
+	 * loading invitable/recent players
+	 */
+	public void onRecentPlayersLoaded(int numLoaded);
+	public void onInvitablePlayersLoaded(int numLoaded);
 }

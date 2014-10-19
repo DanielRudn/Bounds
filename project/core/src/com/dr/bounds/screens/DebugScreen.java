@@ -114,7 +114,11 @@ public class DebugScreen extends dScreen {
 			else if(inviteButton.isClicked())
 			{
 				debugText+="\nInvite Clicked!";
-				requestHandler.requestInviteActivity();
+				//requestHandler.requestInviteActivity();
+				// temp, remove
+				System.out.println("BOUNDS: invite clicked!");
+				requestHandler.loadRecentlyPlayedWithPlayers();
+				MainGame.inviteScreen.show();
 			}
 			else if(inboxButton.isClicked())
 			{
@@ -124,17 +128,16 @@ public class DebugScreen extends dScreen {
 			else if(leaveButton.isClicked())
 			{
 				debugText+="\nLeave Clicked!";
-				requestHandler.leaveRoom();
+				//requestHandler.leaveRoom();
+				requestHandler.showLeaderboard(MainGame.SKIN_LEADERBOARD_ID);
 			}
 			else if(sendFirstButton.isClicked())
 			{
-				debugText+="\nSent '5'";
-				requestHandler.sendReliableMessage(new byte[]{5});
+				requestHandler.submitToLeaderboard(MainGame.getPlayerSkinID(), MainGame.SKIN_LEADERBOARD_ID);
 			}
 			else if(sendSecondButton.isClicked())
 			{
-				debugText+="\nSent '7'";
-				requestHandler.sendReliableMessage(new byte[]{7});
+				requestHandler.submitToLeaderboard(MainGame.getPlayerSkinID(), MainGame.SKIN_LEADERBOARD_ID);
 			}
 			else if(signInButton.isClicked())
 			{

@@ -1,0 +1,19 @@
+package com.dr.bounds.ui;
+
+import com.DR.dLib.dUICard;
+import com.badlogic.gdx.graphics.Texture;
+import com.dr.bounds.MainGame;
+
+public class PlayerCard extends dUICard {
+
+	/*
+	 * Player cards that appear in a list when inviting someone
+	 */
+	
+	public PlayerCard(float x, float y, Texture texture) {
+		super(x, y, texture);
+		setDimensions(MainGame.VIRTUAL_WIDTH - 128f, 128f);
+		setClickable(true);
+	}
+
+}

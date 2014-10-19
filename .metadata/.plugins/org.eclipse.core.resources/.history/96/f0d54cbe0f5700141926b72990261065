@@ -1,0 +1,28 @@
+package com.dr.bounds.screens;
+
+import java.util.ArrayList;
+
+import com.DR.dLib.dImage;
+import com.DR.dLib.dUICard;
+import com.DR.dLib.dUICardList;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+
+public class InviteScreen extends dUICardList {
+
+	// title card to be displayed at the top
+	// index of player card that is currently expanded
+	private int expandedIndex = -1;
+	// timer for showing the transition animation to this screen
+	private float showTime = 0;
+	private final float SHOW_DURATION = 2f;
+	// circle for transition to show screen
+	private dImage circleCover;
+	
+	public InviteScreen(float x, float y, Texture texture, ArrayList<dUICard> list) {
+		super(x, y, texture, list);
+		setColor(Color.NAVY);
+		hide();
+	}
+
+}

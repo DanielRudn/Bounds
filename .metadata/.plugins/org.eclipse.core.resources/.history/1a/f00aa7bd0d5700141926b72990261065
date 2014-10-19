@@ -1,0 +1,13 @@
+package com.dr.bounds.ui;
+
+import com.DR.dLib.dUICard;
+import com.badlogic.gdx.graphics.Texture;
+
+public class PlayerCard extends dUICard {
+
+	public PlayerCard(float x, float y, Texture texture) {
+		super(x, y, texture);
+		
+	}
+
+}

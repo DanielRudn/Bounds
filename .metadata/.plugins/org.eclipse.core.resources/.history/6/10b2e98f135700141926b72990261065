@@ -1,0 +1,89 @@
+package com.dr.bounds.screens;
+
+import java.util.ArrayList;
+
+import com.DR.dLib.dImage;
+import com.DR.dLib.dTweener;
+import com.DR.dLib.dUICard;
+import com.DR.dLib.dUICardList;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dr.bounds.MainGame;
+
+public class InviteScreen extends dUICardList {
+
+	// title card to be displayed at the top
+	private dUICard titleCard;
+	// index of player card that is currently expanded
+	private int expandedIndex = -1;
+	// timer for showing the transition animation to this screen
+	private float showTime = 0;
+	private final float SHOW_DURATION = 2.5f;
+	private boolean showAnimation = false;
+	// circle for transition to show screen
+	private dImage circleCover;
+	
+	public InviteScreen(float x, float y, Texture texture, ArrayList<dUICard> list) {
+		super(x, y, texture, list);
+		titleCard = new dUICard(0,0,texture);
+		titleCard.setDimensions(getWidth(), 64f);
+		titleCard.setColor(Color.BLUE);
+		setTitleCard(titleCard);
+		// move title card upwards so that it can slide in for the show animation
+		titleCard.setY(titleCard.getY() - titleCard.getHeight() - getPadding());
+		setColor(Color.NAVY);
+		// temp, remove
+		setAlpha(0);
+		circleCover = new dImage(0,0,new Texture("circle.png"));
+		circleCover.setColor(Color.GREEN);
+		circleCover.setDimensions(0, 0);
+		circleCover.setOriginCenter();
+	}
+	
+	@Override
+	public void update(float delta)
+	{
+		super.update(delta);
+		if(showAnimation && showTime <= SHOW_DURATION)
+		{
+			showTime+=delta;
+			//expand circle to cover the screen
+			circleCover.setDimensions(dTweener.ExponentialEaseOut(showTime, 0, MainGame.VIRTUAL_HEIGHT * 2.5f, SHOW_DURATION)
+							,dTweener.ExponentialEaseOut(showTime, 0, MainGame.VIRTUAL_HEIGHT * 2.5f, SHOW_DURATION));
+			circleCover.setOriginCenter();
+			// bring in the list and titleCard
+			if(showTime >= SHOW_DURATION / 2f)
+			{
+				titleCard.setY(dTweener.ElasticOut(showTime - SHOW_DURATION / 2f, -titleCard.getHeight() - getPadding(), titleCard.getHeight(), SHOW_DURATION / 2f));
+			}
+			System.out.println("x: "+ circleCover.getX());
+		}
+		else if(showAnimation && showTime >= SHOW_DURATION)
+		{
+			// animation finished
+			// replace circle cover with the card cover
+			
+			showAnimation = false;
+		}
+	}
+	
+	@Override
+	public void render(SpriteBatch batch)
+	{
+		circleCover.render(batch);
+		super.render(batch);
+	}
+	
+	@Override
+	public void show()
+	{
+		super.show();
+		showAnimation = true;
+		circleCover.setDimensions(0, 0);
+		circleCover.setOriginCenter();
+		circleCover.setPos(MainGame.getVirtualMouseX(), MainGame.getVirtualMouseY());
+		showTime = 0;
+	}
+
+}

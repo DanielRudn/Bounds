@@ -9,10 +9,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.dr.bounds.LoadingIcon;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.RequestHandler;
 import com.dr.bounds.SkinLoader;
+import com.dr.bounds.ui.LoadingIcon;
 
 public class WaitingRoomScreen extends dScreen {
 

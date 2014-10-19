@@ -16,12 +16,18 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.dr.bounds.screens.DebugScreen;
 import com.dr.bounds.screens.GameScreen;
+import com.dr.bounds.screens.InviteScreen;
 import com.dr.bounds.screens.WaitingRoomScreen;
+import com.dr.bounds.ui.PlayerCard;
 
 public class MainGame extends ApplicationAdapter implements MultiplayerListener {
 
+	// this leaderboard will never be seen by players, it's sole purpose is to store the skin id of players to display on the invite screen 
+	public static String SKIN_LEADERBOARD_ID = "CgkIpK2sg4QdEAIQAw";
+	
 	public static OrthographicCamera camera;
 	private SpriteBatch batch;
 	public static final float VIRTUAL_WIDTH = 720f, VIRTUAL_HEIGHT = 1280f, ASPECT_RATIO = VIRTUAL_WIDTH / VIRTUAL_HEIGHT;
@@ -38,6 +44,10 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 	private final float DELTA = 1f / 60f;
 	// the time each update call takes ?
 	private float accumulator = 0f;
+	
+	// test, remove
+	public static InviteScreen inviteScreen;
+	private ArrayList<dUICard> recentlyPlayedList;
 	
 	public MainGame(RequestHandler h)
 	{
@@ -71,6 +81,9 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		gameScreen = new GameScreen(0,0,card, obstacle);
 		gameScreen.pause();
 		
+		recentlyPlayedList = new ArrayList<dUICard>();
+		inviteScreen = new InviteScreen(0,0,card,recentlyPlayedList);
+		
 		batch = new SpriteBatch();
 	}
 
@@ -93,6 +106,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		gameScreen.render(batch);
 		debugCard.render(batch);
 		waitingRoomScreen.render(batch);
+		inviteScreen.render(batch);
 		batch.end();
 		
 		/**
@@ -106,6 +120,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		waitingRoomScreen.update(DELTA);
 		debugCard.update(DELTA);
 		gameScreen.update(DELTA);
+		inviteScreen.update(DELTA);
 		//update camera
 		camera.update();
 		// waiting room has moved away, start playing.
@@ -135,6 +150,16 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 	public static int getPlayerSkinID()
 	{
 		return gameScreen.getPlayer().getSkinID();
+	}
+	
+	/*
+	 * MULTIPLAYER LISTENER METHODS
+	 */
+	
+	@Override
+	public void onConnected()
+	{
+		
 	}
 
 	@Override
@@ -219,5 +244,55 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 	public void onInvitationRemoved() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void onRecentPlayersLoaded(int numLoaded) {
+		// recents card
+		dUICard recentsCard = new dUICard(0,0,card);
+		recentsCard.setDimensions(VIRTUAL_WIDTH - 128f, 128f);
+		// change this line V
+		recentsCard.setColor(new Color(46f/256f, 204f/256f, 113f/256f,1f));
+		recentsCard.setHasShadow(false);
+		dText recentsText = new dText(0,0,92f,"RECENTS");
+		recentsText.setColor(Color.WHITE);
+		dUICard divider = new dUICard(0,0,card);
+		divider.setHasShadow(false);
+		divider.setDimensions(recentsCard.getWidth() - 8f, 4f);
+		recentsCard.addObject(recentsText, dUICard.LEFT, dUICard.CENTER);
+		recentsCard.addObjectUnder(divider, 0);
+		inviteScreen.addCardAsObject(recentsCard);
+		for(int x = 0; x < numLoaded; x++)
+		{
+			//construct array list of recently played cards
+			PlayerCard currentCard = new PlayerCard(0,0,card, 1+MathUtils.random(9), requestHandler.getRecentPlayerName(x));
+			inviteScreen.addCardAsObject(currentCard);
+		}
+		requestHandler.loadInvitablePlayers();
+	}
+	
+	@Override
+	public void onInvitablePlayersLoaded(int numLoaded)
+	{
+		// invitable card
+		dUICard invitableCard = new dUICard(0,0,card);
+		invitableCard.setDimensions(VIRTUAL_WIDTH - 128f, 128f);
+		// change this line V
+		invitableCard.setColor(new Color(46f/256f, 204f/256f, 113f/256f,1f));
+		invitableCard.setHasShadow(false);
+		dText invitableText = new dText(0,0,92f,"FRIENDS");
+		invitableText.setColor(Color.WHITE);
+		dUICard divider = new dUICard(0,0,card);
+		divider.setHasShadow(false);
+		divider.setDimensions(invitableCard.getWidth() - 8f, 4f);
+		invitableCard.addObject(invitableText, dUICard.LEFT, dUICard.CENTER);
+		invitableCard.addObjectUnder(divider, 0);
+		inviteScreen.addCardAsObject(invitableCard);
+		for(int x = 0; x < numLoaded; x++)
+		{
+			PlayerCard currentCard = new PlayerCard(0,0,card,1+MathUtils.random(9),requestHandler.getInvitablePlayerName(x));
+			inviteScreen.addCardAsObject(currentCard);
+		}
+		inviteScreen.showCards();
 	}
 }
