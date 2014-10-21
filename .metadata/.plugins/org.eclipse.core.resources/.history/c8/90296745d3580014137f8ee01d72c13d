@@ -1,0 +1,36 @@
+package com.dr.bounds.ui;
+
+import com.DR.dLib.dButton;
+import com.DR.dLib.dText;
+import com.DR.dLib.dUICard;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.dr.bounds.MainGame;
+
+public class InviteCard extends dUICard{
+
+	// Name of the inviter
+	private String inviterName;
+	// object to display for text
+	private dText inviteText;
+	// button to accept invite
+	private dButton acceptButton;
+	// button to decline invite
+	private dButton declineButton;
+	// ID of the invite, used for accepting
+	private String inviteID;
+	
+	public InviteCard(float x, float y, Texture texture, String invName, String invID) {
+		super(x, y, texture);
+		setDimensions(MainGame.VIRTUAL_WIDTH - 128f, 128f);
+		inviterName = invName;
+		inviteID = invID;
+		inviteText = new dText(0,0,64f,inviterName.substring(0,inviterName.indexOf(' ')) + " challenges you!");
+		addObject(inviteText, dUICard.LEFT, dUICard.TOP);
+		acceptButton = new dButton(0,0,new Sprite(texture),"accept");
+		acceptButton.setTextColor(Color.GREEN);
+		acceptButton.setDimensions(getWidth() / 2f, 32f);
+	}
+
+}

@@ -43,5 +43,11 @@ public interface RequestHandler {
 	// return the name of a recent player, given an index, relies on loadRecentlyPlayedWithPlayers
 	public String getRecentPlayerName(int index);
 	
+	public String getRecentPlayerID(int index);
+	
 	public String getInvitablePlayerName(int index);
+	
+	public String getInvitablePlayerID(int index);
+	
+	public void sendInvite(String idToInvite);
 }

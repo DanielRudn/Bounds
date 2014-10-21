@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.ui.LoadingIcon;
+import com.dr.bounds.ui.PlayerCard;
 
 public class InviteScreen extends dUICardList {
 
@@ -105,6 +106,17 @@ public class InviteScreen extends dUICardList {
 		else if(showCards == false || showTime <= .6f)
 		{
 			loadingIcon.update(delta);
+		}
+		
+		if(showTime >= SHOW_DURATION && showCardTime >= SHOW_CARD_DURATION)
+		{
+			for(int x = 0; x < getSize(); x++)
+			{
+				if(getListItem(x).isVisible() && getListItem(x).isClicked())
+				{
+					MainGame.requestHandler.sendInvite(((PlayerCard) getListItem(x)).getPlayerID());
+				}
+			}
 		}
 	}
 	

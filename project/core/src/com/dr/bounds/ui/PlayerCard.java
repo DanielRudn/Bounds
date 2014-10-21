@@ -19,10 +19,19 @@ public class PlayerCard extends dUICard {
 	
 	// image of the player's ball
 	private dImage skinImage;
-	// players name 
+	// players name as a string
+	private String displayName;
+	// player id to send invite when tapped
+	private String playerID;
+	// players name object to be drawn
 	private dText nameText;
+	// maximum length of display name
+	private final int MAX_LENGTH = 12;
 	// invite button
 	private dButton inviteButton;
+	
+	// TEMP
+	private dText playerIDText;
 	
 	public PlayerCard(float x, float y, Texture texture, int skinID, String name) {
 		super(x, y, texture);
@@ -30,9 +39,14 @@ public class PlayerCard extends dUICard {
 		setClickable(true);
 		setPaddingLeft(16f);
 		skinImage = new dImage(0,0,SkinLoader.getTextureForSkinID(skinID));
-		nameText = new dText(0,0,64f,name);
+		displayName = name;
+		nameText = new dText(0,0,getFontSize(),displayName);
 		inviteButton = new dButton(0,0,new Sprite(texture), "invite");
 		inviteButton.setTextColor(Color.BLACK);
+		
+		// temp
+		playerIDText = new dText(0,0,32f,"");
+		playerIDText.setColor(Color.GRAY);
 		
 		addObject(skinImage, dUICard.LEFT, dUICard.CENTER);
 		addObject(nameText, dUICard.CENTER, dUICard.CENTER);
@@ -44,12 +58,61 @@ public class PlayerCard extends dUICard {
 		setClickable(true);
 		setPaddingLeft(16f);
 		skinImage = new dImage(0,0, skin);
-		nameText = new dText(0,0,64f,name);
+		displayName = name;
+		nameText = new dText(0,0,getFontSize(),displayName);
 		inviteButton = new dButton(0,0,new Sprite(texture), "invite");
 		inviteButton.setTextColor(Color.BLACK);
+		
+		// temp
+		playerIDText = new dText(0,0,32f,"");
+		playerIDText.setColor(Color.GRAY);
 		
 		addObject(skinImage, dUICard.LEFT, dUICard.CENTER);
 		addObject(nameText, dUICard.CENTER, dUICard.CENTER);
 	}
-
+	
+	public void setDisplayName(String name)
+	{
+		displayName = name;
+	}
+	
+	public void setPlayerID(String id)
+	{
+		playerID = id;
+		playerIDText.setText(id);
+		addObject(playerIDText, dUICard.RIGHT, dUICard.TOP);
+	}
+	
+	private float getFontSize()
+	{
+		if(displayName.length() >= MAX_LENGTH)
+		{
+			return 64f / displayName.length() * MAX_LENGTH;
+		}
+		return 64f;
+	}
+	
+	private String getFirstName()
+	{
+		return displayName.substring(0, displayName.indexOf(' '));
+	}
+	
+	private String getShortName()
+	{
+		if(displayName.length() >= MAX_LENGTH)
+		{
+			return displayName.substring(0,MAX_LENGTH) + "...";
+		}
+		return displayName;
+	}
+	
+	public String getDisplayName()
+	{
+		return displayName;
+	}
+	
+	public String getPlayerID()
+	{
+		return playerID;
+	}
 }

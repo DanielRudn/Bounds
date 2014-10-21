@@ -129,15 +129,12 @@ public class DebugScreen extends dScreen {
 			{
 				debugText+="\nLeave Clicked!";
 				//requestHandler.leaveRoom();
-				requestHandler.showLeaderboard(MainGame.SKIN_LEADERBOARD_ID);
 			}
 			else if(sendFirstButton.isClicked())
 			{
-				requestHandler.submitToLeaderboard(MainGame.getPlayerSkinID(), MainGame.SKIN_LEADERBOARD_ID);
 			}
 			else if(sendSecondButton.isClicked())
 			{
-				requestHandler.submitToLeaderboard(MainGame.getPlayerSkinID(), MainGame.SKIN_LEADERBOARD_ID);
 			}
 			else if(signInButton.isClicked())
 			{

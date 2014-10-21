@@ -21,12 +21,12 @@ import com.dr.bounds.screens.DebugScreen;
 import com.dr.bounds.screens.GameScreen;
 import com.dr.bounds.screens.InviteScreen;
 import com.dr.bounds.screens.WaitingRoomScreen;
+import com.dr.bounds.ui.InviteCard;
 import com.dr.bounds.ui.PlayerCard;
 
 public class MainGame extends ApplicationAdapter implements MultiplayerListener {
 
 	// this leaderboard will never be seen by players, it's sole purpose is to store the skin id of players to display on the invite screen 
-	public static String SKIN_LEADERBOARD_ID = "CgkIpK2sg4QdEAIQAw";
 	
 	public static OrthographicCamera camera;
 	private SpriteBatch batch;
@@ -48,6 +48,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 	// test, remove
 	public static InviteScreen inviteScreen;
 	private ArrayList<dUICard> recentlyPlayedList;
+	private InviteCard inviteCard;
 	
 	public MainGame(RequestHandler h)
 	{
@@ -84,6 +85,8 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		recentlyPlayedList = new ArrayList<dUICard>();
 		inviteScreen = new InviteScreen(0,0,card,recentlyPlayedList);
 		
+		inviteCard = new InviteCard(50,50,card,"Michael Roudnintski", "12411353151");
+		
 		batch = new SpriteBatch();
 	}
 
@@ -97,6 +100,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		accumulator += Gdx.graphics.getDeltaTime();
 		while(accumulator >= DELTA)
 		{
+			inviteCard.update(DELTA);
 			update(DELTA);
 			accumulator -= DELTA;
 		}
@@ -105,8 +109,9 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		batch.begin();
 		gameScreen.render(batch);
 		debugCard.render(batch);
-		waitingRoomScreen.render(batch);
 		inviteScreen.render(batch);
+		waitingRoomScreen.render(batch);
+		inviteCard.render(batch);
 		batch.end();
 		
 		/**
@@ -266,6 +271,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		{
 			//construct array list of recently played cards
 			PlayerCard currentCard = new PlayerCard(0,0,card, 1+MathUtils.random(9), requestHandler.getRecentPlayerName(x));
+			currentCard.setPlayerID(requestHandler.getRecentPlayerID(x));
 			inviteScreen.addCardAsObject(currentCard);
 		}
 		requestHandler.loadInvitablePlayers();
@@ -291,6 +297,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		for(int x = 0; x < numLoaded; x++)
 		{
 			PlayerCard currentCard = new PlayerCard(0,0,card,1+MathUtils.random(9),requestHandler.getInvitablePlayerName(x));
+			currentCard.setPlayerID(requestHandler.getInvitablePlayerID(x));
 			inviteScreen.addCardAsObject(currentCard);
 		}
 		inviteScreen.showCards();

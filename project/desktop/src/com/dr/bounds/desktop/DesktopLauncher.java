@@ -131,6 +131,26 @@ public class DesktopLauncher implements RequestHandler {
 
 	@Override
 	public String getInvitablePlayerName(int index) {
+		if(index == 2)
+		{
+			return "Michael Roudnintski";
+		}
+		else if(index == 1)
+		{
+			return "Daniel Rudnitski";
+		}
+		else if(index == 3)
+		{
+			return "Adolf Hitler";
+		}
+		else if(index == 4)
+		{
+			return "Joseph Stalin";
+		}
+		else if(index == 5)
+		{
+			return "This is a very long name lol";
+		}
 		return "Invitable " + (index+1);
 	}
 	
@@ -142,6 +162,24 @@ public class DesktopLauncher implements RequestHandler {
 
 	@Override
 	public void showLeaderboard(String leaderboardID) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getRecentPlayerID(int index) {
+		// TODO Auto-generated method stub
+		return Long.toString(random.nextLong());
+	}
+
+	@Override
+	public String getInvitablePlayerID(int index) {
+		// TODO Auto-generated method stub
+		return Long.toString(random.nextLong());
+	}
+
+	@Override
+	public void sendInvite(String idToInvite) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -8,24 +8,24 @@
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="submit"/>
+			<item value="recents"/>
+			<item value="justjoined"/>
+			<item value="duration"/>
+			<item value="requestHandler.getRecievedMessage()"/>
 			<item value="128"/>
 			<item value="circleOne"/>
 			<item value="mapGen"/>
-			<item value="mapgen"/>
-			<item value="hide()"/>
-			<item value="println"/>
-			<item value="index"/>
-			<item value="Width"/>
 		</list>
 		<list key="replacehistory">
+			<item value="invitable"/>
+			<item value="SHOW_DURATION"/>
+			<item value="msg"/>
 			<item value="currentCircle"/>
 			<item value="x"/>
 			<item value="dialogButton2"/>
 			<item value="index"/>
 			<item value="playerVelocity.y"/>
-			<item value="playerVelocity.x"/>
-			<item value="gameScreen.getPlayer()"/>
-			<item value="gameScreen.getOpponent()"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
