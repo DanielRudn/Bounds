@@ -144,7 +144,6 @@ public class DebugScreen extends dScreen {
 				debugText+="\nInvite Clicked!";
 				//requestHandler.requestInviteActivity();
 				// temp, remove
-				System.out.println("BOUNDS: invite clicked!");
 				requestHandler.loadRecentlyPlayedWithPlayers();
 				//MainGame.inviteScreen.show();
 				MainGame.currentScreen.switchScreen(MainGame.inviteScreen);
@@ -152,7 +151,9 @@ public class DebugScreen extends dScreen {
 			else if(inboxButton.isClicked())
 			{
 				debugText+="\nInbox Clicked!";
-				requestHandler.requestInboxActivity();
+				// requestHandler.requestInboxActivity();
+				MainGame.requestHandler.loadInvitations();
+				MainGame.currentScreen.switchScreen(MainGame.inboxScreen);
 			}
 			else if(leaveButton.isClicked())
 			{
@@ -207,7 +208,7 @@ public class DebugScreen extends dScreen {
 	public void goBack() {
 		// No previous screen in main menu, so show exit dialog on back
 	//	Gdx.app.exit();
-		if(exitDialog.isVisible() )
+		if(exitDialog.isVisible())
 		{
 			exitDialog.hide();
 		}

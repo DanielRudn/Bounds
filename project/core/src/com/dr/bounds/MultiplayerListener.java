@@ -38,4 +38,9 @@ public interface MultiplayerListener {
 	 */
 	public void onRecentPlayersLoaded(int numLoaded);
 	public void onInvitablePlayersLoaded(int numLoaded);
+	
+	/*
+	 * loading invitations
+	 */
+	public void onInvitationsLoaded(int numLoaded);
 }

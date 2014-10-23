@@ -34,7 +34,7 @@ public class InviteCard extends dUICard{
 		inviterName = invName;
 		inviteID = invID;
 		inviterNameText = new dText(0,0,64f,inviterName);
-		addObject(inviterNameText, dUICard.CENTER, dUICard.TOP);
+		addObject(inviterNameText, dUICard.LEFT, dUICard.TOP);
 		
 		inviteDescriptionText = new dText(0,0,48f,"challenges you to do\nsomething important!!!");
 		inviteDescriptionText.setMultiline(true);

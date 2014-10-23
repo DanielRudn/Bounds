@@ -183,4 +183,28 @@ public class DesktopLauncher implements RequestHandler {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void loadInvitations() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getInvitationID(int index) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getInviterName(int index) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void acceptInvite(String idToAccept) {
+		// TODO Auto-generated method stub
+		
+	}
 }

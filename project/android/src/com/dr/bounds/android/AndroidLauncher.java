@@ -27,6 +27,8 @@ import com.google.android.gms.games.leaderboard.LeaderboardScore;
 import com.google.android.gms.games.leaderboard.LeaderboardVariant;
 import com.google.android.gms.games.leaderboard.Leaderboards.LoadScoresResult;
 import com.google.android.gms.games.multiplayer.Invitation;
+import com.google.android.gms.games.multiplayer.InvitationBuffer;
+import com.google.android.gms.games.multiplayer.Invitations.LoadInvitationsResult;
 import com.google.android.gms.games.multiplayer.Multiplayer;
 import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
 import com.google.android.gms.games.multiplayer.Participant;
@@ -61,6 +63,8 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 	private PlayerBuffer recentlyPlayed = null;
 	// invitable players, ones in circles
 	private PlayerBuffer invitablePlayers = null;
+	// invitations for user to accept
+	private InvitationBuffer invitations = null;
 	
 	private static int loadedSkinID = 0;
 	
@@ -460,6 +464,21 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 	}
 	
 	@Override
+	public void loadInvitations()
+	{
+		Games.Invitations.loadInvitations(apiClient).setResultCallback(
+				new ResultCallback<LoadInvitationsResult>()
+				{
+					@Override
+					public void onResult(LoadInvitationsResult result) 
+					{
+						invitations = result.getInvitations();
+						multiplayerListener.onInvitationsLoaded(result.getInvitations().getCount());
+					}
+				});
+	}
+	
+	@Override
 	public String getRecentPlayerName(int index)
 	{
 		if(recentlyPlayed != null)
@@ -500,6 +519,26 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 	}
 	
 	@Override
+	public String getInvitationID(int index)
+	{
+		if(invitations != null)
+		{
+			return invitations.get(index).getInvitationId();
+		}
+		return "null";
+	}
+	
+	@Override
+	public String getInviterName(int index)
+	{
+		if(invitations != null)
+		{
+			return invitations.get(index).getInviter().getDisplayName();
+		}
+		return "null";
+	}
+	
+	@Override
 	public void sendInvite(String idToInvite)
 	{
 		// create room
@@ -510,6 +549,17 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 		
 		// set this player as host
 		isHost = true;
+	}
+	
+	@Override
+	public void acceptInvite(String idToAccept)
+	{
+		RoomConfig roomConfig = makeBasicRoomConfigBuilder()
+				.setInvitationIdToAccept(idToAccept)
+				.build();
+		
+		// join room
+		Games.RealTimeMultiplayer.join(apiClient, roomConfig);
 	}
 
 	@Override

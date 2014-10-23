@@ -20,8 +20,6 @@ public class InviteScreen extends dUICardList {
 
 	// title card to be displayed at the top
 	private dUICard titleCard;
-	// index of player card that is currently expanded
-	private int expandedIndex = -1;
 	// timer for showing the transition animation to this screen
 	private float showTime = 0;
 	private final float SHOW_DURATION = 3f;
@@ -116,6 +114,7 @@ public class InviteScreen extends dUICardList {
 				if(getListItem(x).isVisible() && getListItem(x).isClicked())
 				{
 					MainGame.requestHandler.sendInvite(((PlayerCard) getListItem(x)).getPlayerID());
+					MainGame.currentScreen.switchScreen(MainGame.waitingRoomScreen);
 				}
 			}
 		}
@@ -141,6 +140,7 @@ public class InviteScreen extends dUICardList {
 	{
 		super.show();
 		setTitleCard(titleCard);
+		titleCard.setY(-titleCard.getHeight() * 1.5f);
 		showAnimation = true;
 		circleCover.setDimensions(0, 0);
 		circleCover.setOriginCenter();

@@ -40,6 +40,8 @@ public interface RequestHandler {
 	
 	public void loadInvitablePlayers();
 	
+	public void loadInvitations();
+	
 	// return the name of a recent player, given an index, relies on loadRecentlyPlayedWithPlayers
 	public String getRecentPlayerName(int index);
 	
@@ -49,5 +51,11 @@ public interface RequestHandler {
 	
 	public String getInvitablePlayerID(int index);
 	
+	public String getInvitationID(int index);
+	
+	public String getInviterName(int index);
+	
 	public void sendInvite(String idToInvite);
+	
+	public void acceptInvite(String idToAccept);
 }

@@ -1,0 +1,33 @@
+package com.dr.bounds.screens;
+
+import java.util.ArrayList;
+
+import com.DR.dLib.dScreen;
+import com.DR.dLib.dUICard;
+import com.DR.dLib.dUICardList;
+import com.badlogic.gdx.graphics.Texture;
+import com.dr.bounds.MainGame;
+
+public class InboxScreen extends dUICardList {
+
+	public InboxScreen(float x, float y, Texture texture, dUICard titleCard,
+			ArrayList<dUICard> list) {
+		super(x, y, texture, titleCard, list);
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public void goBack() {
+		if(MainGame.previousScreen != null)
+		{
+			switchScreen(MainGame.previousScreen);
+		}
+	}
+
+	@Override
+	public void switchScreen(dScreen arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

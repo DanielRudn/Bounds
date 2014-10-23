@@ -20,6 +20,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.dr.bounds.screens.DebugScreen;
 import com.dr.bounds.screens.GameScreen;
+import com.dr.bounds.screens.InboxScreen;
 import com.dr.bounds.screens.InviteScreen;
 import com.dr.bounds.screens.WaitingRoomScreen;
 import com.dr.bounds.ui.InviteCard;
@@ -47,9 +48,10 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 	public static dScreen currentScreen;
 	public static dScreen previousScreen = null;
 	public static InviteScreen inviteScreen;
-	private static GameScreen gameScreen;
-	private WaitingRoomScreen waitingRoomScreen;
-	private DebugScreen debugCard;
+	public static GameScreen gameScreen;
+	public static WaitingRoomScreen waitingRoomScreen;
+	public static DebugScreen debugCard;
+	public static InboxScreen inboxScreen;
 	
 	public static boolean isPlaying = false;
 	
@@ -60,7 +62,6 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 	
 	// test, remove
 	private ArrayList<dUICard> recentlyPlayedList;
-	private InviteCard inviteCard;
 	
 	public MainGame(RequestHandler h)
 	{
@@ -97,7 +98,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		recentlyPlayedList = new ArrayList<dUICard>();
 		inviteScreen = new InviteScreen(0,0,card,recentlyPlayedList);
 		
-		inviteCard = new InviteCard(50,50,card,"Looooong Name", "12411353151");
+		inboxScreen = new InboxScreen(0,0,card,recentlyPlayedList);
 		
 		batch = new SpriteBatch();
 		
@@ -285,7 +286,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		// change this line V
 		recentsCard.setColor(new Color(46f/256f, 204f/256f, 113f/256f,1f));
 		recentsCard.setHasShadow(false);
-		dText recentsText = new dText(0,0,92f,"RECENTS");
+		dText recentsText = new dText(0,0,92f,"RECENTS (" + numLoaded + ")");
 		recentsText.setColor(Color.WHITE);
 		dUICard divider = new dUICard(0,0,card);
 		divider.setHasShadow(false);
@@ -312,7 +313,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		// change this line V
 		invitableCard.setColor(new Color(46f/256f, 204f/256f, 113f/256f,1f));
 		invitableCard.setHasShadow(false);
-		dText invitableText = new dText(0,0,92f,"FRIENDS");
+		dText invitableText = new dText(0,0,92f,"FRIENDS (" + numLoaded + ")");
 		invitableText.setColor(Color.WHITE);
 		dUICard divider = new dUICard(0,0,card);
 		divider.setHasShadow(false);
@@ -327,5 +328,16 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 			inviteScreen.addCardAsObject(currentCard);
 		}
 		inviteScreen.showCards();
+	}
+	
+	@Override
+	public void onInvitationsLoaded(int numLoaded)
+	{
+		for(int x = 0; x < numLoaded; x++)
+		{
+			InviteCard currentCard = new InviteCard(0,0,card,requestHandler.getInviterName(x), requestHandler.getInvitationID(x));
+			inboxScreen.addCardAsObject(currentCard);
+		}
+		inboxScreen.showCards();
 	}
 }

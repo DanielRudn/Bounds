@@ -1,0 +1,119 @@
+package com.dr.bounds.screens;
+
+import java.util.ArrayList;
+
+import com.DR.dLib.dImage;
+import com.DR.dLib.dScreen;
+import com.DR.dLib.dText;
+import com.DR.dLib.dTweener;
+import com.DR.dLib.dUICard;
+import com.DR.dLib.dUICardList;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dr.bounds.MainGame;
+import com.dr.bounds.ui.LoadingIcon;
+
+public class InboxScreen extends dUICardList {
+	
+	// title card at the top
+	private dUICard titleCard;
+	// timer for showing the transition animation to this screen
+	private float showTime = 0;
+	private final float SHOW_DURATION = 3f;
+	private boolean showAnimation = false;
+	// loading icon to show while invitations load
+	private LoadingIcon loadingIcon;
+	// used for transition to show
+	private dImage circleCover;
+
+	public InboxScreen(float x, float y, Texture texture, ArrayList<dUICard> list) {
+		super(x, y, texture, list);
+		setColor(new Color(26f/256f, 188f/256f, 156f/256f, 1f));
+		
+		titleCard = new dUICard(0,0,texture);
+		titleCard.setDimensions(getWidth(), 92f);
+		titleCard.setHasShadow(false);
+		titleCard.setColor(new Color(22f/256f, 160f/256f, 133f/256f,1f));
+		dText titleText = new dText(0,0,64f,"INBOX");
+		titleText.setColor(Color.WHITE);
+		titleCard.addObject(titleText, dUICard.CENTER, dUICard.CENTER);
+		setTitleCard(titleCard);
+		
+		
+		Texture circle = new Texture("circle.png");
+		circle.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		circleCover = new dImage(0,0,circle);
+		circleCover.setColor(new Color(46f/256f, 204f/256f, 113f/256f,1f));
+		circleCover.setDimensions(0, 0);
+		circleCover.setOriginCenter();
+		
+		loadingIcon = new LoadingIcon(getWidth()/2f - circle.getWidth() / 2f,getHeight()/2f - circle.getHeight() / 2f,circle);
+	}
+	
+	@Override
+	public void update(float delta)
+	{
+		super.update(delta);
+		loadingIcon.update(delta);
+		
+		if(showAnimation && showTime <= SHOW_DURATION)
+		{
+			showTime+=delta;
+			//expand circle to cover the screen
+			circleCover.setDimensions(dTweener.ExponentialEaseOut(showTime, 0, MainGame.VIRTUAL_HEIGHT * 2.5f, SHOW_DURATION)
+							,dTweener.ExponentialEaseOut(showTime, 0, MainGame.VIRTUAL_HEIGHT * 2.5f, SHOW_DURATION));
+			circleCover.setOriginCenter();
+			// bring in the list and titleCard
+			if(showTime >= .6f)
+			{
+				titleCard.setY(dTweener.ElasticOut(showTime - .6f, -titleCard.getHeight() - getPadding(), titleCard.getHeight() + getPadding(), SHOW_DURATION - .6f,5f));
+			}
+			if(showTime >= .15f && showTime <= 0.3)
+			{
+				loadingIcon.start();
+			}
+		}
+	}
+	
+	@Override
+	public void render(SpriteBatch batch)
+	{
+		super.render(batch);
+		loadingIcon.render(batch);
+	}
+	
+	@Override
+	public void show()
+	{
+		super.show();
+		showTime = 0;
+		showAnimation = true;
+	}
+	
+	@Override
+	public void hide()
+	{
+		super.hide();
+		loadingIcon.stop();
+		showAnimation = false;
+	}
+
+	@Override
+	public void goBack() {
+		if(MainGame.previousScreen != null)
+		{
+			switchScreen(MainGame.previousScreen);
+		}
+	}
+
+	@Override
+	public void switchScreen(dScreen newScreen) {
+		this.hide();
+		newScreen.show();
+		MainGame.currentScreen = newScreen;
+		MainGame.previousScreen = this;
+	}
+
+}
