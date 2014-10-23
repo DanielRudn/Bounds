@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.RequestHandler;
 
@@ -20,6 +21,8 @@ public class DebugScreen extends dScreen {
 	dButton clearButton, inviteButton, inboxButton, leaveButton, sendFirstButton, sendSecondButton, signInButton, hideButton, statusButton;
 	private RequestHandler requestHandler;
 	private final Color buttonColor = Color.NAVY;
+	
+	private DialogBoxScreen exitDialog;
 	
 	public DebugScreen(float x, float y, Texture texture, Texture button) {
 		super(x, y, texture);
@@ -91,6 +94,31 @@ public class DebugScreen extends dScreen {
 		buttonsCard.addObjectUnder(statusButton,dUICard.CENTER,8);
 		
 		addObject(buttonsCard,dUICard.RIGHT_NO_PADDING,dUICard.TOP_NO_PADDING);
+		
+		dUICard exitCard = new dUICard(0,0,texture);
+		exitCard.setDimensions(MainGame.VIRTUAL_WIDTH - 256f,128f);
+		dText exitConfirm = new dText(0,0,48f,"Quit Bounds?");
+		exitConfirm.setMultiline(true);
+		dButton quitButton = new dButton(0,0,new Sprite(texture),"yes");
+		quitButton.setDimensions(exitCard.getWidth()/2f, 64f);
+		quitButton.setTextColor(Color.BLACK);
+		quitButton.setTextSize(48f);
+		dButton stayButton = new dButton(0,0, new Sprite(texture),"no");
+		stayButton.setDimensions(exitCard.getWidth()/2f, 64f);
+		stayButton.setTextColor(Color.BLACK);
+		stayButton.setTextSize(48f);
+		exitCard.addObject(stayButton, dUICard.LEFT_NO_PADDING, dUICard.BOTTOM_NO_PADDING);
+		exitCard.addObject(quitButton, dUICard.RIGHT_NO_PADDING, dUICard.BOTTOM_NO_PADDING);
+		exitCard.addObject(exitConfirm, dUICard.CENTER, dUICard.TOP);
+		
+		exitDialog = new DialogBoxScreen(0,0,texture, exitCard);
+	}
+	
+	@Override
+	public void render(SpriteBatch batch)
+	{
+		super.render(batch);
+		exitDialog.render(batch);
 	}
 	
 	@Override
@@ -99,7 +127,7 @@ public class DebugScreen extends dScreen {
 		if(isVisible())
 		{
 			super.update(delta);
-			
+			exitDialog.update(delta);
 			uptime+=Gdx.graphics.getDeltaTime();
 			debug.setText("DEBUG:\n------------------------------------------\n"
 					+ "FPS: " + Gdx.graphics.getFramesPerSecond() + "\nDeltaTime: " + Gdx.graphics.getDeltaTime() + "\nUptime: " + uptime +
@@ -118,7 +146,8 @@ public class DebugScreen extends dScreen {
 				// temp, remove
 				System.out.println("BOUNDS: invite clicked!");
 				requestHandler.loadRecentlyPlayedWithPlayers();
-				MainGame.inviteScreen.show();
+				//MainGame.inviteScreen.show();
+				MainGame.currentScreen.switchScreen(MainGame.inviteScreen);
 			}
 			else if(inboxButton.isClicked())
 			{
@@ -151,6 +180,15 @@ public class DebugScreen extends dScreen {
 				debugText+="\nisConnected: " + requestHandler.isConnected() + "\nisConnecting: " + requestHandler.isConnecting();
 			}
 		
+			if(exitDialog.isVisible() && ((dButton) exitDialog.getDialogBox().getObject(1)).isClicked())// quit
+			{
+				Gdx.app.exit();
+			}
+			else if(exitDialog.isVisible() && ((dButton) exitDialog.getDialogBox().getObject(0)).isClicked())// stay
+			{
+				exitDialog.hide();
+			}
+			
 			if(MainGame.getVirtualMouseY() < 10f)
 			{
 			//	this.show();
@@ -163,6 +201,24 @@ public class DebugScreen extends dScreen {
 	public void addText(String t)
 	{
 		debugText+=t;
+	}
+	
+	@Override
+	public void goBack() {
+		// No previous screen in main menu, so show exit dialog on back
+	//	Gdx.app.exit();
+		if(exitDialog.isVisible() == false)
+		{
+			exitDialog.show();
+		}
+	}
+
+	@Override
+	public void switchScreen(dScreen newScreen) {
+		this.hide();
+		newScreen.show();
+		MainGame.currentScreen = newScreen;
+		MainGame.previousScreen = this;
 	}
 
 }

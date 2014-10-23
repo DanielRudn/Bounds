@@ -1,0 +1,5 @@
+package com.dr.bounds.screens;
+
+public abstract class dScreenState {
+
+}

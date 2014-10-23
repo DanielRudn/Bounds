@@ -122,5 +122,21 @@ public class DialogBoxScreen extends dScreen {
 	{
 		return isHiding;
 	}
+	
+	@Override
+	public void goBack() {
+		if(MainGame.previousScreen != null)
+		{
+			switchScreen(MainGame.previousScreen);
+		}
+	}
+
+	@Override
+	public void switchScreen(dScreen newScreen) {
+		this.hide();
+		newScreen.show();
+		MainGame.currentScreen = newScreen;
+		MainGame.previousScreen = this;
+	}
 
 }

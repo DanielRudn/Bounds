@@ -267,5 +267,23 @@ public class GameScreen extends dScreen {
 	{
 		return opponent;
 	}
+	
+	@Override
+	public void goBack() {
+		if(MainGame.previousScreen != null)
+		{
+			switchScreen(MainGame.previousScreen);
+		}
+	}
+
+	@Override
+	public void switchScreen(dScreen newScreen) {
+		this.hide();
+		newScreen.show();
+		MainGame.currentScreen = newScreen;
+		MainGame.previousScreen = this;
+	}
+	
+	
 
 }

@@ -2,6 +2,7 @@ package com.dr.bounds;
 
 import java.util.ArrayList;
 
+import com.DR.dLib.dScreen;
 import com.DR.dLib.dText;
 import com.DR.dLib.dTweener;
 import com.DR.dLib.dUICard;
@@ -25,20 +26,32 @@ import com.dr.bounds.ui.InviteCard;
 import com.dr.bounds.ui.PlayerCard;
 
 public class MainGame extends ApplicationAdapter implements MultiplayerListener {
-
-	// this leaderboard will never be seen by players, it's sole purpose is to store the skin id of players to display on the invite screen 
 	
+	/*==================================================
+	 *					VARIABLES					   |
+	 *=================================================*/
+	
+	// RequestHandler, Batch, Camera
 	public static OrthographicCamera camera;
 	private SpriteBatch batch;
+	public static RequestHandler requestHandler;
+	
+	// CONSTANTS
 	public static final float VIRTUAL_WIDTH = 720f, VIRTUAL_HEIGHT = 1280f, ASPECT_RATIO = VIRTUAL_WIDTH / VIRTUAL_HEIGHT;
 	public static final int PLACEHOLDER_SKIN_ID = 0;
-	public static RequestHandler requestHandler;
+	
+	// Textures, will be moved to an AssetManager class
 	private Texture card, button, icon, obstacle, circle;
-	public static boolean isPlaying = false;
-	private float cameraTime = 0;
+	
+	// SCREENS
+	public static dScreen currentScreen;
+	public static dScreen previousScreen = null;
+	public static InviteScreen inviteScreen;
 	private static GameScreen gameScreen;
 	private WaitingRoomScreen waitingRoomScreen;
 	private DebugScreen debugCard;
+	
+	public static boolean isPlaying = false;
 	
 	// the time difference between frames
 	private final float DELTA = 1f / 60f;
@@ -46,7 +59,6 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 	private float accumulator = 0f;
 	
 	// test, remove
-	public static InviteScreen inviteScreen;
 	private ArrayList<dUICard> recentlyPlayedList;
 	private InviteCard inviteCard;
 	
@@ -85,9 +97,11 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		recentlyPlayedList = new ArrayList<dUICard>();
 		inviteScreen = new InviteScreen(0,0,card,recentlyPlayedList);
 		
-		inviteCard = new InviteCard(50,50,card,"Michael Roudnintski", "12411353151");
+		inviteCard = new InviteCard(50,50,card,"Looooong Name", "12411353151");
 		
 		batch = new SpriteBatch();
+		
+		currentScreen = debugCard;
 	}
 
 	@Override
@@ -100,18 +114,21 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		accumulator += Gdx.graphics.getDeltaTime();
 		while(accumulator >= DELTA)
 		{
-			inviteCard.update(DELTA);
+			//inviteCard.update(DELTA);
 			update(DELTA);
 			accumulator -= DELTA;
 		}
 	
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
+		/*
 		gameScreen.render(batch);
 		debugCard.render(batch);
 		inviteScreen.render(batch);
 		waitingRoomScreen.render(batch);
 		inviteCard.render(batch);
+		*/
+		currentScreen.render(batch);
 		batch.end();
 		
 		/**
@@ -122,17 +139,25 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 	public void update(float delta)
 	{
 		// update screens
+		/*
 		waitingRoomScreen.update(DELTA);
 		debugCard.update(DELTA);
 		gameScreen.update(DELTA);
 		inviteScreen.update(DELTA);
+		*/
+		currentScreen.update(delta);
 		//update camera
 		camera.update();
 		// waiting room has moved away, start playing.
 		if(waitingRoomScreen.getHideTime() >= 2f)
 		{
-			gameScreen.resume();
-			debugCard.hide();
+			//gameScreen.resume();
+			//debugCard.hide();
+			currentScreen.switchScreen(gameScreen);
+		}
+		if(Gdx.input.isKeyJustPressed(Keys.BACK) || Gdx.input.isKeyJustPressed(Keys.SPACE))
+		{
+			currentScreen.goBack();
 		}
 	}
 	
@@ -169,7 +194,8 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 
 	@Override
 	public void onJoinedRoom() {
-		waitingRoomScreen.show();
+		//waitingRoomScreen.show();
+		currentScreen.switchScreen(waitingRoomScreen);
 	}
 
 	@Override

@@ -372,4 +372,20 @@ public class WaitingRoomScreen extends dScreen {
 		return hideTime;
 	}
 
+	@Override
+	public void goBack() {
+		if(MainGame.previousScreen != null)
+		{
+			switchScreen(MainGame.previousScreen);
+		}
+	}
+
+	@Override
+	public void switchScreen(dScreen newScreen) {
+		this.hide();
+		newScreen.show();
+		MainGame.currentScreen = newScreen;
+		MainGame.previousScreen = this;
+	}
+
 }
