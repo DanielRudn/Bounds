@@ -207,11 +207,7 @@ public class DebugScreen extends dScreen {
 	public void goBack() {
 		// No previous screen in main menu, so show exit dialog on back
 	//	Gdx.app.exit();
-		if(exitDialog.isVisible() )
-		{
-			exitDialog.hide();
-		}
-		else
+		if(exitDialog.isVisible() == false)
 		{
 			exitDialog.show();
 		}
