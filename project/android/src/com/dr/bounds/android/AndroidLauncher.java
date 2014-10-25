@@ -1,7 +1,6 @@
 package com.dr.bounds.android;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import android.content.Intent;
@@ -23,9 +22,6 @@ import com.google.android.gms.games.GamesActivityResultCodes;
 import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.PlayerBuffer;
 import com.google.android.gms.games.Players.LoadPlayersResult;
-import com.google.android.gms.games.leaderboard.LeaderboardScore;
-import com.google.android.gms.games.leaderboard.LeaderboardVariant;
-import com.google.android.gms.games.leaderboard.Leaderboards.LoadScoresResult;
 import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.InvitationBuffer;
 import com.google.android.gms.games.multiplayer.Invitations.LoadInvitationsResult;
@@ -65,8 +61,6 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 	private PlayerBuffer invitablePlayers = null;
 	// invitations for user to accept
 	private InvitationBuffer invitations = null;
-	
-	private static int loadedSkinID = 0;
 	
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
@@ -146,8 +140,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 				return;
 			}
 			
-			// get list of invited people
-			Bundle extras = data.getExtras();
+			data.getExtras();
 			final ArrayList<String> invited = data.getStringArrayListExtra(Games.EXTRA_PLAYER_IDS);
 			
 			// get auto-match criteria
@@ -224,6 +217,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 				.setRoomStatusUpdateListener(this);
 	}
 	
+	@SuppressWarnings("unused")
 	private void searchQuickGame()
 	{
 		// auto match criteria
@@ -708,8 +702,6 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 
 	@Override
 	public void onRoomConnecting(Room arg0) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

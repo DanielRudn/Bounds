@@ -2,22 +2,23 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="" key="selection"/>
+		<item value="loadInvi" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="loadinvi"/>
+			<item value="quitButton"/>
 			<item value="submit"/>
 			<item value="recents"/>
 			<item value="justjoined"/>
 			<item value="duration"/>
 			<item value="requestHandler.getRecievedMessage()"/>
 			<item value="128"/>
-			<item value="circleOne"/>
-			<item value="mapGen"/>
 		</list>
 		<list key="replacehistory">
+			<item value="stayButton"/>
 			<item value="invitable"/>
 			<item value="SHOW_DURATION"/>
 			<item value="msg"/>
@@ -25,7 +26,6 @@
 			<item value="x"/>
 			<item value="dialogButton2"/>
 			<item value="index"/>
-			<item value="playerVelocity.y"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">

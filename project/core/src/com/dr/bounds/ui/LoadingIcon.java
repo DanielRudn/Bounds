@@ -3,7 +3,6 @@ package com.dr.bounds.ui;
 import com.DR.dLib.dImage;
 import com.DR.dLib.dObject;
 import com.DR.dLib.dTweener;
-import com.DR.dLib.dUICard;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -40,7 +39,7 @@ public class LoadingIcon extends dObject {
 		circleTwo.setColor(flatColors[1]);
 		
 		currentCircle = circleOne;
-		
+		this.objColor = circleOne.getColor();
 	}
 
 	@Override
@@ -70,6 +69,7 @@ public class LoadingIcon extends dObject {
 					currentCircle = circleTwo;
 				}
 				currentCircle.setColor(getNewColor());
+				objColor = currentCircle.getColor();
 				currentCircle.setDimensions(0, 0);
 				expandTime = 0f;
 			}
