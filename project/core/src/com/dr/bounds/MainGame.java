@@ -93,7 +93,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		waitingRoomScreen = new WaitingRoomScreen(0,-VIRTUAL_HEIGHT,card,icon,circle);
 		//waitingRoomScreen.hide();
 		gameScreen = new GameScreen(0,0,card, obstacle);
-		gameScreen.pause();
+	//	gameScreen.pause();
 		
 		recentlyPlayedList = new ArrayList<dUICard>();
 		inviteScreen = new InviteScreen(0,0,card,recentlyPlayedList);
@@ -103,6 +103,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		batch = new SpriteBatch();
 		
 		currentScreen = debugCard;
+	//	currentScreen = gameScreen;
 	}
 
 	@Override
@@ -152,7 +153,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		// waiting room has moved away, start playing.
 		if(waitingRoomScreen.getHideTime() >= 2f)
 		{
-			//gameScreen.resume();
+			gameScreen.resume();
 			//debugCard.hide();
 			currentScreen.switchScreen(gameScreen);
 		}
@@ -196,7 +197,10 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 	@Override
 	public void onJoinedRoom() {
 		//waitingRoomScreen.show();
-		currentScreen.switchScreen(waitingRoomScreen);
+		if(currentScreen != waitingRoomScreen)
+		{
+			currentScreen.switchScreen(waitingRoomScreen);
+		}
 	}
 
 	@Override
@@ -236,7 +240,10 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		}
 		else if(msg[0] == 'Z')// seed received
 		{
-			gameScreen.constructSeed(msg);
+			if(requestHandler.isHost() == false)
+			{
+				gameScreen.constructSeed(msg);
+			}
 		}
 		else if(msg[0] == 'L')// opponent lost
 		{

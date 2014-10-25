@@ -56,7 +56,7 @@ public class MapGenerator {
 		for(int x = 0; x < 6; x++)
 		{
 			obstacles.add(new dObstacle(0,0, obstacleTexture, player));
-			obstacles.get(x).setRegenerate(true);
+			obstacles.get(x).setRegenerate(false);
 		//	obstacles.get(x).setColor(Color.RED);
 		}
 	//	obstacles.get(0).setY(MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT/2f - MIN_DISTANCE - rng.nextInt(MAX_DISTANCE));
@@ -120,6 +120,10 @@ public class MapGenerator {
 	{
 		//	obstacles.get(index).setColor(Color.RED);
 			//reset passed for this obstacles
+			if(index == 0)
+			{
+				GameScreen.debug.setText(GameScreen.debug.getText() + "\ngenerateDefaultCalled");
+			}
 			obstacles.get(index).setPassed(false);
 			int side = rng.nextInt(2); // 0 is LEFT, 1 is RIGHT
 			if(side == 0)// left
@@ -160,6 +164,10 @@ public class MapGenerator {
 		obstacles.get(0).setRegenerate(false);
 		for(int x = 1; x < obstacles.size(); x++)
 		{
+			if(x==1)
+			{
+				GameScreen.debug.setText(GameScreen.debug.getText() + " \ngenerateFirstSet() called");
+			}
 			if(obstacles.get(x).shouldRegenerate())
 			{
 				generateDefault(x);
@@ -237,11 +245,11 @@ public class MapGenerator {
 			obstacles.get(x).setPassed(false);
 			obstacles.get(x).setIncrementedScore(true);
 		}
-		if(MainGame.requestHandler.isHost())
-		{
+	//	if(MainGame.requestHandler.isHost())
+	//	{
 			generateSeed();
 			generateFirstSet();
-		}
+	//	}
 		// reset backgrounds
 		firstBG.setPos(0,0);
 		secondBG.setPos(0,-MainGame.VIRTUAL_HEIGHT);

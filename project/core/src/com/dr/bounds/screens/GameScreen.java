@@ -41,7 +41,7 @@ public class GameScreen extends dScreen {
 	private boolean opponentLost = false;
 	
 	// debug
-	private dText debug = new dText(0,0,64f,"debug:");
+	public static dText debug = new dText(0,0,64f,"debug:");
 	
 	// test
 	private DialogBoxScreen dialog;
@@ -51,17 +51,13 @@ public class GameScreen extends dScreen {
 		
 		requestHandler = MainGame.requestHandler;
 		
-		player = new Player(MainGame.VIRTUAL_WIDTH/2f-32f,MainGame.VIRTUAL_HEIGHT/2f-32f, 7, requestHandler);
+		player = new Player(MainGame.VIRTUAL_WIDTH/2f-32f,MainGame.VIRTUAL_HEIGHT/2f-32f, 0, requestHandler);
 		
 		opponent = new Player(MainGame.VIRTUAL_WIDTH/2f-32f,MainGame.VIRTUAL_HEIGHT/2f-32f,2, requestHandler);
 		opponent.setControllable(false);	
 
 		mapGen = new MapGenerator(MapGenerator.TYPE_DEFAULT,obstacle, player);
-		
-		if(requestHandler.isHost())
-		{
-			decodeAndSendSeed(mapGen.getSeed());
-		}
+		mapGen.generateSeed();
 		
 		gameOverScreen = new GameOverScreen(getX(), getY(), texture, player.getSkinID());
 		gameOverScreen.hide();
@@ -94,8 +90,8 @@ public class GameScreen extends dScreen {
 	public void update(float delta)
 	{
 		debug.setPos(MainGame.camera.position.x - MainGame.VIRTUAL_WIDTH / 2f  + 2f, MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT /2f + 2f);
-		debug.setText("DEBUG:\nseed: " + getSeed() + "\nhadCollision: " + mapGen.hadCollision() + "\nwantsReplay: "+ gameOverScreen.wantsReplay()
-				+ "\nopponentRematch: " + opponentRematch + "\nopponentLost: " + opponentLost);
+		//debug.setText("DEBUG:\nseed: " + getSeed() + "\nhadCollision: " + mapGen.hadCollision() + "\nwantsReplay: "+ gameOverScreen.wantsReplay()
+		//		+ "\nopponentRematch: " + opponentRematch + "\nopponentLost: " + opponentLost);
 		if(isPaused() == false)
 		{
 			super.update(delta);
@@ -132,7 +128,7 @@ public class GameScreen extends dScreen {
 				// send seed to opponent
 				if(requestHandler.isHost())
 				{
-					decodeAndSendSeed(getSeed());
+				//	decodeAndSendSeed(getSeed());
 				}
 				scoreText.setText(Integer.toString(0));
 				opponentRematch = false;
@@ -174,7 +170,7 @@ public class GameScreen extends dScreen {
 		player.render(batch);
 		scoreText.render(batch);
 		gameOverScreen.render(batch);
-		//debug.render(batch);
+		debug.render(batch);
 	}
 	
 	@Override
@@ -184,6 +180,7 @@ public class GameScreen extends dScreen {
 		if(requestHandler.isHost())
 		{
 			decodeAndSendSeed(getSeed());
+			mapGen.generateFirstSet();
 		}
 	}
 	
