@@ -5,7 +5,6 @@ import com.DR.dLib.dScreen;
 import com.DR.dLib.dText;
 import com.DR.dLib.dTweener;
 import com.DR.dLib.dUICard;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -13,7 +12,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 import com.dr.bounds.RequestHandler;
-import com.dr.bounds.SkinLoader;
 import com.dr.bounds.maps.MapGenerator;
 
 public class GameScreen extends dScreen {
@@ -53,7 +51,7 @@ public class GameScreen extends dScreen {
 		
 		requestHandler = MainGame.requestHandler;
 		
-		player = new Player(MainGame.VIRTUAL_WIDTH/2f-32f,MainGame.VIRTUAL_HEIGHT/2f-32f, 3, requestHandler);
+		player = new Player(MainGame.VIRTUAL_WIDTH/2f-32f,MainGame.VIRTUAL_HEIGHT/2f-32f, 7, requestHandler);
 		
 		opponent = new Player(MainGame.VIRTUAL_WIDTH/2f-32f,MainGame.VIRTUAL_HEIGHT/2f-32f,2, requestHandler);
 		opponent.setControllable(false);	

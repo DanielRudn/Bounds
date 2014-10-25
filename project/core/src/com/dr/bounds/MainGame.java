@@ -213,7 +213,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 
 	@Override
 	public void onRoomCreated() {
-		waitingRoomScreen.show();
+		//waitingRoomScreen.show();
 	}
 
 	@Override

@@ -18,7 +18,7 @@ public class WaitingRoomScreen extends dScreen {
 
 	private RequestHandler requestHandler;
 	private dImage playerIcon, opponentIcon, playerBall, opponentBall;
-	private dUICard divider, playerNameCard, opponentNameCard;
+	private dUICard divider;
 	private dText playerName, opponentName, versusText, opponentStatus;
 	private boolean showElements = false, showOpponent = false, switchStatus = false, changedText = false, opponentReady = false, hide = false;
 	private float currentTime = 0, extraTime = 0, opponentCurrentTime = 0, opponentExtraTime = 0, hideTime = 0;
@@ -32,6 +32,8 @@ public class WaitingRoomScreen extends dScreen {
 	private final float SHOW_DURATION = 2.5f;
 	// whether to play the show animation
 	private boolean showScreen = false;
+	// maximum name of a length before the size changes to less than 64
+	private final int MAX_NAME_LENGTH = 15;
 	
 	public WaitingRoomScreen(float x, float y, Texture texture, Texture icon, Texture loadingIconTexture) {
 		super(x, y, texture);
@@ -52,16 +54,6 @@ public class WaitingRoomScreen extends dScreen {
 		
 		divider = new dUICard(x,y,texture);
 		divider.setDimensions(0.1f, 8f);
-		// divider.setColor(52f/256f, 152f/256f, 219f/256f,1f);
-
-		playerNameCard = new dUICard(x,y,texture);
-		playerNameCard.setDimensions(0.1f, 6f);
-		playerNameCard.setHasShadow(false);
-		playerNameCard.setColor(46f/256f, 204f/256f, 113f/256f,1f);
-		opponentNameCard = new dUICard(x,y,texture);
-		opponentNameCard.setDimensions(0.1f, 6f);
-		opponentNameCard.setHasShadow(false);
-		opponentNameCard.setColor(231f/256f, 76f/256f, 60f/256f, 1f);
 		
 		playerBall = new dImage(0,0,new Sprite(SkinLoader.getTextureForSkinID(playerSkinID)));
 		playerBall.setHasShadow(true);
@@ -75,11 +67,11 @@ public class WaitingRoomScreen extends dScreen {
 		versusText.setShadow(true);
 		versusText.setColor(Color.WHITE);
 		
-		playerName = new dText(0,0,96f,"name");
+		playerName = new dText(0,0,64f,"name");
 		playerName.setColor(Color.WHITE);
 		playerName.setShadow(true);
 		
-		opponentName = new dText(0,0,96f,"opponent");
+		opponentName = new dText(0,0,64f,"opponent");
 		opponentName.setColor(Color.WHITE);
 		opponentName.setShadow(true);
 		
@@ -87,24 +79,23 @@ public class WaitingRoomScreen extends dScreen {
 		opponentStatus.setColor(Color.WHITE);
 		opponentStatus.setShadow(true);
 		
-		addObject(playerIcon,dUICard.RIGHT,dUICard.TOP);
+		addObject(playerIcon,dUICard.CENTER,dUICard.TOP);
+		playerIcon.setPos(playerIcon.getX() + 192f,playerIcon.getY() + 192f);
 		addObjectToRightOf(playerBall,getIndexOf(playerIcon));
 		playerBall.setPos(playerIcon.getX() + 32f, playerIcon.getY() + 32f);
-		addObjectUnder(playerNameCard,getIndexOf(playerIcon));
-		playerNameCard.setPos(playerIcon.getX() + playerIcon.getWidth()/2f, playerIcon.getY() + playerIcon.getHeight() - playerNameCard.getHeight());
-		addObject(playerName,dUICard.LEFT,dUICard.TOP);
-		playerName.setPos(-1000f, playerNameCard.getY() - playerNameCard.getHeight() - getPadding()*2f);
+		addObjectToLeftOf(playerName,getIndexOf(playerIcon));
+		playerName.setPos(-MainGame.VIRTUAL_WIDTH, playerName.getY() - 80f);
 		addObject(divider,dUICard.LEFT_NO_PADDING,dUICard.CENTER);
 		// addObject(versusText,dUICard.CENTER,dUICard.CENTER);
 		// addObject(loadingIcon, dUICard.CENTER, dUICard.CENTER);
-		addObjectUnder(opponentIcon, dUICard.LEFT, getIndexOf(divider));
+		addObjectUnder(opponentIcon, dUICard.CENTER, getIndexOf(divider));
+		opponentIcon.setPos(opponentIcon.getX() - 192f, opponentIcon.getY() + 192f);
 		addObjectToRightOf(opponentBall, getIndexOf(opponentIcon));
 		opponentBall.setPos(opponentIcon.getX() + 32f, opponentIcon.getY()+32f);
-		addObjectUnder(opponentNameCard, getIndexOf(opponentIcon));
-		addObjectUnder(opponentName, dUICard.CENTER,getIndexOf(divider));
+		// addObjectUnder(opponentName, dUICard.CENTER,getIndexOf(divider));
+		addObjectToRightOf(opponentName, getIndexOf(opponentIcon));
+		opponentName.setPos(MainGame.VIRTUAL_WIDTH * 1.5f, opponentName.getY() - 80f);
 		addObject(opponentStatus,dUICard.CENTER,dUICard.BOTTOM);
-		opponentNameCard.setPos(opponentIcon.getX() + opponentIcon.getWidth()/2f, opponentIcon.getY() + opponentIcon.getHeight() - opponentNameCard.getHeight());
-		opponentName.setPos(1000f,opponentNameCard.getY() - opponentNameCard.getHeight() - getPadding()*2f);
 		opponentIcon.setDimensions(0.1f, 0.1f);
 		playerIcon.setDimensions(0.1f, 0.1f);
 		playerBall.setDimensions(0.1f,0.1f);
@@ -155,8 +146,7 @@ public class WaitingRoomScreen extends dScreen {
 				if(extraTime < 2f)
 				{
 					extraTime+=delta;
-					playerNameCard.setWidth(dTweener.ElasticOut(extraTime, 0.1f, -MainGame.VIRTUAL_WIDTH + 128f, 2f,6f));
-					playerName.setX(dTweener.ElasticOut(extraTime,getX() - playerName.getWidth(), (playerIcon.getX() - playerIcon.getWidth() - getPadding() - playerName.getWidth()) - (getX() - playerName.getWidth()), 2f,6f));
+					playerName.setX(dTweener.ElasticOut(extraTime,getX() - playerName.getWidth(), (playerIcon.getX() - getPadding() - playerName.getWidth()) - (getX() - playerName.getWidth()), 2f,6f));
 					//opponentNameCard.setWidth(dTweener.ElasticOut(extraTime, 0.1f, MainGame.VIRTUAL_WIDTH - 128f, 2f,6f));
 					loadingIcon.start();
 				}
@@ -182,7 +172,6 @@ public class WaitingRoomScreen extends dScreen {
 				if(opponentExtraTime < 2f)
 				{
 					opponentExtraTime+=delta;
-					opponentNameCard.setWidth(dTweener.ElasticOut(opponentExtraTime, 0.1f, MainGame.VIRTUAL_WIDTH - 128f, 2f,6f));
 					opponentName.setX(dTweener.ElasticOut(opponentExtraTime, 1000f, opponentIcon.getX() + opponentIcon.getWidth() + getPadding()/2f - 1000f, 2f,6f));
 				}
 			}
@@ -255,7 +244,6 @@ public class WaitingRoomScreen extends dScreen {
 		extraTime = 0;
 		playerName.setText("name");
 		playerIcon.setDimensions(0.1f, 0.1f);
-		playerNameCard.setDimensions(0.1f, 6f);
 		playerBall.setDimensions(0.1f,0.1f);
 		playerSkinID = MainGame.PLACEHOLDER_SKIN_ID;
 		divider.setDimensions(0.1f, 8f);
@@ -265,9 +253,6 @@ public class WaitingRoomScreen extends dScreen {
 		opponentBall.setDimensions(0.1f, 0.1f);
 		opponentName.setText("opponent");
 		opponentSkinID = MainGame.PLACEHOLDER_SKIN_ID;
-		opponentNameCard.setDimensions(0.1f, 6f);
-		opponentName.setPos(1000f,opponentNameCard.getY() - opponentNameCard.getHeight() - getPadding()*2f);
-		playerName.setPos(-1000f, playerNameCard.getY() - playerNameCard.getHeight() - getPadding()*2f);
 		switchStatus = false;
 		currentStatus = 0;
 		changedText = false;
@@ -332,14 +317,8 @@ public class WaitingRoomScreen extends dScreen {
 		showElements = true;
 		playerSkinID = pSkinID;
 		playerBall.getSprite().setRegion(SkinLoader.getTextureForSkinID(playerSkinID));
-		if(requestHandler.getCurrentAccountName().contains(" "))
-		{
-			playerName.setText(requestHandler.getCurrentAccountName().substring(0,requestHandler.getCurrentAccountName().indexOf(' ')));
-		}
-		else
-		{
-			playerName.setText(requestHandler.getCurrentAccountName());
-		}
+		playerName.setText(requestHandler.getCurrentAccountName());
+		playerName.setSize(this.getFontSize(playerName.getText()));
 	}
 	
 	public void showOpponentElements(int oSkinID, String name)
@@ -347,19 +326,17 @@ public class WaitingRoomScreen extends dScreen {
 		showOpponent = true;
 		opponentSkinID = oSkinID;
 		opponentBall.getSprite().setRegion(SkinLoader.getTextureForSkinID(opponentSkinID));
-		if(name.contains(" "))
-		{
-			opponentName.setText(name.substring(0,name.indexOf(' ')));
-		}
-		else
-		{
-			opponentName.setText(name);
-		}
+		opponentName.setText(name);
+		opponentName.setSize(this.getFontSize(opponentName.getText()));
 	}
 	
-	public void setLoadingIconImage(Texture texture)
+	private float getFontSize(String input)
 	{
-		
+		if(input.length() >= MAX_NAME_LENGTH)
+		{
+			return 64f / input.length() * MAX_NAME_LENGTH;
+		}
+		return 64f;
 	}
 	
 	public void setOpponentReady()
