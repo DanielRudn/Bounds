@@ -1,0 +1,42 @@
+package com.dr.bounds.maps;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
+import com.dr.bounds.Player;
+
+public class dPlanetObstacle extends dObstacle {
+
+	// whether this planet has a moon orbiting it
+	private boolean hasMoon = false;
+	
+	public dPlanetObstacle(float x, float y, Texture texture, Player p) {
+		super(x, y, texture, p);
+		int moonProbability = MathUtils.random(3);
+		if(moonProbability == 0 || moonProbability == 1)
+		{
+			hasMoon = false;
+		}
+		else if(moonProbability == 2)
+		{
+			hasMoon = true;
+		}
+	}
+	
+	@Override
+	public void render(SpriteBatch batch)
+	{
+		super.render(batch);
+		if(hasMoon)
+		{
+			
+		}
+	}
+	
+	@Override
+	public void update(float delta)
+	{
+		super.update(delta);
+	}
+
+}

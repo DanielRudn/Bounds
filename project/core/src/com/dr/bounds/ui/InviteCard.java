@@ -3,7 +3,6 @@ package com.dr.bounds.ui;
 import com.DR.dLib.dButton;
 import com.DR.dLib.dText;
 import com.DR.dLib.dUICard;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;

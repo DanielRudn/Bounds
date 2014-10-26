@@ -8,11 +8,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
-import com.dr.bounds.screens.GameScreen;
 
 public class MapGenerator {
 
@@ -27,7 +25,7 @@ public class MapGenerator {
 	// seed for random number generator
 	private long seed = 123456789;
 	// Minimum  and maximum vertical(y) distance between obstacles
-	private final int MIN_DISTANCE = 256, MAX_DISTANCE = (int) MainGame.VIRTUAL_HEIGHT / 2 - 128;
+	private final int MIN_DISTANCE = 192, MAX_DISTANCE = (int) MainGame.VIRTUAL_HEIGHT / 2 - 128;
 	// minimum / maximum width of blocks
 	private final int MIN_WIDTH = 192, MAX_WIDTH = (int)MainGame.VIRTUAL_WIDTH - 475;
 	// player object to determine collisions
@@ -36,7 +34,7 @@ public class MapGenerator {
 	Rectangle useless = new Rectangle();
 	// whether or not the player had a collision
 	private boolean hadCollision = false;
-	// tilable backgrounds for current map type
+	// tile-able backgrounds for current map type
 	private dImage firstBG, secondBG;
 	// player score to give to game screen
 	private int score = 0;
@@ -52,12 +50,27 @@ public class MapGenerator {
 		setMapType(mapType);
 		this.player = player;
 		generateSeed();
-		// add 12 obstacles to start with
-		for(int x = 0; x < 12; x++)
+		if(mapType == TYPE_DEFAULT)
 		{
-			obstacles.add(new dObstacle(0,0, obstacleTexture, player));
-			obstacles.get(x).setRegenerate(false);
-		//	obstacles.get(x).setColor(Color.RED);
+			currentType = TYPE_DEFAULT;
+			// add 12 obstacles to start with
+			for(int x = 0; x < 12; x++)
+			{
+				obstacles.add(new dObstacle(0,0, obstacleTexture, player));
+				obstacles.get(x).setRegenerate(false);
+			//	obstacles.get(x).setColor(Color.RED);
+			}
+		}
+		else if(mapType == TYPE_SPACE)
+		{
+			this.currentType = TYPE_SPACE;
+			// add 5 obstacles to start with
+			for(int x = 0; x < 5; x++)
+			{
+				obstacles.add(new dPlanetObstacle(0,0, new Texture("circle.png"), player));
+				obstacles.get(x).setRegenerate(false);
+			//	obstacles.get(x).setColor(Color.RED);
+			}
 		}
 	//	obstacles.get(0).setY(MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT/2f - MIN_DISTANCE - rng.nextInt(MAX_DISTANCE));
 	//	obstacles.get(0).setRegenerate(false);
@@ -88,7 +101,7 @@ public class MapGenerator {
 					obstacles.get(x).setRegenerate(false);
 				}
 				// check if player had collision
-				if(Intersector.intersectRectangles(player.getBoundingRectangle(), obstacles.get(x).getBoundingRectangle(), useless) && hadCollision == false) // FIX
+				if(hadCollision == false && Intersector.intersectRectangles(player.getBoundingRectangle(), obstacles.get(x).getBoundingRectangle(), useless)) // FIX
 				{
 					//obstacles.get(x).setColor(Color.BLUE);
 					hadCollision = true;
@@ -100,7 +113,24 @@ public class MapGenerator {
 			}
 			else if(currentType == TYPE_SPACE)
 			{
-				
+				if(obstacles.get(x).shouldRegenerate())
+				{
+					generateDefault(x);
+					obstacles.get(x).setRegenerate(false);
+				}
+				// check if player had collision
+				if(obstacles.get(x).getClass().getName().equals(dPlanetObstacle.class.getName()))
+				{
+					if(((dPlanetObstacle)obstacles.get(x)).hasMoon() && Intersector.intersectRectangles(player.getBoundingRectangle(), ((dPlanetObstacle)obstacles.get(x)).getMoonBoundingRectangle(), useless))
+					{
+						hadCollision = true;
+						obstacles.get(x).setColor(Color.BLUE);
+						// send message to opponent saying player lost
+						MainGame.requestHandler.sendReliableMessage(new byte[]{'L'});
+						// test might have to remove
+						break;
+					}
+				}
 			}
 		}
 		

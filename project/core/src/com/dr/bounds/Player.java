@@ -125,7 +125,7 @@ public class Player extends dObject {
 	private void changeVelocity(float delta)
 	{
 		playerVelocity.set(dTweener.MoveToAndSlow(playerVelocity.x, targetVelocity.x, delta*12f), dTweener.MoveToAndSlow(playerVelocity.y, targetVelocity.y, delta));
-		setY(getY() - GameScreen.CAMERA_SPEED * delta * 1.05f);
+		setY(getY() - GameScreen.CAMERA_SPEED * delta * 1.1f);
 		// check if passed bounds and need to move back to center
 		checkBounds();
 	}
@@ -149,7 +149,7 @@ public class Player extends dObject {
 		if(getX() < MainGame.VIRTUAL_WIDTH/2f - getWidth()/2f - 14f || getX() > MainGame.VIRTUAL_WIDTH/2f - getWidth()/2f + 14f)
 		{
 			//setPosition(dTweener.MoveToAndSlow(getX(), MainGame.VIRTUAL_WIDTH/2f - getWidth()/2f, 4f*delta),getY());
-			setPosition(dTweener.MoveToAndSlow(getX(), MainGame.VIRTUAL_WIDTH/2f - getWidth()/2f,5f*delta), dTweener.MoveToAndSlow(getY(), startY - 425f, 5f*delta));
+			setPosition(dTweener.MoveToAndSlow(getX(), MainGame.VIRTUAL_WIDTH/2f - getWidth()/2f,5.5f*delta), dTweener.MoveToAndSlow(getY(), startY - 500f, 5.5f*delta));
 		}
 		else
 		{

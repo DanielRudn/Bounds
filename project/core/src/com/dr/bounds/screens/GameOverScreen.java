@@ -68,7 +68,7 @@ public class GameOverScreen extends dScreen {
 		scoreCard.setPaddingLeft(32f);
 		dText scoreCardText = new dText(0,0,72f, "Score: 0");
 		scoreCardText.setColor(Color.WHITE);
-		scoreCard.addObject(scoreCardText, dUICard.LEFT, dUICard.CENTER);
+		scoreCard.addObject(scoreCardText, dUICard.CENTER, dUICard.CENTER);
 		
 		moneyCard = new dUICard(0,0,texture);
 		moneyCard.setColor(scoreCard.getColor());
@@ -77,7 +77,7 @@ public class GameOverScreen extends dScreen {
 		moneyCard.setPaddingLeft(32f);
 		dText moneyCardText = new dText(0,0,72f, "Dots: 0");
 		moneyCardText.setColor(Color.WHITE);
-		moneyCard.addObject(moneyCardText, dUICard.LEFT, dUICard.CENTER);
+		moneyCard.addObject(moneyCardText, dUICard.CENTER, dUICard.CENTER);
 		
 		// fix
 		Texture replayTexture = new Texture("replay.png");
@@ -114,10 +114,13 @@ public class GameOverScreen extends dScreen {
 				showTime+=delta;
 				setY(dTweener.ElasticOut(showTime, MainGame.camera.position.y + MainGame.VIRTUAL_HEIGHT / 2f, -MainGame.VIRTUAL_HEIGHT, SHOW_DURATION, 8f));
 			}
-			currentScore = dTweener.MoveToAndSlow(currentScore, playerScore, 2f* delta);
-			((dText)scoreCard.getObject(0)).setText("score: " + Float.toString((int)currentScore+1));
-			currentMoney = dTweener.MoveToAndSlow(currentMoney, 30, 2f * delta);
-			((dText)moneyCard.getObject(0)).setText("$$$: " + Float.toString((int)currentMoney+1));
+			if(showTime >= SHOW_DURATION / 6f)
+			{
+				currentScore = dTweener.MoveToAndSlow(currentScore, playerScore, 2f* delta);
+				((dText)scoreCard.getObject(0)).setText("score: " + Float.toString((int)currentScore+1).substring(0,Float.toString((int)currentScore+1).length()-2));
+				currentMoney = dTweener.MoveToAndSlow(currentMoney, 30, 2f * delta);
+				((dText)moneyCard.getObject(0)).setText("$$$: " + Float.toString((int)currentMoney+1).substring(0,Float.toString((int)currentMoney+1).length()-2));
+			}
 			
 			if(playerBurst.getSprite().getRotation() <= 359f)
 			{

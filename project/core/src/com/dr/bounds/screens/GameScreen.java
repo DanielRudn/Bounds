@@ -22,7 +22,7 @@ public class GameScreen extends dScreen {
 	private Player opponent;
 	// camera's speed in pixels per second (camera moves upward)
 	//public static final float CAMERA_SPEED = 300f; 
-	public static final float CAMERA_SPEED = 350f;
+	public static final float CAMERA_SPEED = 400f;
 	// used to interact with android device
 	private RequestHandler requestHandler;
 	// Generate the map
@@ -56,7 +56,7 @@ public class GameScreen extends dScreen {
 		opponent = new Player(MainGame.VIRTUAL_WIDTH/2f-32f,MainGame.VIRTUAL_HEIGHT/2f-32f,2, requestHandler);
 		opponent.setControllable(false);	
 
-		mapGen = new MapGenerator(MapGenerator.TYPE_DEFAULT,obstacle, player);
+		mapGen = new MapGenerator(MapGenerator.TYPE_SPACE,obstacle, player);
 		mapGen.generateSeed();
 		
 		gameOverScreen = new GameOverScreen(getX(), getY(), texture, player.getSkinID());
@@ -80,7 +80,7 @@ public class GameScreen extends dScreen {
 		
 		debug.setMultiline(true);
 		
-		scoreText = new dText(0,0,128f,"0");
+		scoreText = new dText(0,0,192f,"0");
 		scoreText.setColor(0,0,0,0.5f);
 		addObject(scoreText,dUICard.CENTER, dUICard.TOP);
 		
@@ -149,10 +149,10 @@ public class GameScreen extends dScreen {
 					scoreTime = 0;
 					mapGen.setScoreChanged(false);
 				}
-				if(scoreTime <= 1.5f)
+				if(scoreTime <= 2f)
 				{
 					scoreTime+=delta;
-					scoreText.setSize(dTweener.ElasticOut(scoreTime, 192f, 128f - 192f, 1.5f));
+					scoreText.setSize(dTweener.ElasticOut(scoreTime, 256f, 192f - 256f, 2f));
 				}
 				// move camera upward
 				MainGame.setCameraPos(MainGame.camera.position.x, MainGame.camera.position.y - CAMERA_SPEED * delta);

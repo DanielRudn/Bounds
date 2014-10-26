@@ -92,20 +92,6 @@ public class PlayerCard extends dUICard {
 		return 64f;
 	}
 	
-	private String getFirstName()
-	{
-		return displayName.substring(0, displayName.indexOf(' '));
-	}
-	
-	private String getShortName()
-	{
-		if(displayName.length() >= MAX_LENGTH)
-		{
-			return displayName.substring(0,MAX_LENGTH) + "...";
-		}
-		return displayName;
-	}
-	
 	public String getDisplayName()
 	{
 		return displayName;

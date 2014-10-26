@@ -16,7 +16,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.ui.InviteCard;
 import com.dr.bounds.ui.LoadingIcon;
-import com.dr.bounds.ui.PlayerCard;
 
 public class InboxScreen extends dUICardList {
 	

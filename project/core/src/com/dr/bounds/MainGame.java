@@ -4,9 +4,7 @@ import java.util.ArrayList;
 
 import com.DR.dLib.dScreen;
 import com.DR.dLib.dText;
-import com.DR.dLib.dTweener;
 import com.DR.dLib.dUICard;
-import com.DR.dLib.dUICardList;
 import com.DR.dLib.dValues;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -103,13 +101,13 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		batch = new SpriteBatch();
 		
 		currentScreen = debugCard;
-		//currentScreen = gameScreen;
+		currentScreen = gameScreen;
 	}
 
 	@Override
 	public void render () {
 		Gdx.gl.glViewport(0,0, (int)Gdx.graphics.getWidth(), (int)Gdx.graphics.getHeight());
-		Gdx.gl.glClearColor(189f/256f, 195f/256f, 199f/256f,1f);
+		Gdx.gl.glClearColor(189f/256f, 195f/256f, 199f/256f,.5f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 	
 		// UPDATE
