@@ -21,7 +21,6 @@
 <fullyQualifiedTypeName name="com.badlogic.gdx.math.Rectangle"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="com.dr.bounds.Player"/>
-<fullyQualifiedTypeName name="com.dr.bounds.screens.GameScreen"/>
 <fullyQualifiedTypeName name="com.DR.dLib.dValues"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Texture"/>
 <fullyQualifiedTypeName name="com.DR.dLib.dObject"/>
@@ -60,4 +59,5 @@
 <fullyQualifiedTypeName name="com.google.android.gms.games.multiplayer.InvitationBuffer"/>
 <fullyQualifiedTypeName name="com.dr.bounds.ui.InviteCard"/>
 <fullyQualifiedTypeName name="com.DR.dLib.dButton"/>
+<fullyQualifiedTypeName name="com.dr.bounds.screens.GameScreen"/>
 </qualifiedTypeNameHistroy>

@@ -56,7 +56,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 	public static boolean isPlaying = false;
 	
 	// the time difference between frames
-	private final float DELTA = 1f / 60f;
+	private final float DELTA = 1f/60f;
 	// the time each update call takes ?
 	private float accumulator = 0f;
 	
@@ -103,7 +103,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		batch = new SpriteBatch();
 		
 		currentScreen = debugCard;
-	//	currentScreen = gameScreen;
+		//currentScreen = gameScreen;
 	}
 
 	@Override

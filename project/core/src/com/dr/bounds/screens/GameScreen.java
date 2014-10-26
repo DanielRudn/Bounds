@@ -22,7 +22,7 @@ public class GameScreen extends dScreen {
 	private Player opponent;
 	// camera's speed in pixels per second (camera moves upward)
 	//public static final float CAMERA_SPEED = 300f; 
-	public static final float CAMERA_SPEED = 300f;
+	public static final float CAMERA_SPEED = 350f;
 	// used to interact with android device
 	private RequestHandler requestHandler;
 	// Generate the map
@@ -41,7 +41,7 @@ public class GameScreen extends dScreen {
 	private boolean opponentLost = false;
 	
 	// debug
-	public static dText debug = new dText(0,0,64f,"debug:");
+	private dText debug = new dText(0,0,64f,"debug:");
 	
 	// test
 	private DialogBoxScreen dialog;
@@ -51,7 +51,7 @@ public class GameScreen extends dScreen {
 		
 		requestHandler = MainGame.requestHandler;
 		
-		player = new Player(MainGame.VIRTUAL_WIDTH/2f-32f,MainGame.VIRTUAL_HEIGHT/2f-32f, 0, requestHandler);
+		player = new Player(MainGame.VIRTUAL_WIDTH/2f-32f,MainGame.VIRTUAL_HEIGHT/2f-32f, 3, requestHandler);
 		
 		opponent = new Player(MainGame.VIRTUAL_WIDTH/2f-32f,MainGame.VIRTUAL_HEIGHT/2f-32f,2, requestHandler);
 		opponent.setControllable(false);	
@@ -90,8 +90,8 @@ public class GameScreen extends dScreen {
 	public void update(float delta)
 	{
 		debug.setPos(MainGame.camera.position.x - MainGame.VIRTUAL_WIDTH / 2f  + 2f, MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT /2f + 2f);
-		//debug.setText("DEBUG:\nseed: " + getSeed() + "\nhadCollision: " + mapGen.hadCollision() + "\nwantsReplay: "+ gameOverScreen.wantsReplay()
-		//		+ "\nopponentRematch: " + opponentRematch + "\nopponentLost: " + opponentLost);
+		debug.setText("DEBUG:\nseed: " + getSeed() + "\nhadCollision: " + mapGen.hadCollision() + "\nwantsReplay: "+ gameOverScreen.wantsReplay()
+				+ "\nopponentRematch: " + opponentRematch + "\nopponentLost: " + opponentLost);
 		if(isPaused() == false)
 		{
 			super.update(delta);
@@ -170,7 +170,7 @@ public class GameScreen extends dScreen {
 		player.render(batch);
 		scoreText.render(batch);
 		gameOverScreen.render(batch);
-		debug.render(batch);
+		//	debug.render(batch);
 	}
 	
 	@Override

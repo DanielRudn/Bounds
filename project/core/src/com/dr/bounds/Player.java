@@ -76,22 +76,24 @@ public class Player extends dObject {
 
 	@Override
 	public void update(float delta) {
+		// add velocity
+		setPosition(getX() + playerVelocity.x * delta, getY() + playerVelocity.y * delta);
+		boundingRect.set(getX() + 8f, getY() + 8f, getWidth()-16f, getHeight()-16f);
 		if(controllable)
 		{
-			if(Gdx.input.justTouched() && moveCenter == false)
+			if(Gdx.input.isTouched() && Gdx.input.justTouched() && moveCenter == false)
 			{
 				// temp
 			//	playerVelocity.x = 0;
 				if(touchedLeftSide())// user touched left half of screen
 				{
-					targetVelocity.set(-12f*32f,0);
-					changeVelocity = true;
+					targetVelocity.set(-24f*32f,0);
 				}
 				else // user touched right half of screen
 				{
-					targetVelocity.set(12f*32f,0);
-					changeVelocity = true;
+					targetVelocity.set(24f*32f,0);
 				}
+				changeVelocity = true;
 				startY = getY();
 				requestHandler.sendUnreliableMessage(getMovementMessage());
 			}
@@ -118,16 +120,12 @@ public class Player extends dObject {
 				squeezed = false;
 			}
 		}
-		
-		// add velocity
-		setPosition(getX() + playerVelocity.x, getY() + playerVelocity.y);
-		boundingRect.set(getX() + 8f, getY() + 8f, getWidth()-16f, getHeight()-16f);
 	}
 	
 	private void changeVelocity(float delta)
 	{
-		playerVelocity.set(dTweener.MoveToAndSlow(playerVelocity.x, targetVelocity.x, delta/12f), dTweener.MoveToAndSlow(playerVelocity.y, targetVelocity.y, delta/32f));
-		setY(getY() - GameScreen.CAMERA_SPEED * delta * 1.25f);
+		playerVelocity.set(dTweener.MoveToAndSlow(playerVelocity.x, targetVelocity.x, delta*12f), dTweener.MoveToAndSlow(playerVelocity.y, targetVelocity.y, delta));
+		setY(getY() - GameScreen.CAMERA_SPEED * delta * 1.05f);
 		// check if passed bounds and need to move back to center
 		checkBounds();
 	}
@@ -146,25 +144,12 @@ public class Player extends dObject {
 		}
 	}
 	
-	
-	private void moveLeft(float delta)
-	{
-			playerVelocity.x = dTweener.MoveToAndSlow(playerVelocity.x, -12f*32f, delta/12f);
-			checkBounds();
-	}
-	
-	private void moveRight(float delta)
-	{
-			playerVelocity.x = dTweener.MoveToAndSlow(playerVelocity.x, 12f*32f, delta/12f);
-			checkBounds();
-	}
-	
 	private void moveCenter(float delta)
 	{
 		if(getX() < MainGame.VIRTUAL_WIDTH/2f - getWidth()/2f - 14f || getX() > MainGame.VIRTUAL_WIDTH/2f - getWidth()/2f + 14f)
 		{
 			//setPosition(dTweener.MoveToAndSlow(getX(), MainGame.VIRTUAL_WIDTH/2f - getWidth()/2f, 4f*delta),getY());
-			setPosition(dTweener.MoveToAndSlow(getX(), MainGame.VIRTUAL_WIDTH/2f - getWidth()/2f, 4f*delta), dTweener.MoveToAndSlow(getY(), startY - 500f, 4f*delta));
+			setPosition(dTweener.MoveToAndSlow(getX(), MainGame.VIRTUAL_WIDTH/2f - getWidth()/2f,5f*delta), dTweener.MoveToAndSlow(getY(), startY - 425f, 5f*delta));
 		}
 		else
 		{
@@ -192,17 +177,17 @@ public class Player extends dObject {
 	{
 		if(moveCenter == false)
 		{
-			if(message[1] == 'L')//left
+			if(message[1] == 'L')// left
 			{
-				targetVelocity.set(-12f*32f,0);
+				targetVelocity.set(-24f*32f,0);
 			}
-			else if(message[1] == 'R')//right
+			else if(message[1] == 'R')// right
 			{
-				targetVelocity.set(12f*32f,0);
+				targetVelocity.set(24f*32f,0);
 			}
+			startY = getY();
 			changeVelocity = true;
 		}
-		startY = getY();
 	}
 
 	public void setControllable(boolean c)

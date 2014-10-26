@@ -2,20 +2,20 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="loadInvi" key="selection"/>
+		<item value="generateDe" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="loadinvi"/>
-			<item value="quitButton"/>
-			<item value="submit"/>
-			<item value="recents"/>
-			<item value="justjoined"/>
-			<item value="duration"/>
-			<item value="requestHandler.getRecievedMessage()"/>
-			<item value="128"/>
+			<item value="generatede"/>
+			<item value="generate"/>
+			<item value="generatedef"/>
+			<item value="decode"/>
+			<item value="decde"/>
+			<item value="gener"/>
+			<item value="generateFirst"/>
+			<item value="waitingroomscreen"/>
 		</list>
 		<list key="replacehistory">
 			<item value="stayButton"/>
