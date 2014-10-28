@@ -1,0 +1,6 @@
+package com.dr.bounds.maps;
+
+public abstract class MapType {
+
+	protected final int MAP_TYPE;
+}

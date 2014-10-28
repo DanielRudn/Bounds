@@ -1,0 +1,67 @@
+package com.dr.bounds.maps;
+
+import java.util.Random;
+
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Intersector;
+import com.dr.bounds.MainGame;
+import com.dr.bounds.Player;
+
+public class SpaceMapType extends MapType {
+
+	public SpaceMapType(int type, Random random, Player player, MapGenerator generator) {
+		super(type, random, player, generator);
+		MIN_DISTANCE = MAX_DISTANCE;
+		MAX_DISTANCE *= 2;
+		MIN_WIDTH = 256;
+		MAX_WIDTH = 384;
+		
+		typeName = "Space";
+		// add 5 obstacles to start with
+		for(int x = 0; x < 5; x++)
+		{
+			obstacles.add(new dPlanetObstacle(0,0, new Texture("circle.png"), player));
+			obstacles.get(x).setRegenerate(false);
+		}
+	}
+
+	@Override
+	public void update(float delta) {
+		for(int x = 0; x < obstacles.size(); x++)
+		{
+			obstacles.get(x).update(delta);
+			if(obstacles.get(x).shouldRegenerate())
+			{
+				generateDefault(x);
+				obstacles.get(x).setRegenerate(false);
+			}
+			// check if player had collision
+			if(obstacles.get(x).getClass().getName().equals(dPlanetObstacle.class.getName()))
+			{
+				if(((dPlanetObstacle)obstacles.get(x)).hasMoon() && Intersector.intersectRectangles(player.getBoundingRectangle(), ((dPlanetObstacle)obstacles.get(x)).getMoonBoundingRectangle(), useless))
+				{
+					hadCollision = true;
+					obstacles.get(x).setColor(Color.BLUE);
+					// send message to opponent saying player lost
+					MainGame.requestHandler.sendReliableMessage(new byte[]{'L'});
+					// test might have to remove
+					break;
+				}
+			}
+		}
+	}
+
+	@Override
+	protected void generateFirstSet() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void generateDefault(int index) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

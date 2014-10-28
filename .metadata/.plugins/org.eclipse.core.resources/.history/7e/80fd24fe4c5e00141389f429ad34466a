@@ -1,0 +1,44 @@
+package com.dr.bounds.maps;
+
+import java.util.ArrayList;
+import java.util.Random;
+
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+public abstract class MapType {
+
+	// the id of the map type
+	private int type;
+	// name of the map
+	private String typeName;
+	// list of obstacles
+	private ArrayList<dObstacle> obstacles;
+	// the rng (random number generator) used to determine specifics of this map type, will be given in constructor with seed
+	protected Random rng;
+	
+	public MapType(int type, Random random)
+	{
+		this.type = type;
+		rng = random;
+		obstacles = new ArrayList<dObstacle>();
+	}
+	
+	public abstract void render(SpriteBatch batch);
+	
+	public abstract void update(float delta);
+	
+	protected abstract void generateFirstSet();
+	
+	protected abstract void generateDefault();
+	
+	public int getMapType()
+	{
+		return type;
+	}
+	
+	public String getTypeName()
+	{
+		return typeName;
+	}
+
+}

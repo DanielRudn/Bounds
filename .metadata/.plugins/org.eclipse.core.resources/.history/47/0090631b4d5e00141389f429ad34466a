@@ -1,0 +1,38 @@
+package com.dr.bounds.maps;
+
+import java.util.Random;
+
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+public class FactoryMapType extends MapType{
+
+	public FactoryMapType(int type, Random random) {
+		super(type, random);
+		typeName = "Factory";
+	}
+
+	@Override
+	public void render(SpriteBatch batch) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update(float delta) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void generateFirstSet() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void generateDefault() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

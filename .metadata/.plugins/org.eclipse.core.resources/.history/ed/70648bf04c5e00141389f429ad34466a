@@ -1,0 +1,12 @@
+package com.dr.bounds.maps;
+
+import java.util.Random;
+
+public class FactoryMapType extends MapType{
+
+	public FactoryMapType(int type, Random random) {
+		super(type, random);
+
+	}
+
+}

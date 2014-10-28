@@ -1,0 +1,11 @@
+package com.dr.bounds.maps;
+
+public abstract class MapType {
+
+	// the id of the map type
+	private int type;
+	// list of obstacles
+	private ArrayList<dObstacle> obstacles;
+	
+
+}
