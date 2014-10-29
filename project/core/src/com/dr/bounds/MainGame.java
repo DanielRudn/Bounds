@@ -101,7 +101,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		batch = new SpriteBatch();
 		
 		currentScreen = debugCard;
-		currentScreen = gameScreen;
+		// currentScreen = gameScreen;
 	}
 
 	@Override
@@ -155,7 +155,8 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 			//debugCard.hide();
 			currentScreen.switchScreen(gameScreen);
 		}
-		if(Gdx.input.isKeyJustPressed(Keys.BACK) || Gdx.input.isKeyJustPressed(Keys.SPACE))
+		
+		if(Gdx.input.isKeyPressed(Keys.BACK) || Gdx.input.isKeyPressed(Keys.SPACE))
 		{
 			currentScreen.goBack();
 		}

@@ -12,6 +12,7 @@ import com.DR.dLib.dUICardList;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.ui.InviteCard;
@@ -21,6 +22,8 @@ public class InboxScreen extends dUICardList {
 	
 	// title card at the top
 	private dUICard titleCard;
+	// the back button on the title card
+	private dButton titleBackButton;
 	// timer for showing the transition animation to this screen
 	private float showTime = 0;
 	private final float SHOW_DURATION = 3f;
@@ -44,6 +47,9 @@ public class InboxScreen extends dUICardList {
 		titleCard.setColor(new Color(22f/256f, 160f/256f, 133f/256f,1f));
 		dText titleText = new dText(0,0,64f,"INBOX");
 		titleText.setColor(Color.WHITE);
+		titleBackButton = new dButton(0,0, new Sprite(new Texture("backButton.png")), "");
+		titleBackButton.setDimensions(titleBackButton.getWidth() / 2f, titleBackButton.getHeight()  / 2f);
+		titleCard.addObject(titleBackButton, dUICard.LEFT, dUICard.BOTTOM);
 		titleCard.addObject(titleText, dUICard.CENTER, dUICard.CENTER);
 		setTitleCard(titleCard);
 		titleCard.setY(-titleCard.getHeight()*1.5f);
@@ -112,6 +118,12 @@ public class InboxScreen extends dUICardList {
 					MainGame.currentScreen.switchScreen(MainGame.waitingRoomScreen);
 				}
 			}
+		}
+		
+		// TODO: move this
+		if(titleBackButton.isClicked())
+		{
+			this.goBack();
 		}
 	}
 	

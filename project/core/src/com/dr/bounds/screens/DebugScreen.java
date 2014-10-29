@@ -18,7 +18,7 @@ public class DebugScreen extends dScreen {
 	private float uptime = 0;
 	private dUICard buttonsCard;
 	private dText debug;
-	dButton clearButton, inviteButton, inboxButton, leaveButton, sendFirstButton, sendSecondButton, signInButton, hideButton, statusButton;
+	dButton clearButton, inviteButton, inboxButton, leaveButton, sendFirstButton, signInButton, hideButton, statusButton;
 	private RequestHandler requestHandler;
 	private final Color buttonColor = Color.NAVY;
 	
@@ -58,15 +58,10 @@ public class DebugScreen extends dScreen {
 		leaveButton.setTextSize(48f);
 		leaveButton.setDimensions(192f, 64f);
 		
-		sendFirstButton = new dButton(0,0,new Sprite(button),"send '5'");
+		sendFirstButton = new dButton(0,0,new Sprite(button),"play");
 		sendFirstButton.setColor(buttonColor);
 		sendFirstButton.setTextSize(48f);
 		sendFirstButton.setDimensions(192f, 64f);
-		
-		sendSecondButton = new dButton(0,0,new Sprite(button),"send '7'");
-		sendSecondButton.setColor(buttonColor);
-		sendSecondButton.setTextSize(48f);
-		sendSecondButton.setDimensions(192f, 64f);
 		
 		signInButton = new dButton(0,0,new Sprite(button), "sign in");
 		signInButton.setColor(buttonColor);
@@ -88,10 +83,9 @@ public class DebugScreen extends dScreen {
 		buttonsCard.addObjectUnder(inboxButton,dUICard.CENTER,2);
 		buttonsCard.addObjectUnder(leaveButton,dUICard.CENTER,3);
 		buttonsCard.addObjectUnder(sendFirstButton,dUICard.CENTER,4);
-		buttonsCard.addObjectUnder(sendSecondButton,dUICard.CENTER,5);
-		buttonsCard.addObjectUnder(signInButton,dUICard.CENTER,6);
-		buttonsCard.addObjectUnder(hideButton,dUICard.CENTER,7);
-		buttonsCard.addObjectUnder(statusButton,dUICard.CENTER,8);
+		buttonsCard.addObjectUnder(signInButton,dUICard.CENTER,5);
+		buttonsCard.addObjectUnder(hideButton,dUICard.CENTER,6);
+		buttonsCard.addObjectUnder(statusButton,dUICard.CENTER,7);
 		
 		addObject(buttonsCard,dUICard.RIGHT_NO_PADDING,dUICard.TOP_NO_PADDING);
 		
@@ -162,9 +156,7 @@ public class DebugScreen extends dScreen {
 			}
 			else if(sendFirstButton.isClicked())
 			{
-			}
-			else if(sendSecondButton.isClicked())
-			{
+				MainGame.currentScreen.switchScreen(MainGame.gameScreen);
 			}
 			else if(signInButton.isClicked())
 			{

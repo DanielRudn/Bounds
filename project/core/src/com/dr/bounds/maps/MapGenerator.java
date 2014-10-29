@@ -25,6 +25,8 @@ public class MapGenerator {
 	private int score = 0;
 	// used to let gamescreen know that it should show the score change animation
 	private boolean scoreChanged = false;
+	// amount to increment score by since the MapTypes can vary in difficulty and award different amounts of score
+	private int scoreIncrementAmount = 1;
 	
 	/**
 	 * Creates a new generator and sets the level type
@@ -53,7 +55,7 @@ public class MapGenerator {
 			// check players score
 			if(currentType.getObstacles().get(x).hasPassed() && currentType.getObstacles().get(x).hasIncrementedScore() == false)
 			{
-				score++;
+				incrementScore();
 				currentType.getObstacles().get(x).setIncrementedScore(true);
 				scoreChanged = true;
 			}
@@ -108,9 +110,14 @@ public class MapGenerator {
 		this.scoreChanged = scoreChanged;
 	}
 	
+	public void setScoreIncrementAmount(int amount)
+	{
+		scoreIncrementAmount = amount;
+	}
+	
 	public void incrementScore()
 	{
-		score++;
+		score+=scoreIncrementAmount;
 	}
 	
 	public boolean hasScoreChanged()

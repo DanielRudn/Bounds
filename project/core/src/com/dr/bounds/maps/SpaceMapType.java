@@ -23,6 +23,9 @@ public class SpaceMapType extends MapType {
 		MIN_WIDTH = 192;
 		MAX_WIDTH = 256;
 		
+		// this map type awards 2 points per obstacle
+		gen.setScoreIncrementAmount(2);
+		
 		typeName = "Space";
 		// add 2 obstacles to start with
 		for(int x = 0; x < 2; x++)

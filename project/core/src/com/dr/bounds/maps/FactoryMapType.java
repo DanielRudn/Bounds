@@ -17,6 +17,8 @@ public class FactoryMapType extends MapType{
 	
 	public FactoryMapType(int type, Player p, Texture obstacleTexture, MapGenerator generator) {
 		super(type, p, generator);
+		// this map type awards 1 point per obstacle
+		gen.setScoreIncrementAmount(1);
 		typeName = "Factory";
 		// add 12 obstacles to start with
 		for(int x = 0; x < 12; x++)
