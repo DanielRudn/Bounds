@@ -101,7 +101,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		batch = new SpriteBatch();
 		
 		currentScreen = debugCard;
-		//currentScreen = gameScreen;
+		currentScreen = gameScreen;
 	}
 
 	@Override

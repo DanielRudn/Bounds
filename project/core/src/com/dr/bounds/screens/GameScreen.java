@@ -172,7 +172,7 @@ public class GameScreen extends dScreen {
 		player.render(batch);
 		scoreText.render(batch);
 		gameOverScreen.render(batch);
-		debug.render(batch);
+		// debug.render(batch);
 	}
 	
 	@Override

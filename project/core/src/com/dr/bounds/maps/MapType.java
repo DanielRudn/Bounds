@@ -53,7 +53,6 @@ public abstract class MapType {
 			generateDefault(x);
 			obstacles.get(x).setRegenerate(false);
 		}
-		GameScreen.log("MapType generateFirstSet()");
 	}
 	
 	protected void generateDefault(int index)
