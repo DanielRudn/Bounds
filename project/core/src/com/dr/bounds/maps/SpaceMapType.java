@@ -1,7 +1,5 @@
 package com.dr.bounds.maps;
 
-import java.util.Random;
-
 import com.DR.dLib.dImage;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -18,18 +16,18 @@ public class SpaceMapType extends MapType {
 	// tile-able backgrounds for current map type
 	private dImage firstBG, secondBG;
 	
-	public SpaceMapType(int type, Random random, Player player, MapGenerator generator) {
-		super(type, random, player, generator);
+	public SpaceMapType(int type, Player player, MapGenerator generator) {
+		super(type, player, generator);
 		MIN_DISTANCE = MAX_DISTANCE;
 		MAX_DISTANCE *= 2;
 		MIN_WIDTH = 192;
-		MAX_WIDTH = 300;
+		MAX_WIDTH = 256;
 		
 		typeName = "Space";
-		// add 5 obstacles to start with
-		for(int x = 0; x < 5; x++)
+		// add 2 obstacles to start with
+		for(int x = 0; x < 2; x++)
 		{
-			obstacles.add(new dPlanetObstacle(0,0, new Texture("circle.png"), player, rng));
+			obstacles.add(new dPlanetObstacle(0,0, new Texture("circle.png"), player, MapGenerator.rng));
 			obstacles.get(x).setRegenerate(false);
 		}
 		
@@ -60,17 +58,23 @@ public class SpaceMapType extends MapType {
 			{
 				if(((dPlanetObstacle)obstacles.get(x)).hasMoon() && Intersector.intersectRectangles(player.getBoundingRectangle(), ((dPlanetObstacle)obstacles.get(x)).getMoonBoundingRectangle(), useless))
 				{
+					if(gen.hadCollision() == false)
+					{
+						// send message to opponent saying player lost
+						MainGame.requestHandler.sendReliableMessage(new byte[]{'L'});
+					}
 					gen.setHadCollision(true);
-					// send message to opponent saying player lost
-					MainGame.requestHandler.sendReliableMessage(new byte[]{'L'});
 					// test might have to remove
 					break;
 				}
-				if(getDistance(obstacles.get(x).getPos(), player.getPos(), x) <=  obstacles.get(x).getWidth() / 2f)
+				if(hadCirclularCollision(obstacles.get(x).getPos(), player.getPos(), x))
 				{
+					if(gen.hadCollision() == false)
+					{
+						// send message to opponent saying player lost
+						MainGame.requestHandler.sendReliableMessage(new byte[]{'L'});
+					}
 					gen.setHadCollision(true);
-					// send message to opponent saying player lost
-					MainGame.requestHandler.sendReliableMessage(new byte[]{'L'});
 					// test might have to remove
 					break;
 				}
@@ -88,10 +92,12 @@ public class SpaceMapType extends MapType {
 		}
 	}
 	
-	private float getDistance(Vector2 f, Vector2 i, int index)
+
+	private boolean hadCirclularCollision(Vector2 f, Vector2 i, int index)
 	{
-		return Vector2.dst(f.x + obstacles.get(index).getWidth() / 2f, f.y + obstacles.get(index).getWidth() / 2f,
-				player.getX(), player.getY());
+		float radiusPlanet = obstacles.get(index).getWidth() / 2f;
+		float radiusPlayer = player.getWidth() / 2f;
+		return Math.pow((f.x + radiusPlanet) - (i.x + radiusPlayer), 2) + Math.pow((f.y + radiusPlanet) - (i.y + radiusPlayer), 2) <= Math.pow(radiusPlanet + radiusPlayer, 2); 
 	}
 	
 	@Override
@@ -99,26 +105,27 @@ public class SpaceMapType extends MapType {
 	{
 		//reset passed for this obstacles
 		obstacles.get(index).setPassed(false);
-		int side = rng.nextInt(11); // 0,1,5,6,7 is LEFT, 2,3,8,9,10 is RIGHT, 4 is center
+		int side = MapGenerator.rng.nextInt(11); // 0,1,5,6,7 is LEFT, 2,3,8,9,10 is RIGHT, 4 is center
 		if(side == 0 || side == 1 || side == 5 || side == 6 || side == 7)// left
 		{
-			obstacles.get(index).setWidth(MIN_WIDTH + rng.nextInt(MAX_WIDTH));
+			obstacles.get(index).setWidth(MIN_WIDTH + MapGenerator.rng.nextInt(MAX_WIDTH));
 			obstacles.get(index).setHeight(obstacles.get(index).getWidth());
 			obstacles.get(index).setX(32f);
 		}
 		else if(side == 2 || side == 3 || side == 8 || side == 9 || side == 10)// right
 		{
-			obstacles.get(index).setWidth(MIN_WIDTH + rng.nextInt(MAX_WIDTH));
+			obstacles.get(index).setWidth(MIN_WIDTH + MapGenerator.rng.nextInt(MAX_WIDTH));
 			obstacles.get(index).setHeight(obstacles.get(index).getWidth());
 			obstacles.get(index).setX(MainGame.VIRTUAL_WIDTH - obstacles.get(index).getWidth() - 32f);
 		}
 		else if(side == 4)// center
 		{
-			obstacles.get(index).setWidth(MIN_WIDTH + rng.nextInt(MAX_WIDTH) - 32f);
+			obstacles.get(index).setWidth(MIN_WIDTH + MapGenerator.rng.nextInt(MAX_WIDTH) - 32f);
 			obstacles.get(index).setHeight(obstacles.get(index).getWidth());
-			obstacles.get(index).setX(MainGame.VIRTUAL_WIDTH / 2f - obstacles.get(index).getWidth() / 2f + (-50 + rng.nextInt(100)));
+			obstacles.get(index).setX(MainGame.VIRTUAL_WIDTH / 2f - obstacles.get(index).getWidth() / 2f + (-50 + MapGenerator.rng.nextInt(100)));
 		}
-		obstacles.get(index).setY(obstacles.get(getPreviousIndex(index)).getY() - MIN_DISTANCE - rng.nextInt(MAX_DISTANCE));
+		((dPlanetObstacle)obstacles.get(index)).generate();
+		obstacles.get(index).setY(obstacles.get(getPreviousIndex(index)).getY() - MIN_DISTANCE - MapGenerator.rng.nextInt(MAX_DISTANCE));
 	}
 	
 	@Override

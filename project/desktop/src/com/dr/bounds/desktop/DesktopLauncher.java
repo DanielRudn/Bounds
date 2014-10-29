@@ -104,13 +104,11 @@ public class DesktopLauncher implements RequestHandler {
 
 	@Override
 	public boolean isHost() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public boolean isMultiplayer() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

@@ -1,7 +1,5 @@
 package com.dr.bounds.maps;
 
-import java.util.Random;
-
 import com.DR.dLib.dImage;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -17,8 +15,8 @@ public class FactoryMapType extends MapType{
 	// useless please get rid of
 	private Rectangle useless = new Rectangle(0,0,0,0);
 	
-	public FactoryMapType(int type, Random random, Player p, Texture obstacleTexture, MapGenerator generator) {
-		super(type, random, p, generator);
+	public FactoryMapType(int type, Player p, Texture obstacleTexture, MapGenerator generator) {
+		super(type, p, generator);
 		typeName = "Factory";
 		// add 12 obstacles to start with
 		for(int x = 0; x < 12; x++)

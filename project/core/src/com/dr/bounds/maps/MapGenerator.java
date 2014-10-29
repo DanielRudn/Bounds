@@ -14,7 +14,7 @@ public class MapGenerator {
 	// the current map generation type
 	private MapType currentType; 
 	// Random number generator for positioning objects
-	private Random rng = new Random();
+	public static Random rng = new Random();
 	// seed for random number generator
 	private long seed = 123456789;
 	// useless REMOVE PLEASE
@@ -35,11 +35,11 @@ public class MapGenerator {
 		generateSeed();
 		if(mapType == TYPE_FACTORY)
 		{
-			currentType = new FactoryMapType(TYPE_FACTORY, rng, player, obstacleTexture, this);
+			currentType = new FactoryMapType(TYPE_FACTORY, player, obstacleTexture, this);
 		}
 		else if(mapType == TYPE_SPACE)
 		{
-			currentType = new SpaceMapType(TYPE_SPACE, rng, player, this);
+			currentType = new SpaceMapType(TYPE_SPACE, player, this);
 		}
 	}
 	

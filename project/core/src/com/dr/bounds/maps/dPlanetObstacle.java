@@ -25,44 +25,19 @@ public class dPlanetObstacle extends dObstacle {
 	private final float MIN_ROTATION_SPEED = 0.5f;
 	// the distance between the planet and the moon
 	private int moonDistance = 32;
-	// the rng to determine the random numbers, gotten from constructor in order to match seed with other players
-	private Random rng;
 	// colors for planet and moon
-	Color[] planetColors = new Color[]{new Color(46f/256f, 204f/256f, 113f/256f,1f), // green
+	private Color[] planetColors = new Color[]{new Color(46f/256f, 204f/256f, 113f/256f,1f), // green
 			new Color(52f/256f, 152f/256f, 219f/256f,1f), // blue
 			new Color(231f/256f, 76f/256f, 60f/256f,1f), // red
 			new Color(241f/256f, 196f/256f, 15f/256f,1f), //yellow
 			new Color(243f/256f, 156f/256f, 18f/256f,1f)}; // orange
+	// rng to determine values
+	private Random rng;
 	
-	public dPlanetObstacle(float x, float y, Texture texture, Player p, Random random) {
+	public dPlanetObstacle(float x, float y, Texture texture, Player p, Random rng) {
 		super(x, y, texture, p);
-		rng = random;
-		int colorIndex = rng.nextInt(planetColors.length);
-		setColor(planetColors[colorIndex]);
-		int moonProbability = rng.nextInt(3);
-		moonProbability = 2;
-		if(moonProbability == 0 || moonProbability == 1)
-		{
-			hasMoon = false;
-		}
-		else if(moonProbability == 2)
-		{
-			hasMoon = true;
-			moonImage = new dImage(0,0,texture);
-			moonImage.setDimensions(64f, 64f);
-			try{
-			moonImage.setColor(planetColors[colorIndex+1]);
-			}
-			catch(Exception e)
-			{
-				moonImage.setColor(planetColors[0]);
-			}
-			moonImage.setPos(getX() - 15 - moonImage.getWidth(), getY() - 15 - moonImage.getHeight());
-			angleOffset = rng.nextInt(2);
-			rotationTime = angleOffset;
-			rotationSpeed = MIN_ROTATION_SPEED + rng.nextFloat();
-			moonDistance = rng.nextInt(64);
-		}
+		this.rng = rng;
+		generate();
 	}
 	
 	@Override
@@ -91,6 +66,39 @@ public class dPlanetObstacle extends dObstacle {
 			{
 				rotationTime = 0;
 			}
+		}
+	}
+	
+	public void generate()
+	{
+		int colorIndex = rng.nextInt(planetColors.length);
+		setColor(planetColors[colorIndex]);
+		int moonProbability = rng.nextInt(2);
+		if(moonProbability == 0)
+		{
+			hasMoon = false;
+		}
+		else if(moonProbability == 1)
+		{
+			if(hasMoon == false)
+			{
+				// TODO: FIX THIS LINE V
+				moonImage = new dImage(0,0,new Texture("circle.png"));
+			}
+			hasMoon = true;
+			moonImage.setDimensions(64f, 64f);
+			try{
+				moonImage.setColor(planetColors[colorIndex+1]);
+			}
+			catch(Exception e)
+			{
+				moonImage.setColor(planetColors[0]);
+			}
+			moonImage.setPos(getX() - 15 - moonImage.getWidth(), getY() - 15 - moonImage.getHeight());
+			angleOffset = rng.nextInt(2);
+			rotationTime = angleOffset;
+			rotationSpeed = MIN_ROTATION_SPEED + rng.nextFloat();
+			moonDistance = rng.nextInt(64);
 		}
 	}
 	
