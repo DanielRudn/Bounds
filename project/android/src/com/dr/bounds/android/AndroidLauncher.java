@@ -325,7 +325,11 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 	@Override
 	public String getCurrentAccountName()
 	{
-		return Games.Players.getCurrentPlayer(apiClient).getDisplayName();
+		if(apiClient.isConnected())
+		{
+			return Games.Players.getCurrentPlayer(apiClient).getDisplayName();
+		}
+		return "Player";
 		// return Games.getCurrentAccountName(apiClient); <-- returns users email, not name
 	}
 	
@@ -336,7 +340,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 		{
 			return opponent.getDisplayName();
 		}
-		return "opponent";
+		return "Opponent";
 	}
 	
 	@Override

@@ -28,7 +28,6 @@
 <fullyQualifiedTypeName name="com.dr.bounds.SkinLoader"/>
 <fullyQualifiedTypeName name="com.DR.dLib.dTweener"/>
 <fullyQualifiedTypeName name="com.dr.bounds.screens.InviteScreen"/>
-<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Texture.TextureFilter"/>
 <fullyQualifiedTypeName name="com.google.android.gms.games.Games"/>
 <fullyQualifiedTypeName name="com.google.android.gms.games.PlayerBuffer"/>
 <fullyQualifiedTypeName name="com.dr.bounds.MultiplayerListener"/>
@@ -40,7 +39,6 @@
 <fullyQualifiedTypeName name="com.dr.bounds.ui.PlayerCard"/>
 <fullyQualifiedTypeName name="com.DR.dLib.dUICard"/>
 <fullyQualifiedTypeName name="com.DR.dLib.dText"/>
-<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.Sprite"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.Gdx"/>
 <fullyQualifiedTypeName name="com.DR.dLib.dScreen"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.Input.Keys"/>
@@ -53,11 +51,13 @@
 <fullyQualifiedTypeName name="com.google.android.gms.games.multiplayer.InvitationBuffer"/>
 <fullyQualifiedTypeName name="com.dr.bounds.ui.InviteCard"/>
 <fullyQualifiedTypeName name="com.DR.dLib.dButton"/>
-<fullyQualifiedTypeName name="com.dr.bounds.screens.GameScreen"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.glutils.ShaderProgram"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.math.MathUtils"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.SpriteBatch"/>
 <fullyQualifiedTypeName name="com.DR.dLib.dImage"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.math.Rectangle"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Color"/>
+<fullyQualifiedTypeName name="com.dr.bounds.screens.GameScreen"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Texture.TextureFilter"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.Sprite"/>
 </qualifiedTypeNameHistroy>

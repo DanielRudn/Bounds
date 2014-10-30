@@ -1,13 +1,11 @@
 package com.dr.bounds.screens;
 
-import com.DR.dLib.dButton;
 import com.DR.dLib.dScreen;
 import com.DR.dLib.dText;
 import com.DR.dLib.dTweener;
 import com.DR.dLib.dUICard;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
@@ -22,7 +20,7 @@ public class GameScreen extends dScreen {
 	private Player opponent;
 	// camera's speed in pixels per second (camera moves upward)
 	//public static final float CAMERA_SPEED = 300f; 
-	public static final float CAMERA_SPEED = 400f;
+	public static final float CAMERA_SPEED = 500f;
 	// used to interact with android device
 	private RequestHandler requestHandler;
 	// Generate the map
@@ -43,9 +41,6 @@ public class GameScreen extends dScreen {
 	// debug
 	private dText debug = new dText(0,0,64f,"debug:");
 	private static String debugString = "";
-	
-	// test
-	private DialogBoxScreen dialog;
 
 	public GameScreen(float x, float y, Texture texture, Texture obstacle) {
 		super(x, y, texture);
@@ -54,7 +49,7 @@ public class GameScreen extends dScreen {
 		
 		player = new Player(MainGame.VIRTUAL_WIDTH/2f-32f,MainGame.VIRTUAL_HEIGHT/2f-32f, 5, requestHandler);
 		
-		opponent = new Player(MainGame.VIRTUAL_WIDTH/2f-32f,MainGame.VIRTUAL_HEIGHT/2f-32f,2, requestHandler);
+		opponent = new Player(MainGame.VIRTUAL_WIDTH/2f-32f,MainGame.VIRTUAL_HEIGHT/2f-32f, 0, requestHandler);
 		opponent.setControllable(false);	
 
 		mapGen = new MapGenerator(MapGenerator.TYPE_SPACE,obstacle, player);
@@ -62,22 +57,6 @@ public class GameScreen extends dScreen {
 		
 		gameOverScreen = new GameOverScreen(getX(), getY(), texture, player.getSkinID());
 		gameOverScreen.hide();
-		
-		dialog = new DialogBoxScreen(0,0,texture);
-		dButton dialogButton = new dButton(0,0, new Sprite(texture),"yes");
-		dialogButton.setColor(Color.LIGHT_GRAY);
-		dialogButton.setDimensions(dialog.getDialogBox().getWidth() / 2f - 1, 64f);
-		dialogButton.setTextSize(64f);
-		dButton dialogButton2 = new dButton(0,0, new Sprite(texture),"no");
-		dialogButton2.setColor(Color.LIGHT_GRAY);
-		dialogButton2.setDimensions(dialog.getDialogBox().getWidth() / 2f - 1, 64f);
-		dialogButton2.setTextSize(64f);
-		dText prompt = new dText(0,0,48f,"GAME OVER\n////////////////\n  continue?");
-		prompt.setMultiline(true);
-		prompt.setColor(0,0,0,0.5f);
-		dialog.getDialogBox().addObject(dialogButton, dUICard.RIGHT_NO_PADDING, dUICard.BOTTOM_NO_PADDING);
-		dialog.getDialogBox().addObject(dialogButton2, dUICard.LEFT_NO_PADDING, dUICard.BOTTOM_NO_PADDING);
-		dialog.getDialogBox().addObject(prompt, dUICard.CENTER, dUICard.TOP);
 		
 		debug.setMultiline(true);
 		debug.setColor(Color.WHITE);
@@ -98,7 +77,6 @@ public class GameScreen extends dScreen {
 		{
 			super.update(delta);
 			mapGen.update(delta);
-			dialog.update(delta);
 			gameOverScreen.update(delta);
 			
 			if((mapGen.hadCollision() || opponentLost) && gameOverScreen.isVisible() == false)
@@ -172,7 +150,7 @@ public class GameScreen extends dScreen {
 		player.render(batch);
 		scoreText.render(batch);
 		gameOverScreen.render(batch);
-		// debug.render(batch);
+		//debug.render(batch);
 	}
 	
 	@Override
@@ -240,6 +218,11 @@ public class GameScreen extends dScreen {
 		player.setSkinID(id);
 	}
 	
+	public void setOpponentScore(int score)
+	{
+		gameOverScreen.setOpponentScore(score);
+	}
+	
 	public int getPlayerSkinID()
 	{
 		return player.getSkinID();
@@ -263,6 +246,11 @@ public class GameScreen extends dScreen {
 	public Player getOpponent()
 	{
 		return opponent;
+	}
+	
+	public int getScore()
+	{
+		return mapGen.getScore();
 	}
 	
 	@Override

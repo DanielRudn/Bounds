@@ -247,6 +247,12 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		else if(msg[0] == 'L')// opponent lost
 		{
 			gameScreen.setOpponentLost(true);
+			// send my score to the opponent
+			requestHandler.sendReliableMessage(new byte[]{'C', (byte) gameScreen.getScore()});
+		}
+		else if(msg[0] == 'C')// opponent sent score
+		{
+			gameScreen.setOpponentScore(msg[1]);
 		}
 		else if(msg[0] == 'P')// opponent wants a rematch
 		{

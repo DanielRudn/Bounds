@@ -92,8 +92,7 @@ public class DesktopLauncher implements RequestHandler {
 
 	@Override
 	public String getOpponentName() {
-		// TODO Auto-generated method stub
-		return null;
+		return "George W. Bush";
 	}
 
 	@Override
