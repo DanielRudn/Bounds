@@ -78,8 +78,8 @@ public class Player extends dObject {
 	public void update(float delta) {
 		// add velocity
 		setPosition(getX() + playerVelocity.x * delta, getY() + playerVelocity.y * delta);
-		// boundingRect.set(getX() + 8f, getY() + 8f, getWidth()-16f, getHeight()-16f);
-		boundingRect.set(0,0,0,0);
+		boundingRect.set(getX() + 8f, getY() + 8f, getWidth()-16f, getHeight()-16f);
+	//	boundingRect.set(0,0,0,0);
 		if(controllable)
 		{
 			if(Gdx.input.isTouched() && Gdx.input.justTouched() && moveCenter == false)
@@ -95,7 +95,6 @@ public class Player extends dObject {
 					targetVelocity.set(24f*32f,0);
 				}
 				changeVelocity = true;
-				startY = getY();
 				requestHandler.sendUnreliableMessage(getMovementMessage());
 			}
 		}
@@ -142,6 +141,7 @@ public class Player extends dObject {
 			targetVelocity.set(0,0);
 			squeezeTime = 0;
 			squeezed = true;
+			startY = getY();
 		}
 	}
 	
@@ -150,7 +150,7 @@ public class Player extends dObject {
 		if(getX() < MainGame.VIRTUAL_WIDTH/2f - getWidth()/2f - 14f || getX() > MainGame.VIRTUAL_WIDTH/2f - getWidth()/2f + 14f)
 		{
 			//setPosition(dTweener.MoveToAndSlow(getX(), MainGame.VIRTUAL_WIDTH/2f - getWidth()/2f, 4f*delta),getY());
-			setPosition(dTweener.MoveToAndSlow(getX(), MainGame.VIRTUAL_WIDTH/2f - getWidth()/2f,5.5f*delta), dTweener.MoveToAndSlow(getY(), startY - 700f, 5.5f*delta));
+			setPosition(dTweener.MoveToAndSlow(getX(), MainGame.VIRTUAL_WIDTH/2f - getWidth()/2f,5.5f*delta), dTweener.MoveToAndSlow(getY(), startY - 475f, 5.5f*delta));
 		}
 		else
 		{
@@ -186,7 +186,6 @@ public class Player extends dObject {
 			{
 				targetVelocity.set(24f*32f,0);
 			}
-			startY = getY();
 			changeVelocity = true;
 		}
 	}

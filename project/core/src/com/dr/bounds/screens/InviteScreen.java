@@ -63,7 +63,7 @@ public class InviteScreen extends dUICardList implements AnimationStatusListener
 		circleCover = new dImage(0,0,circle);
 		startAnimation = new ExpandAnimation(circleCover, SHOW_DURATION, this, SHOW_ANIM_ID, new Color(46f/256f, 204f/256f, 113f/256f,1f), MainGame.VIRTUAL_HEIGHT * 2.5f);
 		setShowAnimation(startAnimation);
-		hideAnimation = new ShrinkAnimation(circleCover, .75f, this, HIDE_ANIM_ID, 0, MainGame.VIRTUAL_HEIGHT * 2.5f);
+		hideAnimation = new ShrinkAnimation(circleCover, 1f, this, HIDE_ANIM_ID, 0, MainGame.VIRTUAL_HEIGHT * 2.5f);
 		hideCardsAnimation = new SlideOutArrayAnimation(list, 1.25f, this, HIDE_CARDS_ID);
 		setHideAnimation(hideAnimation);
 		loadingIcon = new LoadingIcon(getWidth()/2f - circle.getWidth() / 2f,getHeight()/2f - circle.getHeight() / 2f,circle);
@@ -140,7 +140,7 @@ public class InviteScreen extends dUICardList implements AnimationStatusListener
 
 	@Override
 	public void switchScreen(dScreen newScreen) {
-		this.hide();
+		//this.hide();
 		newScreen.show();
 		MainGame.currentScreen = newScreen;
 		MainGame.previousScreen = this;

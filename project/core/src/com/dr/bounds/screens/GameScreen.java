@@ -52,8 +52,10 @@ public class GameScreen extends dScreen {
 		opponent = new Player(MainGame.VIRTUAL_WIDTH/2f-32f,MainGame.VIRTUAL_HEIGHT/2f-32f, 0, requestHandler);
 		opponent.setControllable(false);	
 
-		mapGen = new MapGenerator(MapGenerator.TYPE_SPACE,obstacle, player);
+		mapGen = new MapGenerator(MapGenerator.TYPE_MACHINERY,obstacle, player);
 		mapGen.generateSeed();
+		// TODO: might remove
+		mapGen.generateFirstSet();
 		
 		gameOverScreen = new GameOverScreen(getX(), getY(), texture, player.getSkinID());
 		gameOverScreen.hide();

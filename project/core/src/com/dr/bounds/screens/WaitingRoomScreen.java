@@ -139,7 +139,7 @@ public class WaitingRoomScreen extends dScreen {
 			else
 			{
 				playerIcon.setDimensions(128f, 128f);
-			
+				MainGame.previousScreen = null;
 			}
 			if(currentTime > 1.1f)
 			{

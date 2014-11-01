@@ -110,6 +110,11 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		Gdx.gl.glClearColor(189f/256f, 195f/256f, 199f/256f,.5f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 	
+		if(Gdx.input.isKeyPressed(Keys.BACK) || Gdx.input.isKeyJustPressed(Keys.SPACE))
+		{	
+			currentScreen.goBack();
+		}
+		
 		// UPDATE
 		accumulator += Gdx.graphics.getDeltaTime();
 		while(accumulator >= DELTA)
@@ -163,11 +168,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 			//debugCard.hide();
 			currentScreen.switchScreen(gameScreen);
 		}
-		
-		if(Gdx.input.isKeyJustPressed(Keys.BACK) || Gdx.input.isKeyJustPressed(Keys.SPACE))
-		{	
-			currentScreen.goBack();
-		}
+
 	}
 	
 	public static int getVirtualMouseX()
@@ -206,7 +207,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		//waitingRoomScreen.show();
 		if(currentScreen != waitingRoomScreen)
 		{
-			currentScreen.switchScreen(waitingRoomScreen);
+		//	currentScreen.switchScreen(waitingRoomScreen);
 		}
 	}
 

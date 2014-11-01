@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
@@ -23,7 +22,6 @@ import com.google.android.gms.games.GamesActivityResultCodes;
 import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.PlayerBuffer;
 import com.google.android.gms.games.Players.LoadPlayersResult;
-import com.google.android.gms.games.internal.GamesIntents;
 import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.InvitationBuffer;
 import com.google.android.gms.games.multiplayer.Invitations.LoadInvitationsResult;
@@ -36,7 +34,6 @@ import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
 import com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener;
 import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
-import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.plus.Plus;
 
 public class AndroidLauncher extends AndroidApplication implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,

@@ -1,0 +1,13 @@
+package com.dr.bounds.maps;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.dr.bounds.Player;
+
+public class DefaultMapType extends MapType {
+
+	public DefaultMapType(int type, Player player, MapGenerator generator) {
+		super(type, player, generator, bgTexture);
+		typeName = "Void/Default";
+	}
+
+}

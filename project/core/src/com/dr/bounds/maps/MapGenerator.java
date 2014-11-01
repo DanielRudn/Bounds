@@ -11,7 +11,7 @@ import com.dr.bounds.Player;
 public class MapGenerator {
 
 	// map generation type
-	public static final int TYPE_DEFAULT = 1515, TYPE_SPACE = 3030, TYPE_FACTORY = 6060;
+	public static final int TYPE_DEFAULT = 1515, TYPE_SPACE = 3030, TYPE_MACHINERY = 6060;
 	// the current map generation type
 	private MapType currentType; 
 	// the next map generation type
@@ -41,9 +41,13 @@ public class MapGenerator {
 	{
 		generateSeed();
 		this.player = player;
-		if(mapType == TYPE_FACTORY)
+		if(mapType == TYPE_DEFAULT)
 		{
-			currentType = new FactoryMapType(TYPE_FACTORY, player, obstacleTexture, this);
+			currentType = new DefaultMapType(TYPE_DEFAULT, player, this);
+		}
+		else if(mapType == TYPE_MACHINERY)
+		{
+			currentType = new MachineryMapType(TYPE_MACHINERY, player, obstacleTexture, this);
 		}
 		else if(mapType == TYPE_SPACE)
 		{
@@ -142,12 +146,16 @@ public class MapGenerator {
 		}
 		*/
 		//	determine which map type is set
-		int newType = rng.nextInt(2);
+		int newType = rng.nextInt(3);
 		if(newType == 0)
 		{
-			currentType = new FactoryMapType(TYPE_FACTORY, player, new Texture("girder.png"), this);
+			currentType = new DefaultMapType(TYPE_DEFAULT, player, this);
 		}
 		else if(newType == 1)
+		{
+			currentType = new MachineryMapType(TYPE_MACHINERY, player, new Texture("girder.png"), this);
+		}
+		else if(newType == 2)
 		{
 			currentType = new SpaceMapType(TYPE_SPACE, player, this);
 		}
@@ -179,16 +187,23 @@ public class MapGenerator {
 		if(score % 10 == 0 && nextType == null)
 		{
 			//	determine which map type is set
-			int newType = rng.nextInt(2);
+			int newType = rng.nextInt(3);
 			System.out.println("newType: " + newType);
 			if(newType == 0)
 			{
-				if(currentType.getMapType() != TYPE_FACTORY)
+				if(currentType.getMapType() != TYPE_DEFAULT)
 				{
-					nextType = new FactoryMapType(TYPE_FACTORY, player, new Texture("girder.png"), this);
+					nextType = new DefaultMapType(TYPE_DEFAULT, player, this);
 				}
 			}
 			else if(newType == 1)
+			{
+				if(currentType.getMapType() != TYPE_MACHINERY)
+				{
+					nextType = new MachineryMapType(TYPE_MACHINERY, player, new Texture("girder.png"), this);
+				}
+			}
+			else if(newType == 2)
 			{
 				if(currentType.getMapType() != TYPE_SPACE)
 				{

@@ -60,7 +60,7 @@ public class SpaceMapType extends MapType {
 						// send message to opponent saying player lost
 						MainGame.requestHandler.sendReliableMessage(new byte[]{'L'});
 					}
-				//	gen.setHadCollision(true);
+					gen.setHadCollision(true);
 					// test might have to remove
 					break;
 				}
@@ -71,7 +71,7 @@ public class SpaceMapType extends MapType {
 						// send message to opponent saying player lost
 						MainGame.requestHandler.sendReliableMessage(new byte[]{'L'});
 					}
-				//	gen.setHadCollision(true);
+					gen.setHadCollision(true);
 					// test might have to remove
 					break;
 				}

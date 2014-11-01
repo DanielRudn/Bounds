@@ -71,7 +71,7 @@ public class InboxScreen extends dUICardList implements AnimationStatusListener 
 		startAnimation = new ExpandAnimation(circleCover, SHOW_DURATION, this, SHOW_ANIM_ID, new Color(26f/256f, 188f/256f, 156f/256f, 1f), MainGame.VIRTUAL_HEIGHT * 2.5f);
 		startCardsAnimation = new SlideInArrayAnimation(list, SHOW_CARD_DURATION, this, SHOW_CARDS_ID);
 		this.setShowAnimation(startAnimation);
-		hideAnimation = new ShrinkAnimation(circleCover, .75f, this, HIDE_ANIM_ID, 0, MainGame.VIRTUAL_HEIGHT * 2.5f);
+		hideAnimation = new ShrinkAnimation(circleCover, 1f, this, HIDE_ANIM_ID, 0, MainGame.VIRTUAL_HEIGHT * 2.5f);
 		hideCardsAnimation = new SlideOutArrayAnimation(list, 1.5f, this, HIDE_CARDS_ID);
 		this.setHideAnimation(hideAnimation);
 		loadingIcon = new LoadingIcon(getWidth()/2f - circle.getWidth() / 2f,getHeight()/2f - circle.getHeight() / 2f,circle);
