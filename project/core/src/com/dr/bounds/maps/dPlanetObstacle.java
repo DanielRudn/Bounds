@@ -2,7 +2,7 @@ package com.dr.bounds.maps;
 
 import java.util.Random;
 
-import com.DR.dLib.dImage;
+import com.DR.dLib.ui.dImage;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;

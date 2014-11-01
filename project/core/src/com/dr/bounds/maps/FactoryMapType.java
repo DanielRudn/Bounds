@@ -38,7 +38,7 @@ public class FactoryMapType extends MapType{
 			obstacles.get(x).update(delta);
 			if(obstacles.get(x).shouldRegenerate())
 			{
-				generateDefault(x);
+				generate(x);
 				obstacles.get(x).setRegenerate(false);
 			}
 			// check if player had collision

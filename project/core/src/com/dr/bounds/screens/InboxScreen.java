@@ -2,36 +2,47 @@ package com.dr.bounds.screens;
 
 import java.util.ArrayList;
 
-import com.DR.dLib.dButton;
-import com.DR.dLib.dImage;
-import com.DR.dLib.dScreen;
-import com.DR.dLib.dText;
+import com.DR.dLib.animations.AnimationStatusListener;
+import com.DR.dLib.animations.ExpandAnimation;
+import com.DR.dLib.animations.ShrinkAnimation;
+import com.DR.dLib.ui.dButton;
+import com.DR.dLib.ui.dImage;
+import com.DR.dLib.ui.dScreen;
+import com.DR.dLib.ui.dText;
 import com.DR.dLib.dTweener;
-import com.DR.dLib.dUICard;
-import com.DR.dLib.dUICardList;
+import com.DR.dLib.ui.dUICard;
+import com.DR.dLib.ui.dUICardList;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dr.bounds.MainGame;
+import com.dr.bounds.animations.SlideInArrayAnimation;
+import com.dr.bounds.animations.SlideOutArrayAnimation;
 import com.dr.bounds.ui.InviteCard;
 import com.dr.bounds.ui.LoadingIcon;
 
-public class InboxScreen extends dUICardList {
+public class InboxScreen extends dUICardList implements AnimationStatusListener {
 	
 	// title card at the top
 	private dUICard titleCard;
 	// the back button on the title card
 	private dButton titleBackButton;
 	// timer for showing the transition animation to this screen
-	private float showTime = 0;
 	private final float SHOW_DURATION = 3f;
-	private boolean showAnimation = false;
 	// time to show list of cards
-	private float showCardTime = 0;
 	private final float SHOW_CARD_DURATION = 2f;
 	private boolean showCards = false;
+	// animations
+	private ExpandAnimation startAnimation;
+	private SlideInArrayAnimation startCardsAnimation;
+	private static final int SHOW_CARDS_ID = 23456;
+	private static final int SHOW_ANIM_ID = 12345;
+	private static final int HIDE_ANIM_ID = 34567;
+	private ShrinkAnimation hideAnimation;
+	private SlideOutArrayAnimation hideCardsAnimation;
+	private static final int HIDE_CARDS_ID = 45678;
 	// loading icon to show while invitations load
 	private LoadingIcon loadingIcon;
 	// used for transition to show
@@ -57,10 +68,12 @@ public class InboxScreen extends dUICardList {
 		Texture circle = new Texture("circle.png");
 		circle.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		circleCover = new dImage(0,0,circle);
-		circleCover.setColor(new Color(26f/256f, 188f/256f, 156f/256f, 1f));
-		circleCover.setDimensions(0, 0);
-		circleCover.setOriginCenter();
-		
+		startAnimation = new ExpandAnimation(circleCover, SHOW_DURATION, this, SHOW_ANIM_ID, new Color(26f/256f, 188f/256f, 156f/256f, 1f), MainGame.VIRTUAL_HEIGHT * 2.5f);
+		startCardsAnimation = new SlideInArrayAnimation(list, SHOW_CARD_DURATION, this, SHOW_CARDS_ID);
+		this.setShowAnimation(startAnimation);
+		hideAnimation = new ShrinkAnimation(circleCover, .75f, this, HIDE_ANIM_ID, 0, MainGame.VIRTUAL_HEIGHT * 2.5f);
+		hideCardsAnimation = new SlideOutArrayAnimation(list, 1.5f, this, HIDE_CARDS_ID);
+		this.setHideAnimation(hideAnimation);
 		loadingIcon = new LoadingIcon(getWidth()/2f - circle.getWidth() / 2f,getHeight()/2f - circle.getHeight() / 2f,circle);
 	}
 	
@@ -68,47 +81,30 @@ public class InboxScreen extends dUICardList {
 	public void update(float delta)
 	{
 		super.update(delta);
-		if(showAnimation && showTime <= SHOW_DURATION)
+		if(startAnimation.isActive())
 		{
-			showTime+=delta;
-			//expand circle to cover the screen
-			circleCover.setDimensions(dTweener.ExponentialEaseOut(showTime, 0, MainGame.VIRTUAL_HEIGHT * 2.5f, SHOW_DURATION)
-							,dTweener.ExponentialEaseOut(showTime, 0, MainGame.VIRTUAL_HEIGHT * 2.5f, SHOW_DURATION));
-			circleCover.setOriginCenter();
-			// bring in the list and titleCard
-			if(showTime >= .6f)
-			{
-				titleCard.setY(dTweener.ElasticOut(showTime - .6f, -titleCard.getHeight() - getPadding(), titleCard.getHeight() + getPadding(), SHOW_DURATION - .6f,5f));
-			}
-			if(showTime >= .15f && showTime <= 0.3)
-			{
-				loadingIcon.start();
-			}
+			startAnimation.update(delta);
 		}
-		else if(showAnimation && showTime >= SHOW_DURATION)
+		if(startCardsAnimation.isActive())
 		{
-			// animation finished
-			// replace circle cover with the card cover
-			
-			showAnimation = false;
+			startCardsAnimation.update(delta);
 		}
-		
-		// checks if showTime >= .6 so that animation doesn't look bad 
-		if(showCards && showCardTime <= SHOW_CARD_DURATION && showTime >= .6f)
-		{
-			showCardTime+=delta;
-			for(int x = 0; x < getSize(); x++)
-			{
-				getListItem(x).setY(dTweener.ElasticOut(showCardTime, -getListItem(x).getHeight() - 24f,
-						(titleCard.getHeight() + getPadding() + (x+1)*(getListItem(x).getHeight() + getPadding() + 16f)), SHOW_CARD_DURATION, 5f));
-			}
-		}
-		else if(showCards == false || showTime <= .6f)
+		else if(startCardsAnimation.isActive() == false)
 		{
 			loadingIcon.update(delta);
 		}
+		if(hideAnimation.isActive())
+		{
+			hideAnimation.update(delta);
+			hideCardsAnimation.update(delta);
+		}
+		if(showCards && (startAnimation.isFinished() || startAnimation.getTime() >= .6f) && startCardsAnimation.isActive() == false)
+		{
+			startCardsAnimation.start();
+			loadingIcon.stop();
+		}
 		
-		if(showTime >= SHOW_DURATION && showCardTime >= SHOW_CARD_DURATION)
+		if(startAnimation.isFinished() && startCardsAnimation.isFinished())
 		{
 			for(int x = 0; x < getSize(); x++)
 			{
@@ -138,43 +134,69 @@ public class InboxScreen extends dUICardList {
 	public void showCards()
 	{
 		showCards = true;
-		showCardTime = 0;
-		loadingIcon.stop();
-	}
-	
-	@Override
-	public void show()
-	{
-		super.show();
-		titleCard.setY(-titleCard.getHeight()*1.5f);
-		circleCover.setDimensions(0, 0);
-		circleCover.setPos(MainGame.getVirtualMouseX(), MainGame.getVirtualMouseY());
-		showTime = 0;
-		showAnimation = true;
-	}
-	
-	@Override
-	public void hide()
-	{
-		super.hide();
-		loadingIcon.stop();
-		showAnimation = false;
 	}
 
 	@Override
 	public void goBack() {
 		if(MainGame.previousScreen != null)
 		{
-			switchScreen(MainGame.previousScreen);
+			switchScreen(MainGame.debugCard);
 		}
 	}
 
 	@Override
 	public void switchScreen(dScreen newScreen) {
-		this.hide();
-		newScreen.show();
 		MainGame.currentScreen = newScreen;
 		MainGame.previousScreen = this;
+		this.hide();
+		newScreen.show();
 	}
 
+	@Override
+	public void onAnimationStart(int ID, float duration) {
+		if(ID == SHOW_ANIM_ID)
+		{
+			setTitleCard(titleCard);
+			titleCard.setY(-titleCard.getHeight()*1.5f);
+			loadingIcon.start();
+		}
+		else if(ID == HIDE_ANIM_ID)
+		{
+			setVisible(true);
+			hideCardsAnimation.start();
+			startAnimation.stop();
+			startCardsAnimation.stop();
+			loadingIcon.stop();
+		}
+	}
+
+	@Override
+	public void whileAnimating(int ID, float time, float duration, float delta) {
+		if(ID == SHOW_ANIM_ID)
+		{
+			if(time >= .6f)
+			{
+				titleCard.setY(dTweener.ElasticOut(time - .6f, -titleCard.getHeight() - getPadding(), titleCard.getHeight() + getPadding(), duration - .6f,5f));
+			}
+		}
+		else if(ID == HIDE_ANIM_ID)
+		{
+			if(time >= .15f)
+			{
+				titleCard.setY(dTweener.ExponentialEaseOut(time - .15f, MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f,  -titleCard.getHeight() - getPadding() * 1.5f, duration - .15f));
+			}
+		}
+	}
+
+	@Override
+	public void onAnimationFinish(int ID) {
+		if(ID == SHOW_CARDS_ID)
+		{
+			showCards = false;
+		}
+		else if(ID == HIDE_ANIM_ID)
+		{
+			MainGame.previousScreen = null;
+		}
+	}
 }

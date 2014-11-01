@@ -1,0 +1,24 @@
+package com.dr.bounds.animations;
+
+import java.util.ArrayList;
+
+import com.DR.dLib.AnimationStatusListener;
+import com.DR.dLib.dAnimation;
+import com.DR.dLib.dObject;
+
+public class SlideOutArrayAnimation extends dAnimation {
+
+	private ArrayList<dUICards> objectsToAnimate;
+	
+	public SlideOutArrayAnimation(ArrayList<dObject> objectsToAnimate, float duration, AnimationStatusListener listener, int ID) {
+		super(null, duration, listener, ID);
+	
+	}
+
+	@Override
+	protected void animate(float time, float duration, float delta) {
+
+		
+	}
+
+}

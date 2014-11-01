@@ -2,9 +2,9 @@ package com.dr.bounds;
 
 import java.util.ArrayList;
 
-import com.DR.dLib.dScreen;
-import com.DR.dLib.dText;
-import com.DR.dLib.dUICard;
+import com.DR.dLib.ui.dScreen;
+import com.DR.dLib.ui.dText;
+import com.DR.dLib.ui.dUICard;
 import com.DR.dLib.dValues;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -129,6 +129,10 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		inviteCard.render(batch);
 		*/
 		currentScreen.render(batch);
+		if(previousScreen != null)
+		{
+			previousScreen.render(batch);
+		}
 		batch.end();
 		
 		/**
@@ -146,6 +150,10 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		inviteScreen.update(DELTA);
 		*/
 		currentScreen.update(delta);
+		if(previousScreen != null && currentScreen != previousScreen)
+		{
+			previousScreen.update(delta);
+		}
 		//update camera
 		camera.update();
 		// waiting room has moved away, start playing.
@@ -156,8 +164,8 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 			currentScreen.switchScreen(gameScreen);
 		}
 		
-		if(Gdx.input.isKeyPressed(Keys.BACK) || Gdx.input.isKeyPressed(Keys.SPACE))
-		{
+		if(Gdx.input.isKeyJustPressed(Keys.BACK) || Gdx.input.isKeyJustPressed(Keys.SPACE))
+		{	
 			currentScreen.goBack();
 		}
 	}
@@ -221,7 +229,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 
 	@Override
 	public void onRealTimeMessageRecieved(byte[] msg) {
-		debugCard.addText("\nMESSAGE RECIEVED: " + msg[0]);
+		GameScreen.log("\nMESSAGE RECIEVED: " + msg[0]);
 		if(msg[0] == 'M')// movement received
 		{
 			gameScreen.getOpponent().setMovementMessage(msg);
@@ -261,13 +269,15 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 	}
 
 	@Override
-	public void onPeerLeft() {
+	public void onPeerLeft()
+	{
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void onPeersConnected() {
+	public void onPeersConnected() 
+	{
 		//opponent just connected
 		requestHandler.sendReliableMessage(new byte[]{'S',(byte)gameScreen.getPlayerSkinID()});
 	}

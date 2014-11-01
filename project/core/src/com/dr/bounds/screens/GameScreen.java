@@ -1,9 +1,9 @@
 package com.dr.bounds.screens;
 
-import com.DR.dLib.dScreen;
-import com.DR.dLib.dText;
+import com.DR.dLib.ui.dScreen;
+import com.DR.dLib.ui.dText;
 import com.DR.dLib.dTweener;
-import com.DR.dLib.dUICard;
+import com.DR.dLib.ui.dUICard;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -263,10 +263,10 @@ public class GameScreen extends dScreen {
 
 	@Override
 	public void switchScreen(dScreen newScreen) {
-		this.hide();
+	//	this.hide();
 		newScreen.show();
 		MainGame.currentScreen = newScreen;
-		MainGame.previousScreen = this;
+	//	MainGame.previousScreen = this;
 	}
 	
 	// TEMP

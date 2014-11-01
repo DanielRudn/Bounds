@@ -1,10 +1,10 @@
 package com.dr.bounds.screens;
 
-import com.DR.dLib.dImage;
-import com.DR.dLib.dScreen;
-import com.DR.dLib.dText;
+import com.DR.dLib.ui.dImage;
+import com.DR.dLib.ui.dScreen;
+import com.DR.dLib.ui.dText;
 import com.DR.dLib.dTweener;
-import com.DR.dLib.dUICard;
+import com.DR.dLib.ui.dUICard;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -114,7 +114,7 @@ public class WaitingRoomScreen extends dScreen {
 			showTime+=delta;
 			//camera.position.set(dTweener.ElasticOut(cameraTime, VIRTUAL_WIDTH/2f, VIRTUAL_WIDTH, SHOW_DURATION,4f),dTweener.ElasticOut(cameraTime, VIRTUAL_HEIGHT/2f, 0, SHOW_DURATION,6f), camera.position.z);
 			//camera.position.set(camera.position.x,dTweener.ElasticOut(cameraTime, VIRTUAL_HEIGHT/2f, VIRTUAL_HEIGHT, SHOW_DURATION,6f), camera.position.z);
-			setY(dTweener.ElasticOut(showTime, -MainGame.VIRTUAL_HEIGHT, MainGame.VIRTUAL_HEIGHT, SHOW_DURATION, 6f));
+			setX(dTweener.ElasticOut(showTime, -MainGame.VIRTUAL_WIDTH - getPadding(), MainGame.VIRTUAL_WIDTH + getPadding(), SHOW_DURATION, 6f));
 		//	currentTime = 0;
 			if(showTime >= SHOW_DURATION/4f && showTime <= SHOW_DURATION/3.5f)
 			{
@@ -235,7 +235,7 @@ public class WaitingRoomScreen extends dScreen {
 
 	private void reinit()
 	{
-		setPosition(0,-MainGame.VIRTUAL_HEIGHT);
+		setPosition(-MainGame.VIRTUAL_WIDTH - getPadding(), 0);
 		showTime = 0;
 		showScreen = false;
 		showElements = false;

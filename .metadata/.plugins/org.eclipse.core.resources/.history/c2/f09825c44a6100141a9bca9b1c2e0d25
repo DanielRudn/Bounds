@@ -1,0 +1,40 @@
+package com.dr.bounds.animations;
+
+import java.util.ArrayList;
+
+import com.DR.dLib.AnimationStatusListener;
+import com.DR.dLib.dAnimation;
+import com.DR.dLib.dTweener;
+import com.DR.dLib.dUICard;
+import com.dr.bounds.MainGame;
+
+public class SlideOutArrayAnimation extends dAnimation {
+
+	private ArrayList<dUICard> objectsToAnimate;
+	private ArrayList<Float> yPosAtStart;
+	
+	public SlideOutArrayAnimation(ArrayList<dUICard> objectsToAnimate, float duration, AnimationStatusListener listener, int ID) {
+		super(null, duration, listener, ID);
+		this.objectsToAnimate = objectsToAnimate;
+		yPosAtStart = new ArrayList<Float>();
+	}
+
+	@Override
+	protected void animate(float time, float duration, float delta) {
+		for(int x = 0; x < objectsToAnimate.size(); x++)
+		{
+			objectsToAnimate.get(x).setY(dTweener.ExponentialEaseOut(time, yPosAtStart.get(x), -MainGame.VIRTUAL_HEIGHT * 2.5f, duration));
+		}
+	}
+
+	@Override
+	public void start()
+	{
+		super.start();
+		for(int x = 0; x < objectsToAnimate.size(); x++)
+		{
+			yPosAtStart.add(new Float(objectsToAnimate.get(x).getY()));
+		}
+	}
+}
+

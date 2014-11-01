@@ -47,7 +47,7 @@ public class SpaceMapType extends MapType {
 			obstacles.get(x).update(delta);
 			if(obstacles.get(x).shouldRegenerate())
 			{
-				generateDefault(x);
+				generate(x);
 				obstacles.get(x).setRegenerate(false);
 			}
 			// check if player had collision
@@ -88,49 +88,29 @@ public class SpaceMapType extends MapType {
 	}
 	
 	@Override
-	protected void generateDefault(int index)
+	protected void generateBlock(int index)
 	{
-		if(isTransitioning == false)
+		int side = MapGenerator.rng.nextInt(11); // 0,1,5,6,7 is LEFT, 2,3,8,9,10 is RIGHT, 4 is center
+		if(side == 0 || side == 1 || side == 5 || side == 6 || side == 7)// left
 		{
-			//reset passed for this obstacles
-			obstacles.get(index).setPassed(false);
-			int side = MapGenerator.rng.nextInt(11); // 0,1,5,6,7 is LEFT, 2,3,8,9,10 is RIGHT, 4 is center
-			if(side == 0 || side == 1 || side == 5 || side == 6 || side == 7)// left
-			{
-				obstacles.get(index).setWidth(MIN_WIDTH + MapGenerator.rng.nextInt(MAX_WIDTH));
-				obstacles.get(index).setHeight(obstacles.get(index).getWidth());
-				obstacles.get(index).setX(32f);
-			}
-			else if(side == 2 || side == 3 || side == 8 || side == 9 || side == 10)// right
-			{
-				obstacles.get(index).setWidth(MIN_WIDTH + MapGenerator.rng.nextInt(MAX_WIDTH));
-				obstacles.get(index).setHeight(obstacles.get(index).getWidth());
-				obstacles.get(index).setX(MainGame.VIRTUAL_WIDTH - obstacles.get(index).getWidth() - 32f);
-			}
-			else if(side == 4)// center
-			{
-				obstacles.get(index).setWidth(MIN_WIDTH + MapGenerator.rng.nextInt(MAX_WIDTH) - 32f);
-				obstacles.get(index).setHeight(obstacles.get(index).getWidth());
-				obstacles.get(index).setX(MainGame.VIRTUAL_WIDTH / 2f - obstacles.get(index).getWidth() / 2f + (-50 + MapGenerator.rng.nextInt(100)));
-			}
-			((dPlanetObstacle)obstacles.get(index)).generate();
-			obstacles.get(index).setY(obstacles.get(getPreviousIndex(index)).getY() - MIN_DISTANCE - MapGenerator.rng.nextInt(MAX_DISTANCE));
+			obstacles.get(index).setWidth(MIN_WIDTH + MapGenerator.rng.nextInt(MAX_WIDTH));
+			obstacles.get(index).setHeight(obstacles.get(index).getWidth());
+			obstacles.get(index).setX(32f);
 		}
-		else
+		else if(side == 2 || side == 3 || side == 8 || side == 9 || side == 10)// right
 		{
-			boolean canSwitch = true;
-			for(int x = 0; x < obstacles.size(); x++)
-			{
-				if(obstacles.get(x).shouldRegenerate() == false)
-				{
-					canSwitch = false;
-				}
-			}
-			if(canSwitch)
-			{
-				switchBG = true;
-			}
+			obstacles.get(index).setWidth(MIN_WIDTH + MapGenerator.rng.nextInt(MAX_WIDTH));
+			obstacles.get(index).setHeight(obstacles.get(index).getWidth());
+			obstacles.get(index).setX(MainGame.VIRTUAL_WIDTH - obstacles.get(index).getWidth() - 32f);
 		}
+		else if(side == 4)// center		
+		{
+			obstacles.get(index).setWidth(MIN_WIDTH + MapGenerator.rng.nextInt(MAX_WIDTH) - 32f);
+			obstacles.get(index).setHeight(obstacles.get(index).getWidth());
+			obstacles.get(index).setX(MainGame.VIRTUAL_WIDTH / 2f - obstacles.get(index).getWidth() / 2f + (-50 + MapGenerator.rng.nextInt(100)));
+		}
+		((dPlanetObstacle)obstacles.get(index)).generate();
+		obstacles.get(index).setY(obstacles.get(getPreviousIndex(index)).getY() - MIN_DISTANCE - MapGenerator.rng.nextInt(MAX_DISTANCE));
 	}
 
 }

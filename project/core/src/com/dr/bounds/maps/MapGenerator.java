@@ -78,7 +78,7 @@ public class MapGenerator {
 				nextType.obstacles.get(x).update(delta);
 				if(nextType.obstacles.get(x).shouldRegenerate())
 				{
-					nextType.generateDefault(x);
+					nextType.generate(x);
 					nextType.obstacles.get(x).setRegenerate(false);
 				}
 			}

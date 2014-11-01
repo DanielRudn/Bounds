@@ -1,0 +1,20 @@
+package com.dr.bounds.animations;
+
+import com.DR.dLib.AnimationStatusListener;
+import com.DR.dLib.dAnimation;
+import com.DR.dLib.dObject;
+
+public class SlideInArrayAnimation extends dAnimation {
+
+	
+	
+	public SlideInArrayAnimation(ArrayList<dObject> objectsToAnimate, float duration, AnimationStatusListener listener, int ID) {
+		super(objectToAnimate, duration, listener, ID);
+	}
+
+	@Override
+	protected void animate(float time, float duration, float delta) {
+		
+	}
+
+}

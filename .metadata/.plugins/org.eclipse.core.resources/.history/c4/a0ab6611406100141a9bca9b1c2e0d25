@@ -1,0 +1,36 @@
+package com.dr.bounds.animations;
+
+import java.util.ArrayList;
+
+import com.DR.dLib.AnimationStatusListener;
+import com.DR.dLib.dAnimation;
+import com.DR.dLib.dObject;
+import com.dr.bounds.MainGame;
+
+public class SlideInArrayAnimation extends dAnimation {
+
+	private ArrayList<dObject> animObjects;
+	
+	public SlideInArrayAnimation(ArrayList<dObject> objectsToAnimate, float duration, AnimationStatusListener listener, int ID) {
+		super(null, duration, listener, ID);
+		animObjects = objectsToAnimate;
+	}
+
+	@Override
+	protected void animate(float time, float duration, float delta) {
+		for(int x = 0; x < animObjects.size(); x++)
+		{
+			
+		}
+	}
+
+	@Override
+	public void start()
+	{
+		super.start();
+		for(int x = 0; x < animObjects.size(); x++)
+		{
+			animObjects.get(x).setY(MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f - animObjects.get(x).getHeight() - 16f);
+		}
+	}
+}

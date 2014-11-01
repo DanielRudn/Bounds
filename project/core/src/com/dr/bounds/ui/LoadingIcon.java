@@ -1,6 +1,6 @@
 package com.dr.bounds.ui;
 
-import com.DR.dLib.dImage;
+import com.DR.dLib.ui.dImage;
 import com.DR.dLib.dObject;
 import com.DR.dLib.dTweener;
 import com.badlogic.gdx.graphics.Color;

@@ -43,7 +43,6 @@
 <fullyQualifiedTypeName name="com.DR.dLib.dScreen"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.Input.Keys"/>
 <fullyQualifiedTypeName name="com.DR.dLib.dUICardList"/>
-<fullyQualifiedTypeName name="com.dr.bounds.MainGame"/>
 <fullyQualifiedTypeName name="com.sun.prism.paint.Color"/>
 <fullyQualifiedTypeName name="com.dr.bounds.screens.InboxScreen"/>
 <fullyQualifiedTypeName name="com.dr.bounds.ui.LoadingIcon"/>
@@ -60,4 +59,5 @@
 <fullyQualifiedTypeName name="com.dr.bounds.screens.GameScreen"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Texture.TextureFilter"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.Sprite"/>
+<fullyQualifiedTypeName name="com.dr.bounds.MainGame"/>
 </qualifiedTypeNameHistroy>
