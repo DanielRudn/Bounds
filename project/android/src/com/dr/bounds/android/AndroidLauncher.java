@@ -427,6 +427,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 			Games.RealTimeMultiplayer.sendUnreliableMessage(apiClient, message, currentRoomID, opponent.getParticipantId());
 		}
 	}
+	
 	@Override
 	public void loadRecentlyPlayedWithPlayers()
 	{

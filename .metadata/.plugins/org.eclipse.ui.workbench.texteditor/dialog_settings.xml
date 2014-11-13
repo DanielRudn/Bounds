@@ -2,30 +2,30 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="nextType.secondBG" key="selection"/>
+		<item value="delta" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="secondBG"/>
-			<item value="firstBG"/>
-			<item value="hadcoll"/>
-			<item value="opponentlost"/>
-			<item value="opponent"/>
-			<item value="generatede"/>
-			<item value="generate"/>
-			<item value="generatedef"/>
+			<item value="arg3"/>
+			<item value="arg2"/>
+			<item value="switch"/>
+			<item value="setCurren"/>
+			<item value="setcurrentsc"/>
+			<item value="setcurrents"/>
+			<item value="isMultipl"/>
+			<item value="setpos"/>
 		</list>
 		<list key="replacehistory">
+			<item value="delta"/>
+			<item value="duration"/>
 			<item value="nextType.secondBG"/>
 			<item value="nextType.firstBG"/>
 			<item value="stayButton"/>
 			<item value="invitable"/>
 			<item value="SHOW_DURATION"/>
 			<item value="msg"/>
-			<item value="currentCircle"/>
-			<item value="x"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">

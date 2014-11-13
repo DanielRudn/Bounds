@@ -20,6 +20,8 @@ import com.dr.bounds.screens.DebugScreen;
 import com.dr.bounds.screens.GameScreen;
 import com.dr.bounds.screens.InboxScreen;
 import com.dr.bounds.screens.InviteScreen;
+import com.dr.bounds.screens.MenuScreen;
+import com.dr.bounds.screens.MultiplayerScreen;
 import com.dr.bounds.screens.WaitingRoomScreen;
 import com.dr.bounds.ui.InviteCard;
 import com.dr.bounds.ui.PlayerCard;
@@ -45,6 +47,8 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 	// SCREENS
 	public static dScreen currentScreen;
 	public static dScreen previousScreen = null;
+	public static MenuScreen menuScreen;
+	public static MultiplayerScreen multiplayerScreen;
 	public static InviteScreen inviteScreen;
 	public static GameScreen gameScreen;
 	public static WaitingRoomScreen waitingRoomScreen;
@@ -88,7 +92,10 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		
 		debugCard = new DebugScreen(0,0,card,button);
 		//debugCard.hide();
-		waitingRoomScreen = new WaitingRoomScreen(0,-VIRTUAL_HEIGHT,card,icon,circle);
+		
+		menuScreen = new MenuScreen(0,0,card);
+		multiplayerScreen = new MultiplayerScreen(0,0,card);
+		waitingRoomScreen = new WaitingRoomScreen(0,0,card,icon,circle);
 		//waitingRoomScreen.hide();
 		gameScreen = new GameScreen(0,0,card, obstacle);
 	//	gameScreen.pause();
@@ -101,7 +108,8 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		batch = new SpriteBatch();
 		
 		currentScreen = debugCard;
-		// currentScreen = gameScreen;
+		currentScreen = menuScreen;
+		menuScreen.show();
 	}
 
 	@Override
@@ -136,7 +144,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		currentScreen.render(batch);
 		if(previousScreen != null)
 		{
-			previousScreen.render(batch);
+		//	previousScreen.render(batch);
 		}
 		batch.end();
 		
@@ -147,17 +155,10 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 	
 	public void update(float delta)
 	{
-		// update screens
-		/*
-		waitingRoomScreen.update(DELTA);
-		debugCard.update(DELTA);
-		gameScreen.update(DELTA);
-		inviteScreen.update(DELTA);
-		*/
 		currentScreen.update(delta);
 		if(previousScreen != null && currentScreen != previousScreen)
 		{
-			previousScreen.update(delta);
+		//	previousScreen.update(delta);
 		}
 		//update camera
 		camera.update();
@@ -165,7 +166,6 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		if(waitingRoomScreen.getHideTime() >= 2f)
 		{
 			gameScreen.resume();
-			//debugCard.hide();
 			currentScreen.switchScreen(gameScreen);
 		}
 
@@ -197,36 +197,19 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 	 */
 	
 	@Override
-	public void onConnected()
-	{
-		
-	}
+	public void onConnected(){}
 
 	@Override
-	public void onJoinedRoom() {
-		//waitingRoomScreen.show();
-		if(currentScreen != waitingRoomScreen)
-		{
-		//	currentScreen.switchScreen(waitingRoomScreen);
-		}
-	}
+	public void onJoinedRoom() {}
 
 	@Override
-	public void onLeftRoom() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void onLeftRoom() {}
 
 	@Override
-	public void onRoomConnected() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void onRoomConnected() {}
 
 	@Override
-	public void onRoomCreated() {
-		//waitingRoomScreen.show();
-	}
+	public void onRoomCreated() {}
 
 	@Override
 	public void onRealTimeMessageRecieved(byte[] msg) {
@@ -266,6 +249,10 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		else if(msg[0] == 'P')// opponent wants a rematch
 		{
 			gameScreen.setOpponentWantsRematch(true);
+		}
+		else if(msg[0] == 'T') // map type change
+		{
+			gameScreen.setMapType(msg);
 		}
 	}
 

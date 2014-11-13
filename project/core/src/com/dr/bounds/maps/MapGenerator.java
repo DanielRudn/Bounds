@@ -2,13 +2,16 @@ package com.dr.bounds.maps;
 
 import java.util.Random;
 
+import com.DR.dLib.TimerListener;
+import com.DR.dLib.dTimer;
+import com.DR.dLib.ui.dImage;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 
-public class MapGenerator {
+public class MapGenerator implements TimerListener {
 
 	// map generation type
 	public static final int TYPE_DEFAULT = 1515, TYPE_SPACE = 3030, TYPE_MACHINERY = 6060;
@@ -32,6 +35,11 @@ public class MapGenerator {
 	private boolean scoreChanged = false;
 	// amount to increment score by since the MapTypes can vary in difficulty and award different amounts of score
 	private int scoreIncrementAmount = 1;
+	// timer for switching map type
+	private dTimer typeSwitchTimer;
+	
+	// test, remove
+	public static dImage transitionImage;
 	
 	/**
 	 * Creates a new generator and sets the level type
@@ -53,17 +61,25 @@ public class MapGenerator {
 		{
 			currentType = new SpaceMapType(TYPE_SPACE, player, this);
 		}
+		
+		transitionImage = new dImage(0,0, new Texture("transitionDevice.png"));
+		
+		typeSwitchTimer = new dTimer(10f,10f,0,this);
+		typeSwitchTimer.start();
 	}
 	
 	public void update(float delta)
 	{
 		currentType.update(delta);
-		
+		if(typeSwitchTimer.isRunning())
+		{
+			typeSwitchTimer.update(delta);
+		}
 		if(nextType != null && currentType.shouldSwitch())
 		{
 			currentType = nextType;
-			currentType.generateFirstSet();
 			nextType = null;
+			typeSwitchTimer.start();
 		}
 		else if(nextType != null)
 		{
@@ -106,6 +122,7 @@ public class MapGenerator {
 	public void render(SpriteBatch batch)
 	{
 		currentType.render(batch);
+		transitionImage.render(batch);
 	}
 	
 	public void setSeed(long s)
@@ -184,35 +201,49 @@ public class MapGenerator {
 	public void incrementScore()
 	{
 		score+=scoreIncrementAmount;
-		if(score % 10 == 0 && nextType == null)
+	}
+	
+	/**
+	 * Used to set MapGenerators new map type when a message is received from opponent when not host
+	 * @param msg 
+	 */
+	public void setMapType(byte[] msg)
+	{
+		int newType = msg[1];
+		setNextType(newType);
+		if(nextType == null)
 		{
-			//	determine which map type is set
-			int newType = rng.nextInt(3);
-			System.out.println("newType: " + newType);
-			if(newType == 0)
+			typeSwitchTimer.start();
+			MainGame.requestHandler.sendReliableMessage(new byte[]{'T',(byte) newType});// send message to opponent with new map type 
+		}
+		currentType.setNextMapType(nextType);
+	}
+	
+	private void setNextType(int MAP_TYPE)
+	{
+		if(MAP_TYPE == 0)
+		{
+			if(currentType.getMapType() != TYPE_DEFAULT)
 			{
-				if(currentType.getMapType() != TYPE_DEFAULT)
-				{
-					nextType = new DefaultMapType(TYPE_DEFAULT, player, this);
+				nextType = new DefaultMapType(TYPE_DEFAULT, player, this);
 				}
-			}
-			else if(newType == 1)
+		}
+		else if(MAP_TYPE == 1)
+		{
+			if(currentType.getMapType() != TYPE_MACHINERY)
 			{
-				if(currentType.getMapType() != TYPE_MACHINERY)
-				{
-					nextType = new MachineryMapType(TYPE_MACHINERY, player, new Texture("girder.png"), this);
-				}
+				nextType = new MachineryMapType(TYPE_MACHINERY, player, new Texture("girder.png"), this);
 			}
-			else if(newType == 2)
+		}
+		else if(MAP_TYPE == 2)
+		{
+			if(currentType.getMapType() != TYPE_SPACE)
 			{
-				if(currentType.getMapType() != TYPE_SPACE)
-				{
-					nextType = new SpaceMapType(TYPE_SPACE, player, this);
-				}
+				nextType = new SpaceMapType(TYPE_SPACE, player, this);
 			}
-			currentType.setNextMapType(nextType);
 		}
 	}
+
 	
 	public boolean hasScoreChanged()
 	{
@@ -238,5 +269,34 @@ public class MapGenerator {
 	{
 		return hadCollision;
 	}
+
+	@Override
+	public void onTimerFinish(int ID)
+	{
+		//	determine which map type is set
+		int newType = rng.nextInt(3);
+		setNextType(newType);
+		if(nextType == null)
+		{
+			if(MainGame.requestHandler.isMultiplayer() && MainGame.requestHandler.isHost())
+			{
+				typeSwitchTimer.start();
+				MainGame.requestHandler.sendReliableMessage(new byte[]{'T',(byte) newType});// send message to opponent with new map type 
+			}
+			else if(MainGame.requestHandler.isMultiplayer() == false)
+			{
+				typeSwitchTimer.start();
+			}
+		}
+		currentType.setNextMapType(nextType);
+	}
+	
+	@Override
+	public void onTimerStart(int ID) {
+		System.out.println("timer started");
+	}
+
+	@Override
+	public void onTimerTick(int ID) {}
 	
 }

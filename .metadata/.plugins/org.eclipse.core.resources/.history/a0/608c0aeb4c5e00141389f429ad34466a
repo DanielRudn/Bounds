@@ -1,5 +1,0 @@
-package com.dr.bounds.maps;
-
-public class FactoryMapType extends MapType{
-
-}

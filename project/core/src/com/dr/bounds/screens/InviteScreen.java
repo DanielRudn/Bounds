@@ -42,6 +42,8 @@ public class InviteScreen extends dUICardList implements AnimationStatusListener
 	private dImage circleCover;
 	// loading icon that shows while players are being loaded
 	private LoadingIcon loadingIcon;
+	// screen that will be shown next
+	private dScreen newScreen = null;
 	
 	public InviteScreen(float x, float y, Texture texture, ArrayList<dUICard> list) {
 		super(x, y, texture, list);
@@ -82,7 +84,7 @@ public class InviteScreen extends dUICardList implements AnimationStatusListener
 				if(getListItem(x).isVisible() && getListItem(x).isClicked())
 				{
 					MainGame.requestHandler.sendInvite(((PlayerCard) getListItem(x)).getPlayerID());
-					MainGame.currentScreen.switchScreen(MainGame.waitingRoomScreen);
+					switchScreen(MainGame.waitingRoomScreen);
 				}
 			}
 		}
@@ -118,6 +120,14 @@ public class InviteScreen extends dUICardList implements AnimationStatusListener
 	@Override
 	public void render(SpriteBatch batch)
 	{
+		if(newScreen != null && hideAnimation.isActive())
+		{
+			newScreen.render(batch);
+		}
+		if(MainGame.previousScreen != null)
+		{
+			MainGame.previousScreen.render(batch);
+		}
 		circleCover.render(batch);
 		loadingIcon.render(batch);
 		super.render(batch);
@@ -129,20 +139,25 @@ public class InviteScreen extends dUICardList implements AnimationStatusListener
 	}
 	
 	@Override
+	public void show()
+	{
+		super.show();
+		MainGame.requestHandler.loadRecentlyPlayedWithPlayers();
+	}
+	
+	@Override
 	public void goBack() {
-		if(MainGame.previousScreen != null)
-		{
-			switchScreen(MainGame.debugCard);
-			startAnimation.stop();
-			cardsAnimation.stop();
-		}
+		this.hide();
+		this.newScreen = MainGame.menuScreen;
+		startAnimation.stop();
+		cardsAnimation.stop();
 	}
 
 	@Override
 	public void switchScreen(dScreen newScreen) {
-		//this.hide();
-		newScreen.show();
+		this.newScreen = null;
 		MainGame.currentScreen = newScreen;
+		newScreen.show();
 		MainGame.previousScreen = this;
 	}
 
@@ -199,6 +214,8 @@ public class InviteScreen extends dUICardList implements AnimationStatusListener
 		else if(ID == HIDE_ANIM_ID)
 		{
 			MainGame.previousScreen = null;
+			MainGame.currentScreen = newScreen;
+			newScreen = null;
 		}
 		else if(ID == CARDS_ANIM_ID)
 		{

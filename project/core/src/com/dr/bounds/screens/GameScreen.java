@@ -55,7 +55,7 @@ public class GameScreen extends dScreen {
 		mapGen = new MapGenerator(MapGenerator.TYPE_MACHINERY,obstacle, player);
 		mapGen.generateSeed();
 		// TODO: might remove
-		mapGen.generateFirstSet();
+	//	mapGen.generateFirstSet();
 		
 		gameOverScreen = new GameOverScreen(getX(), getY(), texture, player.getSkinID());
 		gameOverScreen.hide();
@@ -233,6 +233,11 @@ public class GameScreen extends dScreen {
 	public void setOpponentSkin(int id)
 	{
 		opponent.setSkinID(id);
+	}
+	
+	public void setMapType(byte[] msg)
+	{
+		mapGen.setMapType(msg);
 	}
 	
 	public int getOpponentSkinID()

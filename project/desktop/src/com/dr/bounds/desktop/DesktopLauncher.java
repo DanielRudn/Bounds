@@ -130,11 +130,11 @@ public class DesktopLauncher implements RequestHandler {
 	public String getInvitablePlayerName(int index) {
 		if(index == 2)
 		{
-			return "Michael Roudnintski";
+			return "Martin Luther King";
 		}
 		else if(index == 1)
 		{
-			return "Daniel Rudnitski";
+			return "Jay-Z";
 		}
 		else if(index == 3)
 		{

@@ -15,7 +15,6 @@ import com.DR.dLib.ui.dUICardList;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.animations.SlideInArrayAnimation;
@@ -27,8 +26,6 @@ public class InboxScreen extends dUICardList implements AnimationStatusListener 
 	
 	// title card at the top
 	private dUICard titleCard;
-	// the back button on the title card
-	private dButton titleBackButton;
 	// timer for showing the transition animation to this screen
 	private final float SHOW_DURATION = 3f;
 	// time to show list of cards
@@ -47,6 +44,8 @@ public class InboxScreen extends dUICardList implements AnimationStatusListener 
 	private LoadingIcon loadingIcon;
 	// used for transition to show
 	private dImage circleCover;
+	// next screen
+	private dScreen newScreen = null;
 
 	public InboxScreen(float x, float y, Texture texture, ArrayList<dUICard> list) {
 		super(x, y, texture, list);
@@ -58,9 +57,6 @@ public class InboxScreen extends dUICardList implements AnimationStatusListener 
 		titleCard.setColor(new Color(22f/256f, 160f/256f, 133f/256f,1f));
 		dText titleText = new dText(0,0,64f,"INBOX");
 		titleText.setColor(Color.WHITE);
-		titleBackButton = new dButton(0,0, new Sprite(new Texture("backButton.png")), "");
-		titleBackButton.setDimensions(titleBackButton.getWidth() / 2f, titleBackButton.getHeight()  / 2f);
-		titleCard.addObject(titleBackButton, dUICard.LEFT, dUICard.BOTTOM);
 		titleCard.addObject(titleText, dUICard.CENTER, dUICard.CENTER);
 		setTitleCard(titleCard);
 		titleCard.setY(-titleCard.getHeight()*1.5f);
@@ -115,17 +111,20 @@ public class InboxScreen extends dUICardList implements AnimationStatusListener 
 				}
 			}
 		}
-		
-		// TODO: move this
-		if(titleBackButton.isClicked())
-		{
-			this.goBack();
-		}
+
 	}
 	
 	@Override
 	public void render(SpriteBatch batch)
 	{
+		if(newScreen != null)
+		{
+			newScreen.render(batch);
+		}
+		if(MainGame.previousScreen != null)
+		{
+			MainGame.previousScreen.render(batch);
+		}
 		circleCover.render(batch);
 		loadingIcon.render(batch);
 		super.render(batch);
@@ -135,21 +134,26 @@ public class InboxScreen extends dUICardList implements AnimationStatusListener 
 	{
 		showCards = true;
 	}
-
+	
+	@Override
+	public void show()
+	{
+		super.show();
+		MainGame.requestHandler.loadInvitations();
+	}
+	
 	@Override
 	public void goBack() {
-		if(MainGame.previousScreen != null)
-		{
-			switchScreen(MainGame.debugCard);
-		}
+		this.hide();
+		this.newScreen = MainGame.menuScreen;
 	}
 
 	@Override
 	public void switchScreen(dScreen newScreen) {
+		this.newScreen = null;
 		MainGame.currentScreen = newScreen;
-		MainGame.previousScreen = this;
-		this.hide();
 		newScreen.show();
+		MainGame.previousScreen = this;
 	}
 
 	@Override
@@ -196,7 +200,9 @@ public class InboxScreen extends dUICardList implements AnimationStatusListener 
 		}
 		else if(ID == HIDE_ANIM_ID)
 		{
+			MainGame.currentScreen = newScreen;
 			MainGame.previousScreen = null;
+			newScreen = null;
 		}
 	}
 }

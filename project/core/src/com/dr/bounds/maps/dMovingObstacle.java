@@ -7,10 +7,12 @@ public class dMovingObstacle extends dObstacle {
 	
 	private float moveTime = 0;
 	private final float moveDuration = (float) (Math.PI * 2f);
+	private float amplitude = 1f;
 	
 	public dMovingObstacle(float x, float y, Texture texture, Player p) {
 		super(x, y, texture, p);
-
+		amplitude += MapGenerator.rng.nextInt(3);
+		
 	}
 	
 	@Override
@@ -20,7 +22,7 @@ public class dMovingObstacle extends dObstacle {
 		if(moveTime < moveDuration)
 		{
 			moveTime+=delta;
-			setX((float) (getX() - 2f * Math.sin(moveTime)));
+			setX((float) (getX() - amplitude * Math.sin(moveTime)));
 		}
 		else
 		{

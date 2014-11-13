@@ -35,6 +35,10 @@ public abstract class MapType {
 	protected boolean isTransitioning = false;
 	// whether the map type should start showing the new bg types
 	protected boolean switchBG = false;
+	// whether to show the transition image between map types
+	private boolean showTransitionImage = false;
+	// whether the obstacles for the new type have been generated
+	private boolean newTypeGenerated = false;
 	
 	public MapType(int type, Player player, MapGenerator generator, Texture bgTexture)
 	{
@@ -51,6 +55,15 @@ public abstract class MapType {
 	{
 		firstBG.render(batch);
 		secondBG.render(batch);
+		renderObstacles(batch);
+		if(nextType != null && showTransitionImage)
+		{
+			nextType.renderObstacles(batch);
+		}
+	}
+	
+	protected void renderObstacles(SpriteBatch batch)
+	{
 		for(int x = 0; x < obstacles.size(); x++)
 		{
 			obstacles.get(x).render(batch);
@@ -70,8 +83,14 @@ public abstract class MapType {
 			else if(nextType != null && switchBG)
 			{
 				firstBG = nextType.firstBG;
+				showTransitionImage = true;
 			}
 			firstBG.setY(secondBG.getY() - firstBG.getHeight());
+			if(showTransitionImage)
+			{
+				MapGenerator.transitionImage.setPos(secondBG.getX(), secondBG.getY() + secondBG.getHeight() - MapGenerator.transitionImage.getHeight() / 2f);
+				nextType.generateNewType();
+			}
 		}
 		if(secondBG.getY() >= MainGame.camera.position.y + MainGame.VIRTUAL_HEIGHT / 2f)
 		{
@@ -83,8 +102,14 @@ public abstract class MapType {
 			else if(nextType != null && switchBG)
 			{
 				secondBG = nextType.secondBG;
+				showTransitionImage = true;
 			}
 			secondBG.setY(firstBG.getY() - secondBG.getHeight());
+			if(showTransitionImage)
+			{
+				MapGenerator.transitionImage.setPos(secondBG.getX(), secondBG.getY() + secondBG.getHeight() - MapGenerator.transitionImage.getHeight() / 2f);
+				nextType.generateNewType();
+			}
 		}
 	}
 	
@@ -148,6 +173,25 @@ public abstract class MapType {
 			obstacles.get(index).setX(MainGame.VIRTUAL_WIDTH / 2f - obstacles.get(index).getWidth() / 2f + (-50 + MapGenerator.rng.nextInt(100)));
 		}
 		obstacles.get(index).setY(obstacles.get(getPreviousIndex(index)).getY() - MIN_DISTANCE - MapGenerator.rng.nextInt(MAX_DISTANCE));
+	}
+	
+	/**
+	 * Generates the obstacles from scratch when transitioning to a new map type
+	 */
+	protected void generateNewType()
+	{
+		if(newTypeGenerated == false)
+		{
+			obstacles.get(0).setY(MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT/2f - MIN_DISTANCE - MapGenerator.rng.nextInt(MAX_DISTANCE));
+			obstacles.get(0).setRegenerate(false);
+			obstacles.get(0).setPassed(false);
+			for(int x = 1; x < obstacles.size(); x++)
+			{
+				generate(x);
+				obstacles.get(x).setRegenerate(false);
+			}
+			newTypeGenerated = true;
+		}
 	}
 	
 	public void reset()

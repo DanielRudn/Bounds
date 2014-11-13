@@ -138,7 +138,7 @@ public class DebugScreen extends dScreen {
 				debugText+="\nInvite Clicked!";
 				//requestHandler.requestInviteActivity();
 				// temp, remove
-				requestHandler.loadRecentlyPlayedWithPlayers();
+			//	requestHandler.loadRecentlyPlayedWithPlayers();
 				//MainGame.inviteScreen.show();
 				MainGame.currentScreen.switchScreen(MainGame.inviteScreen);
 			}
@@ -146,7 +146,7 @@ public class DebugScreen extends dScreen {
 			{
 				debugText+="\nInbox Clicked!";
 				// requestHandler.requestInboxActivity();
-				MainGame.requestHandler.loadInvitations();
+		//		MainGame.requestHandler.loadInvitations();
 				MainGame.currentScreen.switchScreen(MainGame.inboxScreen);
 			}
 			else if(leaveButton.isClicked())

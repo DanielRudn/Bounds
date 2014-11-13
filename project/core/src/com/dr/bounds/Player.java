@@ -78,8 +78,8 @@ public class Player extends dObject {
 	public void update(float delta) {
 		// add velocity
 		setPosition(getX() + playerVelocity.x * delta, getY() + playerVelocity.y * delta);
-		boundingRect.set(getX() + 8f, getY() + 8f, getWidth()-16f, getHeight()-16f);
-	//	boundingRect.set(0,0,0,0);
+	//	boundingRect.set(getX() + 8f, getY() + 8f, getWidth()-16f, getHeight()-16f);
+		boundingRect.set(0,0,0,0);
 		if(controllable)
 		{
 			if(Gdx.input.isTouched() && Gdx.input.justTouched() && moveCenter == false)
@@ -88,11 +88,11 @@ public class Player extends dObject {
 			//	playerVelocity.x = 0;
 				if(touchedLeftSide())// user touched left half of screen
 				{
-					targetVelocity.set(-24f*32f,0);
+					targetVelocity.set(-32f*32f,0);
 				}
 				else // user touched right half of screen
 				{
-					targetVelocity.set(24f*32f,0);
+					targetVelocity.set(32f*32f,0);
 				}
 				changeVelocity = true;
 				requestHandler.sendUnreliableMessage(getMovementMessage());
@@ -180,11 +180,11 @@ public class Player extends dObject {
 		{
 			if(message[1] == 'L')// left
 			{
-				targetVelocity.set(-24f*32f,0);
+				targetVelocity.set(-32f*32f,0);
 			}
 			else if(message[1] == 'R')// right
 			{
-				targetVelocity.set(24f*32f,0);
+				targetVelocity.set(32f*32f,0);
 			}
 			changeVelocity = true;
 		}
@@ -204,6 +204,11 @@ public class Player extends dObject {
 	public int getSkinID()
 	{
 		return skinID;
+	}
+	
+	public boolean isMovingCenter()
+	{
+		return moveCenter;
 	}
 	
 	public byte[] getMovementMessage()
