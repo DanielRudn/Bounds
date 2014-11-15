@@ -23,7 +23,7 @@ public class DefaultMapType extends MapType {
 		{
 			obstacles.add(new dObstacle(0,0, obstacleTexture, player));
 			obstacles.get(x).setRegenerate(false);
-			obstacles.get(x).setColor(Color.RED);
+			obstacles.get(x).setColor(new Color(214f/256f, 69f/256f, 65f/256f,1f));
 		}
 	}
 	

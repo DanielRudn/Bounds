@@ -29,7 +29,7 @@ public class InviteCard extends dUICard{
 	
 	public InviteCard(float x, float y, Texture texture, String invName, String invID) {
 		super(x, y, texture);
-		setDimensions(MainGame.VIRTUAL_WIDTH - 128f, 256f);
+		setDimensions(MainGame.VIRTUAL_WIDTH - 128f, 220f);
 		inviterName = invName;
 		inviteID = invID;
 		inviterNameText = new dText(0,0,64f,inviterName);
@@ -41,7 +41,7 @@ public class InviteCard extends dUICard{
 		addObjectUnder(inviteDescriptionText, getIndexOf(inviterNameText));
 		
 		acceptButton = new dButton(0,0,new Sprite(texture),"accept");
-		acceptButton.setTextColor(Color.GREEN);
+		acceptButton.setTextColor(Color.TEAL);
 		acceptButton.setDimensions(getWidth() / 2f, 64f);
 		acceptButton.setTextSize(64f);
 		addObject(acceptButton,dUICard.RIGHT_NO_PADDING, dUICard.BOTTOM_NO_PADDING);

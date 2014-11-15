@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="java.lang.Math"/>
-<fullyQualifiedTypeName name="com.badlogic.gdx.math.Intersector"/>
-<fullyQualifiedTypeName name="com.dr.bounds.Player"/>
 <fullyQualifiedTypeName name="com.DR.dLib.dValues"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Texture"/>
-<fullyQualifiedTypeName name="com.DR.dLib.dObject"/>
 <fullyQualifiedTypeName name="com.dr.bounds.LoadingIcon"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.TextureRegion"/>
 <fullyQualifiedTypeName name="com.dr.bounds.SkinLoader"/>
@@ -38,7 +34,6 @@
 <fullyQualifiedTypeName name="com.DR.dLib.dAnimation"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="com.DR.dLib.dUICard"/>
-<fullyQualifiedTypeName name="com.DR.dLib.dTweener"/>
 <fullyQualifiedTypeName name="com.DR.dLib.CircleFillAnimation"/>
 <fullyQualifiedTypeName name="com.DR.dLib.AnimationStatusListener"/>
 <fullyQualifiedTypeName name="com.dr.bounds.animations.SlideInArrayAnimation"/>
@@ -46,18 +41,23 @@
 <fullyQualifiedTypeName name="com.dr.bounds.animations.SlideOutArrayAnimation"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="com.DR.dLib.animations.ExpandElasticAnimation"/>
-<fullyQualifiedTypeName name="com.badlogic.gdx.math.Rectangle"/>
 <fullyQualifiedTypeName name="com.DR.dLib.ui.dImage"/>
 <fullyQualifiedTypeName name="com.DR.dLib.ui.dButton"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Texture.TextureFilter"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.Sprite"/>
 <fullyQualifiedTypeName name="com.DR.dLib.ui.dUICard"/>
 <fullyQualifiedTypeName name="com.dr.bounds.screens.MenuScreen"/>
-<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Color"/>
 <fullyQualifiedTypeName name="com.DR.dLib.ui.dScreen"/>
 <fullyQualifiedTypeName name="com.DR.dLib.animations.AnimationStatusListener"/>
 <fullyQualifiedTypeName name="com.DR.dLib.animations.SlideElasticAnimation"/>
-<fullyQualifiedTypeName name="com.dr.bounds.MainGame"/>
 <fullyQualifiedTypeName name="com.dr.bounds.screens.MultiplayerScreen"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.Input.Keys"/>
+<fullyQualifiedTypeName name="com.DR.dLib.dTimer"/>
+<fullyQualifiedTypeName name="com.DR.dLib.TimerListener"/>
+<fullyQualifiedTypeName name="com.DR.dLib.animations.SlideInOrderAnimation"/>
+<fullyQualifiedTypeName name="com.DR.dLib.dObject"/>
+<fullyQualifiedTypeName name="com.DR.dLib.dTweener"/>
+<fullyQualifiedTypeName name="com.dr.bounds.MainGame"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Color"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.math.Rectangle"/>
 </qualifiedTypeNameHistroy>

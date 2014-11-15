@@ -1,0 +1,47 @@
+package com.dr.bounds.maps;
+
+import com.DR.dLib.dTweener;
+import com.badlogic.gdx.graphics.Texture;
+import com.dr.bounds.MainGame;
+import com.dr.bounds.Player;
+
+public class dBirdObstacle extends dObstacle{
+
+	private float moveTime = 0;
+	private float moveSpeed = 0;
+	private boolean goingEast = false;
+	
+	public dBirdObstacle(float x, float y, Texture texture, Player p) {
+		super(x, y, texture, p);
+		moveSpeed = 5f + MapGenerator.rng.nextInt(5);
+	}
+	
+	@Override
+	public void update(float delta)
+	{
+		super.update(delta);
+		// move code
+		if(moveTime < moveSpeed)
+		{
+			moveTime += delta;
+			if(goingEast)
+			{
+				setX(dTweener.LinearEase(moveTime, -getWidth(), MainGame.VIRTUAL_WIDTH + getWidth(), moveSpeed));
+			}
+			else
+			{
+				setX(dTweener.LinearEase(moveTime, MainGame.VIRTUAL_WIDTH + getWidth(), -MainGame.VIRTUAL_WIDTH - getWidth() * 2f, moveSpeed));
+			}
+		}
+		else if(moveTime >= moveSpeed)
+		{
+			moveTime = 0;
+		}
+	}
+	
+
+	public void setDirection(boolean goingEast)
+	{
+		this.goingEast = goingEast;
+	}
+}

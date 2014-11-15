@@ -1,0 +1,24 @@
+package com.dr.bounds.maps;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.dr.bounds.Player;
+
+public class dBirdObstacle extends dObstacle{
+
+	private float moveTime = 0;
+	private float moveSpeed = 0;
+	
+	public dBirdObstacle(float x, float y, Texture texture, Player p) {
+		super(x, y, texture, p);
+		moveSpeed = MapGenerator.rng.nextInt(5);
+	}
+	
+	@Override
+	public void update(float delta)
+	{
+		super.update(delta);
+		// move code
+
+	}
+
+}

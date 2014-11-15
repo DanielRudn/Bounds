@@ -185,7 +185,7 @@ public class WaitingRoomScreen extends dScreen {
 		}
 		
 		// check whether opponent is ready
-		if(opponentReady && opponentExtraTime >= 2f && extraTime >= 2f)
+		if(opponentReady && opponentExtraTime >= 2f && extraTime >= 2f )
 		{
 			loadingIcon.stop();
 			this.animateHide();

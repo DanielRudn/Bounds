@@ -78,8 +78,8 @@ public class Player extends dObject {
 	public void update(float delta) {
 		// add velocity
 		setPosition(getX() + playerVelocity.x * delta, getY() + playerVelocity.y * delta);
-	//	boundingRect.set(getX() + 8f, getY() + 8f, getWidth()-16f, getHeight()-16f);
-		boundingRect.set(0,0,0,0);
+		boundingRect.set(getX() + 8f, getY() + 8f, getWidth()-16f, getHeight()-16f);
+	//	boundingRect.set(0,0,0,0);
 		if(controllable)
 		{
 			if(Gdx.input.isTouched() && Gdx.input.justTouched() && moveCenter == false)

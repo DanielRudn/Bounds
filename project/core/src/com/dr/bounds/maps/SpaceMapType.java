@@ -1,7 +1,6 @@
 package com.dr.bounds.maps;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -30,12 +29,6 @@ public class SpaceMapType extends MapType {
 			obstacles.add(new dPlanetObstacle(0,0, new Texture("circle.png"), player, MapGenerator.rng));
 			obstacles.get(x).setRegenerate(false);
 		}
-	}
-	
-	@Override
-	public void render(SpriteBatch batch)
-	{
-		super.render(batch);
 	}
 
 	@Override

@@ -14,7 +14,7 @@ import com.dr.bounds.Player;
 public class MapGenerator implements TimerListener {
 
 	// map generation type
-	public static final int TYPE_DEFAULT = 1515, TYPE_SPACE = 3030, TYPE_MACHINERY = 6060;
+	public static final int TYPE_DEFAULT = 1515, TYPE_SPACE = 3030, TYPE_MACHINERY = 6060, TYPE_SKY = 9090;
 	// the current map generation type
 	private MapType currentType; 
 	// the next map generation type
@@ -60,6 +60,10 @@ public class MapGenerator implements TimerListener {
 		else if(mapType == TYPE_SPACE)
 		{
 			currentType = new SpaceMapType(TYPE_SPACE, player, this);
+		}
+		else if(mapType == TYPE_SKY)
+		{
+			currentType = new SkyMapType(TYPE_SKY, player, this);
 		}
 		
 		transitionImage = new dImage(0,0, new Texture("transitionDevice.png"));
@@ -163,7 +167,7 @@ public class MapGenerator implements TimerListener {
 		}
 		*/
 		//	determine which map type is set
-		int newType = rng.nextInt(3);
+		int newType = rng.nextInt(4);
 		if(newType == 0)
 		{
 			currentType = new DefaultMapType(TYPE_DEFAULT, player, this);
@@ -175,6 +179,10 @@ public class MapGenerator implements TimerListener {
 		else if(newType == 2)
 		{
 			currentType = new SpaceMapType(TYPE_SPACE, player, this);
+		}
+		else if(newType == 3)
+		{
+			currentType = new SkyMapType(TYPE_SKY, player, this);
 		}
 		generateSeed();
 		generateFirstSet();
@@ -242,6 +250,13 @@ public class MapGenerator implements TimerListener {
 				nextType = new SpaceMapType(TYPE_SPACE, player, this);
 			}
 		}
+		else if(MAP_TYPE == 3)
+		{
+			if(currentType.getMapType() != TYPE_SKY)
+			{
+				nextType = new SkyMapType(TYPE_SKY, player, this);
+			}
+		}
 	}
 
 	
@@ -274,7 +289,7 @@ public class MapGenerator implements TimerListener {
 	public void onTimerFinish(int ID)
 	{
 		//	determine which map type is set
-		int newType = rng.nextInt(3);
+		int newType = rng.nextInt(4);
 		setNextType(newType);
 		if(nextType == null)
 		{

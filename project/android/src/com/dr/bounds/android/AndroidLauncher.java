@@ -66,7 +66,6 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-
 		// create API client with access to google plus and games services.
 		apiClient = new GoogleApiClient.Builder(this)
 	     .addConnectionCallbacks(this)
