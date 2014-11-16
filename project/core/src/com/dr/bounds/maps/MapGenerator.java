@@ -66,7 +66,7 @@ public class MapGenerator implements TimerListener {
 			currentType = new SkyMapType(TYPE_SKY, player, this);
 		}
 		
-		transitionImage = new dImage(0,0, new Texture("transitionDevice.png"));
+		transitionImage = new dImage(0,2000, new Texture("transitionDevice.png"));
 		
 		typeSwitchTimer = new dTimer(10f,10f,0,this);
 		typeSwitchTimer.start();

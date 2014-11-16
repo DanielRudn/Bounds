@@ -37,6 +37,8 @@ public abstract class MapType {
 	protected boolean switchBG = false;
 	// whether to show the transition image between map types
 	private boolean showTransitionImage = false;
+	// whether to change position for the transition image
+	private boolean moveTransitionImage = true;
 	// whether the obstacles for the new type have been generated
 	private boolean newTypeGenerated = false;
 	
@@ -86,9 +88,10 @@ public abstract class MapType {
 				showTransitionImage = true;
 			}
 			firstBG.setY(secondBG.getY() - firstBG.getHeight());
-			if(showTransitionImage)
+			if(showTransitionImage && moveTransitionImage)
 			{
-				MapGenerator.transitionImage.setPos(secondBG.getX(), secondBG.getY() + secondBG.getHeight() - MapGenerator.transitionImage.getHeight() / 2f);
+				MapGenerator.transitionImage.setPos(firstBG.getX(), firstBG.getY() + firstBG.getHeight() - MapGenerator.transitionImage.getHeight() / 2f);
+				moveTransitionImage = false;
 				nextType.generateNewType();
 			}
 		}
@@ -105,9 +108,10 @@ public abstract class MapType {
 				showTransitionImage = true;
 			}
 			secondBG.setY(firstBG.getY() - secondBG.getHeight());
-			if(showTransitionImage)
+			if(showTransitionImage && moveTransitionImage)
 			{
 				MapGenerator.transitionImage.setPos(secondBG.getX(), secondBG.getY() + secondBG.getHeight() - MapGenerator.transitionImage.getHeight() / 2f);
+				moveTransitionImage = false;
 				nextType.generateNewType();
 			}
 		}

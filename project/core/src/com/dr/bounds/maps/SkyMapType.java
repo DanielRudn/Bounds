@@ -17,10 +17,10 @@ public class SkyMapType extends MapType {
 		MIN_WIDTH = 64;
 		typeName = "Sky";
 		gen.setScoreIncrementAmount(1);
-		Texture obstacleTexture = new Texture("obstacle.png");
+		Texture obstacleTexture = new Texture("birdObstacle.png");
 		obstacleTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		// add 12 obstacles to start with
-		for(int x = 0; x < 12; x++)
+		// add 8 obstacles 
+		for(int x = 0; x < 8; x++)
 		{
 			obstacles.add(new dBirdObstacle(0,0, obstacleTexture, player));
 			obstacles.get(x).setRegenerate(false);

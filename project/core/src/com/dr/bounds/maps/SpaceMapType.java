@@ -26,7 +26,7 @@ public class SpaceMapType extends MapType {
 		// add 4 obstacles to start with
 		for(int x = 0; x < 4; x++)
 		{
-			obstacles.add(new dPlanetObstacle(0,0, new Texture("circle.png"), player, MapGenerator.rng));
+			obstacles.add(new dPlanetObstacle(0,0, new Texture("planet.png"), player, MapGenerator.rng));
 			obstacles.get(x).setRegenerate(false);
 		}
 	}

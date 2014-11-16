@@ -110,6 +110,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		currentScreen = debugCard;
 		currentScreen = menuScreen;
 		menuScreen.show();
+	
 	}
 
 	@Override
@@ -167,6 +168,11 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		{
 			gameScreen.resume();
 			currentScreen.switchScreen(gameScreen);
+		}
+		
+		if(Gdx.input.isKeyJustPressed(Keys.Z))
+		{
+			GameScreen.CAMERA_SPEED = 1f;
 		}
 
 	}

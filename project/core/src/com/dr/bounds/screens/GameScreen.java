@@ -19,8 +19,7 @@ public class GameScreen extends dScreen {
 	// opponents object
 	private Player opponent;
 	// camera's speed in pixels per second (camera moves upward)
-	//public static final float CAMERA_SPEED = 300f; 
-	public static final float CAMERA_SPEED = 500f;
+	public static float CAMERA_SPEED = 500f;
 	// used to interact with android device
 	private RequestHandler requestHandler;
 	// Generate the map
@@ -52,10 +51,10 @@ public class GameScreen extends dScreen {
 		opponent = new Player(MainGame.VIRTUAL_WIDTH/2f-32f,MainGame.VIRTUAL_HEIGHT/2f-32f, 0, requestHandler);
 		opponent.setControllable(false);	
 
-		mapGen = new MapGenerator(MapGenerator.TYPE_SKY,obstacle, player);
+		mapGen = new MapGenerator(MapGenerator.TYPE_SPACE,obstacle, player);
 		mapGen.generateSeed();
 		// TODO: might remove
-	//	mapGen.generateFirstSet();
+		mapGen.generateFirstSet();
 		
 		gameOverScreen = new GameOverScreen(getX(), getY(), texture, player.getSkinID());
 		gameOverScreen.hide();
@@ -164,6 +163,7 @@ public class GameScreen extends dScreen {
 			decodeAndSendSeed(getSeed());
 			mapGen.generateFirstSet();
 		}
+	
 	}
 	
 	/**

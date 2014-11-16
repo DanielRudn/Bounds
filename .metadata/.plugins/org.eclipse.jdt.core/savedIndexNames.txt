@@ -8,8 +8,6 @@ INDEX VERSION 1.127+F:\Development\Bounds\.metadata\.plugins\org.eclipse.jdt.cor
 1986586303.index
 265732991.index
 1037116963.index
-3692572553.index
-3562607278.index
 2804169155.index
 2705686598.index
 3116206689.index
@@ -38,17 +36,14 @@ INDEX VERSION 1.127+F:\Development\Bounds\.metadata\.plugins\org.eclipse.jdt.cor
 4013900976.index
 749717594.index
 2438301509.index
-3030637936.index
 3158849313.index
 2317667002.index
 3401723779.index
 174553.index
 3708556324.index
 3439120283.index
-1380771095.index
 2620426498.index
+1380771095.index
 4285251341.index
 105210318.index
-709485497.index
-295193384.index
 1130844890.index

@@ -9,7 +9,7 @@ public class dBirdObstacle extends dObstacle{
 
 	private float moveTime = 0;
 	private float moveSpeed = 0;
-	private boolean goingEast = false;
+	private boolean goingEast = true;
 	
 	public dBirdObstacle(float x, float y, Texture texture, Player p) {
 		super(x, y, texture, p);
@@ -42,6 +42,19 @@ public class dBirdObstacle extends dObstacle{
 
 	public void setDirection(boolean goingEast)
 	{
+		// flip sprite for direction
+		if(this.goingEast == goingEast)// was previously going east, and is now going east, keep the same
+		{
+			this.getSprite().flip(false, false);
+		}
+		else if(this.goingEast == false && goingEast == true)
+		{
+			this.getSprite().flip(true,false);
+		}
+		else if(this.goingEast == true && goingEast == false)
+		{
+			this.getSprite().flip(true,false);
+		}
 		this.goingEast = goingEast;
 	}
 }
