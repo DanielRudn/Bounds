@@ -9,6 +9,8 @@ import com.DR.dLib.dValues;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -63,6 +65,8 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 	private float accumulator = 0f;
 	
 	// test, remove
+	private static Sound scoreSound;
+	private static Sound bounceSound;
 	private ArrayList<dUICard> recentlyPlayedList;
 	
 	public MainGame(RequestHandler h)
@@ -107,10 +111,12 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		
 		batch = new SpriteBatch();
 		
+		scoreSound = Gdx.audio.newSound(Gdx.files.internal("score.wav"));
+		bounceSound = Gdx.audio.newSound(Gdx.files.internal("bounce.wav"));
+		
 		currentScreen = debugCard;
 		currentScreen = menuScreen;
 		menuScreen.show();
-	
 	}
 
 	@Override
@@ -148,7 +154,6 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		//	previousScreen.render(batch);
 		}
 		batch.end();
-		
 		/**
 		 * TODO: BUG: when inviting the nexus 5 from the memopad, if you swipe both away in the recents, and then invite from memo pad again, the nexus doesnt show info
 		 */
@@ -169,11 +174,6 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 			gameScreen.resume();
 			currentScreen.switchScreen(gameScreen);
 		}
-		
-		if(Gdx.input.isKeyJustPressed(Keys.Z))
-		{
-			GameScreen.CAMERA_SPEED = 1f;
-		}
 
 	}
 	
@@ -192,6 +192,15 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		camera.position.set(x,y, camera.position.z);
 	}
 	
+	public static void playScoreSound()
+	{
+		scoreSound.play();
+	}
+	
+	public static void playBounceSound()
+	{
+		bounceSound.play();
+	}
 
 	public static int getPlayerSkinID()
 	{
@@ -300,12 +309,15 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		recentsCard.addObject(recentsText, dUICard.LEFT, dUICard.CENTER);
 		recentsCard.addObjectUnder(divider, 0);
 		inviteScreen.addCardAsObject(recentsCard);
+		recentsCard.setY(-recentsCard.getHeight() - inviteScreen.getPadding());
 		for(int x = 0; x < numLoaded; x++)
 		{
 			//construct array list of recently played cards
 			PlayerCard currentCard = new PlayerCard(0,0,card, 1+MathUtils.random(9), requestHandler.getRecentPlayerName(x));
 			currentCard.setPlayerID(requestHandler.getRecentPlayerID(x));
 			inviteScreen.addCardAsObject(currentCard);
+			// set card Y for transitioning
+			currentCard.setY(-currentCard.getHeight() - inviteScreen.getPadding());
 		}
 		requestHandler.loadInvitablePlayers();
 	}
@@ -327,11 +339,14 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		invitableCard.addObject(invitableText, dUICard.LEFT, dUICard.CENTER);
 		invitableCard.addObjectUnder(divider, 0);
 		inviteScreen.addCardAsObject(invitableCard);
+		invitableCard.setY(-invitableCard.getHeight() - inviteScreen.getPadding());
 		for(int x = 0; x < numLoaded; x++)
 		{
 			PlayerCard currentCard = new PlayerCard(0,0,card,1+MathUtils.random(9),requestHandler.getInvitablePlayerName(x));
 			currentCard.setPlayerID(requestHandler.getInvitablePlayerID(x));
 			inviteScreen.addCardAsObject(currentCard);
+			// set card Y for transitioning
+			currentCard.setY(-currentCard.getHeight() - inviteScreen.getPadding());
 		}
 		inviteScreen.showCards();
 	}
@@ -343,6 +358,8 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		{
 			InviteCard currentCard = new InviteCard(0,0,card,requestHandler.getInviterName(x), requestHandler.getInvitationID(x));
 			inboxScreen.addCardAsObject(currentCard);
+			// set card Y for transitioning
+			currentCard.setY(-currentCard.getHeight() - inboxScreen.getPadding());
 		}
 		inboxScreen.showCards();
 	}

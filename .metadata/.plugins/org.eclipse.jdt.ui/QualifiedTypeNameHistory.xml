@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="com.DR.dLib.dValues"/>
-<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Texture"/>
-<fullyQualifiedTypeName name="com.dr.bounds.LoadingIcon"/>
-<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.TextureRegion"/>
-<fullyQualifiedTypeName name="com.dr.bounds.SkinLoader"/>
-<fullyQualifiedTypeName name="com.dr.bounds.screens.InviteScreen"/>
-<fullyQualifiedTypeName name="com.google.android.gms.games.Games"/>
-<fullyQualifiedTypeName name="com.google.android.gms.games.PlayerBuffer"/>
 <fullyQualifiedTypeName name="com.dr.bounds.MultiplayerListener"/>
 <fullyQualifiedTypeName name="java.util.Random"/>
 <fullyQualifiedTypeName name="com.google.android.gms.games.leaderboard.LeaderboardVariant"/>
@@ -16,7 +8,6 @@
 <fullyQualifiedTypeName name="com.google.android.gms.games.leaderboard.LeaderboardScore"/>
 <fullyQualifiedTypeName name="com.dr.bounds.ui.PlayerCard"/>
 <fullyQualifiedTypeName name="com.DR.dLib.dText"/>
-<fullyQualifiedTypeName name="com.badlogic.gdx.Gdx"/>
 <fullyQualifiedTypeName name="com.DR.dLib.dScreen"/>
 <fullyQualifiedTypeName name="com.DR.dLib.dUICardList"/>
 <fullyQualifiedTypeName name="com.sun.prism.paint.Color"/>
@@ -32,7 +23,6 @@
 <fullyQualifiedTypeName name="com.DR.dLib.dImage"/>
 <fullyQualifiedTypeName name="com.dr.bounds.screens.GameScreen"/>
 <fullyQualifiedTypeName name="com.DR.dLib.dAnimation"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="com.DR.dLib.dUICard"/>
 <fullyQualifiedTypeName name="com.DR.dLib.CircleFillAnimation"/>
 <fullyQualifiedTypeName name="com.DR.dLib.AnimationStatusListener"/>
@@ -41,14 +31,12 @@
 <fullyQualifiedTypeName name="com.dr.bounds.animations.SlideOutArrayAnimation"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="com.DR.dLib.animations.ExpandElasticAnimation"/>
-<fullyQualifiedTypeName name="com.DR.dLib.ui.dImage"/>
 <fullyQualifiedTypeName name="com.DR.dLib.ui.dButton"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Texture.TextureFilter"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.Sprite"/>
 <fullyQualifiedTypeName name="com.DR.dLib.ui.dUICard"/>
 <fullyQualifiedTypeName name="com.dr.bounds.screens.MenuScreen"/>
 <fullyQualifiedTypeName name="com.DR.dLib.ui.dScreen"/>
-<fullyQualifiedTypeName name="com.DR.dLib.animations.AnimationStatusListener"/>
 <fullyQualifiedTypeName name="com.DR.dLib.animations.SlideElasticAnimation"/>
 <fullyQualifiedTypeName name="com.dr.bounds.screens.MultiplayerScreen"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.Input.Keys"/>
@@ -57,7 +45,19 @@
 <fullyQualifiedTypeName name="com.DR.dLib.animations.SlideInOrderAnimation"/>
 <fullyQualifiedTypeName name="com.DR.dLib.dObject"/>
 <fullyQualifiedTypeName name="com.DR.dLib.dTweener"/>
-<fullyQualifiedTypeName name="com.dr.bounds.MainGame"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Color"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.math.Rectangle"/>
+<fullyQualifiedTypeName name="com.DR.dLib.ui.dText"/>
+<fullyQualifiedTypeName name="com.DR.dLib.ui.dImage"/>
+<fullyQualifiedTypeName name="com.DR.dLib.animations.SlideExponentialAnimation"/>
+<fullyQualifiedTypeName name="com.DR.dLib.animations.AnimationStatusListener"/>
+<fullyQualifiedTypeName name="com.DR.dLib.ui.dUICardList"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="com.dr.bounds.maps.MapGenerator"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.Gdx"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.audio.Sound"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.files.FileHandle"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.glutils.ShapeRenderer"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType"/>
+<fullyQualifiedTypeName name="com.dr.bounds.MainGame"/>
 </qualifiedTypeNameHistroy>

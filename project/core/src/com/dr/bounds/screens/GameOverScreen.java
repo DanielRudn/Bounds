@@ -1,9 +1,14 @@
 package com.dr.bounds.screens;
 
+import java.util.ArrayList;
+
+import com.DR.dLib.animations.AnimationStatusListener;
+import com.DR.dLib.animations.SlideExponentialAnimation;
 import com.DR.dLib.ui.dButton;
 import com.DR.dLib.ui.dImage;
 import com.DR.dLib.ui.dScreen;
 import com.DR.dLib.ui.dText;
+import com.DR.dLib.ui.dUICardList;
 import com.DR.dLib.dTweener;
 import com.DR.dLib.ui.dUICard;
 import com.badlogic.gdx.graphics.Color;
@@ -14,12 +19,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.SkinLoader;
 
-public class GameOverScreen extends dScreen {
+public class GameOverScreen extends dUICardList implements AnimationStatusListener {
 
 	// two darker panels containing info about users score and money won
 	private dUICard scoreCard, moneyCard;
 	// the counters that will be displayed on screen
-	private float currentScore = 0, currentMoney = 0, currentOpponentScore = 0;
+	private float currentScore = 0, currentOpponentScore = 0;
 	// players final score for score counter
 	private float playerScore = 0;
 	// opponents final score for score counter
@@ -28,10 +33,8 @@ public class GameOverScreen extends dScreen {
 	private dImage playerImage;
 	// name of local player
 	private dText playerName;
-	// image of opponents skin
-	private dImage opponentImage;
 	// name of opponent
-	private dText opponentName;
+//	private dText opponentName;
 	// replay button
 	private dButton replayButton;
 	// when user clicks replay, this turns false and resets the game
@@ -42,28 +45,32 @@ public class GameOverScreen extends dScreen {
 	private dText rematchText;
 	// Text at the top E.G (Game Over, You Win, You lose...)
 	private dText topText;
-	// Timer for sliding card in
-	private float showTime = 0;
-	// duration for slide in
-	private final float SHOW_DURATION = 4f;
+	// card containing above elements
+	private dUICard topCard;
+	// animations
+	private SlideExponentialAnimation showAnimation;
 	
 	public GameOverScreen(float x, float y, Texture texture, int playerSkinID) {
-		super(x, y, texture);
+		super(x, y, texture, new ArrayList<dUICard>());
 		setColor(37f/256f, 116f/256f, 169f/256f,1f);
 		setPadding(32f);
 		setPaddingLeft(64f);
+		
+		showAnimation = new SlideExponentialAnimation(1f, this, 123, -MainGame.VIRTUAL_WIDTH, 0, this);
+		setShowAnimation(showAnimation);
+		
+		topCard = new dUICard(getX(), getY(), texture);
+		topCard.setColor(getColor());
+		topCard.setPadding(32f);
+		topCard.setPaddingLeft(64f);
+		topCard.setDimensions(MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_HEIGHT / 2f - 64f);
+		topCard.setHasShadow(false);
 		
 		playerName = new dText(0,0,getFontSize(MainGame.requestHandler.getCurrentAccountName()),MainGame.requestHandler.getCurrentAccountName());
 		playerName.setColor(Color.WHITE);
 		
 		playerImage = new dImage(0,0, SkinLoader.getTextureForSkinID(playerSkinID));
 		playerImage.setDimensions(128f, 128f);
-		
-		opponentImage = new dImage(0,0, SkinLoader.getTextureForSkinID(10));
-		opponentImage.setDimensions(128f, 128f);
-		
-		opponentName = new dText(0,0,getFontSize(MainGame.requestHandler.getOpponentName()),MainGame.requestHandler.getOpponentName());
-		opponentName.setColor(Color.WHITE);
 		
 		topText = new dText(0,0,64f,"GAME OVER");
 		topText.setColor(Color.WHITE);
@@ -79,9 +86,8 @@ public class GameOverScreen extends dScreen {
 		playerScore.setColor(Color.WHITE);
 		dText opponentScore = new dText(0,0,92f,"0");
 		opponentScore.setColor(Color.WHITE);
-		scoreCard.addObject(playerScore, dUICard.LEFT, dUICard.CENTER);
-		scoreCard.addObject(opponentScore, dUICard.RIGHT, dUICard.CENTER);
-		scoreCard.addObject(scoreIdentifierText, dUICard.CENTER, dUICard.CENTER);
+		scoreCard.addObject(playerScore, dUICard.CENTER, dUICard.CENTER);
+		scoreCard.addObject(scoreIdentifierText, dUICard.LEFT, dUICard.CENTER);
 		
 		moneyCard = new dUICard(0,0,texture);
 		moneyCard.setColor(scoreCard.getColor());
@@ -102,17 +108,14 @@ public class GameOverScreen extends dScreen {
 		rematchText = new dText(0,0,48f,"");
 		rematchText.setColor(Color.WHITE);
 		
-		addObject(topText,dUICard.CENTER,dUICard.TOP);
-		addObject(playerImage,dUICard.CENTER, dUICard.TOP);
-		playerImage.setPos(getX() + getWidth()/4f - playerImage.getWidth()/2f, getY() + 256f - playerImage.getHeight()/2f);
-		addObject(playerName, dUICard.CENTER, dUICard.TOP);
-		playerName.setPos(getX() + getWidth() / 4f - playerName.getWidth() / 2f, playerImage.getY() - getPadding() / 2f - playerName.getHeight() / 2f);
-		addObject(opponentImage,dUICard.CENTER, dUICard.TOP);
-		opponentImage.setPos(getX() + getWidth() - getWidth() / 4f - opponentImage.getWidth() / 2f, playerImage.getY());
-		addObject(opponentName, dUICard.CENTER, dUICard.TOP);
-		opponentName.setPos(getX() + getWidth() - getWidth() / 4f - opponentName.getWidth() / 2f, playerImage.getY() - getPadding() / 2f - opponentName.getHeight() / 2f);
-		addObjectUnder(scoreCard,getIndexOf(playerImage));
+		topCard.addObject(topText,dUICard.CENTER,dUICard.TOP);
+		topCard.addObject(playerImage,dUICard.CENTER, dUICard.TOP);
+		playerImage.setY(getY() + 256f - playerImage.getHeight()/2f);
+		topCard.addObject(playerName, dUICard.CENTER, dUICard.TOP);
+		playerName.setY(playerImage.getY() - getPadding() / 2f - playerName.getHeight() / 2f);
+		topCard.addObjectUnder(scoreCard, topCard.getIndexOf(playerImage));
 		scoreCard.setX(getX());
+		addCardAsObject(topCard);
 		addObject(replayButton, dUICard.RIGHT, dUICard.BOTTOM);
 		replayButton.setOriginCenter();
 		addObject(rematchText,dUICard.CENTER,dUICard.CENTER);
@@ -122,24 +125,13 @@ public class GameOverScreen extends dScreen {
 	public void update(float delta)
 	{
 		super.update(delta);
+		if(showAnimation.isActive())
+		{
+			showAnimation.update(delta);
+		}
 		// spin replay button on click
 		if(isVisible())
 		{
-			if(showTime <= SHOW_DURATION)
-			{
-				showTime+=delta;
-				setY(dTweener.ElasticOut(showTime, MainGame.camera.position.y + MainGame.VIRTUAL_HEIGHT / 2f, -MainGame.VIRTUAL_HEIGHT, SHOW_DURATION, 8f));
-			}
-			if(showTime >= SHOW_DURATION / 6f)
-			{
-				currentScore = dTweener.MoveToAndSlow(currentScore, playerScore, 2f* delta);
-				((dText)scoreCard.getObject(0)).setText(Float.toString((int)currentScore+1).substring(0,Float.toString((int)currentScore+1).length()-2));
-				currentOpponentScore = dTweener.MoveToAndSlow(currentOpponentScore, opponentScore, 2f * delta);
-				((dText)scoreCard.getObject(1)).setText(Float.toString((int)currentOpponentScore+1).substring(0, Float.toString((int)currentOpponentScore+1).length()-2));
-				currentMoney = dTweener.MoveToAndSlow(currentMoney, 30, 2f * delta);
-				((dText)moneyCard.getObject(0)).setText("$$$: " + Float.toString((int)currentMoney+1).substring(0,Float.toString((int)currentMoney+1).length()-2));
-			}
-
 			if(replayButton.isClicked())
 			{
 				setY(0);
@@ -147,7 +139,7 @@ public class GameOverScreen extends dScreen {
 				if(wantsReplay == false)
 				{
 					wantsReplay = true;
-					showTime = SHOW_DURATION + 1f;
+					showAnimation.stop();
 				}
 				// send message to oppenent requesting a rematch
 				if(MainGame.requestHandler.isMultiplayer())
@@ -185,20 +177,6 @@ public class GameOverScreen extends dScreen {
 	{
 		super.render(batch);
 	}
-
-	@Override
-	public void show()
-	{
-		super.show();
-		setPos(MainGame.camera.position.x - MainGame.VIRTUAL_WIDTH / 2f,MainGame.camera.position.y + MainGame.VIRTUAL_HEIGHT / 2f);
-		if(MainGame.requestHandler.isMultiplayer())
-		{
-			((dImage)getObject(3)).setImage(SkinLoader.getTextureForSkinID(MainGame.gameScreen.getOpponentSkinID()));
-			opponentName.setText(MainGame.requestHandler.getOpponentName());
-			opponentName.setColor(Color.WHITE);
-		}
-		showTime = 0;
-	}
 	
 	private float getFontSize(String text)
 	{
@@ -217,7 +195,6 @@ public class GameOverScreen extends dScreen {
 		hide();
 		replayButton.getSprite().setRotation(0);
 		currentScore = 0;
-		currentMoney = 0;
 		currentOpponentScore = 0;
 		playerScore = 0;
 		opponentScore = 0;
@@ -264,5 +241,31 @@ public class GameOverScreen extends dScreen {
 		newScreen.show();
 		MainGame.currentScreen = newScreen;
 	//	MainGame.previousScreen = this;
+	}
+
+	@Override
+	public void onAnimationStart(int ID, float duration) {
+		if(ID == 123)
+		{
+			setPos(MainGame.camera.position.x + MainGame.VIRTUAL_WIDTH /2f,MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f);
+			if(MainGame.requestHandler.isMultiplayer())
+			{
+				((dImage)getObject(3)).setImage(SkinLoader.getTextureForSkinID(MainGame.gameScreen.getOpponentSkinID()));
+			}
+		}
+	}
+
+	@Override
+	public void whileAnimating(int ID, float time, float duration, float delta) {
+		if(ID == 123 && time > duration / 6f)
+		{
+			currentScore = dTweener.MoveToAndSlow(currentScore, playerScore, 2f* delta);
+			((dText)scoreCard.getObject(0)).setText(Float.toString((int)currentScore+1).substring(0,Float.toString((int)currentScore+1).length()-2));
+			currentOpponentScore = dTweener.MoveToAndSlow(currentOpponentScore, opponentScore, 2f * delta);
+		}
+	}
+	
+	@Override
+	public void onAnimationFinish(int ID) {
 	}
 }

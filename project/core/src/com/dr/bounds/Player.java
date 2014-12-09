@@ -26,7 +26,6 @@ public class Player extends dObject {
 	private float startY = 0;
 	// bounding rectangle used for collisions
 	private Rectangle boundingRect = new Rectangle(SKIN_DIMENSIONS, SKIN_DIMENSIONS,SKIN_DIMENSIONS,SKIN_DIMENSIONS);
-	
 	private RequestHandler requestHandler;
 	
 	public Player(float x, float y, RequestHandler rq) {
@@ -79,23 +78,33 @@ public class Player extends dObject {
 		// add velocity
 		setPosition(getX() + playerVelocity.x * delta, getY() + playerVelocity.y * delta);
 		boundingRect.set(getX() + 8f, getY() + 8f, getWidth()-16f, getHeight()-16f);
-	//	boundingRect.set(0,0,0,0);
+		boundingRect.set(0,0,0,0);
 		if(controllable)
 		{
-			if(Gdx.input.isTouched() && Gdx.input.justTouched() && moveCenter == false)
+			if(Gdx.input.isTouched() && Gdx.input.justTouched())
 			{
 				// temp
 			//	playerVelocity.x = 0;
 				if(touchedLeftSide())// user touched left half of screen
 				{
 					targetVelocity.set(-32f*32f,0);
+					if(moveCenter)
+					{
+						playerVelocity.set(-18*18f,0);
+						moveCenter = false;
+					}
 				}
 				else // user touched right half of screen
 				{
 					targetVelocity.set(32f*32f,0);
+					if(moveCenter)
+					{
+						playerVelocity.set(18*18f,0);
+						moveCenter = false;
+					}
 				}
 				changeVelocity = true;
-				requestHandler.sendUnreliableMessage(getMovementMessage());
+				requestHandler.sendReliableMessage(getMovementMessage());
 			}
 		}
 		
@@ -110,10 +119,10 @@ public class Player extends dObject {
 		
 		if(squeezed)
 		{
-			if(squeezeTime <= 3f)
+			if(squeezeTime <= 1.5f)
 			{
 				squeezeTime+=delta;
-				setScale(dTweener.ElasticOut(squeezeTime, 24f, 40f, 3f,6f) / getWidth(), dTweener.ElasticOut(squeezeTime, 76f, -12f, 3f,6f) / getHeight());
+				setScale(dTweener.ExponentialEaseOut(squeezeTime, 24f, 40f, 1.5f) / getWidth(), dTweener.ExponentialEaseOut(squeezeTime, 76f, -12f, 1.5f) / getHeight());
 			}
 			else
 			{
@@ -124,7 +133,7 @@ public class Player extends dObject {
 	
 	private void changeVelocity(float delta)
 	{
-		playerVelocity.set(dTweener.MoveToAndSlow(playerVelocity.x, targetVelocity.x, delta*12f), dTweener.MoveToAndSlow(playerVelocity.y, targetVelocity.y, delta));
+		playerVelocity.set(dTweener.MoveToAndSlow(playerVelocity.x, targetVelocity.x, delta*10f), dTweener.MoveToAndSlow(playerVelocity.y, targetVelocity.y, delta));
 		setY(getY() - GameScreen.CAMERA_SPEED * delta * 1.1f);
 		// check if passed bounds and need to move back to center
 		checkBounds();
@@ -132,7 +141,7 @@ public class Player extends dObject {
 	
 	private void checkBounds()
 	{
-		if(getX() <= -20 || getX() >= MainGame.VIRTUAL_WIDTH - getWidth() + 20)// changes with +- 20 to account for ball squeezing
+		if(getX() <= -5|| getX() >= MainGame.VIRTUAL_WIDTH - getWidth() + 5)// changes with +- 5 to account for ball squeezing
 		{
 			moveCenter = true;
 			changeVelocity = false;
@@ -151,6 +160,7 @@ public class Player extends dObject {
 		{
 			//setPosition(dTweener.MoveToAndSlow(getX(), MainGame.VIRTUAL_WIDTH/2f - getWidth()/2f, 4f*delta),getY());
 			setPosition(dTweener.MoveToAndSlow(getX(), MainGame.VIRTUAL_WIDTH/2f - getWidth()/2f,5.5f*delta), dTweener.MoveToAndSlow(getY(), startY - 475f, 5.5f*delta));
+
 		}
 		else
 		{
@@ -176,18 +186,25 @@ public class Player extends dObject {
 	
 	public void setMovementMessage(byte[] message)//when player is NOT controllable, it sends opponents touches and acts accordingly
 	{
-		if(moveCenter == false)
+		if(message[1] == 'L')// left
 		{
-			if(message[1] == 'L')// left
+			targetVelocity.set(-32f*32f,0);
+			if(moveCenter)
 			{
-				targetVelocity.set(-32f*32f,0);
+				playerVelocity.set(-18*18f,0);
+				moveCenter = false;
 			}
-			else if(message[1] == 'R')// right
-			{
-				targetVelocity.set(32f*32f,0);
-			}
-			changeVelocity = true;
 		}
+		else if(message[1] == 'R')// right
+		{
+			targetVelocity.set(32f*32f,0);
+			if(moveCenter)
+			{
+				playerVelocity.set(18*18f,0);
+				moveCenter = false;
+			}
+		}
+		changeVelocity = true;
 	}
 
 	public void setControllable(boolean c)

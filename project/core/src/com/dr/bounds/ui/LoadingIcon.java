@@ -6,6 +6,9 @@ import com.DR.dLib.dTweener;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.dr.bounds.MainGame;
 
 public class LoadingIcon extends dObject {
 
@@ -16,21 +19,27 @@ public class LoadingIcon extends dObject {
 	private float expandTime = 0;
 	private final float EXPAND_DURATION = .8f;
 	// colors, move to AssetManager class
+	/*
 	private Color[] flatColors = new Color[]{new Color(46f/256f, 204f/256f, 113f/256f,1f), // green
 											new Color(52f/256f, 152f/256f, 219f/256f,1f), // blue
 											new Color(231f/256f, 76f/256f, 60f/256f,1f), // red
 											new Color(241f/256f, 196f/256f, 15f/256f,1f), //yellow
-											new Color(243f/256f, 156f/256f, 18f/256f,1f)}; // orange
+											new Color(243f/256f, 156f/256f, 18f/256f,1f)}; // orange*/
+	
+	private Color[] flatColors = new Color[]{new Color(85f/256f, 98f/256f, 112f/256f,1f),
+			new Color(78f/256f, 205f/256f, 196f/256f,1f),
+			new Color(199f/256f, 244f/256f, 100f/256f,1f),
+			new Color(255f/256f, 107f/256f, 107f/256f,1f), 
+			new Color(196f/256f, 77f/256f, 88f/256f,1f)}; 
 	// index of color that will be assigned
 	private int currentIndex = 0;
 	
 	public LoadingIcon(float x, float y, Texture texture)
 	{
 		super(x,y);
-		
 		circleOne = new dImage(x,y,texture);
 		circleOne.setOriginCenter();
-		circleOne.setDimensions(0, 0);
+		circleOne.setDimensions(0,0);
 		circleOne.setPos(x,y);
 		circleOne.setColor(flatColors[0]);
 		circleTwo = new dImage(x,y,texture);
