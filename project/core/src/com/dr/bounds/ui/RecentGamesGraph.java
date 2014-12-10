@@ -6,6 +6,7 @@ import com.DR.dLib.dObject;
 import com.DR.dLib.dValues;
 import com.DR.dLib.ui.dImage;
 import com.DR.dLib.ui.dText;
+import com.DR.dLib.ui.dUICard;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -78,7 +79,7 @@ public class RecentGamesGraph extends dObject {
 			for(int y = 0; y < 5; y++)
 			{
 				sr.setColor(1,1,1,0.1f);
-				sr.rect(getGraphZeroX() + (.25f * xAxis.getWidth()) * x,getGraphZeroY() - (yAxis.getHeight() / 5f) * (y+1),.25f * xAxis.getWidth(), yAxis.getHeight() / 5f);			
+				sr.rect(getGraphZeroX() + (.25f * xAxis.getWidth()) * x, getGraphZeroY() - (yAxis.getHeight() / 5f) * (y+1), .25f * xAxis.getWidth(), yAxis.getHeight() / 5f);			
 			}
 		}
 		sr.end();
@@ -88,13 +89,13 @@ public class RecentGamesGraph extends dObject {
 			if(x != 0)
 			{
 				sr.setColor(new Color(46f/256f, 204f/256f, 113/256f, 1f));
-				sr.rectLine(points.get(x-1).getX(), points.get(x-1).getY(), points.get(x).getX(), points.get(x).getY(), 4f);
+				sr.rectLine(points.get(x-1).getX(), points.get(x-1).getY(),points.get(x).getX(), points.get(x).getY(), 4f);
 			}
 		}
 		for(int x= 1; x < points.size(); x++)
 		{
 			sr.setColor(new Color(236f/256f, 240f/256f, 241f/256f, 1f));
-			sr.circle(points.get(x).getX(), points.get(x).getY(), 4);
+			sr.circle(points.get(x).getX(),points.get(x).getY(), 4);
 		}
 		sr.end();
 	}

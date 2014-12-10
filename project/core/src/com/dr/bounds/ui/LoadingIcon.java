@@ -6,9 +6,6 @@ import com.DR.dLib.dTweener;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.dr.bounds.MainGame;
 
 public class LoadingIcon extends dObject {
 

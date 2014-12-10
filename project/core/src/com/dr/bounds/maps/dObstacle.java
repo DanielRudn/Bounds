@@ -49,10 +49,6 @@ public class dObstacle extends dObject{
 		// check if player passed and needs to be awarded point
 		if(player.getY() < getY())
 		{
-			if(passed == false)
-			{
-				MainGame.playScoreSound();
-			}
 			passed = true;
 		}
 	}

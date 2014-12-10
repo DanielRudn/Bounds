@@ -37,7 +37,6 @@ public class MapGenerator implements TimerListener {
 	private int scoreIncrementAmount = 1;
 	// timer for switching map type
 	private dTimer typeSwitchTimer;
-	
 	// test, remove
 	public static dImage transitionImage;
 	
@@ -155,17 +154,6 @@ public class MapGenerator implements TimerListener {
 	
 	private void reset()
 	{
-		/*
-		// reset currentType.getObstacles()
-		for(int x = 0; x < currentType.getObstacles().size(); x++)
-		{
-			currentType.getObstacles().get(x).setY(0);
-			currentType.getObstacles().get(x).setRegenerate(true);
-			//currentType.getObstacles().get(x).setColor(Color.RED);
-			currentType.getObstacles().get(x).setPassed(false);
-			currentType.getObstacles().get(x).setIncrementedScore(true);
-		}
-		*/
 		//	determine which map type is set
 		int newType = rng.nextInt(4);
 		if(newType == 0)
@@ -189,6 +177,7 @@ public class MapGenerator implements TimerListener {
 		nextType = null;
 		currentType.reset();
 		score = 0;
+		transitionImage.setY(MainGame.VIRTUAL_HEIGHT * 2f);
 	}
 	
 	public void generateFirstSet()
@@ -209,6 +198,7 @@ public class MapGenerator implements TimerListener {
 	public void incrementScore()
 	{
 		score+=scoreIncrementAmount;
+		MainGame.playScoreSound();
 	}
 	
 	/**

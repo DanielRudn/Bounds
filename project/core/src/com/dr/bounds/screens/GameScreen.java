@@ -41,8 +41,10 @@ public class GameScreen extends dScreen {
 	private dText debug = new dText(0,0,64f,"debug:");
 	private static String debugString = "";
 
-	public GameScreen(float x, float y, Texture texture, Texture obstacle) {
+	public GameScreen(float x, float y, Texture texture) {
 		super(x, y, texture);
+		
+		Texture obstacle = new Texture("girder.png");
 		
 		requestHandler = MainGame.requestHandler;
 		
@@ -53,8 +55,6 @@ public class GameScreen extends dScreen {
 
 		mapGen = new MapGenerator(MapGenerator.TYPE_MACHINERY,obstacle, player);
 		mapGen.generateSeed();
-		// TODO: might remove
-	//	mapGen.generateFirstSet();
 		
 		gameOverScreen = new GameOverScreen(getX(), getY(), texture, player.getSkinID());
 		gameOverScreen.hide();
@@ -64,7 +64,7 @@ public class GameScreen extends dScreen {
 		
 		scoreText = new dText(0,0,192f,"0");
 		scoreText.setColor(0,0,0,0.5f);
-		addObject(scoreText,dUICard.CENTER, dUICard.TOP);
+		addObject(scoreText,dUICard.LEFT, dUICard.TOP);
 		
 	}
 	
@@ -218,11 +218,6 @@ public class GameScreen extends dScreen {
 	public void setPlayerSkin(int id)
 	{
 		player.setSkinID(id);
-	}
-	
-	public void setOpponentScore(int score)
-	{
-		gameOverScreen.setOpponentScore(score);
 	}
 	
 	public int getPlayerSkinID()

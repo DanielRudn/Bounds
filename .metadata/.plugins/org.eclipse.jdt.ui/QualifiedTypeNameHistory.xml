@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="com.dr.bounds.MultiplayerListener"/>
 <fullyQualifiedTypeName name="java.util.Random"/>
 <fullyQualifiedTypeName name="com.google.android.gms.games.leaderboard.LeaderboardVariant"/>
 <fullyQualifiedTypeName name="com.google.android.gms.games.leaderboard.Leaderboards.LoadScoresResult"/>
@@ -45,7 +44,6 @@
 <fullyQualifiedTypeName name="com.DR.dLib.animations.SlideInOrderAnimation"/>
 <fullyQualifiedTypeName name="com.DR.dLib.dObject"/>
 <fullyQualifiedTypeName name="com.DR.dLib.dTweener"/>
-<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Color"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.math.Rectangle"/>
 <fullyQualifiedTypeName name="com.DR.dLib.ui.dText"/>
 <fullyQualifiedTypeName name="com.DR.dLib.ui.dImage"/>
@@ -59,5 +57,7 @@
 <fullyQualifiedTypeName name="com.badlogic.gdx.files.FileHandle"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.glutils.ShapeRenderer"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Color"/>
 <fullyQualifiedTypeName name="com.dr.bounds.MainGame"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.ParticleEffect"/>
 </qualifiedTypeNameHistroy>

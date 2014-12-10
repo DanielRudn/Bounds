@@ -10,7 +10,6 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -69,6 +68,8 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 	private static Sound bounceSound;
 	private ArrayList<dUICard> recentlyPlayedList;
 	
+	private dText fpsText;
+	
 	public MainGame(RequestHandler h)
 	{
 		requestHandler = h;
@@ -101,7 +102,8 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		multiplayerScreen = new MultiplayerScreen(0,0,card);
 		waitingRoomScreen = new WaitingRoomScreen(0,0,card,icon,circle);
 		//waitingRoomScreen.hide();
-		gameScreen = new GameScreen(0,0,card, obstacle);
+		
+		gameScreen = new GameScreen(0,0,card);
 	//	gameScreen.pause();
 		
 		recentlyPlayedList = new ArrayList<dUICard>();
@@ -113,6 +115,8 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		
 		scoreSound = Gdx.audio.newSound(Gdx.files.internal("score.wav"));
 		bounceSound = Gdx.audio.newSound(Gdx.files.internal("bounce.wav"));
+		
+		fpsText = new dText(5,5,80,"FPS: 60");
 		
 		currentScreen = debugCard;
 		currentScreen = menuScreen;
@@ -136,9 +140,11 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		{
 			//inviteCard.update(DELTA);
 			update(DELTA);
+			fpsText.setPos(camera.position.x - MainGame.VIRTUAL_WIDTH / 2f + 5, camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f + 5f);
+			fpsText.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
 			accumulator -= DELTA;
 		}
-	
+
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		/*
@@ -153,6 +159,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		{
 		//	previousScreen.render(batch);
 		}
+		fpsText.render(batch);
 		batch.end();
 		/**
 		 * TODO: BUG: when inviting the nexus 5 from the memopad, if you swipe both away in the recents, and then invite from memo pad again, the nexus doesnt show info
@@ -254,12 +261,6 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		else if(msg[0] == 'L')// opponent lost
 		{
 			gameScreen.setOpponentLost(true);
-			// send my score to the opponent
-			requestHandler.sendReliableMessage(new byte[]{'C', (byte) gameScreen.getScore()});
-		}
-		else if(msg[0] == 'C')// opponent sent score
-		{
-			gameScreen.setOpponentScore(msg[1]);
 		}
 		else if(msg[0] == 'P')// opponent wants a rematch
 		{

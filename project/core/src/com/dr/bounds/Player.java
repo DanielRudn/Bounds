@@ -4,6 +4,7 @@ import com.DR.dLib.dObject;
 import com.DR.dLib.dTweener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -24,9 +25,14 @@ public class Player extends dObject {
 	private boolean squeezed = true;
 	// y position when the user taps the screen
 	private float startY = 0;
+	// array for the movement message for this player
+	private byte[] movement = new byte[]{(byte)0,(byte)0};
 	// bounding rectangle used for collisions
 	private Rectangle boundingRect = new Rectangle(SKIN_DIMENSIONS, SKIN_DIMENSIONS,SKIN_DIMENSIONS,SKIN_DIMENSIONS);
 	private RequestHandler requestHandler;
+	
+	// temp
+	private ParticleEffect trailEffect = new ParticleEffect();
 	
 	public Player(float x, float y, RequestHandler rq) {
 		super(x, y, new Sprite(SkinLoader.getTextureForSkinID(MainGame.PLACEHOLDER_SKIN_ID)));
@@ -38,6 +44,7 @@ public class Player extends dObject {
 		super(x,y,new Sprite(SkinLoader.getTextureForSkinID(MainGame.PLACEHOLDER_SKIN_ID)));
 		setSkinID(id);
 		requestHandler = rq;
+		trailEffect.load(Gdx.files.internal("trail.p"), Gdx.files.internal(""));
 	}
 	
 	public Player(float x, float y, int id, boolean controllable, RequestHandler rq)
@@ -70,6 +77,7 @@ public class Player extends dObject {
 
 	@Override
 	public void render(SpriteBatch batch) {
+		trailEffect.draw(batch);
 		getSprite().draw(batch);
 	}
 
@@ -78,13 +86,13 @@ public class Player extends dObject {
 		// add velocity
 		setPosition(getX() + playerVelocity.x * delta, getY() + playerVelocity.y * delta);
 		boundingRect.set(getX() + 8f, getY() + 8f, getWidth()-16f, getHeight()-16f);
-		boundingRect.set(0,0,0,0);
+		trailEffect.update(delta);
+		trailEffect.setPosition(getX() + getWidth()/2f, getY() + getHeight() / 2f);
+	//	boundingRect.set(0,0,0,0);
 		if(controllable)
 		{
 			if(Gdx.input.isTouched() && Gdx.input.justTouched())
 			{
-				// temp
-			//	playerVelocity.x = 0;
 				if(touchedLeftSide())// user touched left half of screen
 				{
 					targetVelocity.set(-32f*32f,0);
@@ -93,6 +101,7 @@ public class Player extends dObject {
 						playerVelocity.set(-18*18f,0);
 						moveCenter = false;
 					}
+					movement = new byte[]{'M','L'};
 				}
 				else // user touched right half of screen
 				{
@@ -102,6 +111,7 @@ public class Player extends dObject {
 						playerVelocity.set(18*18f,0);
 						moveCenter = false;
 					}
+					movement = new byte[]{'M','R'};
 				}
 				changeVelocity = true;
 				requestHandler.sendReliableMessage(getMovementMessage());
@@ -159,8 +169,8 @@ public class Player extends dObject {
 		if(getX() < MainGame.VIRTUAL_WIDTH/2f - getWidth()/2f - 14f || getX() > MainGame.VIRTUAL_WIDTH/2f - getWidth()/2f + 14f)
 		{
 			//setPosition(dTweener.MoveToAndSlow(getX(), MainGame.VIRTUAL_WIDTH/2f - getWidth()/2f, 4f*delta),getY());
-			setPosition(dTweener.MoveToAndSlow(getX(), MainGame.VIRTUAL_WIDTH/2f - getWidth()/2f,5.5f*delta), dTweener.MoveToAndSlow(getY(), startY - 475f, 5.5f*delta));
-
+			setX(dTweener.MoveToAndSlow(getX(), MainGame.VIRTUAL_WIDTH/2f - getWidth()/2f,5.5f*delta));
+			setY(dTweener.MoveToAndSlow(getY(), startY - 475f, 5.5f*delta));
 		}
 		else
 		{
@@ -206,7 +216,7 @@ public class Player extends dObject {
 		}
 		changeVelocity = true;
 	}
-
+	
 	public void setControllable(boolean c)
 	{
 		controllable = c;
@@ -230,11 +240,7 @@ public class Player extends dObject {
 	
 	public byte[] getMovementMessage()
 	{
-		if(touchedLeftSide())
-		{
-			return new byte[]{'M','L'};
-		}
-		return new byte[]{'M','R'};
+		return movement;
 	}
 	
 	@Override
