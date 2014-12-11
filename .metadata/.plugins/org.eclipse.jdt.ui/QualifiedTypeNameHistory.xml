@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="com.google.android.gms.games.leaderboard.Leaderboards.LoadScoresResult"/>
 <fullyQualifiedTypeName name="java.util.Iterator"/>
 <fullyQualifiedTypeName name="com.google.android.gms.games.leaderboard.LeaderboardScore"/>
 <fullyQualifiedTypeName name="com.dr.bounds.ui.PlayerCard"/>
@@ -18,7 +17,6 @@
 <fullyQualifiedTypeName name="com.badlogic.gdx.math.MathUtils"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.SpriteBatch"/>
 <fullyQualifiedTypeName name="com.DR.dLib.dImage"/>
-<fullyQualifiedTypeName name="com.dr.bounds.screens.GameScreen"/>
 <fullyQualifiedTypeName name="com.DR.dLib.dAnimation"/>
 <fullyQualifiedTypeName name="com.DR.dLib.dUICard"/>
 <fullyQualifiedTypeName name="com.DR.dLib.CircleFillAnimation"/>
@@ -55,9 +53,11 @@
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.glutils.ShapeRenderer"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Color"/>
-<fullyQualifiedTypeName name="com.dr.bounds.MainGame"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.ParticleEffect"/>
 <fullyQualifiedTypeName name="com.dr.bounds.ui.RecentGamesGraph"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.math.Vector2"/>
 <fullyQualifiedTypeName name="com.DR.dLib.ui.dUICard"/>
+<fullyQualifiedTypeName name="com.DR.dLib.animations.dAnimation"/>
+<fullyQualifiedTypeName name="com.dr.bounds.screens.GameScreen"/>
+<fullyQualifiedTypeName name="com.dr.bounds.MainGame"/>
 </qualifiedTypeNameHistroy>

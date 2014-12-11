@@ -114,7 +114,7 @@ public class Player extends dObject {
 					movement = new byte[]{'M','R'};
 				}
 				changeVelocity = true;
-				requestHandler.sendReliableMessage(getMovementMessage());
+			//	requestHandler.sendReliableMessage(getMovementMessage());
 			}
 		}
 		

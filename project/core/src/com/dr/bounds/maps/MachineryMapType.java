@@ -47,7 +47,7 @@ public class MachineryMapType extends MapType{
 				//obstacles.get(x).setColor(Color.BLUE);
 				gen.setHadCollision(true);
 				// send message to opponent saying player lost
-				MainGame.requestHandler.sendReliableMessage(new byte[]{'L'});
+				//MainGame.requestHandler.sendReliableMessage(new byte[]{'L'});
 				// test might have to remove
 				break;
 			}

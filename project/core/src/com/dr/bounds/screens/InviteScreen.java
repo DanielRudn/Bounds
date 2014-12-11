@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.DR.dLib.animations.AnimationStatusListener;
 import com.DR.dLib.animations.ExpandAnimation;
 import com.DR.dLib.animations.ShrinkAnimation;
+import com.DR.dLib.animations.dAnimation;
 import com.DR.dLib.ui.dImage;
 import com.DR.dLib.ui.dScreen;
 import com.DR.dLib.ui.dText;
@@ -32,7 +33,7 @@ public class InviteScreen extends dUICardList implements AnimationStatusListener
 	private final float SHOW_CARD_DURATION = 2f;
 	// animation that plays when showing this screen
 	private ExpandAnimation startAnimation;
-	private SlideInArrayAnimation cardsAnimation;
+	private dAnimation cardsAnimation;
 	private static final int SHOW_ANIM_ID = 12345;
 	private static final int HIDE_ANIM_ID = 34567;
 	private static final int CARDS_ANIM_ID = 23456;
@@ -83,7 +84,7 @@ public class InviteScreen extends dUICardList implements AnimationStatusListener
 			{
 				if(getListItem(x).isVisible() && getListItem(x).isClicked())
 				{
-					MainGame.requestHandler.sendInvite(((PlayerCard) getListItem(x)).getPlayerID());
+				//	MainGame.requestHandler.sendInvite(((PlayerCard) getListItem(x)).getPlayerID());
 					switchScreen(MainGame.waitingRoomScreen);
 				}
 			}
@@ -142,7 +143,7 @@ public class InviteScreen extends dUICardList implements AnimationStatusListener
 	public void show()
 	{
 		super.show();
-		MainGame.requestHandler.loadRecentlyPlayedWithPlayers();
+	//	MainGame.requestHandler.loadRecentlyPlayedWithPlayers();
 	}
 	
 	@Override

@@ -65,7 +65,6 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 	
 	// test, remove
 	private static Sound scoreSound;
-	private static Sound bounceSound;
 	private ArrayList<dUICard> recentlyPlayedList;
 	
 	private dText fpsText;
@@ -114,7 +113,6 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		batch = new SpriteBatch();
 		
 		scoreSound = Gdx.audio.newSound(Gdx.files.internal("score.wav"));
-		bounceSound = Gdx.audio.newSound(Gdx.files.internal("bounce.wav"));
 		
 		fpsText = new dText(5,5,80,"FPS: 60");
 		
@@ -203,11 +201,6 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 	{
 		scoreSound.play();
 	}
-	
-	public static void playBounceSound()
-	{
-		bounceSound.play();
-	}
 
 	public static int getPlayerSkinID()
 	{
@@ -235,6 +228,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 
 	@Override
 	public void onRealTimeMessageRecieved(byte[] msg) {
+		/*
 		if(msg[0] == 'M')// movement received
 		{
 			gameScreen.getOpponent().setMovementMessage(msg);
@@ -268,7 +262,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		else if(msg[0] == 'T') // map type change
 		{
 			gameScreen.setMapType(msg);
-		}
+		}*/
 	}
 
 	@Override
@@ -279,7 +273,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 	public void onPeersConnected() 
 	{
 		//opponent just connected
-		requestHandler.sendReliableMessage(new byte[]{'S',(byte)gameScreen.getPlayerSkinID()});
+	//	requestHandler.sendReliableMessage(new byte[]{'S',(byte)gameScreen.getPlayerSkinID()});
 	}
 
 	@Override
@@ -292,7 +286,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 	public void onInvitationRemoved() {}
 
 	@Override
-	public void onRecentPlayersLoaded(int numLoaded) {
+	public void onRecentPlayersLoaded(int numLoaded) {/*
 		// clear the list of players if it's loaded 
 		inviteScreen.clearList();
 		// recents card
@@ -319,12 +313,12 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 			// set card Y for transitioning
 			currentCard.setY(-currentCard.getHeight() - inviteScreen.getPadding());
 		}
-		requestHandler.loadInvitablePlayers();
+		requestHandler.loadInvitablePlayers();*/
 	}
 	
 	@Override
 	public void onInvitablePlayersLoaded(int numLoaded)
-	{
+	{/*
 		// invitable card
 		dUICard invitableCard = new dUICard(0,0,card);
 		invitableCard.setDimensions(VIRTUAL_WIDTH - 128f, 128f);
@@ -348,12 +342,12 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 			// set card Y for transitioning
 			currentCard.setY(-currentCard.getHeight() - inviteScreen.getPadding());
 		}
-		inviteScreen.showCards();
+		inviteScreen.showCards();*/
 	}
 	
 	@Override
 	public void onInvitationsLoaded(int numLoaded)
-	{
+	{/*
 		for(int x = 0; x < numLoaded; x++)
 		{
 			InviteCard currentCard = new InviteCard(0,0,card,requestHandler.getInviterName(x), requestHandler.getInvitationID(x));
@@ -361,6 +355,6 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 			// set card Y for transitioning
 			currentCard.setY(-currentCard.getHeight() - inboxScreen.getPadding());
 		}
-		inboxScreen.showCards();
+		inboxScreen.showCards();*/
 	}
 }

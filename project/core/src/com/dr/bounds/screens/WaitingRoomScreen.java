@@ -264,9 +264,9 @@ public class WaitingRoomScreen extends dScreen {
 	
 	private void checkOpponentStatus()
 	{
-		if(requestHandler.getOpponentStatus() != currentStatus)
+	//	if(requestHandler.getOpponentStatus() != currentStatus)
 		{
-			currentStatus = requestHandler.getOpponentStatus();
+		//	currentStatus = requestHandler.getOpponentStatus();
 			switchStatus = true;
 		}
 	}
@@ -307,7 +307,7 @@ public class WaitingRoomScreen extends dScreen {
 				changedText = false;
 				
 				// test
-				requestHandler.sendReliableMessage(new byte[]{'R'});
+			//	requestHandler.sendReliableMessage(new byte[]{'R'});
 			}
 		}
 	}

@@ -16,19 +16,19 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.SkinLoader;
+import com.dr.bounds.ui.RecentGamesGraph;
 
 public class GameOverScreen extends dUICardList implements AnimationStatusListener {
 
 	// two darker panels containing info about users score and money won
 	private dUICard scoreCard, moneyCard;
 	// the counters that will be displayed on screen
-	private float currentScore = 0, currentMoney = 0, currentOpponentScore = 0;
+	private float currentScore = 0;
 	// players final score for score counter
 	private float playerScore = 0;
-	// opponents final score for score counter
-	private float opponentScore = 0;
 	// image of the player's skin
 	private dImage playerImage;
 	// name of local player
@@ -49,6 +49,8 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 	private dUICard topCard;
 	// animations
 	private SlideExponentialAnimation showAnimation;
+	// test
+	private RecentGamesGraph rgg;
 	
 	public GameOverScreen(float x, float y, Texture texture, int playerSkinID) {
 		super(x, y, texture, new ArrayList<dUICard>());
@@ -56,7 +58,7 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		setPadding(32f);
 		setPaddingLeft(64f);
 		
-		showAnimation = new SlideExponentialAnimation(2f, this, 123, -100, 0, this);
+		showAnimation = new SlideExponentialAnimation(1f, this, 123, -MainGame.VIRTUAL_WIDTH, 0, this);
 		setShowAnimation(showAnimation);
 		
 		topCard = new dUICard(getX(), getY(), texture);
@@ -176,6 +178,10 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 	public void render(SpriteBatch batch)
 	{
 		super.render(batch);
+		if(isVisible() && rgg != null)
+		{
+			rgg.render(batch);
+		}
 	}
 	
 	private float getFontSize(String text)
@@ -195,11 +201,9 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		hide();
 		replayButton.getSprite().setRotation(0);
 		currentScore = 0;
-		currentMoney = 0;
-		currentOpponentScore = 0;
 		playerScore = 0;
-		opponentScore = 0;
 		rematchText.setText("");
+		rgg = null;
 	}
 	
 	public void setTitleMessage(String title)
@@ -212,15 +216,18 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 	{
 		playerScore = score;
 	}
-
-	public void setOpponentScore(int score)
-	{
-		opponentScore = score;
-	}
 	
 	public void setOpponentWantsRematch(boolean rematch)
 	{
 		opponentRematch = rematch;
+		if(rematch)
+		{
+			rematchText.setText(MainGame.requestHandler.getOpponentName() + " wants to play again!");
+		}
+		else
+		{
+			rematchText.setText("");
+		}
 	}
 	
 	public boolean wantsReplay()
@@ -251,8 +258,16 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 			setPos(MainGame.camera.position.x + MainGame.VIRTUAL_WIDTH /2f,MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f);
 			if(MainGame.requestHandler.isMultiplayer())
 			{
-				((dImage)getObject(3)).setImage(SkinLoader.getTextureForSkinID(MainGame.gameScreen.getOpponentSkinID()));
+			//	((dImage)getObject(3)).setImage(SkinLoader.getTextureForSkinID(MainGame.gameScreen.getOpponentSkinID()));
 			}
+			rgg = new RecentGamesGraph(100 + getWidth()/2f - 396f / 2f , getY()  + MainGame.VIRTUAL_HEIGHT / 2f , new Texture("card.png"), 396,256, "Score Last 5 Games");
+			ArrayList<Vector2> scores = new ArrayList<Vector2>();
+			scores.add(new Vector2(0,15));
+			scores.add(new Vector2(1,20));
+			scores.add(new Vector2(2,32));
+			scores.add(new Vector2(3,12));
+			scores.add(new Vector2(4,playerScore));
+			rgg.setPoints(scores);
 		}
 	}
 
@@ -262,7 +277,7 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		{
 			currentScore = dTweener.MoveToAndSlow(currentScore, playerScore, 2f* delta);
 			((dText)scoreCard.getObject(0)).setText(Float.toString((int)currentScore+1).substring(0,Float.toString((int)currentScore+1).length()-2));
-			currentOpponentScore = dTweener.MoveToAndSlow(currentOpponentScore, opponentScore, 2f * delta);
+			rgg.setX(dTweener.ExponentialEaseOut(time, 100 + getWidth() / 2f - 396f / 2f, -getWidth(), duration));
 		}
 	}
 	

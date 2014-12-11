@@ -106,7 +106,7 @@ public class InboxScreen extends dUICardList implements AnimationStatusListener 
 			{
 				if(getListItem(x).isVisible() && ((dButton) getListItem(x).getObject(2)).isClicked())// object at 2 is the accept button
 				{
-					MainGame.requestHandler.acceptInvite(((InviteCard)getListItem(x)).getInviteID());
+				//	MainGame.requestHandler.acceptInvite(((InviteCard)getListItem(x)).getInviteID());
 					MainGame.currentScreen.switchScreen(MainGame.waitingRoomScreen);
 				}
 			}
@@ -139,7 +139,7 @@ public class InboxScreen extends dUICardList implements AnimationStatusListener 
 	public void show()
 	{
 		super.show();
-		MainGame.requestHandler.loadInvitations();
+	//	MainGame.requestHandler.loadInvitations();
 	}
 	
 	@Override

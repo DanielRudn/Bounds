@@ -131,7 +131,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 				}
 			}
 		}
-		else if(requestCode == RC_INVITE)
+	/*	else if(requestCode == RC_INVITE)
 		{
 			if(resultCode != RESULT_OK)
 			{
@@ -206,9 +206,9 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 			
 			// prevent sleep
 			preventSleep();
-		}
+		}*/
 	}
-	
+/*	
 	private RoomConfig.Builder makeBasicRoomConfigBuilder()
 	{
 		return RoomConfig.builder(this)
@@ -235,7 +235,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 		// show different screen
 		
 	}
-	
+	*/
 	private void preventSleep()
 	{
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -267,7 +267,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 		Log.d("BOUNDS", "Connected");
 		// initialize invitation listener
 		Games.Invitations.registerInvitationListener(apiClient, this);
-		// check if user has an invitation
+		/* check if user has an invitation
 		if(connectionHint != null)
 		{
 			 cInv = connectionHint.getParcelable(Multiplayer.EXTRA_INVITATION);
@@ -284,7 +284,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 				
 				// go to game screen
 			}
-		}
+		} */
 		// notify listener
 		multiplayerListener.onConnected();
 	}
@@ -310,14 +310,14 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 		Log.d("BOUNDS","Requested sign out...\nSigning out...");
 	//	apiClient.disconnect();
 	}
-	
+/*
 	@Override
 	public void requestInboxActivity()
 	{
 		Log.d("BOUNDS","Requested inbox");
 		startActivityForResult(Games.Invitations.getInvitationInboxIntent(apiClient),RC_INBOX);
 	}
-
+*/
 	@Override
 	public String getCurrentAccountName()
 	{
@@ -328,7 +328,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 		return "Player";
 		// return Games.getCurrentAccountName(apiClient); <-- returns users email, not name
 	}
-	
+	/*
 	@Override
 	public String getOpponentName()
 	{
@@ -344,7 +344,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 	{
 		return isHost;
 	}
-	
+
 	@Override
 	public boolean isMultiplayer()
 	{
@@ -363,7 +363,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 		}
 		return 1; // 1 = STATUS_INVITED
 	}
-
+*/
 	@Override
 	public boolean isConnected()
 	{
@@ -375,7 +375,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 	{
 		return apiClient.isConnecting();
 	}
-	
+	/*
 	@Override
 	public void leaveRoom()
 	{
@@ -396,7 +396,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 		Log.d("BOUNDS","Requested invite activity");
 		startActivityForResult(Games.RealTimeMultiplayer.getSelectOpponentsIntent(apiClient, 1, 1), RC_INVITE);
 	}
-	
+	*/
 	@Override
 	public void submitToLeaderboard(int data, String leaderboardID)
 	{
@@ -408,7 +408,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 	{
 		startActivityForResult(Games.Leaderboards.getLeaderboardIntent(apiClient, leaderboardID), 20001);
 	}
-	
+	/*
 	@Override
 	public void sendReliableMessage(byte[] message)
 	{
@@ -557,7 +557,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 		// join room
 		Games.RealTimeMultiplayer.join(apiClient, roomConfig);
 	}
-
+*/
 	@Override
 	public void onJoinedRoom(int statusCode, Room room) {
 	    if (statusCode != GamesStatusCodes.STATUS_OK) {

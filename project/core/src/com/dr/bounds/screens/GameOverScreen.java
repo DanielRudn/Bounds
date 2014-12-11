@@ -143,33 +143,36 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 					wantsReplay = true;
 					showAnimation.stop();
 				}
-				// send message to oppenent requesting a rematch
+				/* send message to oppenent requesting a rematch
 				if(MainGame.requestHandler.isMultiplayer())
 				{
 					MainGame.requestHandler.sendReliableMessage(new byte[]{'P'});
-				}
+				}*/
 			}
 			
 			// single player reset
-			if(wantsReplay && MainGame.requestHandler.isMultiplayer() == false)
+		//	if(wantsReplay && MainGame.requestHandler.isMultiplayer() == false)
+			if(wantsReplay)
 			{
 				replayButton.getSprite().setRotation(dTweener.MoveToAndSlow(replayButton.getSprite().getRotation(), 360f, 5f*delta));
 				setX(dTweener.MoveToAndSlow(getX(), 0 + MainGame.VIRTUAL_WIDTH * 2f,3f*delta));
+				rgg.setX(rgg.getX() + getX());
 				if(getX() >= MainGame.VIRTUAL_WIDTH)
 				{
 					reset();
 				}
 			}
-			// multiplayer reset
+			/* multiplayer reset
 			else if(wantsReplay && opponentRematch && MainGame.requestHandler.isMultiplayer())
 			{
 				replayButton.getSprite().setRotation(dTweener.MoveToAndSlow(replayButton.getSprite().getRotation(), 360f, 5f*delta));
 				setX(dTweener.MoveToAndSlow(getX(), 0 + MainGame.VIRTUAL_WIDTH * 2f,3f*delta));
+				rgg.setX(rgg.getX() + getX());
 				if(getX() >= MainGame.VIRTUAL_WIDTH)
 				{
 					reset();
 				}
-			}
+			}*/
 			
 		}
 	}
@@ -222,7 +225,7 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		opponentRematch = rematch;
 		if(rematch)
 		{
-			rematchText.setText(MainGame.requestHandler.getOpponentName() + " wants to play again!");
+		//	rematchText.setText(MainGame.requestHandler.getOpponentName() + " wants to play again!");
 		}
 		else
 		{
@@ -256,11 +259,7 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		if(ID == 123)
 		{
 			setPos(MainGame.camera.position.x + MainGame.VIRTUAL_WIDTH /2f,MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f);
-			if(MainGame.requestHandler.isMultiplayer())
-			{
-			//	((dImage)getObject(3)).setImage(SkinLoader.getTextureForSkinID(MainGame.gameScreen.getOpponentSkinID()));
-			}
-			rgg = new RecentGamesGraph(getWidth()/2f - 396f / 2f , getY()  + MainGame.VIRTUAL_HEIGHT / 2f , new Texture("card.png"), 396,256, "Score Last 5 Games");
+			rgg = new RecentGamesGraph(getWidth() + getWidth()/2f - 396f / 2f , getY()  + MainGame.VIRTUAL_HEIGHT / 2f , new Texture("card.png"), 396,256, "Score Last 5 Games");
 			ArrayList<Vector2> scores = new ArrayList<Vector2>();
 			scores.add(new Vector2(0,15));
 			scores.add(new Vector2(1,20));
@@ -277,6 +276,7 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		{
 			currentScore = dTweener.MoveToAndSlow(currentScore, playerScore, 2f* delta);
 			((dText)scoreCard.getObject(0)).setText(Float.toString((int)currentScore+1).substring(0,Float.toString((int)currentScore+1).length()-2));
+			rgg.setX(dTweener.ExponentialEaseOut(time, getWidth() + getWidth() / 2f - 396f / 2f, -getWidth(), duration));
 		}
 	}
 	

@@ -22,6 +22,7 @@ public class MapGenerator implements TimerListener {
 	private MapType nextType = null;
 	// Random number generator for positioning objects
 	public static Random rng = new Random();
+	private Random test = new Random();
 	// seed for random number generator
 	private long seed = 123456789;
 	// player object
@@ -38,6 +39,7 @@ public class MapGenerator implements TimerListener {
 	private int scoreIncrementAmount = 1;
 	// timer for switching map type
 	private dTimer typeSwitchTimer;
+	
 	// test, remove
 	public static dImage transitionImage;
 	
@@ -68,17 +70,17 @@ public class MapGenerator implements TimerListener {
 		
 		transitionImage = new dImage(0,2000, new Texture("transitionDevice.png"));
 		
-		typeSwitchTimer = new dTimer(10f,10f,0,this);
+		typeSwitchTimer = new dTimer(5f,5f,0,this);
 		typeSwitchTimer.start();
 	}
 	
 	public void update(float delta)
 	{
 		currentType.update(delta);
-		if(typeSwitchTimer.isRunning())
-		{
+	//	if(typeSwitchTimer.isRunning() && (MainGame.requestHandler.isMultiplayer() == false || MainGame.requestHandler.isHost()))
+	//	{
 			typeSwitchTimer.update(delta);
-		}
+	//	}
 		if(nextType != null && currentType.shouldSwitch())
 		{
 			currentType = nextType;
@@ -133,6 +135,7 @@ public class MapGenerator implements TimerListener {
 	{
 		seed = s;
 		rng.setSeed(seed);
+		test.setSeed(seed);
 	}
 	
 	public void generateSeed()
@@ -147,13 +150,28 @@ public class MapGenerator implements TimerListener {
 		{
 			reset();
 		}
+		else if(c)
+		{
+	//		MainGame.requestHandler.sendReliableMessage(new byte[]{'C', (byte) getScore()});
+		}
 	}
 	
 	private void reset()
 	{
+		/*
+		// reset currentType.getObstacles()
+		for(int x = 0; x < currentType.getObstacles().size(); x++)
+		{
+			currentType.getObstacles().get(x).setY(0);
+			currentType.getObstacles().get(x).setRegenerate(true);
+			//currentType.getObstacles().get(x).setColor(Color.RED);
+			currentType.getObstacles().get(x).setPassed(false);
+			currentType.getObstacles().get(x).setIncrementedScore(true);
+		}
+		*/
 		//	determine which map type is set
-		int newType = rng.nextInt(4);
-		GameScreen.log("newType: " + newType);
+		int newType = test.nextInt(4);
+		//GameScreen.log("newType: " + newType);
 		if(newType == 0)
 		{
 			currentType = new DefaultMapType(TYPE_DEFAULT, player, this);
@@ -170,8 +188,14 @@ public class MapGenerator implements TimerListener {
 		{
 			currentType = new SkyMapType(TYPE_SKY, player, this);
 		}
-		generateFirstSet();
+	//	if(MainGame.requestHandler.isMultiplayer() == false)
+	//	{	
+			generateSeed();
+			generateFirstSet();
+			GameScreen.log("Called");
+	//	}
 		nextType = null;
+		currentType.nextType = null;
 		currentType.reset();
 		score = 0;
 		transitionImage.setY(MainGame.VIRTUAL_HEIGHT * 2f);
@@ -195,7 +219,6 @@ public class MapGenerator implements TimerListener {
 	public void incrementScore()
 	{
 		score+=scoreIncrementAmount;
-		MainGame.playScoreSound();
 	}
 	
 	/**
@@ -206,11 +229,11 @@ public class MapGenerator implements TimerListener {
 	{
 		int newType = msg[1];
 		setNextType(newType);
-		if(nextType == null)
+		/*if(nextType == null)
 		{
 			typeSwitchTimer.start();
 			MainGame.requestHandler.sendReliableMessage(new byte[]{'T',(byte) newType});// send message to opponent with new map type 
-		}
+		}*/
 		currentType.setNextMapType(nextType);
 	}
 	
@@ -280,15 +303,15 @@ public class MapGenerator implements TimerListener {
 		setNextType(newType);
 		if(nextType == null)
 		{
-			if(MainGame.requestHandler.isMultiplayer() && MainGame.requestHandler.isHost())
-			{
+		//	if(MainGame.requestHandler.isMultiplayer() && MainGame.requestHandler.isHost())
+		//	{
 				typeSwitchTimer.start();
-				MainGame.requestHandler.sendReliableMessage(new byte[]{'T',(byte) newType});// send message to opponent with new map type 
-			}
-			else if(MainGame.requestHandler.isMultiplayer() == false)
-			{
-				typeSwitchTimer.start();
-			}
+		//		MainGame.requestHandler.sendReliableMessage(new byte[]{'T',(byte) newType});// send message to opponent with new map type 
+		//	}
+		//	else if(MainGame.requestHandler.isMultiplayer() == false)
+		//	{
+		//		typeSwitchTimer.start();
+		//	}
 		}
 		currentType.setNextMapType(nextType);
 	}
