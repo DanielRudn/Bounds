@@ -33,16 +33,10 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 	private dImage playerImage;
 	// name of local player
 	private dText playerName;
-	// name of opponent
-//	private dText opponentName;
 	// replay button
 	private dButton replayButton;
 	// when user clicks replay, this turns false and resets the game
 	private boolean wantsReplay = false;
-	// opponent wants a rematch
-	private boolean opponentRematch = false;
-	// text to let user know opponent wants to play again
-	private dText rematchText;
 	// Text at the top E.G (Game Over, You Win, You lose...)
 	private dText topText;
 	// card containing above elements
@@ -107,9 +101,6 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		replayButton.setDimensions(192f, 192f);
 		replayButton.setColor(moneyCard.getColor());
 		
-		rematchText = new dText(0,0,48f,"");
-		rematchText.setColor(Color.WHITE);
-		
 		topCard.addObject(topText,dUICard.CENTER,dUICard.TOP);
 		topCard.addObject(playerImage,dUICard.CENTER, dUICard.TOP);
 		playerImage.setY(getY() + 256f - playerImage.getHeight()/2f);
@@ -120,7 +111,6 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		addCardAsObject(topCard);
 		addObject(replayButton, dUICard.RIGHT, dUICard.BOTTOM);
 		replayButton.setOriginCenter();
-		addObject(rematchText,dUICard.CENTER,dUICard.CENTER);
 	}
 	
 	@Override
@@ -143,15 +133,9 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 					wantsReplay = true;
 					showAnimation.stop();
 				}
-				/* send message to oppenent requesting a rematch
-				if(MainGame.requestHandler.isMultiplayer())
-				{
-					MainGame.requestHandler.sendReliableMessage(new byte[]{'P'});
-				}*/
 			}
 			
 			// single player reset
-		//	if(wantsReplay && MainGame.requestHandler.isMultiplayer() == false)
 			if(wantsReplay)
 			{
 				replayButton.getSprite().setRotation(dTweener.MoveToAndSlow(replayButton.getSprite().getRotation(), 360f, 5f*delta));
@@ -161,19 +145,7 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 				{
 					reset();
 				}
-			}
-			/* multiplayer reset
-			else if(wantsReplay && opponentRematch && MainGame.requestHandler.isMultiplayer())
-			{
-				replayButton.getSprite().setRotation(dTweener.MoveToAndSlow(replayButton.getSprite().getRotation(), 360f, 5f*delta));
-				setX(dTweener.MoveToAndSlow(getX(), 0 + MainGame.VIRTUAL_WIDTH * 2f,3f*delta));
-				rgg.setX(rgg.getX() + getX());
-				if(getX() >= MainGame.VIRTUAL_WIDTH)
-				{
-					reset();
-				}
-			}*/
-			
+			}	
 		}
 	}
 	
@@ -200,12 +172,10 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 	public void reset()
 	{
 		wantsReplay = false;
-		opponentRematch = false;
 		hide();
 		replayButton.getSprite().setRotation(0);
 		currentScore = 0;
 		playerScore = 0;
-		rematchText.setText("");
 		rgg = null;
 	}
 	
@@ -220,18 +190,6 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		playerScore = score;
 	}
 	
-	public void setOpponentWantsRematch(boolean rematch)
-	{
-		opponentRematch = rematch;
-		if(rematch)
-		{
-		//	rematchText.setText(MainGame.requestHandler.getOpponentName() + " wants to play again!");
-		}
-		else
-		{
-			rematchText.setText("");
-		}
-	}
 	
 	public boolean wantsReplay()
 	{

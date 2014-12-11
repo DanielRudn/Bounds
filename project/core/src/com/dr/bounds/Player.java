@@ -16,7 +16,6 @@ public class Player extends dObject {
 	
 	private final int SKIN_DIMENSIONS = 64;
 	private int skinID = MainGame.PLACEHOLDER_SKIN_ID;
-	private boolean controllable = true;
 	private boolean moveCenter = false;
 	private boolean changeVelocity = false;
 	private Vector2 targetVelocity = new Vector2(0,0);
@@ -25,53 +24,36 @@ public class Player extends dObject {
 	private boolean squeezed = true;
 	// y position when the user taps the screen
 	private float startY = 0;
-	// array for the movement message for this player
-	private byte[] movement = new byte[]{(byte)0,(byte)0};
 	// bounding rectangle used for collisions
 	private Rectangle boundingRect = new Rectangle(SKIN_DIMENSIONS, SKIN_DIMENSIONS,SKIN_DIMENSIONS,SKIN_DIMENSIONS);
-	private RequestHandler requestHandler;
 	
 	// temp
 	private ParticleEffect trailEffect = new ParticleEffect();
 	
 	public Player(float x, float y, RequestHandler rq) {
 		super(x, y, new Sprite(SkinLoader.getTextureForSkinID(MainGame.PLACEHOLDER_SKIN_ID)));
-		requestHandler = rq;
 	}
 	
-	public Player(float x,float y, int id, RequestHandler rq)
+	public Player(float x,float y, int id)
 	{
 		super(x,y,new Sprite(SkinLoader.getTextureForSkinID(MainGame.PLACEHOLDER_SKIN_ID)));
 		setSkinID(id);
-		requestHandler = rq;
 		trailEffect.load(Gdx.files.internal("trail.p"), Gdx.files.internal(""));
 	}
 	
-	public Player(float x, float y, int id, boolean controllable, RequestHandler rq)
+	public Player(float x, float y)
 	{
 		super(x,y,new Sprite(SkinLoader.getTextureForSkinID(MainGame.PLACEHOLDER_SKIN_ID)));
-		skinID = id;
-		this.controllable = controllable;
-		requestHandler = rq;
 	}
 	
-	public Player(float x, float y, boolean controllable, RequestHandler rq)
-	{
-		super(x,y,new Sprite(SkinLoader.getTextureForSkinID(MainGame.PLACEHOLDER_SKIN_ID)));
-		this.controllable = controllable;
-		requestHandler = rq;
-	}
-	
-	public Player(float x, float y, Texture t, RequestHandler rq)
+	public Player(float x, float y, Texture t)
 	{
 		super(x,y,t);
-		requestHandler = rq;
 	}
 	
-	public Player(float x, float y, TextureRegion t, RequestHandler rq)
+	public Player(float x, float y, TextureRegion t)
 	{
 		super(x,y, new Sprite(t));
-		requestHandler = rq;
 	}
 	
 
@@ -89,33 +71,27 @@ public class Player extends dObject {
 		trailEffect.update(delta);
 		trailEffect.setPosition(getX() + getWidth()/2f, getY() + getHeight() / 2f);
 	//	boundingRect.set(0,0,0,0);
-		if(controllable)
+		if(Gdx.input.isTouched() && Gdx.input.justTouched())
 		{
-			if(Gdx.input.isTouched() && Gdx.input.justTouched())
+			if(touchedLeftSide())// user touched left half of screen
 			{
-				if(touchedLeftSide())// user touched left half of screen
+				targetVelocity.set(-32f*32f,0);
+				if(moveCenter)
 				{
-					targetVelocity.set(-32f*32f,0);
-					if(moveCenter)
-					{
-						playerVelocity.set(-18*18f,0);
-						moveCenter = false;
-					}
-					movement = new byte[]{'M','L'};
+					playerVelocity.set(-18*18f,0);
+					moveCenter = false;
 				}
-				else // user touched right half of screen
-				{
-					targetVelocity.set(32f*32f,0);
-					if(moveCenter)
-					{
-						playerVelocity.set(18*18f,0);
-						moveCenter = false;
-					}
-					movement = new byte[]{'M','R'};
-				}
-				changeVelocity = true;
-			//	requestHandler.sendReliableMessage(getMovementMessage());
 			}
+			else // user touched right half of screen
+			{
+				targetVelocity.set(32f*32f,0);
+				if(moveCenter)
+				{
+					playerVelocity.set(18*18f,0);
+					moveCenter = false;
+				}
+			}
+			changeVelocity = true;
 		}
 		
 		if(changeVelocity)
@@ -194,33 +170,6 @@ public class Player extends dObject {
 		startY = getY();
 	}
 	
-	public void setMovementMessage(byte[] message)//when player is NOT controllable, it sends opponents touches and acts accordingly
-	{
-		if(message[1] == 'L')// left
-		{
-			targetVelocity.set(-32f*32f,0);
-			if(moveCenter)
-			{
-				playerVelocity.set(-18*18f,0);
-				moveCenter = false;
-			}
-		}
-		else if(message[1] == 'R')// right
-		{
-			targetVelocity.set(32f*32f,0);
-			if(moveCenter)
-			{
-				playerVelocity.set(18*18f,0);
-				moveCenter = false;
-			}
-		}
-		changeVelocity = true;
-	}
-	
-	public void setControllable(boolean c)
-	{
-		controllable = c;
-	}
 	
 	public void setSkinID(int id)
 	{
@@ -236,11 +185,6 @@ public class Player extends dObject {
 	public boolean isMovingCenter()
 	{
 		return moveCenter;
-	}
-	
-	public byte[] getMovementMessage()
-	{
-		return movement;
 	}
 	
 	@Override

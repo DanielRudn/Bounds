@@ -89,14 +89,6 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		{
 			switchScreen(MainGame.gameScreen);
 		}
-		if(multiplayerButton.isClicked())
-		{
-			switchScreen(MainGame.inviteScreen);
-		}
-		if(skinsButton.isClicked())
-		{
-			switchScreen(MainGame.inboxScreen);
-		}
 	}
 	
 	@Override

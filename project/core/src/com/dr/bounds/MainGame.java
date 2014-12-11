@@ -10,22 +10,13 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
-import com.dr.bounds.screens.DebugScreen;
 import com.dr.bounds.screens.GameScreen;
-import com.dr.bounds.screens.InboxScreen;
-import com.dr.bounds.screens.InviteScreen;
 import com.dr.bounds.screens.MenuScreen;
-import com.dr.bounds.screens.MultiplayerScreen;
-import com.dr.bounds.screens.WaitingRoomScreen;
-import com.dr.bounds.ui.InviteCard;
-import com.dr.bounds.ui.PlayerCard;
 
 public class MainGame extends ApplicationAdapter implements MultiplayerListener {
 	
@@ -49,12 +40,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 	public static dScreen currentScreen;
 	public static dScreen previousScreen = null;
 	public static MenuScreen menuScreen;
-	public static MultiplayerScreen multiplayerScreen;
-	public static InviteScreen inviteScreen;
 	public static GameScreen gameScreen;
-	public static WaitingRoomScreen waitingRoomScreen;
-	public static DebugScreen debugCard;
-	public static InboxScreen inboxScreen;
 	
 	public static boolean isPlaying = false;
 	
@@ -65,8 +51,6 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 	
 	// test, remove
 	private static Sound scoreSound;
-	private ArrayList<dUICard> recentlyPlayedList;
-	
 	private dText fpsText;
 	
 	public MainGame(RequestHandler h)
@@ -94,21 +78,12 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		circle = new Texture("circle.png");
 		circle.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		
-		debugCard = new DebugScreen(0,0,card,button);
-		//debugCard.hide();
-		
 		menuScreen = new MenuScreen(0,0,card);
-		multiplayerScreen = new MultiplayerScreen(0,0,card);
-		waitingRoomScreen = new WaitingRoomScreen(0,0,card,icon,circle);
-		//waitingRoomScreen.hide();
 		
 		gameScreen = new GameScreen(0,0,card);
 	//	gameScreen.pause();
 		
-		recentlyPlayedList = new ArrayList<dUICard>();
-		inviteScreen = new InviteScreen(0,0,card,recentlyPlayedList);
-		
-		inboxScreen = new InboxScreen(0,0,card,recentlyPlayedList);
+		new ArrayList<dUICard>();
 		
 		batch = new SpriteBatch();
 		
@@ -116,7 +91,6 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		
 		fpsText = new dText(5,5,80,"FPS: 60");
 		
-		currentScreen = debugCard;
 		currentScreen = menuScreen;
 		menuScreen.show();
 	}
@@ -173,13 +147,6 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		}
 		//update camera
 		camera.update();
-		// waiting room has moved away, start playing.
-		if(waitingRoomScreen.getHideTime() >= 2f)
-		{
-			gameScreen.resume();
-			currentScreen.switchScreen(gameScreen);
-		}
-
 	}
 	
 	public static int getVirtualMouseX()
@@ -214,147 +181,4 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 	@Override
 	public void onConnected(){}
 
-	@Override
-	public void onJoinedRoom() {}
-
-	@Override
-	public void onLeftRoom() {}
-
-	@Override
-	public void onRoomConnected() {}
-
-	@Override
-	public void onRoomCreated() {}
-
-	@Override
-	public void onRealTimeMessageRecieved(byte[] msg) {
-		/*
-		if(msg[0] == 'M')// movement received
-		{
-			gameScreen.getOpponent().setMovementMessage(msg);
-		}
-		else if(msg[0] == 'S')// skin received
-		{
-			gameScreen.getOpponent().setSkinID((int)msg[1]);
-			waitingRoomScreen.showOpponentElements(gameScreen.getOpponentSkinID(), requestHandler.getOpponentName());
-		}
-		else if(msg[0] == 'R')// ready in waiting room
-		{
-			waitingRoomScreen.setOpponentReady();
-			//once opponent is ready, set the screen in the back to be the game screen
-			gameScreen.setPos(0,0);
-		}
-		else if(msg[0] == 'Z')// seed received
-		{
-			if(requestHandler.isHost() == false)
-			{
-				gameScreen.constructSeed(msg);
-			}
-		}
-		else if(msg[0] == 'L')// opponent lost
-		{
-			gameScreen.setOpponentLost(true);
-		}
-		else if(msg[0] == 'P')// opponent wants a rematch
-		{
-			gameScreen.setOpponentWantsRematch(true);
-		}
-		else if(msg[0] == 'T') // map type change
-		{
-			gameScreen.setMapType(msg);
-		}*/
-	}
-
-	@Override
-	public void onPeerLeft()
-	{}
-
-	@Override
-	public void onPeersConnected() 
-	{
-		//opponent just connected
-	//	requestHandler.sendReliableMessage(new byte[]{'S',(byte)gameScreen.getPlayerSkinID()});
-	}
-
-	@Override
-	public void onPeersDisconnected() {}
-
-	@Override
-	public void onInvitationReceived() {}
-
-	@Override
-	public void onInvitationRemoved() {}
-
-	@Override
-	public void onRecentPlayersLoaded(int numLoaded) {/*
-		// clear the list of players if it's loaded 
-		inviteScreen.clearList();
-		// recents card
-		dUICard recentsCard = new dUICard(0,0,card);
-		recentsCard.setDimensions(VIRTUAL_WIDTH - 128f, 128f);
-		// change this line V
-		recentsCard.setColor(new Color(46f/256f, 204f/256f, 113f/256f,1f));
-		recentsCard.setHasShadow(false);
-		dText recentsText = new dText(0,0,92f,"RECENTS (" + numLoaded + ")");
-		recentsText.setColor(Color.WHITE);
-		dUICard divider = new dUICard(0,0,card);
-		divider.setHasShadow(false);
-		divider.setDimensions(recentsCard.getWidth() - 8f, 4f);
-		recentsCard.addObject(recentsText, dUICard.LEFT, dUICard.CENTER);
-		recentsCard.addObjectUnder(divider, 0);
-		inviteScreen.addCardAsObject(recentsCard);
-		recentsCard.setY(-recentsCard.getHeight() - inviteScreen.getPadding());
-		for(int x = 0; x < numLoaded; x++)
-		{
-			//construct array list of recently played cards
-			PlayerCard currentCard = new PlayerCard(0,0,card, 1+MathUtils.random(9), requestHandler.getRecentPlayerName(x));
-			currentCard.setPlayerID(requestHandler.getRecentPlayerID(x));
-			inviteScreen.addCardAsObject(currentCard);
-			// set card Y for transitioning
-			currentCard.setY(-currentCard.getHeight() - inviteScreen.getPadding());
-		}
-		requestHandler.loadInvitablePlayers();*/
-	}
-	
-	@Override
-	public void onInvitablePlayersLoaded(int numLoaded)
-	{/*
-		// invitable card
-		dUICard invitableCard = new dUICard(0,0,card);
-		invitableCard.setDimensions(VIRTUAL_WIDTH - 128f, 128f);
-		// change this line V
-		invitableCard.setColor(new Color(46f/256f, 204f/256f, 113f/256f,1f));
-		invitableCard.setHasShadow(false);
-		dText invitableText = new dText(0,0,92f,"FRIENDS (" + numLoaded + ")");
-		invitableText.setColor(Color.WHITE);
-		dUICard divider = new dUICard(0,0,card);
-		divider.setHasShadow(false);
-		divider.setDimensions(invitableCard.getWidth() - 8f, 4f);
-		invitableCard.addObject(invitableText, dUICard.LEFT, dUICard.CENTER);
-		invitableCard.addObjectUnder(divider, 0);
-		inviteScreen.addCardAsObject(invitableCard);
-		invitableCard.setY(-invitableCard.getHeight() - inviteScreen.getPadding());
-		for(int x = 0; x < numLoaded; x++)
-		{
-			PlayerCard currentCard = new PlayerCard(0,0,card,1+MathUtils.random(9),requestHandler.getInvitablePlayerName(x));
-			currentCard.setPlayerID(requestHandler.getInvitablePlayerID(x));
-			inviteScreen.addCardAsObject(currentCard);
-			// set card Y for transitioning
-			currentCard.setY(-currentCard.getHeight() - inviteScreen.getPadding());
-		}
-		inviteScreen.showCards();*/
-	}
-	
-	@Override
-	public void onInvitationsLoaded(int numLoaded)
-	{/*
-		for(int x = 0; x < numLoaded; x++)
-		{
-			InviteCard currentCard = new InviteCard(0,0,card,requestHandler.getInviterName(x), requestHandler.getInvitationID(x));
-			inboxScreen.addCardAsObject(currentCard);
-			// set card Y for transitioning
-			currentCard.setY(-currentCard.getHeight() - inboxScreen.getPadding());
-		}
-		inboxScreen.showCards();*/
-	}
 }

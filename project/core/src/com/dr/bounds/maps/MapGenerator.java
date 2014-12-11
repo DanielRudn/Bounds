@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
-import com.dr.bounds.screens.GameScreen;
 
 public class MapGenerator implements TimerListener {
 
@@ -77,10 +76,7 @@ public class MapGenerator implements TimerListener {
 	public void update(float delta)
 	{
 		currentType.update(delta);
-	//	if(typeSwitchTimer.isRunning() && (MainGame.requestHandler.isMultiplayer() == false || MainGame.requestHandler.isHost()))
-	//	{
-			typeSwitchTimer.update(delta);
-	//	}
+		typeSwitchTimer.update(delta);
 		if(nextType != null && currentType.shouldSwitch())
 		{
 			currentType = nextType;
@@ -150,27 +146,12 @@ public class MapGenerator implements TimerListener {
 		{
 			reset();
 		}
-		else if(c)
-		{
-	//		MainGame.requestHandler.sendReliableMessage(new byte[]{'C', (byte) getScore()});
-		}
 	}
 	
 	private void reset()
 	{
-		/*
-		// reset currentType.getObstacles()
-		for(int x = 0; x < currentType.getObstacles().size(); x++)
-		{
-			currentType.getObstacles().get(x).setY(0);
-			currentType.getObstacles().get(x).setRegenerate(true);
-			//currentType.getObstacles().get(x).setColor(Color.RED);
-			currentType.getObstacles().get(x).setPassed(false);
-			currentType.getObstacles().get(x).setIncrementedScore(true);
-		}
-		*/
 		//	determine which map type is set
-		int newType = test.nextInt(4);
+		int newType = rng.nextInt(4);
 		//GameScreen.log("newType: " + newType);
 		if(newType == 0)
 		{
@@ -188,12 +169,8 @@ public class MapGenerator implements TimerListener {
 		{
 			currentType = new SkyMapType(TYPE_SKY, player, this);
 		}
-	//	if(MainGame.requestHandler.isMultiplayer() == false)
-	//	{	
-			generateSeed();
-			generateFirstSet();
-			GameScreen.log("Called");
-	//	}
+		generateSeed();
+		generateFirstSet();
 		nextType = null;
 		currentType.nextType = null;
 		currentType.reset();
@@ -219,22 +196,6 @@ public class MapGenerator implements TimerListener {
 	public void incrementScore()
 	{
 		score+=scoreIncrementAmount;
-	}
-	
-	/**
-	 * Used to set MapGenerators new map type when a message is received from opponent when not host
-	 * @param msg 
-	 */
-	public void setMapType(byte[] msg)
-	{
-		int newType = msg[1];
-		setNextType(newType);
-		/*if(nextType == null)
-		{
-			typeSwitchTimer.start();
-			MainGame.requestHandler.sendReliableMessage(new byte[]{'T',(byte) newType});// send message to opponent with new map type 
-		}*/
-		currentType.setNextMapType(nextType);
 	}
 	
 	private void setNextType(int MAP_TYPE)
@@ -303,22 +264,13 @@ public class MapGenerator implements TimerListener {
 		setNextType(newType);
 		if(nextType == null)
 		{
-		//	if(MainGame.requestHandler.isMultiplayer() && MainGame.requestHandler.isHost())
-		//	{
-				typeSwitchTimer.start();
-		//		MainGame.requestHandler.sendReliableMessage(new byte[]{'T',(byte) newType});// send message to opponent with new map type 
-		//	}
-		//	else if(MainGame.requestHandler.isMultiplayer() == false)
-		//	{
-		//		typeSwitchTimer.start();
-		//	}
+			typeSwitchTimer.start();
 		}
 		currentType.setNextMapType(nextType);
 	}
 	
 	@Override
 	public void onTimerStart(int ID) {
-		System.out.println("timer started");
 	}
 
 	@Override
