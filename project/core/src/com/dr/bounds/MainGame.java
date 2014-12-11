@@ -235,7 +235,6 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 
 	@Override
 	public void onRealTimeMessageRecieved(byte[] msg) {
-		GameScreen.log("\nMESSAGE RECIEVED: " + msg[0]);
 		if(msg[0] == 'M')// movement received
 		{
 			gameScreen.getOpponent().setMovementMessage(msg);

@@ -54,7 +54,6 @@ public class GameScreen extends dScreen {
 		opponent.setControllable(false);	
 
 		mapGen = new MapGenerator(MapGenerator.TYPE_MACHINERY,obstacle, player);
-		mapGen.generateSeed();
 		
 		gameOverScreen = new GameOverScreen(getX(), getY(), texture, player.getSkinID());
 		gameOverScreen.hide();
@@ -96,7 +95,7 @@ public class GameScreen extends dScreen {
 					// send seed to opponent
 					if(requestHandler.isHost())
 					{
-						decodeAndSendSeed(getSeed());
+					//	decodeAndSendSeed(getSeed());
 					}
 					scoreText.setText(Integer.toString(0));
 			}
@@ -151,7 +150,7 @@ public class GameScreen extends dScreen {
 		player.render(batch);
 		scoreText.render(batch);
 		gameOverScreen.render(batch);
-		//debug.render(batch);
+		debug.render(batch);
 	}
 	
 	@Override

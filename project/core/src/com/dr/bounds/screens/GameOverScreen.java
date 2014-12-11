@@ -220,6 +220,14 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 	public void setOpponentWantsRematch(boolean rematch)
 	{
 		opponentRematch = rematch;
+		if(rematch)
+		{
+			rematchText.setText(MainGame.requestHandler.getOpponentName() + " wants to play again!");
+		}
+		else
+		{
+			rematchText.setText("");
+		}
 	}
 	
 	public boolean wantsReplay()
