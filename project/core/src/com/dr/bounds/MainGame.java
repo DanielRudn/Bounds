@@ -17,6 +17,8 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dr.bounds.screens.GameScreen;
 import com.dr.bounds.screens.MenuScreen;
+import com.dr.bounds.screens.ShopScreen;
+import com.dr.bounds.ui.ShopItemCard;
 
 public class MainGame extends ApplicationAdapter implements MultiplayerListener {
 	
@@ -41,6 +43,8 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 	public static dScreen previousScreen = null;
 	public static MenuScreen menuScreen;
 	public static GameScreen gameScreen;
+	// test
+	public static ShopScreen shopScreen;
 	
 	public static boolean isPlaying = false;
 	
@@ -52,6 +56,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 	// test, remove
 	private static Sound scoreSound;
 	private dText fpsText;
+	private ShopItemCard test;
 	
 	public MainGame(RequestHandler h)
 	{
@@ -83,6 +88,8 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		gameScreen = new GameScreen(0,0,card);
 	//	gameScreen.pause();
 		
+		test = new ShopItemCard(150,150,card,"Canadian Flag", 999, (byte)8);
+		
 		new ArrayList<dUICard>();
 		
 		batch = new SpriteBatch();
@@ -90,9 +97,10 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		scoreSound = Gdx.audio.newSound(Gdx.files.internal("score.wav"));
 		
 		fpsText = new dText(5,5,80,"FPS: 60");
-		
-		currentScreen = menuScreen;
-		menuScreen.show();
+	//	currentScreen = menuScreen;
+		shopScreen = new ShopScreen(0,0,card);
+		currentScreen = shopScreen;
+		currentScreen.show();
 	}
 
 	@Override
@@ -114,6 +122,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 			update(DELTA);
 			fpsText.setPos(camera.position.x - MainGame.VIRTUAL_WIDTH / 2f + 5, camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f + 5f);
 			fpsText.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
+			test.update(DELTA);
 			accumulator -= DELTA;
 		}
 
@@ -127,6 +136,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		inviteCard.render(batch);
 		*/
 		currentScreen.render(batch);
+		//test.render(batch);
 		if(previousScreen != null)
 		{
 		//	previousScreen.render(batch);

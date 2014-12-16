@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="java.util.Iterator"/>
-<fullyQualifiedTypeName name="com.google.android.gms.games.leaderboard.LeaderboardScore"/>
-<fullyQualifiedTypeName name="com.dr.bounds.ui.PlayerCard"/>
 <fullyQualifiedTypeName name="com.DR.dLib.dText"/>
 <fullyQualifiedTypeName name="com.DR.dLib.dScreen"/>
 <fullyQualifiedTypeName name="com.DR.dLib.dUICardList"/>
@@ -60,4 +57,7 @@
 <fullyQualifiedTypeName name="com.DR.dLib.animations.dAnimation"/>
 <fullyQualifiedTypeName name="com.dr.bounds.screens.GameScreen"/>
 <fullyQualifiedTypeName name="com.dr.bounds.MainGame"/>
+<fullyQualifiedTypeName name="com.google.android.gms.drive.Drive"/>
+<fullyQualifiedTypeName name="com.google.android.gms.drive.DriveApi"/>
+<fullyQualifiedTypeName name="com.google.android.gms.drive.DriveFile"/>
 </qualifiedTypeNameHistroy>

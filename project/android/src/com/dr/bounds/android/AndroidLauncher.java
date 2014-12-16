@@ -17,6 +17,9 @@ import com.dr.bounds.RequestHandler;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.drive.Drive;
+import com.google.android.gms.drive.DriveApi;
+import com.google.android.gms.drive.DriveFile;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesActivityResultCodes;
 import com.google.android.gms.games.GamesStatusCodes;
@@ -73,8 +76,9 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 	     .addApi(Plus.API).addScope(Plus.SCOPE_PLUS_LOGIN)
 	     .addApi(Games.API).addScope(Games.SCOPE_GAMES)
 	     .build();
-		
 		Log.d("BOUNDS","apiCient built, isNull: " + (apiClient == null));
+		
+	//	DriveFile file = file.openContents(apiClient, DriveFile.MODE_READ_ONLY, null).s
 		
 		MainGame game = new MainGame(this);
 		multiplayerListener = game;
@@ -573,7 +577,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 	    	// show waiting room UI
 	    	// startActivityForResult(Games.RealTimeMultiplayer.getWaitingRoomIntent(apiClient, arg1, Integer.MAX_VALUE),RC_WAITING_ROOM);
 	    	//shouldShowWaitingRoom = true;
-	    	multiplayerListener.onJoinedRoom();
+	   // 	multiplayerListener.onJoinedRoom();
 	    } 
 	}
 
@@ -582,7 +586,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 		currentRoom = null;
 		currentRoomID = null;
 		Log.d("BOUNDS","Left room");
-		multiplayerListener.onLeftRoom();
+	//	multiplayerListener.onLeftRoom();
 	}
 
 	@Override
@@ -598,7 +602,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 	    {
 	    	currentRoom = room;
 	    	currentRoomID = room.getRoomId();
-	    	multiplayerListener.onRoomConnected();
+	   // 	multiplayerListener.onRoomConnected();
 	    } 
 	}
 
@@ -618,14 +622,14 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 	    	// show waiting room UI
 	    	// startActivityForResult(Games.RealTimeMultiplayer.getWaitingRoomIntent(apiClient, arg1, Integer.MAX_VALUE),RC_WAITING_ROOM);
 	    	//shouldShowWaitingRoom = true;
-	    	multiplayerListener.onRoomCreated();
+	 //   	multiplayerListener.onRoomCreated();
 	    } 
 	}
 
 	@Override
 	public void onRealTimeMessageReceived(RealTimeMessage msg) {
 		byte[] data = msg.getMessageData();
-		multiplayerListener.onRealTimeMessageRecieved(data);
+	//	multiplayerListener.onRealTimeMessageRecieved(data);
 	}
 
 	@Override
@@ -676,7 +680,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 		Log.d("BOUNDS",opponent.getDisplayName() + " has left..leaving room");
 		Games.RealTimeMultiplayer.leave(apiClient, this, currentRoomID);	
 		isHost = false;
-		multiplayerListener.onPeerLeft();
+	//	multiplayerListener.onPeerLeft();
 	}
 
 	@Override
@@ -684,7 +688,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 		Log.d("BOUNDS","Player Connected: " +peers.get(0));
 		opponent = arg0.getParticipant(peers.get(0));
 		Log.d("BOUNDS","Opponent: " + opponent.getDisplayName());
-		multiplayerListener.onPeersConnected();
+	//	multiplayerListener.onPeersConnected();
 	}
 
 	@Override
@@ -693,7 +697,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 		Log.d("BOUNDS",opponent.getDisplayName() + " has left..leaving room");
 		Games.RealTimeMultiplayer.leave(apiClient, this, currentRoomID);
 		isHost = false;
-		multiplayerListener.onPeersDisconnected();
+	//	multiplayerListener.onPeersDisconnected();
 	}
 
 	@Override
@@ -712,12 +716,12 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 		// alert user that they just got an invitation to play
 		// save current invitation
 		cInv = inv;
-		multiplayerListener.onInvitationReceived();
+	//	multiplayerListener.onInvitationReceived();
 	}
 
 	@Override
 	public void onInvitationRemoved(String arg0) {
 		cInv = null;
-		multiplayerListener.onInvitationRemoved();
+		//multiplayerListener.onInvitationRemoved();
 	}
 }

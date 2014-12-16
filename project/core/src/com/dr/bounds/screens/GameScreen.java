@@ -34,7 +34,7 @@ public class GameScreen extends dScreen {
 
 		Texture obstacle = new Texture("girder.png");
 		
-		mapGen = new MapGenerator(MapGenerator.TYPE_MACHINERY,obstacle, player);
+		mapGen = new MapGenerator(MapGenerator.TYPE_SPACE,obstacle, player);
 		mapGen.generateSeed();
 		// TODO: might remove
 		mapGen.generateFirstSet();

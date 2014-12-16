@@ -21,7 +21,6 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 	private final int HIDE_ANIM_ID = 12345;
 	// BUTTONS
 	private dButton playButton;
-	private dButton multiplayerButton;
 	private dButton skinsButton;
 	private dButton leaderboardsButton;
 	private dButton achievementsButton;
@@ -29,48 +28,42 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 	public MenuScreen(float x, float y, Texture texture) {
 		super(x, y, texture);
 		setPaddingTop(16f);
-	
+		//setColor(236f/256f, 240f/256f, 241f/256f, 1f);
 		hideAnimation = new SlideElasticAnimation(2f, this, HIDE_ANIM_ID,MainGame.VIRTUAL_WIDTH, 0, this);
 		setHideAnimation(hideAnimation);
 		
 		//fix
 		Texture buttonTexture = new Texture("button.png");
 		buttonTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		playButton = new dButton(0,0, new Sprite(buttonTexture), "play");
+		playButton = new dButton(0,0, new Sprite(buttonTexture), "play", new Texture("circle.png"), 2f);
 		playButton.setTextSize(92f);
 		playButton.setColor(new Color(52f/256f, 152f/256f, 219f/256f,1f));
 		
-		multiplayerButton = new dButton(0,0, new Sprite(buttonTexture), "invite");
-		multiplayerButton.setTextSize(92f);
-		multiplayerButton.setColor(new Color(52f/256f, 152f/256f, 219f/256f,1f));
-		
-		skinsButton = new dButton(0,0, new Sprite(buttonTexture), "inbox");
+		skinsButton = new dButton(0,0, new Sprite(buttonTexture), "skins", new Texture("circle.png"), 2f);
 		skinsButton.setTextSize(92f);
 		skinsButton.setColor(new Color(52f/256f, 152f/256f, 219f/256f,1f));
 		
-		leaderboardsButton = new dButton(0,0, new Sprite(buttonTexture), "scores");
+		leaderboardsButton = new dButton(0,0, new Sprite(buttonTexture), "scores", new Texture("circle.png"), 2f);
 		leaderboardsButton.setTextSize(92f);
 		leaderboardsButton.setColor(new Color(52f/256f, 152f/256f, 219f/256f,1f));
 		
-		achievementsButton = new dButton(0,0, new Sprite(buttonTexture), "trophies");
+		achievementsButton = new dButton(0,0, new Sprite(buttonTexture), "trophies", new Texture("circle.png"), 2f);
 		achievementsButton.setTextSize(92f);
 		achievementsButton.setColor(new Color(52f/256f, 152f/256f, 219f/256f,1f));
 		
 		addObject(playButton, dUICard.CENTER, dUICard.TOP);
 		playButton.setY(playButton.getY() + 364f);
-		addObjectUnder(multiplayerButton,getIndexOf(playButton));
-		addObjectUnder(skinsButton,getIndexOf(multiplayerButton));
+		addObjectUnder(skinsButton, getIndexOf(playButton));
 		addObjectUnder(leaderboardsButton, getIndexOf(skinsButton));
 		addObjectUnder(achievementsButton, getIndexOf(leaderboardsButton));
 		
 		playButton.setX(playButton.getX() - MainGame.VIRTUAL_WIDTH);
-		multiplayerButton.setX(multiplayerButton.getX() - MainGame.VIRTUAL_WIDTH);
 		skinsButton.setX(skinsButton.getX() - MainGame.VIRTUAL_WIDTH);
 		leaderboardsButton.setX(leaderboardsButton.getX() - MainGame.VIRTUAL_WIDTH);
 		achievementsButton.setX(achievementsButton.getX() - MainGame.VIRTUAL_WIDTH);
 		
 		
-		showButtonsAnimation = new SlideInOrderAnimation(2f, this, SHOW_BUTTONS_ID, MainGame.VIRTUAL_WIDTH, new dButton[]{playButton, multiplayerButton, skinsButton, leaderboardsButton, achievementsButton});
+		showButtonsAnimation = new SlideInOrderAnimation(2f, this, SHOW_BUTTONS_ID, MainGame.VIRTUAL_WIDTH, new dButton[]{playButton, skinsButton, leaderboardsButton, achievementsButton});
 	}
 	
 	@Override
@@ -89,6 +82,7 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		{
 			switchScreen(MainGame.gameScreen);
 		}
+
 	}
 	
 	@Override

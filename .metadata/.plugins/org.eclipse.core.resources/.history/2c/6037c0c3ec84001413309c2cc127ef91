@@ -1,0 +1,31 @@
+package com.dr.bounds.screens;
+
+import java.util.ArrayList;
+
+import com.DR.dLib.ui.dScreen;
+import com.DR.dLib.ui.dUICard;
+import com.DR.dLib.ui.dUICardList;
+import com.badlogic.gdx.graphics.Texture;
+
+public class ShopScreen extends dUICardList {
+
+	private ArrayList<dUICard> itemCardContainers;
+
+	public ShopScreen(float x, float y, Texture texture, ArrayList<dUICard> list) {
+		super(x, y, texture, list);
+		//this.setTitleCard(null);
+	}
+
+	@Override
+	public void goBack() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void switchScreen(dScreen arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

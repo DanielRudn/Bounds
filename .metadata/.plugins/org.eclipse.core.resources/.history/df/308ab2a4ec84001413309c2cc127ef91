@@ -1,0 +1,23 @@
+package com.dr.bounds.screens;
+
+import com.DR.dLib.ui.dScreen;
+import com.DR.dLib.ui.dUICardList;
+import com.badlogic.gdx.graphics.Texture;
+
+public class ShopScreen extends dUICardList {
+
+
+
+	@Override
+	public void goBack() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void switchScreen(dScreen arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}
