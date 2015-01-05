@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dr.bounds.MainGame;
 
 public class MenuScreen extends dScreen implements AnimationStatusListener {
@@ -24,12 +25,14 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 	private dButton skinsButton;
 	private dButton leaderboardsButton;
 	private dButton achievementsButton;
+	// next screen
+	private dScreen nextScreen = null;
 	
 	public MenuScreen(float x, float y, Texture texture) {
 		super(x, y, texture);
 		setPaddingTop(16f);
 		//setColor(236f/256f, 240f/256f, 241f/256f, 1f);
-		hideAnimation = new SlideElasticAnimation(2f, this, HIDE_ANIM_ID,MainGame.VIRTUAL_WIDTH, 0, this);
+		hideAnimation = new SlideElasticAnimation(1f, this, HIDE_ANIM_ID,0, 0, this);
 		setHideAnimation(hideAnimation);
 		
 		//fix
@@ -57,19 +60,27 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		addObjectUnder(leaderboardsButton, getIndexOf(skinsButton));
 		addObjectUnder(achievementsButton, getIndexOf(leaderboardsButton));
 		
-		playButton.setX(playButton.getX() - MainGame.VIRTUAL_WIDTH);
-		skinsButton.setX(skinsButton.getX() - MainGame.VIRTUAL_WIDTH);
-		leaderboardsButton.setX(leaderboardsButton.getX() - MainGame.VIRTUAL_WIDTH);
-		achievementsButton.setX(achievementsButton.getX() - MainGame.VIRTUAL_WIDTH);
-		
-		
 		showButtonsAnimation = new SlideInOrderAnimation(2f, this, SHOW_BUTTONS_ID, MainGame.VIRTUAL_WIDTH, new dButton[]{playButton, skinsButton, leaderboardsButton, achievementsButton});
+	}
+	
+	@Override
+	public void render(SpriteBatch batch)
+	{
+		super.render(batch);
+		if(nextScreen != null)
+		{
+			nextScreen.render(batch);
+		}
 	}
 	
 	@Override
 	public void update(float delta)
 	{
 		super.update(delta);
+		if(nextScreen != null)
+		{
+			nextScreen.update(delta);
+		}
 		if(hideAnimation.isActive())
 		{
 			hideAnimation.update(delta);
@@ -82,13 +93,20 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		{
 			switchScreen(MainGame.gameScreen);
 		}
-
+		if(skinsButton.isClicked())
+		{
+			switchScreen(new ShopScreen(0,0, new Texture("card.png")));
+		}
 	}
 	
 	@Override
 	public void show()
 	{
 		super.show();
+		playButton.setX(playButton.getX() - MainGame.VIRTUAL_WIDTH);
+		skinsButton.setX(skinsButton.getX() - MainGame.VIRTUAL_WIDTH);
+		leaderboardsButton.setX(leaderboardsButton.getX() - MainGame.VIRTUAL_WIDTH);
+		achievementsButton.setX(achievementsButton.getX() - MainGame.VIRTUAL_WIDTH);
 		showButtonsAnimation.start();
 	}
 
@@ -103,9 +121,9 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 	@Override
 	public void switchScreen(dScreen newScreen) {
 		//this.hide();
-		newScreen.show();
-		MainGame.currentScreen = newScreen;
-		MainGame.previousScreen = this;
+		nextScreen = newScreen;
+		nextScreen.show();
+		this.hide();
 	}
 
 	@Override
@@ -125,6 +143,9 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		if(ID == HIDE_ANIM_ID)
 		{
 			setVisible(false);
+			MainGame.currentScreen = nextScreen;
+			MainGame.previousScreen = this;
+			nextScreen = null;
 		}
 	}
 

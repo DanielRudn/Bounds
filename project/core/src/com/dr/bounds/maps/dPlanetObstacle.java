@@ -42,7 +42,9 @@ public class dPlanetObstacle extends dObstacle {
 			new Color(145f/256f, 61f/256f, 136f/256f ,1f), // purple-ish
 			new Color(174f/256f, 168f/256f, 211f/256f, 1f), // really light purple
 			new Color(253f/256f, 227f/256f, 167f/256f, 1f), // light peach
+			new Color(22f/256f, 242f/256f, 219f/256f, 1f), // blue/ turqoise
 			new Color(214f/256f, 69f/256f, 65f/256f, 1f)}; // light red
+			
 			
 	// rng to determine values
 	private Random rng;

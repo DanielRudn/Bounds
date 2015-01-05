@@ -1,0 +1,25 @@
+package com.dr.bounds.animations;
+
+import java.util.ArrayList;
+
+import com.DR.dLib.dObject;
+import com.DR.dLib.animations.AnimationStatusListener;
+import com.DR.dLib.animations.dAnimation;
+import com.DR.dLib.ui.dUICard;
+
+public class ShopItemsSlideAnimation extends dAnimation {
+	
+	private ArrayList<dUICard> items;
+
+	public ShopItemsSlideAnimation(float duration,	AnimationStatusListener listener, int ID, ArrayList<dUICard> objectToAnimate) {
+		super(duration, listener, ID, null);
+		items = objectToAnimate;
+	}
+
+	@Override
+	protected void animate(float time, float duration, float delta) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

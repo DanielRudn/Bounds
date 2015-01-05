@@ -1,0 +1,42 @@
+package com.dr.bounds.animations;
+
+import java.util.ArrayList;
+
+import com.DR.dLib.dTweener;
+import com.DR.dLib.animations.AnimationStatusListener;
+import com.DR.dLib.animations.dAnimation;
+import com.DR.dLib.ui.dUICard;
+import com.dr.bounds.MainGame;
+
+public class ShopItemsSlideAnimation extends dAnimation {
+	
+	private ArrayList<dUICard> items;
+	private ArrayList<Float> startY;
+	private static final float DELAY = 0.25f;
+
+	public ShopItemsSlideAnimation(float duration,	AnimationStatusListener listener, int ID, ArrayList<dUICard> objectToAnimate) {
+		super(duration, listener, ID, null);
+		items = objectToAnimate;
+		startY = new ArrayList<Float>();
+	}
+
+	@Override
+	protected void animate(float time, float duration, float delta) 
+	{
+		for(int x= 0; x < items.size(); x++)
+		{
+			items.get(x).setY(dTweener.ExponentialEaseOut(time, startPos, deltaPos, duration));
+		}
+	}
+	
+	@Override
+	public void start()
+	{
+		super.start();
+		for(int x = 0; x < items.size(); x++)
+		{
+			items.get(x).setY(items.get(x).getY() + MainGame.VIRTUAL_HEIGHT*2f);
+		}
+	}
+
+}

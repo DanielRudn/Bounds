@@ -13,6 +13,7 @@ public class SlideInArrayAnimation extends dAnimation {
 	private ArrayList<dUICard> animObjects;
 	private final float DISTANCE_FROM_TOP = 92f;
 	
+	@SuppressWarnings(value="all")
 	public SlideInArrayAnimation(ArrayList<dUICard> objectsToAnimate, float duration, AnimationStatusListener listener, int ID) {
 		super(duration, listener, ID, null);
 		animObjects = objectsToAnimate;

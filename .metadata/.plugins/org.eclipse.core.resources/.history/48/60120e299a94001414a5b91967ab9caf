@@ -1,0 +1,246 @@
+package com.dr.bounds.screens;
+
+import java.util.ArrayList;
+
+import com.DR.dLib.dTweener;
+import com.DR.dLib.animations.AnimationStatusListener;
+import com.DR.dLib.animations.ExpandAnimation;
+import com.DR.dLib.animations.dAnimation;
+import com.DR.dLib.ui.dImage;
+import com.DR.dLib.ui.dScreen;
+import com.DR.dLib.ui.dText;
+import com.DR.dLib.ui.dUICard;
+import com.DR.dLib.ui.dUICardList;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Net.HttpMethods;
+import com.badlogic.gdx.Net.HttpRequest;
+import com.badlogic.gdx.Net.HttpResponse;
+import com.badlogic.gdx.Net.HttpResponseListener;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.XmlReader;
+import com.badlogic.gdx.utils.XmlReader.Element;
+import com.dr.bounds.MainGame;
+import com.dr.bounds.animations.ShopItemsSlideAnimation;
+import com.dr.bounds.animations.SlideInArrayAnimation;
+import com.dr.bounds.ui.ShopItemCard;
+
+public class ShopScreen extends dUICardList implements HttpResponseListener, AnimationStatusListener {
+
+	// Holds 2 ShopItemCards 
+	private static ArrayList<dUICard> itemCardContainers = new ArrayList<dUICard>();
+	// Holds 1 ShopItemCard
+	private static ArrayList<dUICard> itemCardList = new ArrayList<dUICard>();
+	private Texture cardTexture;
+	private dUICard titleCard;
+	// String for shop file
+	private final String url ="https://docs.google.com/document/d/1fapoD_xnTPEAYMpJUGr9zWHy1vKzDvybvoDcWkcHQOU/edit?usp=sharing";
+	private final String LESS_THAN = "\\u003c", GREATER_THAN = "\\u003e";
+	private final String[] symbols = new String[]{"\\u003c", "\\u003e", "\\u003d", "’","\\n", "\\t"};
+	private final String[] actual = new String[]{"<", ">","=","'","\n","\t"};
+	private dUICard currentContainer;
+	private dUICard itemCard;
+	private HttpRequest request;
+	private String response = "";
+	// animations
+	private dAnimation showAnim;
+	private dImage circleCover;
+	private static final int SHOW_ANIM_ID = 19999;
+	// card/list show animation
+	private dAnimation cardShowAnim;
+	private static final int SHOW_CARD_ANIM_ID = 222222;
+	// only draws this item when clicked
+	private ShopItemCard expandedItem = null;
+	private boolean startedShrink = false;
+	
+	public ShopScreen(float x, float y, Texture texture) {
+		super(x, y, texture, itemCardContainers);
+		this.setColor(236f/256f, 240f/256f, 241f/256f,1f);
+	//	setColor(52f/256f, 73f/256f, 94f/256f,0f);
+		cardTexture = texture;
+		
+		Texture circle = new Texture("circle.png");
+		circle.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		circleCover = new dImage(0,0,circle);
+		//showAnim = new SlideExponentialAnimation(1f, this, SHOW_ANIM_ID, MainGame.VIRTUAL_WIDTH, 0, this);
+		showAnim = new ExpandAnimation(circleCover, 2.75f, this, SHOW_ANIM_ID, new Color(52f/256f, 73f/256f, 94f/256f,1f), MainGame.VIRTUAL_HEIGHT * 2f);
+		this.setShowAnimation(showAnim);
+		titleCard = new dUICard(0,0, texture);
+		titleCard.setDimensions(getWidth(), 64f);
+	//	titleCard.setColor(26f/256f, 188f/256f, 156f/256f, 1f);
+		titleCard.setColor(44f/256f, 62f/256f, 80f/256f,1f);
+		titleCard.setHasShadow(false);
+		dText title = new dText(0,0,64f,"SHOP");
+		title.setColor(Color.WHITE);
+		titleCard.addObject(title, dUICard.CENTER, dUICard.CENTER);
+		this.setTitleCard(titleCard);
+		titleCard.setY(getY() - titleCard.getHeight() - getPadding());
+		
+		//cardShowAnim = new SlideInArrayAnimation(getList(), 2.5f, this, SHOW_CARD_ANIM_ID);
+		cardShowAnim = new ShopItemsSlideAnimation(2.5f,this,SHOW_CARD_ANIM_ID,itemCardList);
+		
+		loadItemsFromBackend();
+	}
+	
+	private void loadItemsFromBackend()
+	{
+		request = new HttpRequest(HttpMethods.GET);
+		request.setUrl(url);
+		request.setHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/21.0");
+		Gdx.net.sendHttpRequest(request, this);
+	}
+	
+	@Override
+	public void render(SpriteBatch batch)
+	{
+		circleCover.render(batch);
+		super.render(batch);
+		if(expandedItem != null)
+		{
+			expandedItem.render(batch);
+		}
+	}
+	
+	@Override
+	public void update(float delta)
+	{
+		if(expandedItem == null)
+		{
+			super.update(delta);
+		}
+		else
+		{
+			expandedItem.update(delta);
+			if(Gdx.input.isKeyJustPressed(Keys.SPACE) || Gdx.input.isKeyPressed(Keys.BACK))
+			{
+				expandedItem.shrink();
+				startedShrink = true;
+			}
+			if(expandedItem.isFinishedShrink() && startedShrink)
+			{
+				startedShrink = false;
+				expandedItem = null;
+			}
+		}
+		if(showAnim.isActive())
+		{
+			showAnim.update(delta);
+		}
+		if(cardShowAnim.isActive())
+		{
+			cardShowAnim.update(delta);
+		}
+		for(int x = 0; x < itemCardList.size(); x++)
+		{
+				if(itemCardList.get(x).isClicked())
+				{
+					expandedItem = (ShopItemCard) itemCardList.get(x);
+					expandedItem.expand();
+				}
+		}
+	}
+
+	@Override
+	public void goBack() {
+		MainGame.currentScreen = MainGame.menuScreen
+	}
+
+	@Override
+	public void switchScreen(dScreen newScreen) {
+	}
+
+	@Override
+	public void handleHttpResponse(HttpResponse httpResponse) {
+		response = httpResponse.getResultAsString();
+		response = response.substring(response.indexOf(LESS_THAN + "Shop" + GREATER_THAN), response.indexOf(LESS_THAN + "/Shop" + GREATER_THAN) + (LESS_THAN + "/Shop" + GREATER_THAN).length());
+		for(int x = 0; x < symbols.length; x++)
+		{
+			response = response.replace(symbols[x], actual[x]);
+		}
+		loadDataFromXML(response);
+		Gdx.net.cancelHttpRequest(request);
+	}
+	
+	private void loadDataFromXML(String xmlString)
+	{
+		XmlReader reader = new XmlReader();
+		
+		final Element shop = reader.parse(response);
+		Gdx.app.postRunnable(new Runnable()
+		{
+				@Override
+				public void run() {
+					for(int x = 0; x < shop.getChildrenByName("Item").size; x++)
+					{
+						final Element e = shop.getChildrenByName("Item").get(x);
+						final int currentIndex = x;
+						itemCard = new ShopItemCard(0,0,cardTexture,e.get("name"), Integer.parseInt(e.get("price")), Byte.parseByte(e.get("id")));
+						itemCardList.add(itemCard);
+						if(currentIndex%2 == 0)
+						{
+							currentContainer = new dUICard(0,0,cardTexture);
+							currentContainer.setClipping(false);
+							currentContainer.setDimensions(getWidth() - 275f, 222f);
+							currentContainer.setHasShadow(false);
+							currentContainer.setAlpha(0);
+						//	currentContainer.setColor(0,0,0,0.5f);
+							currentContainer.addObject(itemCard, dUICard.LEFT, dUICard.CENTER);
+						}
+						else
+						{
+							currentContainer.addObject(itemCard, dUICard.RIGHT, dUICard.CENTER);
+							addCardAsObject(currentContainer);
+						}	
+					}
+					cardShowAnim = new ShopItemsSlideAnimation(2.5f,null,SHOW_CARD_ANIM_ID, itemCardList);
+					cardShowAnim.start();
+				}
+		});
+	}
+	
+	private void loadDataFromXML(FileHandle file)
+	{
+		
+	}
+
+	@Override
+	public void failed(Throwable t) {
+
+	}
+
+	@Override
+	public void cancelled() {
+
+	}
+
+	@Override
+	public void onAnimationStart(int ID, float duration)
+	{
+		if(ID == SHOW_ANIM_ID)
+		{
+			//this.setX(MainGame.camera.position.x - MainGame.VIRTUAL_WIDTH * 1.5f);
+			circleCover.setPos(MainGame.camera.position.x, MainGame.camera.position.y);
+			//this.setY(MainGame.camera.position.y + MainGame.VIRTUAL_HEIGHT / 2f);
+		}
+	}
+
+	@Override
+	public void whileAnimating(int ID, float time, float duration, float delta)
+	{
+		if(ID == SHOW_ANIM_ID)
+		{
+			titleCard.setY(dTweener.ElasticOut(time, getY() - titleCard.getHeight() - getPadding(), titleCard.getHeight() + getPadding(), duration,5f));
+		}
+	}
+	
+	@Override
+	public void onAnimationFinish(int ID)
+	{
+
+	}
+
+}

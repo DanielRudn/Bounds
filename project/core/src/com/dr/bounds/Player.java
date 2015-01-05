@@ -70,7 +70,7 @@ public class Player extends dObject {
 		boundingRect.set(getX() + 8f, getY() + 8f, getWidth()-16f, getHeight()-16f);
 		trailEffect.update(delta);
 		trailEffect.setPosition(getX() + getWidth()/2f, getY() + getHeight() / 2f);
-	//	boundingRect.set(0,0,0,0);
+		//boundingRect.set(0,0,0,0);
 		if(Gdx.input.isTouched() && Gdx.input.justTouched())
 		{
 			if(touchedLeftSide())// user touched left half of screen

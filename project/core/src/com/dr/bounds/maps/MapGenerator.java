@@ -14,7 +14,7 @@ import com.dr.bounds.Player;
 public class MapGenerator implements TimerListener {
 
 	// map generation type
-	public static final int TYPE_DEFAULT = 1515, TYPE_SPACE = 3030, TYPE_MACHINERY = 6060, TYPE_SKY = 9090;
+	public static final int TYPE_DEFAULT = 1515, TYPE_SPACE = 3030, TYPE_MACHINERY = 6060, TYPE_SKY = 9090, TYPE_ASTEROIDS = 110110;
 	// the current map generation type
 	private MapType currentType; 
 	// the next map generation type
@@ -46,7 +46,7 @@ public class MapGenerator implements TimerListener {
 	 * Creates a new generator and sets the level type
 	 * @param mapType Type of map to generate, use static attributes from this class as parameters
 	 */
-	public MapGenerator(int mapType, Texture obstacleTexture, Player player)
+	public MapGenerator(int mapType, Player player)
 	{
 		generateSeed();
 		this.player = player;
@@ -56,7 +56,7 @@ public class MapGenerator implements TimerListener {
 		}
 		else if(mapType == TYPE_MACHINERY)
 		{
-			currentType = new MachineryMapType(TYPE_MACHINERY, player, obstacleTexture, this);
+			currentType = new MachineryMapType(TYPE_MACHINERY, player, this);
 		}
 		else if(mapType == TYPE_SPACE)
 		{
@@ -65,6 +65,10 @@ public class MapGenerator implements TimerListener {
 		else if(mapType == TYPE_SKY)
 		{
 			currentType = new SkyMapType(TYPE_SKY, player, this);
+		}
+		else if(mapType == TYPE_ASTEROIDS)
+		{
+			currentType = new FallingMapType(TYPE_ASTEROIDS,player,this);
 		}
 		
 		transitionImage = new dImage(0,2000, new Texture("transitionDevice.png"));
@@ -151,7 +155,7 @@ public class MapGenerator implements TimerListener {
 	private void reset()
 	{
 		//	determine which map type is set
-		int newType = rng.nextInt(4);
+		int newType = rng.nextInt(5);
 		//GameScreen.log("newType: " + newType);
 		if(newType == 0)
 		{
@@ -159,7 +163,7 @@ public class MapGenerator implements TimerListener {
 		}
 		else if(newType == 1)
 		{
-			currentType = new MachineryMapType(TYPE_MACHINERY, player, new Texture("girder.png"), this);
+			currentType = new MachineryMapType(TYPE_MACHINERY, player, this);
 		}
 		else if(newType == 2)
 		{
@@ -169,6 +173,11 @@ public class MapGenerator implements TimerListener {
 		{
 			currentType = new SkyMapType(TYPE_SKY, player, this);
 		}
+		else if(newType == 4)
+		{
+			currentType = new FallingMapType(TYPE_ASTEROIDS,player,this);
+		}
+		
 		generateSeed();
 		generateFirstSet();
 		nextType = null;
@@ -196,6 +205,8 @@ public class MapGenerator implements TimerListener {
 	public void incrementScore()
 	{
 		score+=scoreIncrementAmount;
+		// play sound
+		MainGame.playScoreSound();
 	}
 	
 	private void setNextType(int MAP_TYPE)
@@ -211,7 +222,7 @@ public class MapGenerator implements TimerListener {
 		{
 			if(currentType.getMapType() != TYPE_MACHINERY)
 			{
-				nextType = new MachineryMapType(TYPE_MACHINERY, player, new Texture("girder.png"), this);
+				nextType = new MachineryMapType(TYPE_MACHINERY, player, this);
 			}
 		}
 		else if(MAP_TYPE == 2)
@@ -228,6 +239,14 @@ public class MapGenerator implements TimerListener {
 				nextType = new SkyMapType(TYPE_SKY, player, this);
 			}
 		}
+		else if(MAP_TYPE == 4)
+		{
+			if(currentType.getMapType() != TYPE_ASTEROIDS)
+			{
+				currentType = new FallingMapType(TYPE_ASTEROIDS,player,this);
+			}
+		}
+		
 	}
 
 	
@@ -260,7 +279,7 @@ public class MapGenerator implements TimerListener {
 	public void onTimerFinish(int ID)
 	{
 		//	determine which map type is set
-		int newType = rng.nextInt(4);
+		int newType = rng.nextInt(5);
 		setNextType(newType);
 		if(nextType == null)
 		{

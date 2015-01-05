@@ -2,7 +2,6 @@ package com.dr.bounds.ui;
 
 import java.util.ArrayList;
 
-import com.DR.dLib.dObject;
 import com.DR.dLib.dValues;
 import com.DR.dLib.ui.dImage;
 import com.DR.dLib.ui.dText;
@@ -92,18 +91,20 @@ public class RecentGamesGraph extends dUICard {
 		}
 		sr.end();
 		sr.begin(ShapeType.Filled);
+		// draw points
 		for(int x = 0; x < points.size(); x++)
 		{
 			if(x != 0)
 			{
 				sr.setColor(new Color(46f/256f, 204f/256f, 113f/256f, 1f));
-				sr.rectLine(points.get(x-1).getX(), points.get(x-1).getY(),points.get(x).getX(), points.get(x).getY(), 4f);
+				sr.rectLine(points.get(x-1).getX(), points.get(x-1).getY(),points.get(x).getX(), points.get(x).getY(), 5f);
 			}
 		}
+		// draw circles
 		for(int x= 1; x < points.size(); x++)
 		{
 			sr.setColor(new Color(236f/256f, 240f/256f, 241f/256f, 1f));
-			sr.circle(points.get(x).getX(),points.get(x).getY(), 4);
+			sr.circle(points.get(x).getX(),points.get(x).getY(), 5);
 		}
 		sr.end();
 		Gdx.gl.glDisable(GL20.GL_BLEND);

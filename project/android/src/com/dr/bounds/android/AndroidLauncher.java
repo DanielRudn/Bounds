@@ -79,11 +79,10 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 		Log.d("BOUNDS","apiCient built, isNull: " + (apiClient == null));
 		
 	//	DriveFile file = file.openContents(apiClient, DriveFile.MODE_READ_ONLY, null).s
-		
+
 		MainGame game = new MainGame(this);
 		multiplayerListener = game;
 		initialize(game, config);
-		
 		Log.d("BOUNDS","initialized");
 	}
 	

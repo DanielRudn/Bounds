@@ -38,7 +38,6 @@ public class DesktopLauncher implements RequestHandler {
 
 	@Override
 	public String getCurrentAccountName() {
-		// TODO Auto-generated method stub
 		return "Daniel Rudn";
 	}
 
