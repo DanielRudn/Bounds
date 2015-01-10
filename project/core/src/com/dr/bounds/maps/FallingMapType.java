@@ -11,12 +11,13 @@ public class FallingMapType extends MapType{
 	private Rectangle useless = new Rectangle();
 	
 	public FallingMapType(int type, Player player, MapGenerator generator) {
-		super(type, player, generator, new Texture("SPACE_BG.png"));
+		super(type, player, generator, new Texture("FALLING_BG.png"));
 		gen.setScoreIncrementAmount(1);
 		this.MIN_WIDTH = 64;
 		this.MAX_WIDTH = 256;
 		typeName="Asteroids";
-		Texture obstacleTexture = new Texture("asteroid.png");
+		//Texture obstacleTexture = new Texture("asteroid.png");
+		Texture obstacleTexture = new Texture("fireball.png");
 		for(int x = 0; x < 12; x++)
 		{
 			obstacles.add(new dAsteroidObstacle(0,0, obstacleTexture, player));

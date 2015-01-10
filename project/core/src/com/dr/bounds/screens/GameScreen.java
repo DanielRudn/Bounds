@@ -32,7 +32,7 @@ public class GameScreen extends dScreen {
 		
 		player = new Player(MainGame.VIRTUAL_WIDTH/2f-32f,MainGame.VIRTUAL_HEIGHT/2f-32f, 6);
 		
-		mapGen = new MapGenerator(MapGenerator.TYPE_DEFAULT, player);
+		mapGen = new MapGenerator(MapGenerator.TYPE_ASTEROIDS, player);
 		mapGen.generateSeed();
 		// TODO: might remove
 		mapGen.generateFirstSet();
@@ -41,7 +41,8 @@ public class GameScreen extends dScreen {
 		gameOverScreen.hide();
 		
 		scoreText = new dText(0,0,192f,"0");
-		scoreText.setColor(0,0,0,0.5f);
+		//scoreText.setColor(0,0,0,0.5f);
+		scoreText.setColor(1,1,1,0.5f);
 		addObject(scoreText,dUICard.CENTER, dUICard.TOP);
 		
 	}

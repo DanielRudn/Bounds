@@ -1,5 +1,0 @@
-package com.dr.bounds.animations;
-
-public class ShopItemsSlideAnimation extends dAnimation {
-
-}

@@ -6,6 +6,7 @@ import com.DR.dLib.dTweener;
 import com.DR.dLib.animations.AnimationStatusListener;
 import com.DR.dLib.animations.ExpandAnimation;
 import com.DR.dLib.animations.dAnimation;
+import com.DR.dLib.ui.dButton;
 import com.DR.dLib.ui.dImage;
 import com.DR.dLib.ui.dScreen;
 import com.DR.dLib.ui.dText;
@@ -17,10 +18,10 @@ import com.badlogic.gdx.Net.HttpMethods;
 import com.badlogic.gdx.Net.HttpRequest;
 import com.badlogic.gdx.Net.HttpResponse;
 import com.badlogic.gdx.Net.HttpResponseListener;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
@@ -55,6 +56,8 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 	// only draws this item when clicked
 	private ShopItemCard expandedItem = null;
 	private boolean startedShrink = false;
+	// test
+	private ShopSideBar sidebar;
 	
 	public ShopScreen(float x, float y, Texture texture) {
 		super(x, y, texture, itemCardContainers);
@@ -79,6 +82,8 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 		this.setTitleCard(titleCard);
 		titleCard.setY(getY() - titleCard.getHeight() - getPadding());
 		
+		sidebar = new ShopSideBar(0,0,texture);
+		
 		//cardShowAnim = new SlideInArrayAnimation(getList(), 2.5f, this, SHOW_CARD_ANIM_ID);
 		cardShowAnim = new ShopItemsSlideAnimation(2.5f,this,SHOW_CARD_ANIM_ID,itemCardList);
 		
@@ -98,6 +103,7 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 	{
 		circleCover.render(batch);
 		super.render(batch);
+		sidebar.render(batch);
 		if(expandedItem != null)
 		{
 			expandedItem.render(batch);
@@ -110,6 +116,7 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 		if(expandedItem == null)
 		{
 			super.update(delta);
+			sidebar.update(delta);
 		}
 		else
 		{
@@ -208,10 +215,11 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 		});
 	}
 	
+	/*
 	private void loadDataFromXML(FileHandle file)
 	{
 		
-	}
+	}*/
 
 	@Override
 	public void failed(Throwable t) {
@@ -249,4 +257,26 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 
 	}
 
+}
+
+// side bar inner class
+class ShopSideBar extends dUICard
+{
+	public ShopSideBar(float x, float y, Texture texture)
+	{
+		super(x, y, texture);
+		this.setDimensions(92f,MainGame.VIRTUAL_HEIGHT);
+		this.setColor(20/256f,20/256f,20/256f,1f);
+		this.setPadding(0);
+		this.setHasShadow(false);
+		dButton shopHome = new dButton(0,0,new Sprite(texture),"",new Texture("circle.png"),2f);
+		shopHome.setDimensions(getWidth(),getWidth());
+		shopHome.setColor(234f/256f,76f/256f,136f/256f,1f);
+		dButton skins = new dButton(0,0,new Sprite(texture), "", new Texture("circle.png"), 2f);
+		skins.setDimensions(shopHome.getWidth(), shopHome.getHeight());
+		skins.setColor(80f/256f,210f/256f,192f/256f,1f);
+		
+		addObject(shopHome,dUICard.LEFT_NO_PADDING,dUICard.TOP_NO_PADDING);
+		addObjectUnder(skins,getIndexOf(shopHome));
+	}
 }
