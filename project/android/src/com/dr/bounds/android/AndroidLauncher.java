@@ -44,27 +44,12 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 	
 	private GoogleApiClient apiClient;
 	
-	private final int RC_INVITE = 10000;
 	private final int RC_CONNECTION_RESOLUTION = 1361;
-	private final int RC_WAITING_ROOM = 10001;
-	private final int RC_INBOX = 10002;
-	
-	private Room currentRoom = null;
 	private String currentRoomID = null;
-	private Invitation cInv = null; // current invitation
 	private Participant opponent = null;
-	
-	private boolean isHost = false;
 	
 	// multiplayer listener called when opponent joins,  leaves, message received etc...
 	private MultiplayerListener multiplayerListener;
-	// recently played with players, loaded when invite is clicked
-	private PlayerBuffer recentlyPlayed = null;
-	// invitable players, ones in circles
-	private PlayerBuffer invitablePlayers = null;
-	// invitations for user to accept
-	private InvitationBuffer invitations = null;
-	
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -99,7 +84,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 		else
 		{
 			Log.d("BOUNDS","Connecting client..");
-			apiClient.connect();
+			//apiClient.connect();
 		}
 	}
 	
@@ -571,7 +556,6 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 	    }
 	    else
 	    {
-	    	currentRoom = room;
 	    	currentRoomID = room.getRoomId();
 	    	// show waiting room UI
 	    	// startActivityForResult(Games.RealTimeMultiplayer.getWaitingRoomIntent(apiClient, arg1, Integer.MAX_VALUE),RC_WAITING_ROOM);
@@ -582,7 +566,6 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 
 	@Override
 	public void onLeftRoom(int statusCode, String roomID) {
-		currentRoom = null;
 		currentRoomID = null;
 		Log.d("BOUNDS","Left room");
 	//	multiplayerListener.onLeftRoom();
@@ -599,7 +582,6 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 	    }
 	    else
 	    {
-	    	currentRoom = room;
 	    	currentRoomID = room.getRoomId();
 	   // 	multiplayerListener.onRoomConnected();
 	    } 
@@ -616,7 +598,6 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 	    }
 	    else
 	    {
-	    	currentRoom = room;
 	    	currentRoomID = room.getRoomId();
 	    	// show waiting room UI
 	    	// startActivityForResult(Games.RealTimeMultiplayer.getWaitingRoomIntent(apiClient, arg1, Integer.MAX_VALUE),RC_WAITING_ROOM);
@@ -627,8 +608,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 
 	@Override
 	public void onRealTimeMessageReceived(RealTimeMessage msg) {
-		byte[] data = msg.getMessageData();
-	//	multiplayerListener.onRealTimeMessageRecieved(data);
+		msg.getMessageData();
 	}
 
 	@Override
@@ -641,7 +621,6 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 	public void onDisconnectedFromRoom(Room arg0) {
 		Log.d("BOUNDS","Disconnected from room... leaving");
 		Games.RealTimeMultiplayer.leave(apiClient, this, currentRoomID);
-		isHost = false;
 	}
 
 	@Override
@@ -677,9 +656,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 	@Override
 	public void onPeerLeft(Room arg0, List<String> arg1) {
 		Log.d("BOUNDS",opponent.getDisplayName() + " has left..leaving room");
-		Games.RealTimeMultiplayer.leave(apiClient, this, currentRoomID);	
-		isHost = false;
-	//	multiplayerListener.onPeerLeft();
+		Games.RealTimeMultiplayer.leave(apiClient, this, currentRoomID);
 	}
 
 	@Override
@@ -695,8 +672,6 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 		// opponent left
 		Log.d("BOUNDS",opponent.getDisplayName() + " has left..leaving room");
 		Games.RealTimeMultiplayer.leave(apiClient, this, currentRoomID);
-		isHost = false;
-	//	multiplayerListener.onPeersDisconnected();
 	}
 
 	@Override
@@ -712,15 +687,9 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 	@Override
 	public void onInvitationReceived(Invitation inv) {	
 		Log.d("BOUNDS","invitation recieved");
-		// alert user that they just got an invitation to play
-		// save current invitation
-		cInv = inv;
-	//	multiplayerListener.onInvitationReceived();
 	}
 
 	@Override
 	public void onInvitationRemoved(String arg0) {
-		cInv = null;
-		//multiplayerListener.onInvitationRemoved();
 	}
 }

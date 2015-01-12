@@ -32,7 +32,7 @@ public class GameScreen extends dScreen {
 		
 		player = new Player(MainGame.VIRTUAL_WIDTH/2f-32f,MainGame.VIRTUAL_HEIGHT/2f-32f, 6);
 		
-		mapGen = new MapGenerator(MapGenerator.TYPE_ASTEROIDS, player);
+		mapGen = new MapGenerator(MapGenerator.TYPE_DEFAULT, player);
 		mapGen.generateSeed();
 		// TODO: might remove
 		mapGen.generateFirstSet();
@@ -42,7 +42,7 @@ public class GameScreen extends dScreen {
 		
 		scoreText = new dText(0,0,192f,"0");
 		//scoreText.setColor(0,0,0,0.5f);
-		scoreText.setColor(1,1,1,0.5f);
+		scoreText.setColor(1,1,1,1);
 		addObject(scoreText,dUICard.CENTER, dUICard.TOP);
 		
 	}
@@ -63,13 +63,13 @@ public class GameScreen extends dScreen {
 				//dialog.show();'
 			}
 			// single player game over screen
-		//	else if(MainGame.requestHandler.isMultiplayer() == false && mapGen.hadCollision() && gameOverScreen.wantsReplay())
 			else if(mapGen.hadCollision() && gameOverScreen.wantsReplay())
 			{
 				// player wants a replay
 					player.reset();
 					mapGen.setHadCollision(false);
 					scoreText.setText(Integer.toString(0));
+					scoreText.setX(getX() + getWidth()/2f - scoreText.getWidth()/2f);
 			}
 			else if(!mapGen.hadCollision() && gameOverScreen.isVisible() == false)
 			{
@@ -81,7 +81,7 @@ public class GameScreen extends dScreen {
 				if(mapGen.hasScoreChanged())
 				{
 					scoreText.setText(Integer.toString(playerScore));
-					scoreText.setX(getX() + getWidth()/2f - scoreText.getWidth()/2f - 12f);
+					scoreText.setX(getX() + getWidth()/2f - scoreText.getWidth()/2f);
 					scoreTime = 0;
 					mapGen.setScoreChanged(false);
 				}
@@ -149,10 +149,7 @@ public class GameScreen extends dScreen {
 
 	@Override
 	public void switchScreen(dScreen newScreen) {
-	//	this.hide();
 		newScreen.show();
 		MainGame.currentScreen = newScreen;
-	//	MainGame.previousScreen = this;
 	}
-	
 }

@@ -1,6 +1,7 @@
 package com.dr.bounds.ui;
 
 import com.DR.dLib.ui.dImage;
+import com.DR.dLib.ui.dText;
 import com.DR.dLib.dObject;
 import com.DR.dLib.dTweener;
 import com.badlogic.gdx.graphics.Color;
@@ -30,6 +31,8 @@ public class LoadingIcon extends dObject {
 			new Color(196f/256f, 77f/256f, 88f/256f,1f)}; 
 	// index of color that will be assigned
 	private int currentIndex = 0;
+	// text
+	private dText loadingText;
 	
 	public LoadingIcon(float x, float y, Texture texture)
 	{
@@ -46,6 +49,11 @@ public class LoadingIcon extends dObject {
 		
 		currentCircle = circleOne;
 		this.objColor = circleOne.getColor();
+		
+		loadingText = new dText(0,0,"LOADING");
+		loadingText.setColor(Color.BLACK);
+		loadingText.setSize(32f);
+		loadingText.setPos(getX() + circleOne.getWidth() / 2f - loadingText.getWidth() / 2f, getY() + circleOne.getHeight() + 4f);
 	}
 
 	@Override
@@ -54,6 +62,7 @@ public class LoadingIcon extends dObject {
 		{
 			circleOne.render(batch);
 			currentCircle.render(batch);
+			loadingText.render(batch);
 		}
 	}
 
@@ -79,6 +88,7 @@ public class LoadingIcon extends dObject {
 				currentCircle.setDimensions(0, 0);
 				expandTime = 0f;
 			}
+			loadingText.setPos(circleOne.getX() + circleOne.getWidth() - loadingText.getWidth()/4f + 8f, getY() + 92f*2f + 4f);
 		}
 	}
 	

@@ -232,7 +232,7 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 	public void whileAnimating(int ID, float time, float duration, float delta) {
 		if(ID == 123 && time > duration / 6f)
 		{
-			currentScore = dTweener.MoveToAndSlow(currentScore, playerScore, 2f* delta);
+			currentScore = dTweener.ExponentialEaseOut(time, 0, playerScore, duration);
 			((dText)scoreCard.getObject(0)).setText(Float.toString((int)currentScore+1).substring(0,Float.toString((int)currentScore+1).length()-2));
 			rgg.setX(dTweener.ExponentialEaseOut(time, getWidth() + getWidth() / 2f - 396f / 2f, -getWidth(), duration));
 		}

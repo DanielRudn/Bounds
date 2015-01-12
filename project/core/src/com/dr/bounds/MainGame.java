@@ -17,7 +17,6 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dr.bounds.screens.GameScreen;
 import com.dr.bounds.screens.MenuScreen;
-import com.dr.bounds.screens.ShopScreen;
 import com.dr.bounds.ui.ShopItemCard;
 
 public class MainGame extends ApplicationAdapter implements MultiplayerListener {
@@ -123,27 +122,10 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 			test.update(DELTA);
 			accumulator -= DELTA;
 		}
-
 		batch.setProjectionMatrix(camera.combined);
-		batch.begin();
-		/*
-		gameScreen.render(batch);
-		debugCard.render(batch);
-		inviteScreen.render(batch);
-		waitingRoomScreen.render(batch);
-		inviteCard.render(batch);
-		*/
+		batch.begin();	
 		currentScreen.render(batch);
-		//test.render(batch);
-		if(previousScreen != null)
-		{
-		//	previousScreen.render(batch);
-		}
-	//	fpsText.render(batch);
 		batch.end();
-		/**
-		 * TODO: BUG: when inviting the nexus 5 from the memopad, if you swipe both away in the recents, and then invite from memo pad again, the nexus doesnt show info
-		 */
 	}
 	
 	public void update(float delta)

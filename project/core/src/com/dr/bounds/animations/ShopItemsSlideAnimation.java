@@ -29,8 +29,8 @@ public class ShopItemsSlideAnimation extends dAnimation {
 			{
 				if(time - x * DELAY >= 0)
 				{
-					items.get(x).setY(dTweener.ElasticOut(time - x * DELAY, startY.get(x), -MainGame.VIRTUAL_HEIGHT, duration - x * DELAY,6f));
-				//	items.get(x).setX(dTweener.ElasticOut(time - x * DELAY, startY.get(x), MainGame.VIRTUAL_WIDTH, duration - x * DELAY, 6f));
+				//	items.get(x).setY(dTweener.ElasticOut(time - x * DELAY, startY.get(x), -MainGame.VIRTUAL_HEIGHT, duration - x * DELAY,6f));
+					items.get(x).setX(dTweener.ElasticOut(time - x * DELAY, startY.get(x), MainGame.VIRTUAL_WIDTH, duration - x * DELAY,5f));
 				}
 			}
 		}
@@ -43,10 +43,10 @@ public class ShopItemsSlideAnimation extends dAnimation {
 		startY.clear();
 		for(int x = 0; x < items.size(); x++)
 		{
-			items.get(x).setPos(items.get(x).getX(),items.get(x).getY() + MainGame.VIRTUAL_HEIGHT);
-			startY.add(items.get(x).getY());
-			//items.get(x).setPos(items.get(x).getX() - MainGame.VIRTUAL_WIDTH,items.get(x).getY());
-			//startY.add(items.get(x).getX());
+			//items.get(x).setPos(items.get(x).getX(),items.get(x).getY() + MainGame.VIRTUAL_HEIGHT);
+			//startY.add(items.get(x).getY());
+			items.get(x).setPos(items.get(x).getX() - MainGame.VIRTUAL_WIDTH,items.get(x).getY());
+			startY.add(items.get(x).getX());
 		}
 	}
 

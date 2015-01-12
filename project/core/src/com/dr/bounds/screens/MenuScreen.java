@@ -25,6 +25,8 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 	private dButton skinsButton;
 	private dButton leaderboardsButton;
 	private dButton achievementsButton;
+	// shop screen
+	private ShopScreen shopScreen = null;
 	// next screen
 	private dScreen nextScreen = null;
 	
@@ -95,7 +97,11 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		}
 		if(skinsButton.isClicked())
 		{
-			switchScreen(new ShopScreen(0,0, new Texture("card.png")));
+			if(shopScreen == null)
+			{
+				shopScreen = new ShopScreen(0,0, new Texture("card.png"));
+			}
+			switchScreen(shopScreen);
 		}
 	}
 	
