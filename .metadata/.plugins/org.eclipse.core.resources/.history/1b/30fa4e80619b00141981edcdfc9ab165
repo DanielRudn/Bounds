@@ -1,0 +1,38 @@
+package com.dr.bounds.maps;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Rectangle;
+import com.dr.bounds.Player;
+
+public class DefaultMapType extends MapType {
+
+	private Rectangle useless = new Rectangle(0,0,0,0);
+	
+	public DefaultMapType(int type, Player player, MapGenerator generator) {
+		super(type, player, generator, new Texture("DEFAULT_BG.png"));
+		typeName = "Void/Default";
+		gen.setScoreIncrementAmount(1);
+		Texture obstacleTexture = new Texture("obstacle.png");
+		obstacleTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		// add 12 obstacles to start with
+		for(int x = 0; x < 12; x++)
+		{
+			obstacles.add(new dObstacle(0,0, obstacleTexture, player));
+			obstacles.get(x).setRegenerate(false);
+			//obstacles.get(x).setColor(new Color(214f/256f, 69f/256f, 65f/256f,1f));
+			obstacles.get(x).setColor(65f/256f,177f/256f,202f/256f,1f);
+		}
+	}
+	
+	@Override
+	protected void checkCollision(int index)
+	{
+		if(gen.hadCollision() == false && Intersector.intersectRectangles(player.getBoundingRectangle(), obstacles.get(index).getBoundingRectangle(), useless)) // FIX
+		{
+			gen.setHadCollision(true);
+		}
+	}
+
+}

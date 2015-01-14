@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
-import com.dr.bounds.maps.MapGenerator;
+import com.dr.bounds.maps.maptypes.MapGenerator;
 
 public class GameScreen extends dScreen {
 	

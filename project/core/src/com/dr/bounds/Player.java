@@ -1,8 +1,16 @@
 package com.dr.bounds;
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+
 import com.DR.dLib.dObject;
 import com.DR.dLib.dTweener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -10,6 +18,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.SerializationException;
+import com.badlogic.gdx.utils.XmlReader;
+import com.badlogic.gdx.utils.XmlReader.Element;
+import com.badlogic.gdx.utils.XmlWriter;
 import com.dr.bounds.screens.GameScreen;
 
 public class Player extends dObject {
@@ -26,7 +38,10 @@ public class Player extends dObject {
 	private float startY = 0;
 	// bounding rectangle used for collisions
 	private Rectangle boundingRect = new Rectangle(SKIN_DIMENSIONS, SKIN_DIMENSIONS,SKIN_DIMENSIONS,SKIN_DIMENSIONS);
-	
+	// 5 recent scores
+	public static final	List<Integer> recentScores = new ArrayList<Integer>(5);
+	// unlocked skins
+	public static final Set<Byte> unlockedSkins = new TreeSet<Byte>();
 	// temp
 	private ParticleEffect trailEffect = new ParticleEffect();
 	
@@ -39,6 +54,7 @@ public class Player extends dObject {
 		super(x,y,new Sprite(SkinLoader.getTextureForSkinID(MainGame.PLACEHOLDER_SKIN_ID)));
 		setSkinID(id);
 		trailEffect.load(Gdx.files.internal("trail.p"), Gdx.files.internal(""));
+		loadPlayerData();
 	}
 	
 	public Player(float x, float y)
@@ -161,6 +177,75 @@ public class Player extends dObject {
 			return true;
 		}
 		return false;
+	}
+	
+	private void loadPlayerData()
+	{
+		XmlReader reader = new XmlReader();
+		try {
+			Element pData = reader.parse(Gdx.files.local("pData.xml"));
+			// load scores
+			Element scores = pData.getChildByName("Scores").getChildByName("RecentScores");
+			String[] scoreArray = scores.get("OldestToLatest").replaceAll("[ \t\n\f\r]", "").split(",");
+			for(int x = 0; x < scoreArray.length; x++)
+			{
+				recentScores.add(Integer.parseInt(scoreArray[x]));
+			}
+			// load unlocked skins
+			Element skins = pData.getChildByName("Skins");
+			String[] skinArray = skins.get("SkinID").split(",");
+			for(int x = 0; x < skinArray.length; x++)
+			{
+				unlockedSkins.add(Byte.parseByte(skinArray[x]));
+			}
+		}catch (IOException e)	{
+			e.printStackTrace();
+		}
+		catch(SerializationException se)
+		{
+			// file not found
+			for(int x = 0; x < 5; x++)
+			{
+				recentScores.add(0);
+			}
+			// default skin
+			unlockedSkins.add((byte) 1);
+		}
+	}
+	
+	public static void savePlayerData()
+	{
+		StringWriter stringWriter = new StringWriter();
+		// write
+		XmlWriter writer = new XmlWriter(stringWriter);
+		try {
+			writer.element("pData")
+				.element("Scores").attribute("best", 0)
+					.element("RecentScores").attribute("OldestToLatest", recentScores.toString().replaceAll("\\[", "").replaceAll("\\]", "")).pop()
+				.pop()
+				.element("Skins").attribute("SkinID", unlockedSkins.toString().replaceAll("\\[", "").replaceAll("\\]", "")).pop()
+			.pop();
+		// save
+		FileHandle pData = Gdx.files.local("pData.xml");
+		pData.writeString(stringWriter.toString(), false);
+		writer.close();
+		}catch (IOException e)	{
+			e.printStackTrace();
+		}
+	}
+	
+	public static void addRecentScore(int score)
+	{
+		for(int x = 1; x < recentScores.size(); x++)
+		{
+			recentScores.set(x-1, recentScores.get(x));
+		}
+		recentScores.set(recentScores.size()-1, score);
+	}
+	
+	public static boolean isSkinUnlocked(Byte id)
+	{
+		return unlockedSkins.contains((Byte)id);
 	}
 	
 	public void reset()

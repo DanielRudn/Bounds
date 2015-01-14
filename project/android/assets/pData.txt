@@ -1,0 +1,13 @@
+<pData>
+
+	<Scores best="0">
+		<RecentScores>
+	
+		</RecentScores>
+	</Scores>
+
+	<Skins numUnlocked="1">
+		<SkinIDs ids="1,"/>
+	</Skins>
+
+</pData>

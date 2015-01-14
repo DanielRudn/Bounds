@@ -18,6 +18,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.dr.bounds.MainGame;
+import com.dr.bounds.Player;
 import com.dr.bounds.SkinLoader;
 import com.dr.bounds.ui.RecentGamesGraph;
 
@@ -218,13 +219,14 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		{
 			setPos(MainGame.camera.position.x + MainGame.VIRTUAL_WIDTH /2f,MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f);
 			rgg = new RecentGamesGraph(getWidth() + getWidth()/2f - 396f / 2f , getY()  + MainGame.VIRTUAL_HEIGHT / 2f , new Texture("card.png"), 396,256, "Score Last 5 Games");
+			Player.addRecentScore((int) playerScore);
 			ArrayList<Vector2> scores = new ArrayList<Vector2>();
-			scores.add(new Vector2(0,15));
-			scores.add(new Vector2(1,20));
-			scores.add(new Vector2(2,32));
-			scores.add(new Vector2(3,12));
-			scores.add(new Vector2(4,playerScore));
+			for(int x = 0; x < Player.recentScores.size(); x++)
+			{
+				scores.add(new Vector2(x,Player.recentScores.get(x)));
+			}
 			rgg.setPoints(scores);
+			Player.savePlayerData();
 		}
 	}
 

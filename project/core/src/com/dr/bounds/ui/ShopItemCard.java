@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dr.bounds.MainGame;
+import com.dr.bounds.Player;
 import com.dr.bounds.SkinLoader;
 import com.dr.bounds.animations.ShopItemCardExpandAnimation;
 import com.dr.bounds.animations.ShopItemCardShrinkAnimation;
@@ -62,10 +63,18 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 		addObjectUnder(itemPrice, getIndexOf(itemName));
 		itemPrice.setY(getY() + getHeight() - getPadding()*2f - itemPrice.getHeight());
 		
-		acceptButton = new dButton(MainGame.VIRTUAL_WIDTH/2f, MainGame.VIRTUAL_HEIGHT*2f, new Sprite(texture), "SET", new Texture("circle.png"), 2f);
+		if(Player.isSkinUnlocked(id))
+		{
+			acceptButton = new dButton(MainGame.VIRTUAL_WIDTH/2f, MainGame.VIRTUAL_HEIGHT*2f, new Sprite(texture), "SET", new Texture("circle.png"), 2f);
+			acceptButton.setColor(46f/256f, 204f/256f, 113f/256f,1f);
+		}
+		else
+		{
+			acceptButton = new dButton(MainGame.VIRTUAL_WIDTH/2f, MainGame.VIRTUAL_HEIGHT*2f, new Sprite(texture), "BUY", new Texture("circle.png"), 2f);
+			acceptButton.setColor(Color.GRAY);
+		}
 		acceptButton.setTextSize(92f);
 		acceptButton.setDimensions((CARD_WIDTH + 128f)/2f, 128f);
-		acceptButton.setColor(46f/256f, 204f/256f, 113f/256f,1f);
 		
 		cancelButton = new dButton(acceptButton.getX() - acceptButton.getWidth(), MainGame.VIRTUAL_HEIGHT*2f, new Sprite(texture), "BACK");
 		cancelButton.setTextSize(92f);

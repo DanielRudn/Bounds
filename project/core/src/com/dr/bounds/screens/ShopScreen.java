@@ -227,7 +227,7 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 
 	@Override
 	public void failed(Throwable t) {
-
+		Gdx.app.exit();
 	}
 
 	@Override
@@ -261,9 +261,7 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 	
 	@Override
 	public void onAnimationFinish(int ID)
-	{
-
-	}
+	{}
 
 }
 

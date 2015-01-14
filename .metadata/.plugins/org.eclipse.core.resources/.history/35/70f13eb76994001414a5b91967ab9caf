@@ -1,6 +1,0 @@
-package com.dr.bounds.animations;
-
-public class ShopItemCardExpandAnimation extends dAnimation {
-
-
-}
