@@ -11,9 +11,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dr.bounds.AssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
-import com.dr.bounds.SkinLoader;
 import com.dr.bounds.animations.ShopItemCardExpandAnimation;
 import com.dr.bounds.animations.ShopItemCardShrinkAnimation;
 
@@ -38,6 +38,8 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 	private dButton cancelButton;
 	// black screen to fade in when an item is clicked
 	private dImage fadeCover;
+	// checkmark shown if this item is owned
+	private dImage ownedImage;
 	
 	public ShopItemCard(float x, float y, Texture texture, String name, int price, byte id) {
 		super(x, y, texture);
@@ -54,7 +56,7 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 		imageCard.setDimensions(CARD_WIDTH*.25f, CARD_HEIGHT);
 		imageCard.setHasShadow(false);
 		imageCard.setColor(246f/256f, 246f/256f, 246f/256f, 1f);
-		itemImage = new dImage(0,0,SkinLoader.getTextureForSkinID((int)id));
+		itemImage = new dImage(0,0,AssetManager.SkinLoader.getTextureForSkinID((int)id));
 	
 		imageCard.addObject(itemImage,dUICard.CENTER, dUICard.CENTER);
 		addObject(imageCard,dUICard.LEFT_NO_PADDING, dUICard.TOP_NO_PADDING);
@@ -65,12 +67,16 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 		
 		if(Player.isSkinUnlocked(id))
 		{
-			acceptButton = new dButton(MainGame.VIRTUAL_WIDTH/2f, MainGame.VIRTUAL_HEIGHT*2f, new Sprite(texture), "SET", new Texture("circle.png"), 2f);
+			acceptButton = new dButton(MainGame.VIRTUAL_WIDTH/2f, MainGame.VIRTUAL_HEIGHT*2f, new Sprite(texture), "SET", AssetManager.getTexture("circle"), 2f);
 			acceptButton.setColor(46f/256f, 204f/256f, 113f/256f,1f);
+
+			ownedImage=  new dImage(0,0,AssetManager.getTexture("checkMark.png"));
+			ownedImage.setDimensions(32f, 32f);
+			addObject(ownedImage,dUICard.RIGHT, dUICard.BOTTOM);
 		}
 		else
 		{
-			acceptButton = new dButton(MainGame.VIRTUAL_WIDTH/2f, MainGame.VIRTUAL_HEIGHT*2f, new Sprite(texture), "BUY", new Texture("circle.png"), 2f);
+			acceptButton = new dButton(MainGame.VIRTUAL_WIDTH/2f, MainGame.VIRTUAL_HEIGHT*2f, new Sprite(texture), "BUY", AssetManager.getTexture("circle"), 2f);
 			acceptButton.setColor(Color.GRAY);
 		}
 		acceptButton.setTextSize(92f);
@@ -87,7 +93,6 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 		fadeCover = new dImage(0,0,texture);
 		fadeCover.setDimensions(MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_HEIGHT);
 		fadeCover.setColor(0,0,0,0);
-		
 	}
 	
 	@Override
@@ -117,7 +122,21 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 			cancelButton.update(delta);
 			if(acceptButton.isClicked())
 			{
-				MainGame.setPlayerSkin(skinID);
+				if(acceptButton.getText().equals("BUY"))
+				{
+					acceptButton.setText("SET");
+					acceptButton.setColor(46f/256f, 204f/256f, 113f/256f,1f);
+					ownedImage=  new dImage(0,0,AssetManager.getTexture("checkMark.png"));
+					ownedImage.setDimensions(32f, 32f);
+					addObject(ownedImage,dUICard.RIGHT, dUICard.BOTTOM);
+					ownedImage.setPos(getX() + getWidth() - getPadding() - ownedImage.getWidth(), getY() + CARD_HEIGHT - getPadding() - ownedImage.getHeight());
+					Player.unlockedSkins.add(skinID);
+					Player.savePlayerData();
+				}
+				else if(acceptButton.getText().equals("SET"))
+				{
+					MainGame.setPlayerSkin(skinID);
+				}
 			}
 		}
 	}
@@ -194,6 +213,10 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 				cancelButton.setAlpha(acceptButton.getColor().a);
 			}
 			fadeCover.setAlpha(dTweener.LinearEase(time, 0, .4f, duration));
+			if(ownedImage != null)
+			{
+				ownedImage.setPos(getX() + getWidth() - getPadding() - ownedImage.getWidth(), getY() + CARD_HEIGHT - getPadding() - ownedImage.getHeight());
+			}
 		}
 		else if(ID == SHRINK_ANIM_ID)
 		{
@@ -207,6 +230,10 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 				cancelButton.setAlpha(acceptButton.getColor().a);
 			}
 			fadeCover.setAlpha(dTweener.ExponentialEaseOut(time, .4f, -.395f, duration));
+			if(ownedImage != null)
+			{
+				ownedImage.setPos(getX() + getWidth() - getPadding() - ownedImage.getWidth(), getY() + CARD_HEIGHT - getPadding() - ownedImage.getHeight());
+			}
 		}
 	}
 	

@@ -5,9 +5,9 @@ import java.util.Random;
 import com.DR.dLib.TimerListener;
 import com.DR.dLib.dTimer;
 import com.DR.dLib.ui.dImage;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.dr.bounds.AssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 
@@ -72,7 +72,7 @@ public class MapGenerator implements TimerListener {
 			currentType = new SpikeMapType(TYPE_SPIKE,player,this);
 		}
 		
-		transitionImage = new dImage(0,2000, new Texture("transitionDevice.png"));
+		transitionImage = new dImage(0,2000, AssetManager.getTexture("transitionDevice.png"));
 		
 		typeSwitchTimer = new dTimer(5f,5f,0,this);
 		typeSwitchTimer.start();

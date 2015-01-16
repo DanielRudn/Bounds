@@ -1,7 +1,7 @@
 package com.dr.bounds.maps.maptypes;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.dr.bounds.AssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 import com.dr.bounds.maps.obstacles.dSpikeObstacle;
@@ -9,14 +9,13 @@ import com.dr.bounds.maps.obstacles.dSpikeObstacle;
 public class SpikeMapType extends MapType{
 
 	public SpikeMapType(int type, Player player, MapGenerator generator) {
-		super(type, player, generator, new Texture("FALLING_BG.png"));
+		super(type, player, generator, AssetManager.getBackground("FALLING_BG.png"));
 		this.MAX_WIDTH = 128;
 		this.typeName = "SPIKES";
 		gen.setScoreIncrementAmount(1);
-		Texture spike = new Texture("spike.png");
 		for(int x = 0; x < 4; x++)
 		{
-			this.getObstacles().add(new dSpikeObstacle(0,0,spike, player));
+			this.getObstacles().add(new dSpikeObstacle(0,0,AssetManager.getTexture("spike.png"), player));
 		}
 	}
 	

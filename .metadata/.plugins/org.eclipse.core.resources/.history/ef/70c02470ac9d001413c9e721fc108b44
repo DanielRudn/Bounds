@@ -1,0 +1,12 @@
+package com.dr.bounds;
+
+public class AssetManager {
+
+	private AssetManager(){}
+	
+	public static Texture getTexture(String name)
+	{
+		
+	}
+}
+

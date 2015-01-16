@@ -5,9 +5,9 @@ import java.util.Random;
 import com.DR.dLib.ui.dImage;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.dr.bounds.AssetManager;
 import com.dr.bounds.Player;
 
 public class dPlanetObstacle extends dObstacle {
@@ -33,7 +33,7 @@ public class dPlanetObstacle extends dObstacle {
 	// circle object to help complement the planet shape
 	private dImage shadeImage;
 	// colors for planet and moon
-	private Color[] planetColors = new Color[]{new Color(38f/256f, 194f/256f, 129f/256f,1f), // green
+	private static Color[] planetColors = new Color[]{new Color(38f/256f, 194f/256f, 129f/256f,1f), // green
 			new Color(52f/256f, 152f/256f, 219f/256f,1f), // blue
 			new Color(242f/256f, 120f/256f, 75f/256f,1f), // red
 			new Color(241f/256f, 196f/256f, 15f/256f,1f), //yellow
@@ -119,8 +119,7 @@ public class dPlanetObstacle extends dObstacle {
 		{
 			if(hasMoon == false)
 			{
-				// TODO: FIX THIS LINE V
-				moonImage = new dImage(0,0,new Texture("moon.png"));
+				moonImage = new dImage(0,0,AssetManager.getTexture("moon.png"));
 			}
 			hasMoon = true;
 			moonImage.setDimensions(64f, 64f);
@@ -147,10 +146,7 @@ public class dPlanetObstacle extends dObstacle {
 		{
 			if(hasRing == false)
 			{
-				// TODO: FIX THIS LINE TOO V
-				Texture ringTexture =new Texture("planetRing.png");
-				ringTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-				ringImage = new dImage(0,0,ringTexture);
+				ringImage = new dImage(0,0,AssetManager.getTexture("planetRing.png"));
 			}
 			hasRing = true;
 			ringImage.setHeight(this.getHeight() * 1.5f);

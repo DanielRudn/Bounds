@@ -10,11 +10,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
+import com.dr.bounds.AssetManager;
 
 public class RecentGamesGraph extends dUICard {
 
@@ -44,8 +44,7 @@ public class RecentGamesGraph extends dUICard {
 		this.title = new dText(0,0,32f, title);
 		this.title.setColor(Color.WHITE);
 		
-		pointTexture = new Texture("circle.png");
-		pointTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		pointTexture = AssetManager.getTexture("circle");
 		points = new ArrayList<dImage>();
 		
 		sr = new ShapeRenderer();

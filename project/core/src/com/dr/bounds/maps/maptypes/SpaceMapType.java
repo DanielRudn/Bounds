@@ -1,9 +1,9 @@
 package com.dr.bounds.maps.maptypes;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.dr.bounds.AssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 import com.dr.bounds.maps.obstacles.dPlanetObstacle;
@@ -14,7 +14,7 @@ public class SpaceMapType extends MapType {
 	private Rectangle useless = new Rectangle(0,0,0,0);
 	
 	public SpaceMapType(int type, Player player, MapGenerator generator) {
-		super(type, player, generator, new Texture("SPACE_BG.png"));
+		super(type, player, generator, AssetManager.getBackground("SPACE_BG.png"));
 		MIN_DISTANCE = MAX_DISTANCE;
 		MAX_DISTANCE *= 2;
 		MIN_WIDTH = 192;
@@ -27,7 +27,7 @@ public class SpaceMapType extends MapType {
 		// add 4 obstacles to start with
 		for(int x = 0; x < 4; x++)
 		{
-			obstacles.add(new dPlanetObstacle(0,0, new Texture("planet.png"), player, MapGenerator.rng));
+			obstacles.add(new dPlanetObstacle(0,0, AssetManager.getTexture("planet.png"), player, MapGenerator.rng));
 			obstacles.get(x).setRegenerate(false);
 		}
 	}

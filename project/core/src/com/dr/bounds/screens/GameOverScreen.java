@@ -13,13 +13,12 @@ import com.DR.dLib.dTweener;
 import com.DR.dLib.ui.dUICard;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.dr.bounds.AssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
-import com.dr.bounds.SkinLoader;
 import com.dr.bounds.ui.RecentGamesGraph;
 
 public class GameOverScreen extends dUICardList implements AnimationStatusListener {
@@ -66,7 +65,7 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		playerName = new dText(0,0,getFontSize(MainGame.requestHandler.getCurrentAccountName()),MainGame.requestHandler.getCurrentAccountName());
 		playerName.setColor(Color.WHITE);
 		
-		playerImage = new dImage(0,0, SkinLoader.getTextureForSkinID(playerSkinID));
+		playerImage = new dImage(0,0, AssetManager.SkinLoader.getTextureForSkinID(playerSkinID));
 		playerImage.setDimensions(128f, 128f);
 		
 		topText = new dText(0,0,64f,"GAME OVER");
@@ -94,11 +93,8 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		dText moneyCardText = new dText(0,0,72f, "Dots: 0");
 		moneyCardText.setColor(Color.WHITE);
 		moneyCard.addObject(moneyCardText, dUICard.CENTER, dUICard.CENTER);
-		
-		// fix
-		Texture replayTexture = new Texture("replay.png");
-		replayTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		replayButton = new dButton(0,0, new Sprite(replayTexture), "");
+	
+		replayButton = new dButton(0,0, new Sprite(AssetManager.getTexture("replay.png")), "");
 		replayButton.setDimensions(192f, 192f);
 		replayButton.setColor(moneyCard.getColor());
 		
@@ -218,7 +214,7 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		if(ID == 123)
 		{
 			setPos(MainGame.camera.position.x + MainGame.VIRTUAL_WIDTH /2f,MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f);
-			rgg = new RecentGamesGraph(getWidth() + getWidth()/2f - 396f / 2f , getY()  + MainGame.VIRTUAL_HEIGHT / 2f , new Texture("card.png"), 396,256, "Score Last 5 Games");
+			rgg = new RecentGamesGraph(getWidth() + getWidth()/2f - 396f / 2f , getY()  + MainGame.VIRTUAL_HEIGHT / 2f , AssetManager.getTexture("card"), 396,256, "Score Last 5 Games");
 			Player.addRecentScore((int) playerScore);
 			ArrayList<Vector2> scores = new ArrayList<Vector2>();
 			for(int x = 0; x < Player.recentScores.size(); x++)

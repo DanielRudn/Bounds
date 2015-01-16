@@ -24,6 +24,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
+import com.dr.bounds.AssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.animations.ShopItemsSlideAnimation;
 import com.dr.bounds.ui.LoadingIcon;
@@ -69,7 +70,6 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 		cardTexture = texture;
 		
 		Texture circle = new Texture("circle.png");
-		circle.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		circleCover = new dImage(0,0,circle);
 		//showAnim = new SlideExponentialAnimation(1f, this, SHOW_ANIM_ID, MainGame.VIRTUAL_WIDTH, 0, this);
 		showAnim = new ExpandAnimation(circleCover, 2.75f, this, SHOW_ANIM_ID, new Color(236f/256f, 240f/256f, 241f/256f,1f), MainGame.VIRTUAL_HEIGHT * 2f);
@@ -277,14 +277,14 @@ class ShopSideBar extends dUICard
 		this.setColor(226f/256f, 230f/256f, 231/256f,1f);
 		this.setPadding(0);
 		this.setHasShadow(false);
-		Texture circle = new Texture("circle.png");
+		Texture circle = AssetManager.getTexture("circle");
 		circle.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		dUICard shopHome = new dUICard(0,0,texture);
 		shopHome.setHasShadow(false);
 		shopHome.setClickable(true, circle);
 		shopHome.setDimensions(getWidth(),getWidth());
 		shopHome.setColor(234f/256f,76f/256f,136f/256f,1f);
-		homeIcon = new dImage(0,0,new Sprite(new Texture("homeIcon.png")));
+		homeIcon = new dImage(0,0,new Sprite(AssetManager.getTexture("homeIcon.png")));
 		homeIcon.setColor(0,0,0,0.25f);
 		homeIcon.setDimensions(shopHome.getWidth() / 2f, shopHome.getHeight() / 2f);
 		shopHome.addObject(homeIcon, dUICard.CENTER, dUICard.CENTER);

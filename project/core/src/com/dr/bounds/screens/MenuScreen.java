@@ -8,9 +8,9 @@ import com.DR.dLib.ui.dScreen;
 import com.DR.dLib.ui.dUICard;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dr.bounds.AssetManager;
 import com.dr.bounds.MainGame;
 
 public class MenuScreen extends dScreen implements AnimationStatusListener {
@@ -38,21 +38,21 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		setHideAnimation(hideAnimation);
 		
 		//fix
-		Texture buttonTexture = new Texture("button.png");
-		buttonTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		playButton = new dButton(0,0, new Sprite(buttonTexture), "play", new Texture("circle.png"), 2f);
+		Texture buttonTexture = AssetManager.getTexture("button");
+		Texture circle = AssetManager.getTexture("circle");
+		playButton = new dButton(0,0, new Sprite(buttonTexture), "play", circle, 2f);
 		playButton.setTextSize(92f);
 		playButton.setColor(new Color(52f/256f, 152f/256f, 219f/256f,1f));
 		
-		skinsButton = new dButton(0,0, new Sprite(buttonTexture), "skins", new Texture("circle.png"), 2f);
+		skinsButton = new dButton(0,0, new Sprite(buttonTexture), "skins", circle, 2f);
 		skinsButton.setTextSize(92f);
 		skinsButton.setColor(new Color(52f/256f, 152f/256f, 219f/256f,1f));
 		
-		leaderboardsButton = new dButton(0,0, new Sprite(buttonTexture), "scores", new Texture("circle.png"), 2f);
+		leaderboardsButton = new dButton(0,0, new Sprite(buttonTexture), "scores", circle, 2f);
 		leaderboardsButton.setTextSize(92f);
 		leaderboardsButton.setColor(new Color(52f/256f, 152f/256f, 219f/256f,1f));
 		
-		achievementsButton = new dButton(0,0, new Sprite(buttonTexture), "trophies", new Texture("circle.png"), 2f);
+		achievementsButton = new dButton(0,0, new Sprite(buttonTexture), "trophies", circle, 2f);
 		achievementsButton.setTextSize(92f);
 		achievementsButton.setColor(new Color(52f/256f, 152f/256f, 219f/256f,1f));
 		
@@ -99,7 +99,7 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		{
 			if(shopScreen == null)
 			{
-				shopScreen = new ShopScreen(0,0, new Texture("card.png"));
+				shopScreen = new ShopScreen(0,0, AssetManager.getTexture("card"));
 			}
 			switchScreen(shopScreen);
 		}

@@ -1,8 +1,6 @@
 package com.dr.bounds.maps.maptypes;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.dr.bounds.AssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 import com.dr.bounds.maps.obstacles.dBirdObstacle;
@@ -10,18 +8,15 @@ import com.dr.bounds.maps.obstacles.dBirdObstacle;
 public class SkyMapType extends MapType {
 	
 	public SkyMapType(int type, Player player, MapGenerator generator) {
-		super(type, player, generator, new Texture("SKY_BG.png"));
+		super(type, player, generator, AssetManager.getBackground("SKY_BG.png"));
 		MIN_WIDTH = 64;
 		typeName = "Sky";
 		gen.setScoreIncrementAmount(1);
-		Texture obstacleTexture = new Texture("birdObstacle.png");
-		obstacleTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		// add 8 obstacles 
 		for(int x = 0; x < 8; x++)
 		{
-			obstacles.add(new dBirdObstacle(0,0, obstacleTexture, player));
+			obstacles.add(new dBirdObstacle(0,0, AssetManager.getTexture("birdObstacle.png"), player));
 			obstacles.get(x).setRegenerate(false);
-			obstacles.get(x).setColor(Color.YELLOW);
 		}
 	}
 	
