@@ -10,10 +10,13 @@ public class SpikeMapType extends MapType{
 
 	public SpikeMapType(int type, Player player, MapGenerator generator) {
 		super(type, player, generator, AssetManager.getBackground("FALLING_BG.png"));
-		this.MAX_WIDTH = 128;
+		MIN_DISTANCE = MAX_DISTANCE;
+		MAX_DISTANCE *= 1.5f;
+		MIN_WIDTH = 192;
+		MAX_WIDTH = 333 - MIN_WIDTH;
 		this.typeName = "SPIKES";
 		gen.setScoreIncrementAmount(1);
-		for(int x = 0; x < 4; x++)
+		for(int x = 0; x < 6; x++)
 		{
 			this.getObstacles().add(new dSpikeObstacle(0,0,AssetManager.getTexture("spike.png"), player));
 		}

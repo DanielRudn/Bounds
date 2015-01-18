@@ -29,6 +29,8 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 	private float currentScore = 0;
 	// players final score for score counter
 	private float playerScore = 0;
+	// player instance
+	private Player player;
 	// image of the player's skin
 	private dImage playerImage;
 	// name of local player
@@ -46,11 +48,13 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 	// test
 	private RecentGamesGraph rgg;
 	
-	public GameOverScreen(float x, float y, Texture texture, int playerSkinID) {
+	public GameOverScreen(float x, float y, Texture texture, Player player) {
 		super(x, y, texture, new ArrayList<dUICard>());
 		setColor(37f/256f, 116f/256f, 169f/256f,1f);
 		setPadding(32f);
 		setPaddingLeft(64f);
+		
+		this.player = player;
 		
 		showAnimation = new SlideExponentialAnimation(1f, this, 123, -MainGame.VIRTUAL_WIDTH, 0, this);
 		setShowAnimation(showAnimation);
@@ -65,7 +69,7 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		playerName = new dText(0,0,getFontSize(MainGame.requestHandler.getCurrentAccountName()),MainGame.requestHandler.getCurrentAccountName());
 		playerName.setColor(Color.WHITE);
 		
-		playerImage = new dImage(0,0, AssetManager.SkinLoader.getTextureForSkinID(playerSkinID));
+		playerImage = new dImage(0,0, AssetManager.SkinLoader.getTextureForSkinID(player.getSkinID()));
 		playerImage.setDimensions(128f, 128f);
 		
 		topText = new dText(0,0,64f,"GAME OVER");
@@ -213,6 +217,7 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 	public void onAnimationStart(int ID, float duration) {
 		if(ID == 123)
 		{
+			this.playerImage.setImage(AssetManager.SkinLoader.getTextureForSkinID(player.getSkinID()));
 			setPos(MainGame.camera.position.x + MainGame.VIRTUAL_WIDTH /2f,MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f);
 			rgg = new RecentGamesGraph(getWidth() + getWidth()/2f - 396f / 2f , getY()  + MainGame.VIRTUAL_HEIGHT / 2f , AssetManager.getTexture("card"), 396,256, "Score Last 5 Games");
 			Player.addRecentScore((int) playerScore);

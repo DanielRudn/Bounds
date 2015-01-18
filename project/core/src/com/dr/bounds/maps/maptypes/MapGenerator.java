@@ -14,8 +14,7 @@ import com.dr.bounds.Player;
 public class MapGenerator implements TimerListener {
 
 	// map generation type
-	public static final int TYPE_DEFAULT = 1515, TYPE_SPACE = 3030, TYPE_MACHINERY = 6060, TYPE_SKY = 9090, TYPE_SPIKE = 101010;
-	private static final int NUM_MAP_TYPES = 5;
+	public static final int TYPE_DEFAULT = 0, TYPE_SPACE = 1, TYPE_MACHINERY = 2, TYPE_SKY = 3, TYPE_SPIKE = 4, TYPE_ROTATE = 5;
 	// the current map generation type
 	private MapType currentType; 
 	// the next map generation type
@@ -70,6 +69,10 @@ public class MapGenerator implements TimerListener {
 		else if(mapType == TYPE_SPIKE)
 		{
 			currentType = new SpikeMapType(TYPE_SPIKE,player,this);
+		}
+		else if(mapType == TYPE_ROTATE)
+		{
+			currentType = new RotatingMapType(TYPE_ROTATE,player,this);
 		}
 		
 		transitionImage = new dImage(0,2000, AssetManager.getTexture("transitionDevice.png"));
@@ -146,6 +149,10 @@ public class MapGenerator implements TimerListener {
 	
 	public void setHadCollision(boolean c)
 	{
+		if(hadCollision == false && c == true)
+		{
+			MainGame.playDeathSound();
+		}
 		hadCollision = c;
 		if(c == false) // reset
 		{
@@ -156,7 +163,7 @@ public class MapGenerator implements TimerListener {
 	private void reset()
 	{
 		//	determine which map type is set
-		int newType = rng.nextInt(NUM_MAP_TYPES);
+		int newType = rng.nextInt(6);
 		//GameScreen.log("newType: " + newType);
 		if(newType == 0)
 		{
@@ -177,6 +184,10 @@ public class MapGenerator implements TimerListener {
 		else if(newType == 4)
 		{
 			currentType = new SpikeMapType(TYPE_SPIKE,player,this);
+		}
+		else if(newType == 5)
+		{
+			currentType = new RotatingMapType(TYPE_ROTATE,player,this);
 		}
 		generateSeed();
 		generateFirstSet();
@@ -204,7 +215,7 @@ public class MapGenerator implements TimerListener {
 	
 	public void incrementScore()
 	{
-		score+=scoreIncrementAmount;
+		score += scoreIncrementAmount;
 		// play sound
 		MainGame.playScoreSound();
 	}
@@ -246,6 +257,13 @@ public class MapGenerator implements TimerListener {
 				nextType = new SpikeMapType(TYPE_SPIKE, player, this);
 			}
 		}
+		else if(MAP_TYPE == 5)
+		{
+			if(currentType.getMapType() != TYPE_ROTATE)
+			{
+				nextType = new RotatingMapType(TYPE_ROTATE,player,this);
+			}
+		}
 	}
 	
 	public boolean hasScoreChanged()
@@ -277,7 +295,7 @@ public class MapGenerator implements TimerListener {
 	public void onTimerFinish(int ID)
 	{
 		//	determine which map type is set
-		int newType = rng.nextInt(NUM_MAP_TYPES);
+		int newType = rng.nextInt(6);
 		setNextType(newType);
 		if(nextType == null)
 		{

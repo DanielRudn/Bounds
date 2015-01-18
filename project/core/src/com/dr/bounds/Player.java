@@ -11,11 +11,9 @@ import com.DR.dLib.dObject;
 import com.DR.dLib.dTweener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.SerializationException;
@@ -45,10 +43,6 @@ public class Player extends dObject {
 	// temp
 	private ParticleEffect trailEffect = new ParticleEffect();
 	
-	public Player(float x, float y, RequestHandler rq) {
-		super(x, y, new Sprite(AssetManager.SkinLoader.getTextureForSkinID(MainGame.PLACEHOLDER_SKIN_ID)));
-	}
-	
 	public Player(float x,float y, int id)
 	{
 		super(x,y,new Sprite(AssetManager.SkinLoader.getTextureForSkinID(MainGame.PLACEHOLDER_SKIN_ID)));
@@ -56,22 +50,6 @@ public class Player extends dObject {
 		trailEffect.load(Gdx.files.internal("trail.p"), Gdx.files.internal(""));
 		loadPlayerData();
 	}
-	
-	public Player(float x, float y)
-	{
-		super(x,y,new Sprite(AssetManager.SkinLoader.getTextureForSkinID(MainGame.PLACEHOLDER_SKIN_ID)));
-	}
-	
-	public Player(float x, float y, Texture t)
-	{
-		super(x,y,t);
-	}
-	
-	public Player(float x, float y, TextureRegion t)
-	{
-		super(x,y, new Sprite(t));
-	}
-	
 
 	@Override
 	public void render(SpriteBatch batch) {
@@ -86,7 +64,6 @@ public class Player extends dObject {
 		boundingRect.set(getX() + 8f, getY() + 8f, getWidth()-16f, getHeight()-16f);
 		trailEffect.update(delta);
 		trailEffect.setPosition(getX() + getWidth()/2f, getY() + getHeight() / 2f);
-		//boundingRect.set(0,0,0,0);
 		if(Gdx.input.isTouched() && Gdx.input.justTouched())
 		{
 			if(touchedLeftSide())// user touched left half of screen
@@ -250,9 +227,12 @@ public class Player extends dObject {
 	
 	public void reset()
 	{
+		setOrigin(0,0);
 		setPos(MainGame.VIRTUAL_WIDTH / 2f - getWidth()/2f, MainGame.VIRTUAL_HEIGHT / 2f - getHeight() / 2f);
 		moveCenter = false;
 		startY = getY();
+		setAlpha(1f);
+		getSprite().setSize(64f,64f);
 	}
 	
 	

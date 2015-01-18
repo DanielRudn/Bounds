@@ -1,0 +1,13 @@
+package com.dr.bounds.maps.obstacles;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.dr.bounds.Player;
+
+public class dRotatingObstacle extends dObstacle {
+
+	public dRotatingObstacle(float x, float y, Texture texture, Player p) {
+		super(x, y, texture, p);
+
+	}
+
+}

@@ -88,10 +88,10 @@ public class AssetManager {
 		return background;
 	}
 	
-	public static class SkinLoader {
-
+	public static class SkinLoader
+	{
 		public static final Texture SKINS = new Texture("skins.png");
-		//private static final int SKINS_PER_LINE = 8, NUM_LINES = 8;
+		private static final int SKINS_PER_LINE = 8;
 		private static final int SKIN_DIMENSIONS = 64;
 		
 		public static TextureRegion getTextureForSkinID(int id)
@@ -99,9 +99,9 @@ public class AssetManager {
 			SKINS.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 			// find what line the skin is on
 			int currentLine = 0, tempID = id;
-			while(tempID > 7)//0 to 7
+			while(tempID > SKINS_PER_LINE-1)//0 to 7
 			{
-				tempID-=8;// 8 per line
+				tempID-=SKINS_PER_LINE;// 8 per line
 				currentLine++;
 			}
 			int startX = SKIN_DIMENSIONS * tempID;

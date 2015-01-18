@@ -1,0 +1,5 @@
+package com.dr.bounds.maps.obstacles;
+
+public class dRotatingObstacle extends dObstacle {
+
+}

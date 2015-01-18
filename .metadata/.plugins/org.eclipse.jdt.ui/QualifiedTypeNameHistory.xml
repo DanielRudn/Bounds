@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="com.DR.dLib.dAnimation"/>
-<fullyQualifiedTypeName name="com.DR.dLib.dUICard"/>
-<fullyQualifiedTypeName name="com.DR.dLib.CircleFillAnimation"/>
-<fullyQualifiedTypeName name="com.DR.dLib.AnimationStatusListener"/>
-<fullyQualifiedTypeName name="com.DR.dLib.CircleShrinkAnimation"/>
-<fullyQualifiedTypeName name="com.dr.bounds.animations.SlideOutArrayAnimation"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="com.DR.dLib.animations.ExpandElasticAnimation"/>
 <fullyQualifiedTypeName name="com.dr.bounds.screens.MenuScreen"/>
@@ -30,7 +24,6 @@
 <fullyQualifiedTypeName name="com.dr.bounds.screens.ShopScreen"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.Net.HttpResponseListener"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.Net.HttpRequest"/>
-<fullyQualifiedTypeName name="com.badlogic.gdx.Gdx"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.Net.HttpMethods"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.files.FileHandle"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.utils.XmlReader.Element"/>
@@ -50,14 +43,21 @@
 <fullyQualifiedTypeName name="com.dr.bounds.ui.ShopItemCard"/>
 <fullyQualifiedTypeName name="com.dr.bounds.animations.ShopItemCardExpandAnimation"/>
 <fullyQualifiedTypeName name="com.DR.dLib.animations.AnimationStatusListener"/>
-<fullyQualifiedTypeName name="com.DR.dLib.animations.dAnimation"/>
 <fullyQualifiedTypeName name="com.dr.bounds.animations.ShopItemCardShrinkAnimation"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.Input.Keys"/>
 <fullyQualifiedTypeName name="com.DR.dLib.ui.dButton"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.Sprite"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.SpriteBatch"/>
-<fullyQualifiedTypeName name="com.DR.dLib.dTweener"/>
 <fullyQualifiedTypeName name="com.dr.bounds.ui.LoadingIcon"/>
 <fullyQualifiedTypeName name="com.DR.dLib.ui.dText"/>
+<fullyQualifiedTypeName name="com.dr.bounds.maps.maptypes.MapGenerator"/>
+<fullyQualifiedTypeName name="com.dr.bounds.AssetManager"/>
+<fullyQualifiedTypeName name="com.dr.bounds.maps.obstacles.dRotatingObstacle"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.math.Intersector"/>
 <fullyQualifiedTypeName name="com.dr.bounds.MainGame"/>
+<fullyQualifiedTypeName name="com.DR.dLib.animations.dAnimation"/>
+<fullyQualifiedTypeName name="com.dr.bounds.Player"/>
+<fullyQualifiedTypeName name="com.DR.dLib.dTweener"/>
+<fullyQualifiedTypeName name="com.dr.bounds.animations.PlayerDeathAnimation"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.Gdx"/>
 </qualifiedTypeNameHistroy>

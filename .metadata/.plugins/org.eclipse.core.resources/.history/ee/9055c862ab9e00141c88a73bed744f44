@@ -1,0 +1,21 @@
+package com.dr.bounds.animations;
+
+import com.DR.dLib.dObject;
+import com.DR.dLib.animations.AnimationStatusListener;
+import com.DR.dLib.animations.dAnimation;
+import com.dr.bounds.Player;
+
+public class PlayerDeathAnimation extends dAnimation {
+
+	public PlayerDeathAnimation(float duration, Player p) {
+		super(duration, null, 1, p);
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	protected void animate(float arg0, float arg1, float arg2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}
