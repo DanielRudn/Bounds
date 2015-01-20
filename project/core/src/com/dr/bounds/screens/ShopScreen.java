@@ -58,7 +58,9 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 	// only draws this item when clicked
 	private ShopItemCard expandedItem = null;
 	private boolean startedShrink = false;
-	// test
+	// message of the day container
+	private dUICard motdContainer;
+	// sidebar
 	private ShopSideBar sidebar;
 	// loading icon
 	private LoadingIcon loadingIcon;
@@ -194,10 +196,21 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 		XmlReader reader = new XmlReader();
 		
 		final Element shop = reader.parse(response);
+
 		Gdx.app.postRunnable(new Runnable()
 		{
 				@Override
 				public void run() {
+					// load motd
+					motdContainer = new dUICard(0,0,AssetManager.getTexture("card"));
+					motdContainer.setColor(titleCard.getColor());
+					motdContainer.setDimensions(ShopItemCard.CARD_WIDTH, 64f);
+					dText motd = new dText(0,0,48f, shop.get("MOTD"));
+					motd.setColor(236f/256f, 240f/256f, 241f/256f,1f);
+					motdContainer.addObject(motd, dUICard.CENTER, dUICard.CENTER);
+					addCardAsObject(motdContainer);
+					itemCardList.add(motdContainer);
+					motdContainer.setX(motdContainer.getX() + getPadding()*4f);
 					for(int x = 0; x < shop.getChildrenByName("Item").size; x++)
 					{
 						final Element e = shop.getChildrenByName("Item").get(x);

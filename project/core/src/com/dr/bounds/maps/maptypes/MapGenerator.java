@@ -32,6 +32,8 @@ public class MapGenerator implements TimerListener {
 	private boolean hadCollision = false;
 	// player score to give to game screen
 	private int score = 0;
+	// player combo
+	private int combo = 0;
 	// used to let gamescreen know that it should show the score change animation
 	private boolean scoreChanged = false;
 	// amount to increment score by since the MapTypes can vary in difficulty and award different amounts of score
@@ -127,6 +129,12 @@ public class MapGenerator implements TimerListener {
 			}
 		}
 
+		// check if combo should reset
+		if(player.hasHitWall())
+		{
+			combo = 0;
+		}
+		
 	}
 
 	public void render(SpriteBatch batch)
@@ -195,6 +203,7 @@ public class MapGenerator implements TimerListener {
 		currentType.nextType = null;
 		currentType.reset();
 		score = 0;
+		combo = 0;
 		transitionImage.setY(MainGame.VIRTUAL_HEIGHT * 2f);
 	}
 	
@@ -218,6 +227,8 @@ public class MapGenerator implements TimerListener {
 		score += scoreIncrementAmount;
 		// play sound
 		MainGame.playScoreSound();
+		// update combo
+		combo++;
 	}
 	
 	private void setNextType(int MAP_TYPE)
@@ -274,6 +285,11 @@ public class MapGenerator implements TimerListener {
 	public int getScore()
 	{
 		return score;
+	}
+	
+	public int getCombo()
+	{
+		return combo;
 	}
 	
 	public int getMapType()

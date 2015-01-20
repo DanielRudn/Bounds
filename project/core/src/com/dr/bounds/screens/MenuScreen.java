@@ -5,6 +5,7 @@ import com.DR.dLib.animations.SlideElasticAnimation;
 import com.DR.dLib.animations.SlideInOrderAnimation;
 import com.DR.dLib.ui.dButton;
 import com.DR.dLib.ui.dScreen;
+import com.DR.dLib.ui.dText;
 import com.DR.dLib.ui.dUICard;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -20,6 +21,9 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 	private final int SHOW_BUTTONS_ID = 123;
 	private SlideElasticAnimation hideAnimation;
 	private final int HIDE_ANIM_ID = 12345;
+	// title
+	private dText titleText;
+	private float titleTime = 0f, titleDuration = (float)Math.PI/2f;
 	// BUTTONS
 	private dButton playButton;
 	private dButton skinsButton;
@@ -32,30 +36,38 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 	
 	public MenuScreen(float x, float y, Texture texture) {
 		super(x, y, texture);
+		setColor(52f/256f, 73f/256f, 94f/256f,1f);
 		setPaddingTop(16f);
 		//setColor(236f/256f, 240f/256f, 241f/256f, 1f);
 		hideAnimation = new SlideElasticAnimation(1f, this, HIDE_ANIM_ID,0, 0, this);
 		setHideAnimation(hideAnimation);
 		
+		titleText = new dText(0,0,192f,"Bounds");
+		titleText.setColor(Color.WHITE);
+		
+		Color buttonColor = new Color(210f/256f, 82f/256f, 127f/256f, 1f);
+		
 		//fix
 		Texture buttonTexture = AssetManager.getTexture("button");
 		Texture circle = AssetManager.getTexture("circle");
-		playButton = new dButton(0,0, new Sprite(buttonTexture), "play", circle, 2f);
+		playButton = new dButton(0,0, new Sprite(buttonTexture), "play");
 		playButton.setTextSize(92f);
-		playButton.setColor(new Color(52f/256f, 152f/256f, 219f/256f,1f));
+		playButton.setColor(buttonColor);
 		
-		skinsButton = new dButton(0,0, new Sprite(buttonTexture), "skins", circle, 2f);
+		skinsButton = new dButton(0,0, new Sprite(buttonTexture), "skins");
 		skinsButton.setTextSize(92f);
-		skinsButton.setColor(new Color(52f/256f, 152f/256f, 219f/256f,1f));
+		skinsButton.setColor(buttonColor);
 		
-		leaderboardsButton = new dButton(0,0, new Sprite(buttonTexture), "scores", circle, 2f);
+		leaderboardsButton = new dButton(0,0, new Sprite(buttonTexture), "scores");
 		leaderboardsButton.setTextSize(92f);
-		leaderboardsButton.setColor(new Color(52f/256f, 152f/256f, 219f/256f,1f));
+		leaderboardsButton.setColor(buttonColor);
 		
-		achievementsButton = new dButton(0,0, new Sprite(buttonTexture), "trophies", circle, 2f);
+		achievementsButton = new dButton(0,0, new Sprite(buttonTexture), "trophies");
 		achievementsButton.setTextSize(92f);
-		achievementsButton.setColor(new Color(52f/256f, 152f/256f, 219f/256f,1f));
+		achievementsButton.setColor(buttonColor);
 		
+		addObject(titleText, dUICard.CENTER, dUICard.TOP);
+		titleText.setY(titleText.getY() + titleText.getHeight());
 		addObject(playButton, dUICard.CENTER, dUICard.TOP);
 		playButton.setY(playButton.getY() + 364f);
 		addObjectUnder(skinsButton, getIndexOf(playButton));
@@ -79,6 +91,16 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 	public void update(float delta)
 	{
 		super.update(delta);
+		// move the title text up and down
+		if(titleTime < titleDuration)
+		{
+			titleTime+=delta;
+			titleText.setY(titleText.getY() - (float)Math.sin(titleTime));
+		}
+		else
+		{
+			titleTime = (float)-Math.PI/2f;
+		}
 		if(nextScreen != null)
 		{
 			nextScreen.update(delta);

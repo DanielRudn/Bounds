@@ -32,6 +32,8 @@ public class Player extends dObject {
 	private Vector2 playerVelocity = new Vector2(0,0);
 	private float squeezeTime = 0;
 	private boolean squeezed = true;
+	// whether the player hit a wall, used for combos
+	private boolean hitWall = false;
 	// y position when the user taps the screen
 	private float startY = 0;
 	// bounding rectangle used for collisions
@@ -40,6 +42,8 @@ public class Player extends dObject {
 	public static final	List<Integer> recentScores = new ArrayList<Integer>(5);
 	// unlocked skins
 	public static final Set<Byte> unlockedSkins = new TreeSet<Byte>();
+	// best score
+	public static int bestScore = 0;
 	// temp
 	private ParticleEffect trailEffect = new ParticleEffect();
 	
@@ -130,6 +134,11 @@ public class Player extends dObject {
 			squeezeTime = 0;
 			squeezed = true;
 			startY = getY();
+			hitWall = true;
+		}
+		else
+		{
+			hitWall = false;
 		}
 	}
 	
@@ -163,6 +172,7 @@ public class Player extends dObject {
 			Element pData = reader.parse(Gdx.files.local("pData.xml"));
 			// load scores
 			Element scores = pData.getChildByName("Scores").getChildByName("RecentScores");
+			bestScore = Integer.parseInt(pData.getChildByName("Scores").getAttribute("best"));
 			String[] scoreArray = scores.get("OldestToLatest").replaceAll("[ \t\n\f\r]", "").split(",");
 			for(int x = 0; x < scoreArray.length; x++)
 			{
@@ -187,6 +197,7 @@ public class Player extends dObject {
 			}
 			// default skin
 			unlockedSkins.add((byte) 1);
+			bestScore = 0;
 		}
 	}
 	
@@ -197,7 +208,7 @@ public class Player extends dObject {
 		XmlWriter writer = new XmlWriter(stringWriter);
 		try {
 			writer.element("pData")
-				.element("Scores").attribute("best", 0)
+				.element("Scores").attribute("best", bestScore)
 					.element("RecentScores").attribute("OldestToLatest", recentScores.toString().replaceAll("\\[", "").replaceAll("\\]", "")).pop()
 				.pop()
 				.element("Skins").attribute("SkinID", unlockedSkins.toString().replaceAll("\\[", "").replaceAll("\\]", "")).pop()
@@ -213,6 +224,7 @@ public class Player extends dObject {
 	
 	public static void addRecentScore(int score)
 	{
+		// shift current scores down
 		for(int x = 1; x < recentScores.size(); x++)
 		{
 			recentScores.set(x-1, recentScores.get(x));
@@ -250,6 +262,11 @@ public class Player extends dObject {
 	public boolean isMovingCenter()
 	{
 		return moveCenter;
+	}
+	
+	public boolean hasHitWall()
+	{
+		return hitWall;
 	}
 	
 	@Override

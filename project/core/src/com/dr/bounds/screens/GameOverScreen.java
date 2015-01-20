@@ -221,6 +221,10 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 			setPos(MainGame.camera.position.x + MainGame.VIRTUAL_WIDTH /2f,MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f);
 			rgg = new RecentGamesGraph(getWidth() + getWidth()/2f - 396f / 2f , getY()  + MainGame.VIRTUAL_HEIGHT / 2f , AssetManager.getTexture("card"), 396,256, "Score Last 5 Games");
 			Player.addRecentScore((int) playerScore);
+			if(playerScore > Player.bestScore)
+			{
+				Player.bestScore = (int) playerScore;
+			}
 			ArrayList<Vector2> scores = new ArrayList<Vector2>();
 			for(int x = 0; x < Player.recentScores.size(); x++)
 			{

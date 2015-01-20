@@ -4,6 +4,7 @@ import com.DR.dLib.ui.dScreen;
 import com.DR.dLib.ui.dText;
 import com.DR.dLib.dTweener;
 import com.DR.dLib.ui.dUICard;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dr.bounds.MainGame;
@@ -23,10 +24,14 @@ public class GameScreen extends dScreen {
 	private GameOverScreen gameOverScreen;
 	// keep track of players score
 	private int playerScore = 0;
-	// used to display player's score
+	// keep track of players current combo
+	private int playerCombo = 0;
+	// used to display player score
 	private dText scoreText;
 	// animate score changing
 	private float scoreTime = 0;
+	// used to display player combo
+	private dText comboText;
 	// death animation for the player
 	private PlayerDeathAnimation deathAnim;
 
@@ -36,7 +41,7 @@ public class GameScreen extends dScreen {
 		player = new Player(MainGame.VIRTUAL_WIDTH/2f-32f,MainGame.VIRTUAL_HEIGHT/2f-32f, 6);
 		deathAnim = new PlayerDeathAnimation(.75f,player);
 		
-		mapGen = new MapGenerator(MapGenerator.TYPE_ROTATE, player);
+		mapGen = new MapGenerator(MapGenerator.TYPE_SPIKE, player);
 		mapGen.generateSeed();
 		// TODO: might remove
 		mapGen.generateFirstSet();
@@ -44,11 +49,14 @@ public class GameScreen extends dScreen {
 		gameOverScreen = new GameOverScreen(getX(), getY(), texture, player);
 		gameOverScreen.hide();
 		
-		scoreText = new dText(0,0,192f,"0");
-		//scoreText.setColor(0,0,0,0.5f);
-		scoreText.setColor(1,1,1,1);
-		addObject(scoreText,dUICard.CENTER, dUICard.TOP);
+		comboText = new dText(0,0,64f,"COMBO: 0");
+		comboText.setColor(Color.WHITE);
 		
+		scoreText = new dText(0,0,192f,"0");
+		scoreText.setColor(1,1,1,1);
+		
+		addObject(scoreText,dUICard.CENTER, dUICard.TOP);
+		comboText.setPos(scoreText.getX(), scoreText.getY() + scoreText.getHeight() + 4f);
 	}
 	
 	@Override
@@ -86,7 +94,10 @@ public class GameScreen extends dScreen {
 				mapGen.update(delta);
 				// get players score from the map gen
 				playerScore = mapGen.getScore();
+				playerCombo = mapGen.getCombo();
+				comboText.setText("COMBO: " + Integer.toString(playerCombo));
 				scoreText.setY(MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f + 48f);
+				comboText.setPos(MainGame.VIRTUAL_WIDTH / 2f - comboText.getWidth() / 2f, scoreText.getY() + scoreText.getHeight() + 4f);
 				if(mapGen.hasScoreChanged())
 				{
 					scoreText.setText(Integer.toString(playerScore));
@@ -97,7 +108,7 @@ public class GameScreen extends dScreen {
 				if(scoreTime <= 2f)
 				{
 					scoreTime+=delta;
-					scoreText.setSize(dTweener.ElasticOut(scoreTime, 300f, 192f - 300f, 2f));
+					scoreText.setSize(dTweener.ElasticOut(scoreTime, 300f, 192f - 300f, 1.5f));
 				}
 				// move camera upward
 				MainGame.setCameraPos(MainGame.camera.position.x, MainGame.camera.position.y - CAMERA_SPEED * delta);
@@ -114,6 +125,10 @@ public class GameScreen extends dScreen {
 		player.render(batch);
 		scoreText.render(batch);
 		gameOverScreen.render(batch);
+		if(playerCombo >= 2)
+		{
+			comboText.render(batch);
+		}
 	}
 	
 	@Override
@@ -121,7 +136,6 @@ public class GameScreen extends dScreen {
 	{
 		super.resume();
 	}
-	
 	
 	public long getSeed()
 	{

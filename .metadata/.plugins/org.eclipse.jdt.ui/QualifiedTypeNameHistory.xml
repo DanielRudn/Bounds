@@ -49,7 +49,6 @@
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.Sprite"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.SpriteBatch"/>
 <fullyQualifiedTypeName name="com.dr.bounds.ui.LoadingIcon"/>
-<fullyQualifiedTypeName name="com.DR.dLib.ui.dText"/>
 <fullyQualifiedTypeName name="com.dr.bounds.maps.maptypes.MapGenerator"/>
 <fullyQualifiedTypeName name="com.dr.bounds.AssetManager"/>
 <fullyQualifiedTypeName name="com.dr.bounds.maps.obstacles.dRotatingObstacle"/>
@@ -60,4 +59,5 @@
 <fullyQualifiedTypeName name="com.DR.dLib.dTweener"/>
 <fullyQualifiedTypeName name="com.dr.bounds.animations.PlayerDeathAnimation"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.Gdx"/>
+<fullyQualifiedTypeName name="com.DR.dLib.ui.dText"/>
 </qualifiedTypeNameHistroy>
