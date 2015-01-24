@@ -22,10 +22,12 @@ public class GameScreen extends dScreen {
 	private MapGenerator mapGen;
 	// screen that will show when game ends
 	private GameOverScreen gameOverScreen;
-	// keep track of players score
+	// keep track of players score this round
 	private int playerScore = 0;
-	// keep track of players current combo
+	// keep track of players combo this round
 	private int playerCombo = 0;
+	// keep track of players coins this round
+	private static int playerCoins = 0;
 	// used to display player score
 	private dText scoreText;
 	// animate score changing
@@ -85,6 +87,7 @@ public class GameScreen extends dScreen {
 				player.reset();
 				mapGen.setHadCollision(false);
 				scoreText.setText(Integer.toString(0));
+				playerCoins = 0;
 				scoreText.setX(getX() + getWidth()/2f - scoreText.getWidth()/2f);
 			}
 			else if(!mapGen.hadCollision() && gameOverScreen.isVisible() == false)
@@ -100,7 +103,7 @@ public class GameScreen extends dScreen {
 				comboText.setPos(MainGame.VIRTUAL_WIDTH / 2f - comboText.getWidth() / 2f, scoreText.getY() + scoreText.getHeight() + 4f);
 				if(mapGen.hasScoreChanged())
 				{
-					scoreText.setText(Integer.toString(playerScore) + " C x" + player.getCoins());
+					scoreText.setText(Integer.toString(playerScore) + "C x" + playerCoins);
 					scoreText.setX(getX() + getWidth()/2f - scoreText.getWidth()/2f);
 					scoreTime = 0;
 					mapGen.setScoreChanged(false);
@@ -140,6 +143,14 @@ public class GameScreen extends dScreen {
 	public long getSeed()
 	{
 		return mapGen.getSeed();
+	}
+	
+	/**
+	 * Called by the MapType containing the coin set when a coin is picked up
+	 */
+	public static void incrementPlayerCoins()
+	{
+		playerCoins++;
 	}
 	
 	public void setPlayerSkin(int id)

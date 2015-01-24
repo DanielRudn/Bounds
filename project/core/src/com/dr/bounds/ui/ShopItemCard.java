@@ -124,14 +124,24 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 			{
 				if(acceptButton.getText().equals("BUY"))
 				{
-					acceptButton.setText("SET");
-					acceptButton.setColor(46f/256f, 204f/256f, 113f/256f,1f);
-					ownedImage=  new dImage(0,0,AssetManager.getTexture("checkMark.png"));
-					ownedImage.setDimensions(32f, 32f);
-					addObject(ownedImage,dUICard.RIGHT, dUICard.BOTTOM);
-					ownedImage.setPos(getX() + getWidth() - getPadding() - ownedImage.getWidth(), getY() + CARD_HEIGHT - getPadding() - ownedImage.getHeight());
-					Player.unlockedSkins.add(skinID);
-					Player.savePlayerData();
+					// buy
+					// TODO: Save item price in an integer variable
+					if(Player.getCoins() >= Integer.parseInt(itemPrice.getText()))
+					{
+						Player.setCoins(Player.getCoins() - Integer.parseInt(itemPrice.getText()));
+						acceptButton.setText("SET");
+						acceptButton.setColor(46f/256f, 204f/256f, 113f/256f,1f);
+						ownedImage=  new dImage(0,0,AssetManager.getTexture("checkMark.png"));
+						ownedImage.setDimensions(32f, 32f);
+						addObject(ownedImage,dUICard.RIGHT, dUICard.BOTTOM);
+						ownedImage.setPos(getX() + getWidth() - getPadding() - ownedImage.getWidth(), getY() + CARD_HEIGHT - getPadding() - ownedImage.getHeight());
+						Player.unlockedSkins.add(skinID);
+						Player.savePlayerData();
+					}
+					else
+					{
+						// not enough coins, do something
+					}
 				}
 				else if(acceptButton.getText().equals("SET"))
 				{

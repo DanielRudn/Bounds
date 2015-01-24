@@ -49,7 +49,6 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		
 		//fix
 		Texture buttonTexture = AssetManager.getTexture("button");
-		Texture circle = AssetManager.getTexture("circle");
 		playButton = new dButton(0,0, new Sprite(buttonTexture), "play");
 		playButton.setTextSize(92f);
 		playButton.setColor(buttonColor);
