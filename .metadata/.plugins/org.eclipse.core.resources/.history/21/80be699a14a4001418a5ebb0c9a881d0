@@ -79,7 +79,7 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 		showAnim = new ExpandAnimation(circleCover, 2.75f, this, SHOW_ANIM_ID, new Color(236f/256f, 240f/256f, 241f/256f,1f), MainGame.VIRTUAL_HEIGHT * 2f);
 		this.setShowAnimation(showAnim);
 		titleCard = new dUICard(0,0, texture);
-		titleCard.setDimensions(getWidth(), 92f);
+		titleCard.setDimensions(getWidth(), 64f);
 	//	titleCard.setColor(26f/256f, 188f/256f, 156f/256f, 1f);
 		titleCard.setColor(234f/256f,76f/256f,136f/256f,1f);
 		titleCard.setHasShadow(false);
@@ -90,7 +90,7 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 		titleCard.setY(getY() - titleCard.getHeight() - getPadding());
 		
 		loadingIcon = new LoadingIcon(getX() + getWidth() / 2f - 92f, getY() + getHeight()/2f - 92f, circle);
-		sidebar = new ShopSideBar(0,0,texture,this);
+		sidebar = new ShopSideBar(0,0,texture);
 		
 		coinText = new dText(0,0,48f, "Coins: " + Player.getCoins());
 		titleCard.addObject(coinText, dUICard.RIGHT, dUICard.CENTER);
@@ -242,11 +242,6 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 	{
 		
 	}*/
-	
-	public void setTitleCardColor(Color c)
-	{
-		titleCard.setColor(c);
-	}
 
 	@Override
 	public void failed(Throwable t) {
@@ -292,22 +287,17 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 class ShopSideBar extends dUICard
 {
 	private dImage skinIcon, homeIcon;
-	// buttons/cards that can be clicked
-	private dUICard shopHome, skins;
-	// ShopScreen instance
-	private ShopScreen shopScreen;
 	
-	public ShopSideBar(float x, float y, Texture texture, ShopScreen container)
+	public ShopSideBar(float x, float y, Texture texture)
 	{
 		super(x, y, texture);
 		this.setDimensions(92f,MainGame.VIRTUAL_HEIGHT);
 		this.setColor(226f/256f, 230f/256f, 231/256f,1f);
 		this.setPadding(0);
 		this.setHasShadow(false);
-		shopScreen = container;
 		Texture circle = AssetManager.getTexture("circle");
 		circle.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		shopHome = new dUICard(0,0,texture);
+		dUICard shopHome = new dUICard(0,0,texture);
 		shopHome.setHasShadow(false);
 		shopHome.setClickable(true, circle);
 		shopHome.setDimensions(getWidth(),getWidth());
@@ -316,7 +306,7 @@ class ShopSideBar extends dUICard
 		homeIcon.setColor(0,0,0,0.25f);
 		homeIcon.setDimensions(shopHome.getWidth() / 2f, shopHome.getHeight() / 2f);
 		shopHome.addObject(homeIcon, dUICard.CENTER, dUICard.CENTER);
-		skins = new dUICard(0,0,texture);
+		dUICard skins = new dUICard(0,0,texture);
 		skins.setClickable(true, circle);
 		skins.setHasShadow(false);
 		skins.setDimensions(shopHome.getWidth(), shopHome.getHeight());
@@ -331,16 +321,8 @@ class ShopSideBar extends dUICard
 	}
 	
 	@Override
-	public void update(float delta)
+	public void render(SpriteBatch batch)
 	{
-		super.update(delta);
-		if(shopHome.isClicked())
-		{
-			shopScreen.setTitleCardColor(shopHome.getColor());
-		}
-		else if(skins.isClicked())
-		{
-			shopScreen.setTitleCardColor(skins.getColor());
-		}
+		super.render(batch);
 	}
 }

@@ -242,11 +242,6 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 	{
 		
 	}*/
-	
-	public void setTitleCardColor(Color c)
-	{
-		titleCard.setColor(c);
-	}
 
 	@Override
 	public void failed(Throwable t) {
@@ -333,12 +328,7 @@ class ShopSideBar extends dUICard
 	@Override
 	public void update(float delta)
 	{
-		super.update(delta);
-		if(shopHome.isClicked())
-		{
-			shopScreen.setTitleCardColor(shopHome.getColor());
-		}
-		else if(skins.isClicked())
+		if(skins.isClicked())
 		{
 			shopScreen.setTitleCardColor(skins.getColor());
 		}

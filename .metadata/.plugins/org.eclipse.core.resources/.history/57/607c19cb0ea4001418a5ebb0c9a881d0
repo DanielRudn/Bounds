@@ -62,7 +62,7 @@ public class Player extends dObject {
 
 	@Override
 	public void render(SpriteBatch batch) {
-		trailEffect.draw(batch);
+	//	trailEffect.draw(batch);
 		getSprite().draw(batch);
 	}
 
@@ -232,7 +232,7 @@ public class Player extends dObject {
 		XmlWriter writer = new XmlWriter(stringWriter);
 		try {
 			writer.element("pData")
-				.element("Coins").attribute("amount", numCoins).pop()
+				.element("Coins").attribute("amount", numCoins+2500).pop()
 				.element("Scores").attribute("best", bestScore).attribute("combo", bestCombo)
 					.element("RecentScores").attribute("OldestToLatest", recentScores.toString().replaceAll("\\[", "").replaceAll("\\]", "")).pop()
 				.pop()

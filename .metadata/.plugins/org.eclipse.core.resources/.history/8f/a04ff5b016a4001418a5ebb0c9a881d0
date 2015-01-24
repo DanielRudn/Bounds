@@ -338,7 +338,7 @@ class ShopSideBar extends dUICard
 		{
 			shopScreen.setTitleCardColor(shopHome.getColor());
 		}
-		else if(skins.isClicked())
+		if(skins.isClicked())
 		{
 			shopScreen.setTitleCardColor(skins.getColor());
 		}

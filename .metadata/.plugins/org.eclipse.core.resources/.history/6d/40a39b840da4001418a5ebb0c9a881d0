@@ -62,7 +62,7 @@ public class Player extends dObject {
 
 	@Override
 	public void render(SpriteBatch batch) {
-		trailEffect.draw(batch);
+	//	trailEffect.draw(batch);
 		getSprite().draw(batch);
 	}
 
@@ -223,6 +223,7 @@ public class Player extends dObject {
 			// error parsing file
 			setDefaultValues();
 		}
+		System.out.println("coins: " + numCoins);
 	}
 	
 	public static void savePlayerData()
