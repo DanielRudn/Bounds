@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.SerializationException;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
@@ -25,7 +26,7 @@ import com.dr.bounds.screens.GameScreen;
 public class Player extends dObject {
 	
 	private final int SKIN_DIMENSIONS = 64;
-	private int skinID = MainGame.PLACEHOLDER_SKIN_ID;
+	private static int skinID = MainGame.PLACEHOLDER_SKIN_ID;
 	private boolean moveCenter = false;
 	private boolean changeVelocity = false;
 	private Vector2 targetVelocity = new Vector2(0,0);
@@ -44,6 +45,10 @@ public class Player extends dObject {
 	public static final Set<Byte> unlockedSkins = new TreeSet<Byte>();
 	// best score
 	public static int bestScore = 0;
+	// best combo
+	public static int bestCombo = 0;
+	// amount of coins
+	private int numCoins = 0;
 	// temp
 	private ParticleEffect trailEffect = new ParticleEffect();
 	
@@ -165,6 +170,20 @@ public class Player extends dObject {
 		return false;
 	}
 	
+	// runs when the program fails to load player data
+	private void setDefaultValues()
+	{
+		for(int x = 0; x < 5; x++)
+		{
+			recentScores.add(0);
+		}
+		// default skin
+		unlockedSkins.add((byte) 1);
+		setSkinID(unlockedSkins.iterator().next());
+		bestScore = 0;
+		bestCombo = 0;
+	}
+	
 	private void loadPlayerData()
 	{
 		XmlReader reader = new XmlReader();
@@ -173,6 +192,7 @@ public class Player extends dObject {
 			// load scores
 			Element scores = pData.getChildByName("Scores").getChildByName("RecentScores");
 			bestScore = Integer.parseInt(pData.getChildByName("Scores").getAttribute("best"));
+			bestCombo = Integer.parseInt(pData.getChildByName("Scores").getAttribute("combo"));
 			String[] scoreArray = scores.get("OldestToLatest").replaceAll("[ \t\n\f\r]", "").split(",");
 			for(int x = 0; x < scoreArray.length; x++)
 			{
@@ -180,7 +200,8 @@ public class Player extends dObject {
 			}
 			// load unlocked skins
 			Element skins = pData.getChildByName("Skins");
-			String[] skinArray = skins.get("SkinID").replaceAll("[ \t\n\f\r]", "").split(",");
+			setSkinID(Integer.parseInt(skins.getAttribute("current")));
+			String[] skinArray = skins.get("SkinID").replaceAll("[ \t\n\f\r]", "").split(","); 
 			for(int x = 0; x < skinArray.length; x++)
 			{
 				unlockedSkins.add(Byte.parseByte(skinArray[x]));
@@ -191,14 +212,14 @@ public class Player extends dObject {
 		catch(SerializationException se)
 		{
 			// file not found
-			for(int x = 0; x < 5; x++)
-			{
-				recentScores.add(0);
-			}
-			// default skin
-			unlockedSkins.add((byte) 1);
-			bestScore = 0;
+			setDefaultValues();
 		}
+		catch(GdxRuntimeException gdx)
+		{
+			// error parsing file
+			setDefaultValues();
+		}
+		System.out.println("bestScore: " + bestScore + " bestCombo: " + bestCombo);
 	}
 	
 	public static void savePlayerData()
@@ -208,10 +229,10 @@ public class Player extends dObject {
 		XmlWriter writer = new XmlWriter(stringWriter);
 		try {
 			writer.element("pData")
-				.element("Scores").attribute("best", bestScore)
+				.element("Scores").attribute("best", bestScore).attribute("combo", bestCombo)
 					.element("RecentScores").attribute("OldestToLatest", recentScores.toString().replaceAll("\\[", "").replaceAll("\\]", "")).pop()
 				.pop()
-				.element("Skins").attribute("SkinID", unlockedSkins.toString().replaceAll("\\[", "").replaceAll("\\]", "")).pop()
+				.element("Skins").attribute("current",skinID).attribute("SkinID", unlockedSkins.toString().replaceAll("\\[", "").replaceAll("\\]", "")).pop()
 			.pop();
 		// save
 		FileHandle pData = Gdx.files.local("pData.xml");
@@ -237,6 +258,7 @@ public class Player extends dObject {
 		return unlockedSkins.contains((Byte)id);
 	}
 	
+	// reset state when player dies in a level
 	public void reset()
 	{
 		setOrigin(0,0);
@@ -257,6 +279,16 @@ public class Player extends dObject {
 	public int getSkinID()
 	{
 		return skinID;
+	}
+	
+	public void setCoins(int coins)
+	{
+		numCoins = coins;
+	}
+	
+	public int getCoins()
+	{
+		return numCoins;
 	}
 	
 	public boolean isMovingCenter()

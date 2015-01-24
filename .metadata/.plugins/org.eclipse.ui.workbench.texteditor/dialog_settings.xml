@@ -2,30 +2,30 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="setOrigin" key="selection"/>
+		<item value="coinSet" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="setOrigin"/>
-			<item value="1f"/>
-			<item value="circleCover"/>
-			<item value="rng.nextInt(5)"/>
-			<item value="currentContainer"/>
-			<item value="itemCardContainers"/>
-			<item value="sound"/>
-			<item value="ound"/>
+			<item value="coinSet"/>
+			<item value="coinSet = null"/>
+			<item value="coinSet = nuyl"/>
+			<item value="RING"/>
+			<item value="18"/>
+			<item value="test"/>
+			<item value="&#x09;&#x09;test = new dImage(0,0,AssetManager.getTexture(&quot;card&quot;));"/>
+			<item value="big"/>
 		</list>
 		<list key="replacehistory">
+			<item value="STRAIGHT"/>
+			<item value="36"/>
+			<item value="test2"/>
+			<item value="small"/>
 			<item value="0.5f"/>
 			<item value=""/>
 			<item value="new Color(46f/256f, 204f/256f, 113f/256f,1f)"/>
 			<item value="new Color(52f/256f, 152f/256f, 219f/256f,1f"/>
-			<item value="delta"/>
-			<item value="duration"/>
-			<item value="nextType.secondBG"/>
-			<item value="nextType.firstBG"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">

@@ -1,6 +1,6 @@
 <pData>
-	<Scores best="23">
-		<RecentScores OldestToLatest="6, 6, 1, 5, 0"/>
+	<Scores best="28" combo="12">
+		<RecentScores OldestToLatest="11, 6, 1, 14, 10"/>
 	</Scores>
-	<Skins SkinID="1, 2, 3, 4, 5, 6, 7, 8, 9, 10"/>
+	<Skins current="3" SkinID="1, 3, 10"/>
 </pData>

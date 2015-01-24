@@ -41,7 +41,7 @@ public class GameScreen extends dScreen {
 		player = new Player(MainGame.VIRTUAL_WIDTH/2f-32f,MainGame.VIRTUAL_HEIGHT/2f-32f, 6);
 		deathAnim = new PlayerDeathAnimation(.75f,player);
 		
-		mapGen = new MapGenerator(MapGenerator.TYPE_SPIKE, player);
+		mapGen = new MapGenerator(MapGenerator.TYPE_SKY, player);
 		mapGen.generateSeed();
 		// TODO: might remove
 		mapGen.generateFirstSet();
@@ -100,7 +100,7 @@ public class GameScreen extends dScreen {
 				comboText.setPos(MainGame.VIRTUAL_WIDTH / 2f - comboText.getWidth() / 2f, scoreText.getY() + scoreText.getHeight() + 4f);
 				if(mapGen.hasScoreChanged())
 				{
-					scoreText.setText(Integer.toString(playerScore));
+					scoreText.setText(Integer.toString(playerScore) + " C x" + player.getCoins());
 					scoreText.setX(getX() + getWidth()/2f - scoreText.getWidth()/2f);
 					scoreTime = 0;
 					mapGen.setScoreChanged(false);

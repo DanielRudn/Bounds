@@ -132,6 +132,8 @@ public class MapGenerator implements TimerListener {
 		// check if combo should reset
 		if(player.hasHitWall())
 		{
+			// check if it's a new record for the combo
+			checkComboRecord();
 			combo = 0;
 		}
 		
@@ -168,6 +170,14 @@ public class MapGenerator implements TimerListener {
 		}
 	}
 	
+	private void checkComboRecord()
+	{
+		if(combo > Player.bestCombo)
+		{
+			Player.bestCombo = combo;
+		}
+	}
+	
 	private void reset()
 	{
 		//	determine which map type is set
@@ -199,6 +209,7 @@ public class MapGenerator implements TimerListener {
 		}
 		generateSeed();
 		generateFirstSet();
+		checkComboRecord();
 		nextType = null;
 		currentType.nextType = null;
 		currentType.reset();
@@ -225,10 +236,10 @@ public class MapGenerator implements TimerListener {
 	public void incrementScore()
 	{
 		score += scoreIncrementAmount;
-		// play sound
-		MainGame.playScoreSound();
 		// update combo
 		combo++;
+		// play sound
+		MainGame.playScoreSound();
 	}
 	
 	private void setNextType(int MAP_TYPE)

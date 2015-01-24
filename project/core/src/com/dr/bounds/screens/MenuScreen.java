@@ -117,7 +117,7 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		{
 			switchScreen(MainGame.gameScreen);
 		}
-		if(skinsButton.isClicked())
+		if(skinsButton.isClicked() && nextScreen == null)
 		{
 			if(shopScreen == null)
 			{

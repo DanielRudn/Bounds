@@ -7,8 +7,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
+import com.dr.bounds.AssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
+import com.dr.bounds.maps.obstacles.CoinSet;
 import com.dr.bounds.maps.obstacles.dObstacle;
 
 public abstract class MapType {
@@ -46,6 +48,8 @@ public abstract class MapType {
 	private boolean newTypeGenerated = false;
 	// useless rectangle for collsiion, temporary
 	protected final static Rectangle useless = new Rectangle();
+	// coin set for the maps
+	private static CoinSet coinSet;
 	
 	public MapType(int type, Player player, MapGenerator generator, Texture bgTexture)
 	{
@@ -62,6 +66,10 @@ public abstract class MapType {
 	{
 		firstBG.render(batch);
 		secondBG.render(batch);
+		if(coinSet != null)
+		{
+			coinSet.render(batch);
+		}
 		renderObstacles(batch);
 		if(nextType != null && showTransitionImage)
 		{
@@ -121,6 +129,10 @@ public abstract class MapType {
 			}
 		}
 		updateBlocks(delta);
+		if(coinSet != null)
+		{
+			coinSet.update(delta);
+		}
 	}
 	
 	private void updateBlocks(float delta)
@@ -138,6 +150,10 @@ public abstract class MapType {
 		}
 	}
 	
+	/**
+	 * Checks collision using obstacles bounding rectangle by default
+	 * @param index index of current obstacle
+	 */
 	protected void checkCollision(int index)
 	{
 		if(gen.hadCollision() == false && Intersector.intersectRectangles(player.getBoundingRectangle(), obstacles.get(index).getBoundingRectangle(), useless)) // FIX
@@ -164,14 +180,23 @@ public abstract class MapType {
 	 */
 	protected void generate(int index)
 	{
+		// only regenerate if the map type is not changing yet
 		if(isTransitioning == false)
 		{
 			//reset passed for this obstacles
 			obstacles.get(index).setPassed(false);
 			generateBlock(index);
+			// 30% chance to generate a set of coins
+			// TODO: make it so there's a boolean to prevent two coin sets generating in a row
+			//int genCoins = MapGenerator.rng.nextInt(10);
+		//	if(genCoins == 5 || genCoins == 7 || genCoins == 1)
+			//{
+				generateCoinSet(index);
+			//}
 		}
 		else
 		{
+			// check if we can switch the backgrounds by running through the obstacles and seeing if they are all under the camera.
 			boolean canSwitch = true;
 			for(int x = 0; x < obstacles.size(); x++)
 			{
@@ -208,6 +233,36 @@ public abstract class MapType {
 		obstacles.get(index).setY(obstacles.get(getPreviousIndex(index)).getY() - MIN_DISTANCE - MapGenerator.rng.nextInt(MAX_DISTANCE));
 	}
 	
+	private void generateCoinSet(int index)
+	{
+		if(coinSet != null && coinSet.canRegenerate())
+		{
+			coinSet.generate();
+			int side = MapGenerator.rng.nextInt(11); // 0,1,5,6,7 is LEFT, 2,3,8,9,10 is RIGHT, 4 is center
+			if(side == 0 || side == 1 || side == 6 || side == 7)// left
+			{
+				coinSet.setX(64);
+			}
+			else if(side == 2 || side == 3 || side == 8 || side == 10)// right
+			{
+				// 64 is the width of the coins
+				coinSet.setX(MainGame.VIRTUAL_WIDTH - (64 + 16) * coinSet.getNumberOfCoins() - 64);	
+			}
+			else if(side == 4 || side == 5 || side == 9)// center
+			{
+				coinSet.setX(MainGame.VIRTUAL_WIDTH / 2f - obstacles.get(index).getWidth() / 2f + (-50 + MapGenerator.rng.nextInt(100)));
+			}
+			coinSet.setY(obstacles.get(index).getY() - MIN_DISTANCE - MapGenerator.rng.nextInt(MAX_DISTANCE));
+			//System.out.println("generated at x: " + coinSet.getX() + " y: " + coinSet.getY());
+		}
+		else if(coinSet == null)
+		{
+			// make a new CoinSet and then generate it
+			coinSet = new CoinSet(0,0,AssetManager.getTexture("coin.png"), player);
+			generateCoinSet(index);
+		}
+	}
+	
 	/**
 	 * Generates the obstacles from scratch when transitioning to a new map type
 	 */
@@ -232,6 +287,10 @@ public abstract class MapType {
 		// reset backgrounds
 		firstBG.setPos(0,0);
 		secondBG.setPos(0,-MainGame.VIRTUAL_HEIGHT);
+		if(coinSet != null)
+		{
+			coinSet.reset();
+		}
 	}
 	
 	/**
