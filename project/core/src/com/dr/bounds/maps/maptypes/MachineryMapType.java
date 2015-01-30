@@ -1,5 +1,6 @@
 package com.dr.bounds.maps.maptypes;
 
+import com.badlogic.gdx.graphics.Color;
 import com.dr.bounds.AssetManager;
 import com.dr.bounds.Player;
 import com.dr.bounds.maps.obstacles.dMovingObstacle;
@@ -10,6 +11,7 @@ public class MachineryMapType extends MapType{
 		super(type, p, generator,AssetManager.getBackground("MACHINE_BG.png"));
 		// this map type awards 1 point per obstacle
 		gen.setScoreIncrementAmount(1);
+		bgColor = Color.GRAY;
 		typeName = "Machinery";
 		// add 12 obstacles to start with
 		for(int x = 0; x < 12; x++)

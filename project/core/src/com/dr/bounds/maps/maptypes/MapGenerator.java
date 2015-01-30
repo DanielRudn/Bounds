@@ -142,7 +142,7 @@ public class MapGenerator implements TimerListener {
 	public void render(SpriteBatch batch)
 	{
 		currentType.render(batch);
-		transitionImage.render(batch);
+	//	transitionImage.render(batch);
 	}
 	
 	public void setSeed(long s)

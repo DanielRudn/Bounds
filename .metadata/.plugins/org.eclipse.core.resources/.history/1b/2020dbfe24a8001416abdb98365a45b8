@@ -1,0 +1,66 @@
+package com.dr.bounds.maps.maptypes;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dr.bounds.AssetManager;
+import com.dr.bounds.MainGame;
+import com.dr.bounds.Player;
+import com.dr.bounds.maps.obstacles.dBirdObstacle;
+
+public class SkyMapType extends MapType { 
+	
+	// test
+	private ParticleEffect test = new ParticleEffect();
+	
+	public SkyMapType(int type, Player player, MapGenerator generator) {
+		super(type, player, generator, AssetManager.getBackground("SKY_BG.png"));
+		MIN_WIDTH = 64;
+		bgColor = new Color(129f/256f,207f/256f, 224f/256f,1f);
+		typeName = "Sky";
+		gen.setScoreIncrementAmount(1);
+		// add 8 obstacles 
+		for(int x = 0; x < 8; x++)
+		{
+			obstacles.add(new dBirdObstacle(0,0, AssetManager.getTexture("birdObstacle.png"), player));
+			obstacles.get(x).setRegenerate(false);
+		}
+		test.load(Gdx.files.internal("cloudParticle.p"), Gdx.files.internal(""));
+	}
+	
+	@Override
+	public void update(float delta)
+	{
+		super.update(delta);
+		test.update(delta);
+		test.setPosition(0, MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f);
+	}
+	
+	@Override
+	public void render(SpriteBatch batch)
+	{
+		super.render(batch);
+		test.draw(batch);
+	}
+	
+	@Override
+	protected void generateBlock(int index)
+	{
+		// get direction, 0 = east, 1 = west
+		int direction = MapGenerator.rng.nextInt(2);
+		if(direction == 0)
+		{
+			((dBirdObstacle)obstacles.get(index)).setDirection(true);
+			obstacles.get(index).setX(-obstacles.get(index).getWidth());
+		}
+		else if(direction == 1)
+		{
+			((dBirdObstacle)obstacles.get(index)).setDirection(false);
+			obstacles.get(index).setX(MainGame.VIRTUAL_WIDTH + obstacles.get(index).getWidth());
+		}
+		int dimensions = MIN_WIDTH + MapGenerator.rng.nextInt(64); // TODO: change maybe? put in a final variable
+		obstacles.get(index).setDimensions((float)dimensions*1.25f, dimensions);
+		obstacles.get(index).setY(obstacles.get(getPreviousIndex(index)).getY() - MIN_DISTANCE - MapGenerator.rng.nextInt(MAX_DISTANCE));
+	}
+}

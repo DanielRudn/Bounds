@@ -1,5 +1,6 @@
 package com.dr.bounds.maps.maptypes;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Intersector;
 import com.dr.bounds.AssetManager;
 import com.dr.bounds.MainGame;
@@ -14,7 +15,7 @@ public class RotatingMapType extends MapType{
 		this.MAX_WIDTH = 456 - MIN_WIDTH / 2;
 		this.MIN_DISTANCE = 512;
 		this.MAX_DISTANCE = (int)MainGame.VIRTUAL_HEIGHT/2;
-		
+		bgColor = new Color(20f/256f,20f/256f,20f/256f,1f);
 		this.typeName = "ROTATING";
 		gen.setScoreIncrementAmount(1);
 

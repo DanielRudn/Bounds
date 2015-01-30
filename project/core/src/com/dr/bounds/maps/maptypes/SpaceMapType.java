@@ -1,5 +1,6 @@
 package com.dr.bounds.maps.maptypes;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -19,7 +20,7 @@ public class SpaceMapType extends MapType {
 		MAX_DISTANCE *= 2;
 		MIN_WIDTH = 192;
 		MAX_WIDTH = 333 - MIN_WIDTH;
-		
+		bgColor = new Color(82f/256f, 74f/256f, 115f/256f, 1f);
 		// this map type awards 2 points per obstacle
 		gen.setScoreIncrementAmount(2);
 		

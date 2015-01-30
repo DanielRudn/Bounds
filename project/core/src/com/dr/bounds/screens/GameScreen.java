@@ -1,5 +1,6 @@
 package com.dr.bounds.screens;
 
+import com.DR.dLib.ui.dImage;
 import com.DR.dLib.ui.dScreen;
 import com.DR.dLib.ui.dText;
 import com.DR.dLib.dTweener;
@@ -7,6 +8,7 @@ import com.DR.dLib.ui.dUICard;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dr.bounds.AssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 import com.dr.bounds.animations.PlayerDeathAnimation;
@@ -34,6 +36,8 @@ public class GameScreen extends dScreen {
 	private float scoreTime = 0;
 	// used to display player combo
 	private dText comboText;
+	// used to display current coins
+	private dUICard coinInfo;
 	// death animation for the player
 	private PlayerDeathAnimation deathAnim;
 
@@ -56,6 +60,17 @@ public class GameScreen extends dScreen {
 		
 		scoreText = new dText(0,0,192f,"0");
 		scoreText.setColor(1,1,1,1);
+		
+		coinInfo = new dUICard(16,0,AssetManager.getTexture("card"));
+		coinInfo.setClipping(false);
+		coinInfo.setAlpha(0);
+		coinInfo.setHasShadow(false);
+		coinInfo.setDimensions(128f, 64f);
+		dImage coinImage = new dImage(0,0,AssetManager.getTexture("coin.png"));
+		dText coinText = new dText(0,0,55f,"x0");
+		coinText.setColor(Color.WHITE);
+		coinInfo.addObject(coinText, dUICard.RIGHT, dUICard.CENTER);
+		coinInfo.addObject(coinImage, dUICard.LEFT, dUICard.CENTER);	
 		
 		addObject(scoreText,dUICard.CENTER, dUICard.TOP);
 		comboText.setPos(scoreText.getX(), scoreText.getY() + scoreText.getHeight() + 4f);
@@ -99,11 +114,13 @@ public class GameScreen extends dScreen {
 				playerScore = mapGen.getScore();
 				playerCombo = mapGen.getCombo();
 				comboText.setText("COMBO: " + Integer.toString(playerCombo));
-				scoreText.setY(MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f + 48f);
+				scoreText.setY(MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f + 16f);
+				coinInfo.setY(MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f + 16f);
+				((dText)coinInfo.getObject(0)).setText("x" + playerCoins);
 				comboText.setPos(MainGame.VIRTUAL_WIDTH / 2f - comboText.getWidth() / 2f, scoreText.getY() + scoreText.getHeight() + 4f);
 				if(mapGen.hasScoreChanged())
 				{
-					scoreText.setText(Integer.toString(playerScore) + "C x" + playerCoins);
+					scoreText.setText(Integer.toString(playerScore));
 					scoreText.setX(getX() + getWidth()/2f - scoreText.getWidth()/2f);
 					scoreTime = 0;
 					mapGen.setScoreChanged(false);
@@ -127,6 +144,7 @@ public class GameScreen extends dScreen {
 		mapGen.render(batch);
 		player.render(batch);
 		scoreText.render(batch);
+		coinInfo.render(batch);
 		gameOverScreen.render(batch);
 		if(playerCombo >= 2)
 		{

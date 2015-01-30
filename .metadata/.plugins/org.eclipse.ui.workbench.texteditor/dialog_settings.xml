@@ -2,12 +2,13 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="coinSet" key="selection"/>
+		<item value="first" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="second"/>
 			<item value="coinSet"/>
 			<item value="coinSet = null"/>
 			<item value="coinSet = nuyl"/>
@@ -15,9 +16,9 @@
 			<item value="18"/>
 			<item value="test"/>
 			<item value="&#x09;&#x09;test = new dImage(0,0,AssetManager.getTexture(&quot;card&quot;));"/>
-			<item value="big"/>
 		</list>
 		<list key="replacehistory">
+			<item value="first"/>
 			<item value="STRAIGHT"/>
 			<item value="36"/>
 			<item value="test2"/>
@@ -25,7 +26,6 @@
 			<item value="0.5f"/>
 			<item value=""/>
 			<item value="new Color(46f/256f, 204f/256f, 113f/256f,1f)"/>
-			<item value="new Color(52f/256f, 152f/256f, 219f/256f,1f"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">

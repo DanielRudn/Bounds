@@ -3,8 +3,11 @@ package com.dr.bounds.maps.maptypes;
 import java.util.ArrayList;
 
 import com.DR.dLib.ui.dImage;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.dr.bounds.AssetManager;
@@ -50,6 +53,12 @@ public abstract class MapType {
 	protected final static Rectangle useless = new Rectangle();
 	// coin set for the maps
 	private static CoinSet coinSet;
+	// test
+	private static ShapeRenderer sr = new ShapeRenderer();
+	// color for backgrounds
+	protected Color bgColor;
+	// test
+	private static Color firstTop, firstBottom, secondTop, secondBottom;
 	
 	public MapType(int type, Player player, MapGenerator generator, Texture bgTexture)
 	{
@@ -60,12 +69,23 @@ public abstract class MapType {
 		
 		firstBG = new dImage(0,0, bgTexture);
 		secondBG = new dImage(0,-MainGame.VIRTUAL_HEIGHT, bgTexture);
+		firstTop = Color.WHITE;
+		firstBottom = Color.WHITE;
+		secondTop = Color.WHITE;
+		secondBottom = Color.WHITE;
 	}
 	
 	public void render(SpriteBatch batch)
 	{
-		firstBG.render(batch);
-		secondBG.render(batch);
+		batch.end();
+		sr.setProjectionMatrix(MainGame.camera.combined);
+		sr.begin(ShapeType.Filled);
+		sr.rect(firstBG.getX(), firstBG.getY(), firstBG.getWidth(), firstBG.getHeight(), firstTop,firstTop,firstBottom,firstBottom);
+		sr.rect(secondBG.getX(), secondBG.getY(), secondBG.getWidth(), secondBG.getHeight(), secondTop,secondTop,secondBottom,secondBottom);
+		sr.end();
+		batch.begin();
+		//firstBG.render(batch);
+		//secondBG.render(batch);
 		if(coinSet != null)
 		{
 			coinSet.render(batch);
@@ -88,17 +108,32 @@ public abstract class MapType {
 	public void update(float delta)
 	{
 		// update backgrounds
+		if(firstTop == Color.WHITE)
+		{
+			firstTop = bgColor;
+			firstBottom = bgColor;
+			secondTop = bgColor;
+			secondBottom = bgColor;
+		}
 		if(firstBG.getY() >= MainGame.camera.position.y + MainGame.VIRTUAL_HEIGHT / 2f)
 		{
 			if(nextType != null && switchBG && secondBG == nextType.secondBG)
 			{
 				firstBG = nextType.firstBG;
+				firstTop = nextType.bgColor;
+				firstBottom = nextType.bgColor;
 				shouldSwitch = true;
 			}
 			else if(nextType != null && switchBG)
 			{
 				firstBG = nextType.firstBG;
+				firstTop = nextType.bgColor;
+				firstBottom = bgColor;
 				showTransitionImage = true;
+			}
+			if(firstBottom != firstTop)
+			{
+				firstBottom = bgColor;
 			}
 			firstBG.setY(secondBG.getY() - firstBG.getHeight());
 			if(showTransitionImage && moveTransitionImage)
@@ -113,12 +148,20 @@ public abstract class MapType {
 			if(nextType != null && switchBG && firstBG == nextType.firstBG)
 			{
 				secondBG = nextType.secondBG;
+				secondTop = nextType.bgColor;
+				secondBottom = nextType.bgColor;
 				shouldSwitch = true;
 			}
 			else if(nextType != null && switchBG)
 			{
 				secondBG = nextType.secondBG;
+				secondTop = nextType.bgColor;
+				secondBottom = bgColor;
 				showTransitionImage = true;
+			}
+			if(secondBottom != secondTop)
+			{
+				secondBottom = bgColor;
 			}
 			secondBG.setY(firstBG.getY() - secondBG.getHeight());
 			if(showTransitionImage && moveTransitionImage)
@@ -164,9 +207,6 @@ public abstract class MapType {
 	
 	protected void generateFirstSet()
 	{
-	//	obstacles.get(0).setY(MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT/2f - MIN_DISTANCE - MapGenerator.rng.nextInt(MAX_DISTANCE));
-	//	obstacles.get(0).setRegenerate(false);
-	//	obstacles.get(0).setPassed(false);
 		for(int x = 0; x < obstacles.size(); x++)
 		{
 			generate(x);
@@ -319,6 +359,11 @@ public abstract class MapType {
 	public String getTypeName()
 	{
 		return typeName;
+	}
+	
+	public Color getBackgroundColor()
+	{
+		return bgColor;
 	}
 	
 	public ArrayList<dObstacle> getObstacles()

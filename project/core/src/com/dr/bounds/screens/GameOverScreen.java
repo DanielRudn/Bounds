@@ -31,15 +31,11 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 	private float playerScore = 0;
 	// player instance
 	private Player player;
-	// image of the player's skin
-	private dImage playerImage;
-	// name of local player
-	private dText playerName;
 	// replay button
 	private dButton replayButton;
 	// when user clicks replay, this turns false and resets the game
 	private boolean wantsReplay = false;
-	// Text at the top E.G (Game Over, You Win, You lose...)
+	// Text at the top E.G (Game Over)
 	private dText topText;
 	// card containing above elements
 	private dUICard topCard;
@@ -66,12 +62,6 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		topCard.setDimensions(MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_HEIGHT / 2f - 64f);
 		topCard.setHasShadow(false);
 		
-		playerName = new dText(0,0,getFontSize(MainGame.requestHandler.getCurrentAccountName()),MainGame.requestHandler.getCurrentAccountName());
-		playerName.setColor(Color.WHITE);
-		
-		playerImage = new dImage(0,0, AssetManager.SkinLoader.getTextureForSkinID(player.getSkinID()));
-		playerImage.setDimensions(128f, 128f);
-		
 		topText = new dText(0,0,64f,"GAME OVER");
 		topText.setColor(Color.WHITE);
 		
@@ -80,12 +70,10 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		scoreCard.setHasShadow(false);
 		scoreCard.setDimensions(MainGame.VIRTUAL_WIDTH, 128f);
 		scoreCard.setPaddingLeft(getWidth() / 4f - 92f / 4f);
-		dText scoreIdentifierText = new dText(0,0,32f,"score");
-		scoreIdentifierText.setColor(Color.WHITE);
 		dText playerScore = new dText(0,0, 92f, "0");
 		playerScore.setColor(Color.WHITE);
-		dText opponentScore = new dText(0,0,92f,"0");
-		opponentScore.setColor(Color.WHITE);
+		dText scoreIdentifierText = new dText(0,0,32f,"score");
+		scoreIdentifierText.setColor(Color.WHITE);
 		scoreCard.addObject(playerScore, dUICard.CENTER, dUICard.CENTER);
 		scoreCard.addObject(scoreIdentifierText, dUICard.LEFT, dUICard.CENTER);
 		
@@ -93,22 +81,23 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		moneyCard.setColor(scoreCard.getColor());
 		moneyCard.setHasShadow(false);
 		moneyCard.setDimensions(MainGame.VIRTUAL_WIDTH, 128f);
-		moneyCard.setPaddingLeft(32f);
-		dText moneyCardText = new dText(0,0,72f, "Dots: 0");
+		moneyCard.setPaddingLeft(scoreCard.getPadding());
+		dText moneyCardText = new dText(0,0,72f, "0");
 		moneyCardText.setColor(Color.WHITE);
+		dText moneyIdentifierText = new dText(0,0,32f,"coins");
+		moneyIdentifierText.setColor(Color.WHITE);
 		moneyCard.addObject(moneyCardText, dUICard.CENTER, dUICard.CENTER);
+		moneyCard.addObject(moneyIdentifierText, dUICard.LEFT, dUICard.CENTER);
 	
 		replayButton = new dButton(0,0, new Sprite(AssetManager.getTexture("replay.png")), "");
 		replayButton.setDimensions(192f, 192f);
 		replayButton.setColor(moneyCard.getColor());
 		
 		topCard.addObject(topText,dUICard.CENTER,dUICard.TOP);
-		topCard.addObject(playerImage,dUICard.CENTER, dUICard.TOP);
-		playerImage.setY(getY() + 256f - playerImage.getHeight()/2f);
-		topCard.addObject(playerName, dUICard.CENTER, dUICard.TOP);
-		playerName.setY(playerImage.getY() - getPadding() / 2f - playerName.getHeight() / 2f);
-		topCard.addObjectUnder(scoreCard, topCard.getIndexOf(playerImage));
+		topCard.addObjectUnder(scoreCard, topCard.getIndexOf(topText));
+		topCard.addObjectUnder(moneyCard, topCard.getIndexOf(scoreCard));
 		scoreCard.setX(getX());
+		moneyCard.setX(getX());
 		addCardAsObject(topCard);
 		addObject(replayButton, dUICard.RIGHT, dUICard.BOTTOM);
 		replayButton.setOriginCenter();
@@ -160,16 +149,6 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		}
 	}
 	
-	private float getFontSize(String text)
-	{
-		if(text.length() >= 15)
-		{
-			return 48f / text.length() * 15;
-		}
-		return 48f;
-	}
-	
-	
 	public void reset()
 	{
 		wantsReplay = false;
@@ -217,7 +196,9 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 	public void onAnimationStart(int ID, float duration) {
 		if(ID == 123)
 		{
-			this.playerImage.setImage(AssetManager.SkinLoader.getTextureForSkinID(player.getSkinID()));
+			// set score and coins
+			((dText)scoreCard.getObject(0)).setText(Integer.toString((int)playerScore));
+			((dText)moneyCard.getObject(0)).setText(Integer.toString(Player.getCoins()));
 			setPos(MainGame.camera.position.x + MainGame.VIRTUAL_WIDTH /2f,MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f);
 			rgg = new RecentGamesGraph(getWidth() + getWidth()/2f - 396f / 2f , getY()  + MainGame.VIRTUAL_HEIGHT / 2f , AssetManager.getTexture("card"), 396,256, "Score Last 5 Games");
 			Player.addRecentScore((int) playerScore);
@@ -239,8 +220,6 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 	public void whileAnimating(int ID, float time, float duration, float delta) {
 		if(ID == 123 && time > duration / 6f)
 		{
-			currentScore = dTweener.ExponentialEaseOut(time, 0, playerScore, duration);
-			((dText)scoreCard.getObject(0)).setText(Float.toString((int)currentScore+1).substring(0,Float.toString((int)currentScore+1).length()-2));
 			rgg.setX(dTweener.ExponentialEaseOut(time, getWidth() + getWidth() / 2f - 396f / 2f, -getWidth(), duration));
 		}
 	}

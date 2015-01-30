@@ -1,15 +1,17 @@
 package com.dr.bounds.maps.maptypes;
 
+import com.badlogic.gdx.graphics.Color;
 import com.dr.bounds.AssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 import com.dr.bounds.maps.obstacles.dBirdObstacle;
 
 public class SkyMapType extends MapType { 
-	
+
 	public SkyMapType(int type, Player player, MapGenerator generator) {
 		super(type, player, generator, AssetManager.getBackground("SKY_BG.png"));
 		MIN_WIDTH = 64;
+		bgColor = new Color(129f/256f,207f/256f, 224f/256f,1f);
 		typeName = "Sky";
 		gen.setScoreIncrementAmount(1);
 		// add 8 obstacles 
