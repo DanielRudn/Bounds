@@ -14,7 +14,9 @@ import com.dr.bounds.Player;
 public class MapGenerator implements TimerListener {
 
 	// map generation type
-	public static final int TYPE_DEFAULT = 0, TYPE_SPACE = 1, TYPE_MACHINERY = 2, TYPE_SKY = 3, TYPE_SPIKE = 4, TYPE_ROTATE = 5;
+	public static final int TYPE_DEFAULT = 0, TYPE_SPACE = 1, TYPE_MACHINERY = 2, TYPE_SKY = 3, TYPE_SPIKE = 4, TYPE_ROTATE = 5, TYPE_FOREST = 6, TYPE_ICE = 7;
+	// number of map types
+	public static final int NUMBER_MAPS = 8;
 	// the current map generation type
 	private MapType currentType; 
 	// the next map generation type
@@ -76,11 +78,24 @@ public class MapGenerator implements TimerListener {
 		{
 			currentType = new RotatingMapType(TYPE_ROTATE,player,this);
 		}
+		else if(mapType == TYPE_FOREST)
+		{
+			currentType = new ForestMapType(TYPE_FOREST, player, this);
+		}
+		else if(mapType == TYPE_ICE)
+		{
+			currentType = new IceMapType(TYPE_ICE, player, this);
+		}
 		
 		transitionImage = new dImage(0,2000, AssetManager.getTexture("transitionDevice.png"));
 		
 		typeSwitchTimer = new dTimer(5f,5f,0,this);
 		typeSwitchTimer.start();
+	}
+	
+	public MapGenerator(Player player)
+	{
+		this(rng.nextInt(NUMBER_MAPS), player);
 	}
 	
 	public void update(float delta)
@@ -181,7 +196,7 @@ public class MapGenerator implements TimerListener {
 	private void reset()
 	{
 		//	determine which map type is set
-		int newType = rng.nextInt(6);
+		int newType = rng.nextInt(NUMBER_MAPS);
 		//GameScreen.log("newType: " + newType);
 		if(newType == 0)
 		{
@@ -206,6 +221,14 @@ public class MapGenerator implements TimerListener {
 		else if(newType == 5)
 		{
 			currentType = new RotatingMapType(TYPE_ROTATE,player,this);
+		}
+		else if(newType == 6)
+		{
+			currentType = new ForestMapType(TYPE_FOREST,player,this);
+		}
+		else if(newType == 7)
+		{
+			currentType = new IceMapType(TYPE_ICE, player, this);
 		}
 		generateSeed();
 		generateFirstSet();
@@ -283,7 +306,21 @@ public class MapGenerator implements TimerListener {
 		{
 			if(currentType.getMapType() != TYPE_ROTATE)
 			{
-				nextType = new RotatingMapType(TYPE_ROTATE,player,this);
+				nextType = new RotatingMapType(TYPE_ROTATE, player, this);
+			}
+		}
+		else if(MAP_TYPE == 6)
+		{
+			if(currentType.getMapType() != TYPE_FOREST)
+			{
+				nextType = new ForestMapType(TYPE_FOREST, player, this);
+			}
+		}
+		else if(MAP_TYPE == 7)
+		{
+			if(currentType.getMapType() != TYPE_ICE)
+			{
+				nextType = new IceMapType(TYPE_ICE, player, this);
 			}
 		}
 	}
@@ -322,7 +359,7 @@ public class MapGenerator implements TimerListener {
 	public void onTimerFinish(int ID)
 	{
 		//	determine which map type is set
-		int newType = rng.nextInt(6);
+		int newType = rng.nextInt(NUMBER_MAPS);
 		setNextType(newType);
 		if(nextType == null)
 		{

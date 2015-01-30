@@ -1,0 +1,13 @@
+package com.dr.bounds.maps.maptypes;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.dr.bounds.Player;
+
+public class ForestMapType extends MapType {
+
+	public ForestMapType(int type, Player player, MapGenerator generator, Texture bgTexture) {
+		super(type, player, generator, bgTexture);
+		// TODO Auto-generated constructor stub
+	}
+
+}

@@ -1,0 +1,14 @@
+package com.dr.bounds.maps.maptypes;
+
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.dr.bounds.Player;
+
+public class ForestMapType extends MapType {
+
+	public ForestMapType(int type, Player player, MapGenerator generator) {
+		super(type, player, generator, bgTexture);
+		bgColor = new Color(38f/256f, 194f/256f, 129f/256f, 1f);
+	}
+
+}

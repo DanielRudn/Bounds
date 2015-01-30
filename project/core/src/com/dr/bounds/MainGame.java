@@ -6,6 +6,7 @@ import com.DR.dLib.dValues;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -43,6 +44,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 	
 	// test, remove
 	private static Sound scoreSound, deathSound;
+	private static Music bgMusic;
 	private dText fpsText;
 	
 	public MainGame(RequestHandler h)
@@ -70,9 +72,15 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		scoreSound = Gdx.audio.newSound(Gdx.files.internal("score.wav"));
 		deathSound = Gdx.audio.newSound(Gdx.files.internal("death.wav"));
 		
+		bgMusic = Gdx.audio.newMusic(Gdx.files.internal("GoCartLoop.mp3"));
+		
 		fpsText = new dText(5,5,80,"FPS: 60");
 		currentScreen = menuScreen;
 		currentScreen.show();
+		
+		bgMusic.setLooping(true);
+		bgMusic.setVolume(.4f);
+		bgMusic.play();
 	}
 
 	@Override
@@ -130,7 +138,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 	
 	public static void playScoreSound()
 	{
-		scoreSound.play(.5f);
+		scoreSound.play();
 	}
 	
 	public static void playDeathSound()

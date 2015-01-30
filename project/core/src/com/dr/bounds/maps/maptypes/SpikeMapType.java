@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.dr.bounds.AssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
-import com.dr.bounds.maps.obstacles.dSpikeObstacle;
+import com.dr.bounds.maps.obstacles.SpikeObstacle;
 
 public class SpikeMapType extends MapType{
 
@@ -20,7 +20,7 @@ public class SpikeMapType extends MapType{
 		gen.setScoreIncrementAmount(1);
 		for(int x = 0; x < 6; x++)
 		{
-			this.getObstacles().add(new dSpikeObstacle(0,0,AssetManager.getTexture("spike2.png"), player));
+			this.getObstacles().add(new SpikeObstacle(0,0,AssetManager.getTexture("spike2.png"), player));
 		}
 	}
 	

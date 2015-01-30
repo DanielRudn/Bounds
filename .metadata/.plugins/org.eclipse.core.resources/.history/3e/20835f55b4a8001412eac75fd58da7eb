@@ -1,0 +1,23 @@
+package com.dr.bounds.maps.maptypes;
+
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.dr.bounds.AssetManager;
+import com.dr.bounds.Player;
+import com.dr.bounds.maps.obstacles.ForestObstacle;
+
+public class FallingMapType extends MapType {
+
+	public FallingMapType(int type, Player player, MapGenerator generator, Texture bgTexture) {
+		super(type, player, generator, bgTexture);
+		typeName = "Falling Ice";
+		bgColor = new Color(197f/256f, 239f/256f, 247f/256f,1f);
+		
+		for(int x = 0; x < 5; x++)
+		{
+			obstacles.add(new IceObstacle(0,0, AssetManager.getTexture("ice.png"), player));
+			obstacles.get(x).setRegenerate(false);
+		}
+	}
+
+}

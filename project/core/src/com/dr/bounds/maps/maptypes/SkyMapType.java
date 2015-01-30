@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.dr.bounds.AssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
-import com.dr.bounds.maps.obstacles.dBirdObstacle;
+import com.dr.bounds.maps.obstacles.BirdObstacle;
 
 public class SkyMapType extends MapType { 
 
@@ -17,7 +17,7 @@ public class SkyMapType extends MapType {
 		// add 8 obstacles 
 		for(int x = 0; x < 8; x++)
 		{
-			obstacles.add(new dBirdObstacle(0,0, AssetManager.getTexture("birdObstacle.png"), player));
+			obstacles.add(new BirdObstacle(0,0, AssetManager.getTexture("birdObstacle.png"), player));
 			obstacles.get(x).setRegenerate(false);
 		}
 	}
@@ -29,12 +29,12 @@ public class SkyMapType extends MapType {
 		int direction = MapGenerator.rng.nextInt(2);
 		if(direction == 0)
 		{
-			((dBirdObstacle)obstacles.get(index)).setDirection(true);
+			((BirdObstacle)obstacles.get(index)).setDirection(true);
 			obstacles.get(index).setX(-obstacles.get(index).getWidth());
 		}
 		else if(direction == 1)
 		{
-			((dBirdObstacle)obstacles.get(index)).setDirection(false);
+			((BirdObstacle)obstacles.get(index)).setDirection(false);
 			obstacles.get(index).setX(MainGame.VIRTUAL_WIDTH + obstacles.get(index).getWidth());
 		}
 		int dimensions = MIN_WIDTH + MapGenerator.rng.nextInt(64); // TODO: change maybe? put in a final variable

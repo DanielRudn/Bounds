@@ -1,0 +1,30 @@
+package com.dr.bounds.maps.obstacles;
+
+import com.DR.dLib.ui.dImage;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dr.bounds.AssetManager;
+import com.dr.bounds.Player;
+import com.dr.bounds.maps.maptypes.MapGenerator;
+
+public class ForestObstacle extends dObstacle {
+
+	private dImage leaves, trunk;
+	
+	public ForestObstacle(float x, float y, Texture texture, Player p) {
+		super(x, y, texture, p);
+		leaves = new dImage(x,y,texture);
+		float dimensions = 64 + MapGenerator.rng.nextInt(64);
+		leaves.setDimensions(dimensions,dimensions);
+		trunk = new dImage(x + dimensions / 2f - 8f,y + dimensions - 8f,AssetManager.getTexture("card"));
+		trunk.setDimensions(16f, 92f);
+	}
+	
+	@Override
+	public void render(SpriteBatch batch)
+	{
+		trunk.render(batch);
+		leaves.render(batch);
+	}
+
+}

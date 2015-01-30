@@ -1,0 +1,13 @@
+package com.dr.bounds.maps.obstacles;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.dr.bounds.Player;
+
+public class IceObstacle extends dObstacle {
+
+	public IceObstacle(float x, float y, Texture texture, Player p) {
+		super(x, y, texture, p);
+		setColor(129f/256f, 207f/256f, 224f/256f,1f);
+	}
+
+}

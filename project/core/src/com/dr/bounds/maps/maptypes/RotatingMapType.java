@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Intersector;
 import com.dr.bounds.AssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
-import com.dr.bounds.maps.obstacles.dRotatingObstacle;
+import com.dr.bounds.maps.obstacles.RotatingObstacle;
 
 public class RotatingMapType extends MapType{
 
@@ -21,7 +21,7 @@ public class RotatingMapType extends MapType{
 
 		for(int x = 0; x < 15; x++)
 		{
-			obstacles.add(new dRotatingObstacle(0,0, AssetManager.getTexture("rotating.png"), player));
+			obstacles.add(new RotatingObstacle(0,0, AssetManager.getTexture("rotating.png"), player));
 			obstacles.get(x).setRegenerate(false);
 		}
 	}
@@ -48,7 +48,7 @@ public class RotatingMapType extends MapType{
 	@Override
 	protected void generateBlock(int index)
 	{
-		((dRotatingObstacle)obstacles.get(index)).setRotation(0);
+		((RotatingObstacle)obstacles.get(index)).setRotation(0);
 		obstacles.get(index).setWidth(MIN_WIDTH + MapGenerator.rng.nextInt(MAX_WIDTH) - 32f);
 		//obstacles.get(index).setHeight(8f + MapGenerator.rng.nextInt(48));
 		int side = MapGenerator.rng.nextInt(6);

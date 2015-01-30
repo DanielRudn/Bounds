@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.dr.bounds.AssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
-import com.dr.bounds.maps.obstacles.dPlanetObstacle;
+import com.dr.bounds.maps.obstacles.PlanetObstacle;
 
 public class SpaceMapType extends MapType {
 
@@ -28,7 +28,7 @@ public class SpaceMapType extends MapType {
 		// add 4 obstacles to start with
 		for(int x = 0; x < 4; x++)
 		{
-			obstacles.add(new dPlanetObstacle(0,0, AssetManager.getTexture("planet.png"), player, MapGenerator.rng));
+			obstacles.add(new PlanetObstacle(0,0, AssetManager.getTexture("planet.png"), player, MapGenerator.rng));
 			obstacles.get(x).setRegenerate(false);
 		}
 	}
@@ -36,9 +36,9 @@ public class SpaceMapType extends MapType {
 	@Override
 	protected void checkCollision(int index)
 	{
-		if(obstacles.get(index).getClass().getName().equals(dPlanetObstacle.class.getName()))
+		if(obstacles.get(index).getClass().getName().equals(PlanetObstacle.class.getName()))
 		{
-			if(((dPlanetObstacle)obstacles.get(index)).hasMoon() && Intersector.intersectRectangles(player.getBoundingRectangle(), ((dPlanetObstacle)obstacles.get(index)).getMoonBoundingRectangle(), useless))
+			if(((PlanetObstacle)obstacles.get(index)).hasMoon() && Intersector.intersectRectangles(player.getBoundingRectangle(), ((PlanetObstacle)obstacles.get(index)).getMoonBoundingRectangle(), useless))
 			{
 				gen.setHadCollision(true);
 			}
@@ -78,7 +78,7 @@ public class SpaceMapType extends MapType {
 			obstacles.get(index).setHeight(obstacles.get(index).getWidth());
 			obstacles.get(index).setX(MainGame.VIRTUAL_WIDTH / 2f - obstacles.get(index).getWidth() / 2f + (-50 + MapGenerator.rng.nextInt(100)));
 		}
-		((dPlanetObstacle)obstacles.get(index)).generate();
+		((PlanetObstacle)obstacles.get(index)).generate();
 		obstacles.get(index).setY(obstacles.get(getPreviousIndex(index)).getY() - MIN_DISTANCE - MapGenerator.rng.nextInt(MAX_DISTANCE));
 	}
 

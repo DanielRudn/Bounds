@@ -1,0 +1,5 @@
+package com.dr.bounds.maps.maptypes;
+
+public class ForestMapType {
+
+}
