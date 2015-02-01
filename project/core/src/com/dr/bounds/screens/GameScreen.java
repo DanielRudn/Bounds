@@ -96,9 +96,8 @@ public class GameScreen extends dScreen {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				gameOverScreen.show();
+				gameOverScreen.show(playerScore, playerCombo, playerCoins);
 				//deathAnim.start();
-				//dialog.show();'
 			}
 			// single player game over screen
 			else if(mapGen.hadCollision() && gameOverScreen.wantsReplay())

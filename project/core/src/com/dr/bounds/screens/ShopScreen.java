@@ -35,7 +35,7 @@ import com.dr.bounds.ui.ShopItemCard;
 
 public class ShopScreen extends dUICardList implements HttpResponseListener, AnimationStatusListener {
 
-	// Holds ShopItemCards
+	// Holds ShopItemCard Containers
 	private static ArrayList<dUICard> itemCardContainers = new ArrayList<dUICard>();
 	// Holds 1 ShopItemCard
 	private static ArrayList<dUICard> itemCardList = new ArrayList<dUICard>();

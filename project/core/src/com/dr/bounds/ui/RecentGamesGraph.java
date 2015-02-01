@@ -28,6 +28,8 @@ public class RecentGamesGraph extends dUICard {
 	private dText[] yLabels = new dText[5];
 	// fix
 	private Texture pointTexture;
+	// test
+	private int highestScoreIndex = 0;
 	
 	// shape renderer to draw connected lines between the points
 	private ShapeRenderer sr;
@@ -56,6 +58,7 @@ public class RecentGamesGraph extends dUICard {
 		xAxis.setPos(x,y + yAxis.getHeight());
 		yAxis.setPos(x,y + xAxis.getHeight());
 		this.title.setPosition(getGraphZeroX() + xAxis.getWidth()/2f - this.title.getWidth() / 2f, getY() - 16f - this.title.getHeight());
+	//	this.title.setPosition(getGraphZeroX(), getY() - 24f - this.title.getHeight());
 		
 	}
 
@@ -84,13 +87,13 @@ public class RecentGamesGraph extends dUICard {
 		{
 			for(int y = 0; y < 5; y++)
 			{
-				sr.setColor(1,1,1,0.1f);
+				sr.setColor(1,1,1,0.25f);
 				sr.rect(getGraphZeroX() + (.25f * xAxis.getWidth()) * x, getGraphZeroY() - (yAxis.getHeight() / 5f) * (y+1), .25f * xAxis.getWidth(), yAxis.getHeight() / 5f);			
 			}
 		}
 		sr.end();
 		sr.begin(ShapeType.Filled);
-		// draw points
+		// draw lines
 		for(int x = 0; x < points.size(); x++)
 		{
 			if(x != 0)
@@ -100,10 +103,15 @@ public class RecentGamesGraph extends dUICard {
 			}
 		}
 		// draw circles
-		for(int x= 1; x < points.size(); x++)
+		for(int x= 0; x < points.size(); x++)
 		{
+			sr.setColor(new Color(236f/256f, 240f/256f, 241f/256f, .25f));
+			if(x == highestScoreIndex) // TODO: might remove 
+			{
+				sr.circle(points.get(x).getX(), points.get(x).getY(), 16);
+			}
 			sr.setColor(new Color(236f/256f, 240f/256f, 241f/256f, 1f));
-			sr.circle(points.get(x).getX(),points.get(x).getY(), 5);
+			sr.circle(points.get(x).getX(),points.get(x).getY(), 6f);
 		}
 		sr.end();
 		Gdx.gl.glDisable(GL20.GL_BLEND);
@@ -130,6 +138,10 @@ public class RecentGamesGraph extends dUICard {
 			yLabels[x] = (new dText(0,0,32,"" + (int)((x+1)*(yMax / 5f))));
 			yLabels[x].setColor(Color.WHITE);
 			addObject(yLabels[x], dUICard.CENTER, dUICard.CENTER);
+			if(yMax == points.get(x).getY())
+			{
+				highestScoreIndex = x;
+			}
 			yLabels[x].setPos(getX() - yLabels[x].getWidth() - 8f, getGraphZeroY() - yAxis.getHeight() * ((x+1)*.2f) - yLabels[x].getHeight() / 2f);
 			points.get(x).setPos(getGraphZeroX() + xAxis.getWidth() * normalizeX(p.get(x).x, xMin, xMax), getGraphZeroY() - yAxis.getHeight() * normalizeY(p.get(x).y, yMin, yMax));
 		}

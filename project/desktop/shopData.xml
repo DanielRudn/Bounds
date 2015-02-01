@@ -1,9 +1,9 @@
 <Shop>
-	<MOTD> Day </MOTD>
+	<MOTD> Message</MOTD>
 	<Item>
 		<name>Hey</name>
 		<id>0</id>
-		<price>1</price>
+		<price>500</price>
 	</Item>
 
 	<Item>
