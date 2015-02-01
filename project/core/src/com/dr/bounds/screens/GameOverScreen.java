@@ -19,11 +19,12 @@ import com.dr.bounds.AssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 import com.dr.bounds.ui.RecentGamesGraph;
+import com.dr.bounds.ui.ScoreCard;
 
 public class GameOverScreen extends dUICardList implements AnimationStatusListener {
 
 	// two darker panels containing info about users score and money won
-	private dUICard scoreCard;
+	private ScoreCard scoreCard, comboCard;
 	// players final score for score counter
 	private float playerScore = 0;
 	// player instance
@@ -63,46 +64,18 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		topText = new dText(0,0,64f,"GAME OVER");
 		topText.setColor(Color.WHITE);
 		
-		scoreCard = new dUICard(0,0,texture);
-		//scoreCard.setColor(41f/256f, 128f/256f, 185f/256f, 1f);
-		scoreCard.setColor(1f,1f,1f,0.85f);
-		scoreCard.setHasShadow(false);
-		scoreCard.setDimensions(MainGame.VIRTUAL_WIDTH, 192f);
-		scoreCard.setPaddingLeft(64f);
-		scoreCard.setPaddingTop(4f);
-		dText playerScore = new dText(0,0, 128f, "0");
-	//	playerScore.setColor(Color.WHITE);
-		playerScore.setColor(getColor());
-		dText scoreIdentifierText = new dText(0,0,48f,"score");
-		//scoreIdentifierText.setColor(1f,1f,1f,0.8f);
-		scoreIdentifierText.setColor(getColor());
-		dText playerCombo = new dText(0,0,128f,"10");
-		playerCombo.setColor(getColor());
-		dText comboIdentifierText = new dText(0,0,48f,"combo");
-		comboIdentifierText.setColor(getColor());
-		dText playerCoins = new dText(0,0,128f,"9");
-		playerCoins.setColor(getColor());
-		dText coinIdentifierText = new dText(0,0,48f,"coins");
-		coinIdentifierText.setColor(getColor());
-		dText test = new dText(0,0,48f,"best: " + Integer.toString(Player.bestScore));
-		test.setColor(getColor());
-		scoreCard.addObject(playerScore, dUICard.LEFT, dUICard.CENTER);
-		scoreCard.addObject(playerCombo, dUICard.CENTER, dUICard.CENTER);
-		scoreCard.addObject(playerCoins, dUICard.RIGHT, dUICard.CENTER);
-		scoreCard.addObjectOnTopOf(test,scoreCard.getIndexOf(playerScore));
-		test.setY(playerScore.getY() - test.getHeight());
-		scoreCard.addObjectUnder(scoreIdentifierText, scoreCard.getIndexOf(playerScore));
-		scoreCard.addObjectUnder(comboIdentifierText, scoreCard.getIndexOf(playerCombo));
-		scoreCard.addObjectUnder(coinIdentifierText, scoreCard.getIndexOf(playerCoins));
-	
+		scoreCard = new ScoreCard(0,0,texture,"SCORE");
+		comboCard = new ScoreCard(0,0,texture,"COMBO");
+		
 		replayButton = new dButton(0,0, new Sprite(AssetManager.getTexture("replay.png")), "");
 		replayButton.setDimensions(192f, 192f);
-	//	replayButton.setColor(41f/256f, 128f/256f, 185f/256f, 1f);
 		replayButton.setColor(scoreCard.getColor());
 		
+	
+		
 		topCard.addObject(topText,dUICard.CENTER,dUICard.TOP);
-		topCard.addObjectUnder(scoreCard, topCard.getIndexOf(topText));
-		scoreCard.setX(getX());
+		topCard.addObjectUnder(scoreCard, dUICard.LEFT, topCard.getIndexOf(topText));
+		topCard.addObjectUnder(comboCard, dUICard.RIGHT, topCard.getIndexOf(topText));
 		addCardAsObject(topCard);
 		addObject(replayButton, dUICard.RIGHT, dUICard.BOTTOM);
 		replayButton.setOriginCenter();
@@ -158,9 +131,10 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 	{
 		super.show();
 		// set score, combo, and coins
-		((dText)scoreCard.getObject(0)).setText(Integer.toString(score));
-		((dText)scoreCard.getObject(1)).setText(Integer.toString(combo));
-		((dText)scoreCard.getObject(2)).setText(Integer.toString(coinsCollected));
+		scoreCard.setMainText(Integer.toString(score));
+		scoreCard.setBottomText(Integer.toString(Player.bestScore));
+		comboCard.setMainText(Integer.toString(combo));
+		comboCard.setBottomText(Integer.toString(Player.bestCombo));
 	}
 	
 	public void reset()
@@ -209,7 +183,7 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		if(ID == 123)
 		{
 			setPos(MainGame.camera.position.x + MainGame.VIRTUAL_WIDTH /2f,MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f);
-			rgg = new RecentGamesGraph(getWidth() + getWidth()/2f - 396f / 2f , topCard.getY() + topCard.getHeight() - 64f, AssetManager.getTexture("card"), 396,256, "Score Last 5 Games");
+			rgg = new RecentGamesGraph(getWidth() + getWidth()/2f - 396f / 2f , topCard.getY() + topCard.getHeight() - 32f, AssetManager.getTexture("card"), 396,256, "Score Last 5 Games");
 			Player.addRecentScore((int) playerScore);
 			if(playerScore > Player.bestScore)
 			{

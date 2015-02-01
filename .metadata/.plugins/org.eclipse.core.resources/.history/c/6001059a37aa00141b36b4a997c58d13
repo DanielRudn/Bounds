@@ -1,0 +1,23 @@
+package com.dr.bounds.ui;
+
+import com.DR.dLib.ui.dUICard;
+import com.badlogic.gdx.graphics.Texture;
+
+/**
+ * Used in GameOverScreen to display score, combo, coins.
+ * @author Daniel
+ */
+public class ScoreCard extends dUICard {
+	
+	private static final float CARD_WIDTH = 256f, CARD_HEIGHT = 192f;
+
+	public ScoreCard(float x, float y, Texture texture, String topLabel) {
+		super(x, y, texture);
+		setColor(41f/256f, 128f/256f, 185f/256f, 1f);
+		setHasShadow(false);
+		setDimensions(CARD_WIDTH, CARD_HEIGHT);
+		setPaddingLeft(64f);
+		setPaddingTop(4f);
+	}
+
+}

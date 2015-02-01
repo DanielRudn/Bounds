@@ -1,0 +1,254 @@
+package com.dr.bounds.screens;
+
+import java.util.ArrayList;
+
+import com.DR.dLib.animations.AnimationStatusListener;
+import com.DR.dLib.animations.SlideExponentialAnimation;
+import com.DR.dLib.ui.dButton;
+import com.DR.dLib.ui.dScreen;
+import com.DR.dLib.ui.dText;
+import com.DR.dLib.ui.dUICardList;
+import com.DR.dLib.dTweener;
+import com.DR.dLib.ui.dUICard;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.dr.bounds.AssetManager;
+import com.dr.bounds.MainGame;
+import com.dr.bounds.Player;
+import com.dr.bounds.ui.RecentGamesGraph;
+
+public class GameOverScreen extends dUICardList implements AnimationStatusListener {
+
+	// two darker panels containing info about users score and money won
+	private dUICard scoreCard;
+	// players final score for score counter
+	private float playerScore = 0;
+	// player instance
+	private Player player;
+	// replay button
+	private dButton replayButton;
+	// when user clicks replay, this turns false and resets the game
+	private boolean wantsReplay = false;
+	// Text at the top E.G (Game Over)
+	private dText topText;
+	// card containing above elements
+	private dUICard topCard;
+	// animations
+	private SlideExponentialAnimation showAnimation;
+	// test
+	private RecentGamesGraph rgg;
+	
+	public GameOverScreen(float x, float y, Texture texture, Player player) {
+		super(x, y, texture, new ArrayList<dUICard>());
+	//	setColor(37f/256f, 116f/256f, 169f/256f,1f);
+		setColor(52f/256f, 152f/256f, 219f/256f,1f);
+		setPadding(32f);
+		setPaddingLeft(64f);
+		
+		this.player = player;
+		
+		showAnimation = new SlideExponentialAnimation(1f, this, 123, -MainGame.VIRTUAL_WIDTH, 0, this);
+		setShowAnimation(showAnimation);
+		
+		topCard = new dUICard(getX(), getY(), texture);
+		topCard.setColor(getColor());
+		topCard.setPadding(32f);
+		topCard.setPaddingLeft(64f);
+		topCard.setDimensions(MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_HEIGHT / 2f - 128f);
+		topCard.setHasShadow(false);
+		
+		topText = new dText(0,0,64f,"GAME OVER");
+		topText.setColor(Color.WHITE);
+		
+		scoreCard = new dUICard(0,0,texture);
+		//scoreCard.setColor(41f/256f, 128f/256f, 185f/256f, 1f);
+		scoreCard.setColor(1f,1f,1f,0.85f);
+		//scoreCard.setHasShadow(false);
+		scoreCard.setDimensions(222f, 192f);
+		scoreCard.setPaddingLeft(64f);
+		scoreCard.setPaddingTop(4f);
+		dText playerScore = new dText(0,0, 128f, "0");
+	//	playerScore.setColor(Color.WHITE);
+		playerScore.setColor(getColor());
+		dText scoreIdentifierText = new dText(0,0,32f,"SCORE");
+		//scoreIdentifierText.setColor(1f,1f,1f,0.8f);
+		scoreIdentifierText.setColor(getColor());
+		scoreCard.addObject(playerScore, dUICard.CENTER, dUICard.CENTER);
+		scoreCard.addObject(scoreIdentifierText, dUICard.CENTER, dUICard.TOP);
+		// test
+		dUICard bestScore = new dUICard(0,0,texture);
+		bestScore.setDimensions(scoreCard.getWidth(), 64f);
+		bestScore.setColor(scoreCard.getColor());
+		dText best = new dText(0,0,48f,"BEST " + Integer.toString(Player.bestScore));
+		best.setColor(getColor());
+		bestScore.addObject(best, dUICard.CENTER, dUICard.CENTER);
+		
+		dUICard comboCard = new dUICard(0,0,texture);
+		comboCard.setDimensions(scoreCard.getWidth(), scoreCard.getHeight());
+		comboCard.setColor(scoreCard.getColor());
+		dText comboText = new dText(0,0,32f,"COMBO");
+		comboText.setColor(getColor());
+		dText playerCombo = new dText(0,0,128f,"0");
+		playerCombo.setColor(getColor());
+		comboCard.addObject(playerCombo, dUICard.CENTER, dUICard.CENTER);
+		comboCard.addObject(comboText, dUICard.CENTER, dUICard.TOP);
+		// test
+		dUICard bestCombo = new dUICard(0,0,texture);
+		bestCombo.setColor(comboCard.getColor());
+		bestCombo.setDimensions(bestCombo.getWidth(), 64f);
+		dText bestComboText = new dText(0,0,48f, "BEST " + Integer.toString(Player.bestCombo));
+		bestComboText.setColor(getColor());
+		bestCombo.addObject(bestComboText, dUICard.CENTER, dUICard.CENTER);
+	
+		replayButton = new dButton(0,0, new Sprite(AssetManager.getTexture("replay.png")), "");
+		replayButton.setDimensions(192f, 192f);
+	//	replayButton.setColor(41f/256f, 128f/256f, 185f/256f, 1f);
+		replayButton.setColor(scoreCard.getColor());
+		
+	
+		
+		topCard.addObject(topText,dUICard.CENTER,dUICard.TOP);
+		topCard.addObjectUnder(scoreCard, dUICard.LEFT, topCard.getIndexOf(topText));
+		topCard.addObjectUnder(comboCard, dUICard.RIGHT, topCard.getIndexOf(topText));
+		//scoreCard.setX(getX() + getPadding());
+		topCard.addObjectUnder(bestScore, topCard.getIndexOf(scoreCard));
+		topCard.addObjectUnder(bestComboText, topCard.getIndexOf(comboCard);
+		bestScore.setY(bestScore.getY() - bestScore.getHeight()/2f - 16f);
+		addCardAsObject(topCard);
+		addObject(replayButton, dUICard.RIGHT, dUICard.BOTTOM);
+		replayButton.setOriginCenter();
+	}
+	
+	@Override
+	public void update(float delta)
+	{
+		super.update(delta);
+		if(showAnimation.isActive())
+		{
+			showAnimation.update(delta);
+		}
+		// spin replay button on click
+		if(isVisible())
+		{
+			if(replayButton.isClicked())
+			{
+				setY(0);
+				MainGame.camera.position.y = MainGame.VIRTUAL_HEIGHT / 2f;
+				if(wantsReplay == false)
+				{
+					wantsReplay = true;
+					showAnimation.stop();
+				}
+			}
+			
+			// single player reset
+			if(wantsReplay)
+			{
+				replayButton.getSprite().setRotation(dTweener.MoveToAndSlow(replayButton.getSprite().getRotation(), 360f, 5f*delta));
+				setX(dTweener.MoveToAndSlow(getX(), 0 + MainGame.VIRTUAL_WIDTH * 2f,3f*delta));
+				rgg.setX(rgg.getX() + getX());
+				if(getX() >= MainGame.VIRTUAL_WIDTH)
+				{
+					reset();
+				}
+			}	
+		}
+	}
+	
+	@Override
+	public void render(SpriteBatch batch)
+	{
+		super.render(batch);
+		if(isVisible() && rgg != null)
+		{
+			rgg.render(batch);
+		}
+	}
+	
+	public void show(int score, int combo, int coinsCollected)
+	{
+		super.show();
+		// set score, combo, and coins
+		((dText)scoreCard.getObject(0)).setText(Integer.toString(score));
+		scoreCard.getObject(0).setX(scoreCard.getX() + scoreCard.getWidth() / 2f - scoreCard.getObject(0).getWidth()/2f);
+	//	((dText)scoreCard.getObject(1)).setText(Integer.toString(combo));
+		//((dText)scoreCard.getObject(2)).setText(Integer.toString(coinsCollected));
+	}
+	
+	public void reset()
+	{
+		wantsReplay = false;
+		hide();
+		playerScore = 0;
+		rgg = null;
+	}
+	
+	public void setTitleMessage(String title)
+	{
+		topText.setText(title);
+		updateObjectPosition();
+	}
+	
+	public void setScore(int score)
+	{
+		playerScore = score;
+	}
+	
+	
+	public boolean wantsReplay()
+	{
+		return wantsReplay;
+	}
+	
+	@Override
+	public void goBack() {
+		if(MainGame.previousScreen != null)
+		{
+			switchScreen(MainGame.previousScreen);
+		}
+	}
+
+	@Override
+	public void switchScreen(dScreen newScreen) {
+	//	this.hide();
+		newScreen.show();
+		MainGame.currentScreen = newScreen;
+	//	MainGame.previousScreen = this;
+	}
+
+	@Override
+	public void onAnimationStart(int ID, float duration) {
+		if(ID == 123)
+		{
+			setPos(MainGame.camera.position.x + MainGame.VIRTUAL_WIDTH /2f,MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f);
+			rgg = new RecentGamesGraph(getWidth() + getWidth()/2f - 396f / 2f , topCard.getY() + topCard.getHeight() - 32f, AssetManager.getTexture("card"), 396,256, "Score Last 5 Games");
+			Player.addRecentScore((int) playerScore);
+			if(playerScore > Player.bestScore)
+			{
+				Player.bestScore = (int) playerScore;
+			}
+			ArrayList<Vector2> scores = new ArrayList<Vector2>();
+			for(int x = 0; x < Player.recentScores.size(); x++)
+			{
+				scores.add(new Vector2(x,Player.recentScores.get(x)));
+			}
+			rgg.setPoints(scores);
+			Player.savePlayerData();
+		}
+	}
+
+	@Override
+	public void whileAnimating(int ID, float time, float duration, float delta) {
+		if(ID == 123 && time > duration / 6f)
+		{
+			rgg.setX(dTweener.ExponentialEaseOut(time, getWidth() + getWidth() / 2f - 396f / 2f, -getWidth(), duration));
+		}
+	}
+	
+	@Override
+	public void onAnimationFinish(int ID) {
+	}
+}
