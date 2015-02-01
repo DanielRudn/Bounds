@@ -1,0 +1,91 @@
+<Shop>
+	<MOTD> Day </MOTD>
+	<Item>
+		<name>Hey</name>
+		<id>0</id>
+		<price>1</price>
+	</Item>
+
+	<Item>
+		<name>blue</name>
+		<id>1</id>
+		<price>100</price>
+	</Item>
+
+	<Item>
+		<name>orange</name>
+		<id>2</id>
+		<price>30</price>
+	</Item>
+
+	<Item>
+		<name>surprise</name>
+		<id>3</id>
+		<price>1000</price>
+	</Item>
+
+	<Item>
+		<name>Eyeball</name>
+		<id>4</id>
+		<price>2000</price>
+	</Item>
+
+	<Item>
+		<name>Tire</name>
+		<id>5</id>
+		<price>456</price>
+	</Item>
+
+	<Item>
+		<name>Green</name>
+		<id>6</id>
+		<price>100</price>
+	</Item>
+
+	<Item>
+		<name>Package</name>
+		<id>7</id>
+		<price>777</price>
+	</Item>
+<Item>
+		<name>Canadian Flag</name>
+		<id>8</id>
+		<price>2121</price>
+	</Item>
+
+<Item>
+		<name>Best Korea</name>
+		<id>9</id>
+		<price>1949</price>
+	</Item>
+
+<Item>
+		<name>Chrome</name>
+		<id>10</id>
+		<price>2000</price>
+	</Item>
+
+<Item>
+		<name>Donut</name>
+		<id>11</id>
+		<price>2500</price>
+	</Item>
+
+<Item>
+		<name>Vinyl</name>
+		<id>12</id>
+		<price>499</price>
+	</Item>
+
+<Item>
+		<name>Environment</name>
+		<id>13</id>
+		<price>999</price>
+	</Item>
+
+<Item>
+		<name>Money Waster</name>
+		<id>14</id>
+		<price>4300</price>
+	</Item>
+</Shop>

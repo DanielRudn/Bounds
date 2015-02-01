@@ -1,5 +1,6 @@
 package com.dr.bounds.screens;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import com.DR.dLib.dTweener;
@@ -17,6 +18,7 @@ import com.badlogic.gdx.Net.HttpMethods;
 import com.badlogic.gdx.Net.HttpRequest;
 import com.badlogic.gdx.Net.HttpResponse;
 import com.badlogic.gdx.Net.HttpResponseListener;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -110,6 +112,8 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 		request = new HttpRequest(HttpMethods.GET);
 		request.setUrl(url);
 		request.setHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/21.0");
+		request.setTimeOut(5000);
+		System.out.println("Sending request");
 		Gdx.net.sendHttpRequest(request, this);
 		loadingIcon.start();
 	}
@@ -183,9 +187,15 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 		MainGame.currentScreen = newScreen;
 		newScreen.show();
 	}
-
+	
+	public void setTitleCardColor(Color c)
+	{
+		titleCard.setColor(c);
+	}
+	
 	@Override
 	public void handleHttpResponse(HttpResponse httpResponse) {
+		System.out.println("Connected");
 		response = httpResponse.getResultAsString();
 		response = response.substring(response.indexOf(LESS_THAN + "Shop" + GREATER_THAN), response.indexOf(LESS_THAN + "/Shop" + GREATER_THAN) + (LESS_THAN + "/Shop" + GREATER_THAN).length());
 		for(int x = 0; x < symbols.length; x++)
@@ -196,12 +206,53 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 		Gdx.net.cancelHttpRequest(request);
 	}
 	
+	/**
+	 * load shop data from a string. Used when loading from the google doc
+	 * @param xmlString
+	 */
 	private void loadDataFromXML(String xmlString)
 	{
+		System.out.println("Loading from string");
 		XmlReader reader = new XmlReader();
-		
-		final Element shop = reader.parse(response);
+		Element shop = reader.parse(response);
+		parseShopXML(shop);
+		// if everything was ok, save the xml
+		saveShopXML(xmlString);
+	}
 
+	/**
+	 * Load shop data from a local xml file.
+	 * @param file File location
+	 * @throws IOException if file is not found or able to be loaded.
+	 */
+	private void loadDataFromXML(FileHandle file) throws IOException
+	{
+		System.out.println("Loading from file..");
+		System.out.println("Exists: " + file.exists());
+		XmlReader reader = new XmlReader();
+		Element shop = reader.parse(file);
+		parseShopXML(shop);
+	}
+	
+	private void saveShopXML(String xml)
+	{
+		System.out.println("Saving:");
+		FileHandle shopData = Gdx.files.local("shopData.xml");
+		if(shopData.exists() == false)
+		{
+			try {
+				shopData.file().createNewFile();
+				shopData.file().setWritable(true);
+			} catch (IOException e) {
+				System.out.println("Failed making shopData file");
+			}
+		}
+		shopData.writeString(xml, false);
+	}
+	
+	private void parseShopXML(final Element shop)
+	{
+		System.out.println("called");
 		Gdx.app.postRunnable(new Runnable()
 		{
 				@Override
@@ -236,26 +287,22 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 				}
 		});
 	}
-	
-	/*
-	private void loadDataFromXML(FileHandle file)
-	{
-		
-	}*/
-	
-	public void setTitleCardColor(Color c)
-	{
-		titleCard.setColor(c);
-	}
 
 	@Override
 	public void failed(Throwable t) {
-		Gdx.app.exit();
+		System.out.println("Failed " +  t.getMessage());
+		try{
+			//System.out.println("File string: " + Gdx.files.local("shopData.xml").readString());
+			loadDataFromXML(Gdx.files.local("shopData.xml"));
+		}catch(IOException ioe)
+		{
+			// Failed to load shop, uh oh
+		}
 	}
 
 	@Override
 	public void cancelled() {
-
+		System.out.println("cancelled");
 	}
 
 	@Override
