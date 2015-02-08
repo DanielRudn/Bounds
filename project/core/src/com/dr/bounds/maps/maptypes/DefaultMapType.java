@@ -10,8 +10,8 @@ public class DefaultMapType extends MapType {
 	public DefaultMapType(int type, Player player, MapGenerator generator) {
 		super(type, player, generator);
 		typeName = "Void/Default";
-		bgColor = new Color(20f/256f,20f/256f,20f/256f,1f);
 		gen.setScoreIncrementAmount(1);
+		bgColor = new Color(20f/256f,20f/256f,20f/256f,1f);
 		// add 12 obstacles to start with
 		for(int x = 0; x < 12; x++)
 		{

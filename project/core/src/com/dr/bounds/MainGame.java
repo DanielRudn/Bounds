@@ -64,9 +64,10 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		
 		AssetManager.loadAll();
 		
-		menuScreen = new MenuScreen(0,0,AssetManager.getTexture("card"));
-		
 		gameScreen = new GameScreen(0,0,AssetManager.getTexture("card"));
+		
+		
+		menuScreen = new MenuScreen(0,0,AssetManager.getTexture("card"), gameScreen.getPlayer());
 		
 		batch = new SpriteBatch();
 		

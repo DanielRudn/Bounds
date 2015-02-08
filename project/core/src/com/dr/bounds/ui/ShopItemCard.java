@@ -40,11 +40,15 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 	private dImage fadeCover;
 	// checkmark shown if this item is owned
 	private dImage ownedImage;
+	// Player instance
+	private Player player;
 	
-	public ShopItemCard(float x, float y, Texture texture, String name, int price, byte id) {
+	public ShopItemCard(float x, float y, Texture texture, String name, int price, byte id, Player p) {
 		super(x, y, texture);
 		this.setClickable(true);
 		this.setDimensions(CARD_WIDTH, CARD_HEIGHT);
+		player = p;
+		
 		skinID = id;
 		itemName = new dText(0,0,getFontSize(name,48f,10),name);
 		itemName.setColor(Color.BLACK);
@@ -65,7 +69,7 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 		addObjectUnder(itemPrice, getIndexOf(itemName));
 		itemPrice.setY(getY() + getHeight() - getPadding()*2f - itemPrice.getHeight());
 		
-		if(Player.isSkinUnlocked(id))
+		if(player.isSkinUnlocked(id))
 		{
 			acceptButton = new dButton(MainGame.VIRTUAL_WIDTH/2f, MainGame.VIRTUAL_HEIGHT*2f, new Sprite(texture), "SET", AssetManager.getTexture("circle"), 2f);
 			acceptButton.setColor(46f/256f, 204f/256f, 113f/256f,1f);
@@ -126,17 +130,17 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 				{
 					// buy
 					// TODO: Save item price in an integer variable
-					if(Player.getCoins() >= Integer.parseInt(itemPrice.getText()))
+					if(player.getCoins() >= Integer.parseInt(itemPrice.getText()))
 					{
-						Player.setCoins(Player.getCoins() - Integer.parseInt(itemPrice.getText()));
+						player.setCoins(player.getCoins() - Integer.parseInt(itemPrice.getText()));
 						acceptButton.setText("SET");
 						acceptButton.setColor(46f/256f, 204f/256f, 113f/256f,1f);
 						ownedImage=  new dImage(0,0,AssetManager.getTexture("checkMark.png"));
 						ownedImage.setDimensions(32f, 32f);
 						addObject(ownedImage,dUICard.RIGHT, dUICard.BOTTOM);
 						ownedImage.setPos(getX() + getWidth() - getPadding() - ownedImage.getWidth(), getY() + CARD_HEIGHT - getPadding() - ownedImage.getHeight());
-						Player.unlockedSkins.add(skinID);
-						Player.savePlayerData();
+						player.getUnlockedSkins().add(skinID);
+						player.savePlayerData();
 					}
 					else
 					{

@@ -51,9 +51,9 @@ public abstract class MapType {
 	protected final static Rectangle useless = new Rectangle();
 	// coin set for the maps
 	private static CoinSet coinSet;
-	// test
+	// ShapeRenderer for rectangles nad backgrounds
 	private static ShapeRenderer sr = new ShapeRenderer();
-	// color for backgrounds
+	// color for backgrounds of each individual maptype.
 	protected Color bgColor;
 	// colors for background rectangles, gradient from top to bottom.
 	private static Color firstTop, firstBottom, secondTop, secondBottom;
@@ -69,13 +69,10 @@ public abstract class MapType {
 		firstBG = new Rectangle(0,0,MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_HEIGHT);
 		secondBG = new Rectangle(0, -MainGame.VIRTUAL_HEIGHT, MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_HEIGHT);
 		// TODO: FIND A BETTER SOLUTION
-		if(firstTop == null)
-		{
-			firstTop = Color.WHITE;
-			firstBottom = Color.WHITE;
-			secondTop = Color.WHITE;
-			secondBottom = Color.WHITE;
-		}
+		firstTop = Color.WHITE;
+		firstBottom = Color.WHITE;
+		secondTop = Color.WHITE;
+		secondBottom = Color.WHITE;
 	}
 	
 	public void render(SpriteBatch batch)

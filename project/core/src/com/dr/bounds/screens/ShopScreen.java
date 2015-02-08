@@ -51,6 +51,8 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 	private HttpRequest request;
 	private String response = "";
 	private boolean itemsLoaded = false;
+	// Player instance
+	private Player player;
 	// animations
 	private dAnimation showAnim;
 	private dImage circleCover;
@@ -70,10 +72,11 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 	// text for player coins
 	private dText coinText;
 	
-	public ShopScreen(float x, float y, Texture texture) {
+	public ShopScreen(float x, float y, Texture texture, Player p) {
 		super(x, y, texture, itemCardContainers);
 		this.setColor(236f/256f, 240f/256f, 241f/256f,0f);
 		cardTexture = texture;
+		player = p;
 		
 		Texture circle = new Texture("circle.png");
 		circleCover = new dImage(0,0,circle);
@@ -94,7 +97,7 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 		loadingIcon = new LoadingIcon(getX() + getWidth() / 2f - 92f, getY() + getHeight()/2f - 92f, circle);
 		sidebar = new ShopSideBar(0,0,texture,this);
 		
-		coinText = new dText(0,0,48f, "Coins: " + Player.getCoins());
+		coinText = new dText(0,0,48f, "Coins: " + player.getCoins());
 		titleCard.addObject(coinText, dUICard.RIGHT, dUICard.CENTER);
 		
 		//cardShowAnim = new SlideInArrayAnimation(getList(), 2.5f, this, SHOW_CARD_ANIM_ID);
@@ -270,7 +273,7 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 					for(int x = 0; x < shop.getChildrenByName("Item").size; x++)
 					{
 						final Element e = shop.getChildrenByName("Item").get(x);
-						itemCard = new ShopItemCard(0,0,cardTexture,e.get("name"), Integer.parseInt(e.get("price")), Byte.parseByte(e.get("id")));
+						itemCard = new ShopItemCard(0,0,cardTexture,e.get("name"), Integer.parseInt(e.get("price")), Byte.parseByte(e.get("id")), player);
 						itemCardList.add(itemCard);
 						currentContainer = new dUICard(0,0,cardTexture);
 						currentContainer.setClipping(false);

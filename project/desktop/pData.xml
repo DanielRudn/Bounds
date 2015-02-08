@@ -1,7 +1,7 @@
 <pData>
-	<Coins amount="504"/>
+	<Coins amount="42"/>
 	<Scores best="62" combo="23">
-		<RecentScores OldestToLatest="1, 10, 1, 6, 24"/>
+		<RecentScores OldestToLatest="6, 24, 3, 8, 11"/>
 	</Scores>
-	<Skins current="11" SkinID="0, 1, 2, 5, 6, 11"/>
+	<Skins current="11" SkinID="0, 1, 2, 5, 6, 11, 12"/>
 </pData>

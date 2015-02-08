@@ -40,15 +40,15 @@ public class Player extends dObject {
 	// bounding rectangle used for collisions
 	private Rectangle boundingRect = new Rectangle(SKIN_DIMENSIONS, SKIN_DIMENSIONS,SKIN_DIMENSIONS,SKIN_DIMENSIONS);
 	// 5 recent scores
-	public static final	List<Integer> recentScores = new ArrayList<Integer>(5);
+	private final List<Integer> recentScores = new ArrayList<Integer>(5);
 	// unlocked skins
-	public static final Set<Byte> unlockedSkins = new TreeSet<Byte>();
+	private final Set<Byte> unlockedSkins = new TreeSet<Byte>();
 	// best score
-	public static int bestScore = 0;
+	private int bestScore = 0;
 	// best combo
-	public static int bestCombo = 0;
+	private int bestCombo = 0;
 	// amount of coins
-	private static int numCoins = 0;
+	private int numCoins = 0;
 	// temp
 	private ParticleEffect trailEffect = new ParticleEffect();
 	
@@ -225,7 +225,7 @@ public class Player extends dObject {
 		}
 	}
 	
-	public static void savePlayerData()
+	public void savePlayerData()
 	{
 		StringWriter stringWriter = new StringWriter();
 		// write
@@ -247,7 +247,7 @@ public class Player extends dObject {
 		}
 	}
 	
-	public static void addRecentScore(int score)
+	public void addRecentScore(int score)
 	{
 		// shift current scores down
 		for(int x = 1; x < recentScores.size(); x++)
@@ -257,7 +257,7 @@ public class Player extends dObject {
 		recentScores.set(recentScores.size()-1, score);
 	}
 	
-	public static boolean isSkinUnlocked(Byte id)
+	public boolean isSkinUnlocked(Byte id)
 	{
 		return unlockedSkins.contains((Byte)id);
 	}
@@ -280,17 +280,47 @@ public class Player extends dObject {
 		getSprite().setRegion(AssetManager.SkinLoader.getTextureForSkinID(skinID));
 	}
 	
+	public void setBestCombo(int combo)
+	{
+		bestCombo = combo;
+	}
+	
+	public int getBestCombo()
+	{
+		return bestCombo;
+	}
+	
+	public void setBestScore(int score)
+	{
+		bestScore = score;
+	}
+	
+	public int getBestScore()
+	{
+		return bestScore;
+	}
+	
+	public List<Integer> getRecentScores()
+	{
+		return recentScores;
+	}
+	
+	public Set<Byte> getUnlockedSkins()
+	{
+		return unlockedSkins;
+	}
+	
 	public int getSkinID()
 	{
 		return skinID;
 	}
 	
-	public static void setCoins(int coins)
+	public void setCoins(int coins)
 	{
 		numCoins = coins;
 	}
 	
-	public static int getCoins()
+	public int getCoins()
 	{
 		return numCoins;
 	}

@@ -132,9 +132,9 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		super.show();
 		// set score, combo, and coins
 		scoreCard.setMainText(Integer.toString(score));
-		scoreCard.setBottomText(Integer.toString(Player.bestScore));
+		scoreCard.setBottomText(Integer.toString(player.getBestScore()));
 		comboCard.setMainText(Integer.toString(combo));
-		comboCard.setBottomText(Integer.toString(Player.bestCombo));
+		comboCard.setBottomText(Integer.toString(player.getBestCombo()));
 	}
 	
 	public void reset()
@@ -184,18 +184,18 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		{
 			setPos(MainGame.camera.position.x + MainGame.VIRTUAL_WIDTH /2f,MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f);
 			rgg = new RecentGamesGraph(getWidth() + getWidth()/2f - 396f / 2f , topCard.getY() + topCard.getHeight() - 32f, AssetManager.getTexture("card"), 396,256, "Score Last 5 Games");
-			Player.addRecentScore((int) playerScore);
-			if(playerScore > Player.bestScore)
+			player.addRecentScore((int) playerScore);
+			if(playerScore > player.getBestScore())
 			{
-				Player.bestScore = (int) playerScore;
+				player.setBestScore((int)playerScore);
 			}
 			ArrayList<Vector2> scores = new ArrayList<Vector2>();
-			for(int x = 0; x < Player.recentScores.size(); x++)
+			for(int x = 0; x < player.getRecentScores().size(); x++)
 			{
-				scores.add(new Vector2(x,Player.recentScores.get(x)));
+				scores.add(new Vector2(x,player.getRecentScores().get(x)));
 			}
 			rgg.setPoints(scores);
-			Player.savePlayerData();
+			player.savePlayerData();
 		}
 	}
 

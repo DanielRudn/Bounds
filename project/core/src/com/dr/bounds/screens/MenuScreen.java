@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dr.bounds.AssetManager;
 import com.dr.bounds.MainGame;
+import com.dr.bounds.Player;
 
 public class MenuScreen extends dScreen implements AnimationStatusListener {
 
@@ -33,14 +34,17 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 	private ShopScreen shopScreen = null;
 	// next screen
 	private dScreen nextScreen = null;
+	// Player instance
+	private Player player;
 	
-	public MenuScreen(float x, float y, Texture texture) {
+	public MenuScreen(float x, float y, Texture texture, Player p) {
 		super(x, y, texture);
 		setColor(52f/256f, 73f/256f, 94f/256f,1f);
 		setPaddingTop(16f);
 		//setColor(236f/256f, 240f/256f, 241f/256f, 1f);
 		hideAnimation = new SlideElasticAnimation(1f, this, HIDE_ANIM_ID,0, 0, this);
 		setHideAnimation(hideAnimation);
+		player = p;
 		
 		titleText = new dText(0,0,192f,"Bounds");
 		titleText.setColor(Color.WHITE);
@@ -120,7 +124,7 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		{
 			if(shopScreen == null)
 			{
-				shopScreen = new ShopScreen(0,0, AssetManager.getTexture("card"));
+				shopScreen = new ShopScreen(0,0, AssetManager.getTexture("card"), player);
 			}
 			switchScreen(shopScreen);
 		}

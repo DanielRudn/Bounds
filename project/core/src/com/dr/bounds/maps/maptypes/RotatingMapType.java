@@ -15,8 +15,8 @@ public class RotatingMapType extends MapType{
 		this.MAX_WIDTH = 456 - MIN_WIDTH / 2;
 		this.MIN_DISTANCE = 512;
 		this.MAX_DISTANCE = (int)MainGame.VIRTUAL_HEIGHT/2;
-		bgColor = new Color(20f/256f,20f/256f,20f/256f,1f);
 		this.typeName = "ROTATING";
+		bgColor = new Color(20f/256f,20f/256f,20f/256f,1f);
 		gen.setScoreIncrementAmount(1);
 
 		for(int x = 0; x < 15; x++)

@@ -61,9 +61,8 @@ public class CoinSet extends dObject
 				// player hit a coin
 				MainGame.playDeathSound();
 				coins.get(x).setDimensions(0,0);
-				Player.setCoins(Player.getCoins() + 1);
+				player.setCoins(player.getCoins() + 1);
 				GameScreen.incrementPlayerCoins();
-				
 			}	
 		}
 		if(coins.get(0).getY() > MainGame.camera.position.y + MainGame.VIRTUAL_WIDTH / 2f && canRegenerate == false)

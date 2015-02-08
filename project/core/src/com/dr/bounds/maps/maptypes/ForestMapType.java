@@ -12,8 +12,8 @@ public class ForestMapType extends MapType {
 	public ForestMapType(int type, Player player, MapGenerator generator) {
 		super(type, player, generator);
 		MIN_WIDTH = 64;
-		bgColor = new Color(38f/256f, 194f/256f, 129f/256f, 1f);
 		typeName = "Forest";
+		bgColor = new Color(38f/256f, 194f/256f, 129f/256f, 1f);
 		gen.setScoreIncrementAmount(1);
 		
 		// make 8 obstacles

@@ -187,9 +187,9 @@ public class MapGenerator implements TimerListener {
 	
 	private void checkComboRecord()
 	{
-		if(combo > Player.bestCombo)
+		if(combo > player.getBestCombo())
 		{
-			Player.bestCombo = combo;
+			player.setBestCombo(combo);
 		}
 	}
 	
