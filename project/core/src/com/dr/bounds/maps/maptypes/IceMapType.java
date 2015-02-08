@@ -9,7 +9,7 @@ import com.dr.bounds.maps.obstacles.IceObstacle;
 public class IceMapType extends MapType {
 
 	public IceMapType(int type, Player player, MapGenerator generator) {
-		super(type, player, generator, AssetManager.getBackground("SPACE_BG.png"));
+		super(type, player, generator);
 		typeName = "Falling Ice";
 		bgColor = new Color(197f/256f, 239f/256f, 247f/256f,1f);
 		

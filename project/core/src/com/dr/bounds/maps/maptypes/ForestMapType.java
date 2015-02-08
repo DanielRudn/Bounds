@@ -10,7 +10,7 @@ import com.dr.bounds.maps.obstacles.ForestObstacle;
 public class ForestMapType extends MapType {
 
 	public ForestMapType(int type, Player player, MapGenerator generator) {
-		super(type, player, generator, AssetManager.getBackground("SPACE_BG.png"));
+		super(type, player, generator);
 		MIN_WIDTH = 64;
 		bgColor = new Color(38f/256f, 194f/256f, 129f/256f, 1f);
 		typeName = "Forest";

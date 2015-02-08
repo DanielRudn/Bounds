@@ -9,7 +9,7 @@ import com.dr.bounds.maps.obstacles.BirdObstacle;
 public class SkyMapType extends MapType { 
 
 	public SkyMapType(int type, Player player, MapGenerator generator) {
-		super(type, player, generator, AssetManager.getBackground("SKY_BG.png"));
+		super(type, player, generator);
 		MIN_WIDTH = 64;
 		bgColor = new Color(129f/256f,207f/256f, 224f/256f,1f);
 		typeName = "Sky";

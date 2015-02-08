@@ -8,7 +8,7 @@ import com.dr.bounds.maps.obstacles.dObstacle;
 public class DefaultMapType extends MapType {
 	
 	public DefaultMapType(int type, Player player, MapGenerator generator) {
-		super(type, player, generator,AssetManager.getBackground("DEFAULT_BG.png"));
+		super(type, player, generator);
 		typeName = "Void/Default";
 		bgColor = new Color(20f/256f,20f/256f,20f/256f,1f);
 		gen.setScoreIncrementAmount(1);

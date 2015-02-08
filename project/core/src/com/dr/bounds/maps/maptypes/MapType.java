@@ -2,9 +2,7 @@ package com.dr.bounds.maps.maptypes;
 
 import java.util.ArrayList;
 
-import com.DR.dLib.ui.dImage;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -34,7 +32,7 @@ public abstract class MapType {
 	// Player object to determine collisions and score
 	protected Player player;
 	// the background images for this maptype
-	protected dImage firstBG, secondBG;
+	//protected dImage firstBG, secondBG;
 	// the next map type
 	protected MapType nextType = null;
 	// whether the currentType should be switched with the nextType
@@ -57,22 +55,27 @@ public abstract class MapType {
 	private static ShapeRenderer sr = new ShapeRenderer();
 	// color for backgrounds
 	protected Color bgColor;
-	// test
+	// colors for background rectangles, gradient from top to bottom.
 	private static Color firstTop, firstBottom, secondTop, secondBottom;
+	// Rectangles for background colors and changing
+	protected Rectangle firstBG, secondBG;
 	
-	public MapType(int type, Player player, MapGenerator generator, Texture bgTexture)
+	public MapType(int type, Player player, MapGenerator generator)
 	{
 		this.type = type;
 		obstacles = new ArrayList<dObstacle>();
 		gen = generator;
 		this.player = player;
-		
-		firstBG = new dImage(0,0, bgTexture);
-		secondBG = new dImage(0,-MainGame.VIRTUAL_HEIGHT, bgTexture);
-		firstTop = Color.WHITE;
-		firstBottom = Color.WHITE;
-		secondTop = Color.WHITE;
-		secondBottom = Color.WHITE;
+		firstBG = new Rectangle(0,0,MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_HEIGHT);
+		secondBG = new Rectangle(0, -MainGame.VIRTUAL_HEIGHT, MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_HEIGHT);
+		// TODO: FIND A BETTER SOLUTION
+		if(firstTop == null)
+		{
+			firstTop = Color.WHITE;
+			firstBottom = Color.WHITE;
+			secondTop = Color.WHITE;
+			secondBottom = Color.WHITE;
+		}
 	}
 	
 	public void render(SpriteBatch batch)
@@ -325,8 +328,8 @@ public abstract class MapType {
 	public void reset()
 	{
 		// reset backgrounds
-		firstBG.setPos(0,0);
-		secondBG.setPos(0,-MainGame.VIRTUAL_HEIGHT);
+		firstBG.setPosition(0,0);
+		secondBG.setPosition(0,-MainGame.VIRTUAL_HEIGHT);
 		if(coinSet != null)
 		{
 			coinSet.reset();

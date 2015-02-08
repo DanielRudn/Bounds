@@ -8,7 +8,7 @@ import com.dr.bounds.maps.obstacles.MovingObstacle;
 public class MachineryMapType extends MapType{
 	
 	public MachineryMapType(int type, Player p, MapGenerator generator) {
-		super(type, p, generator,AssetManager.getBackground("MACHINE_BG.png"));
+		super(type, p, generator);
 		// this map type awards 1 point per obstacle
 		gen.setScoreIncrementAmount(1);
 		bgColor = Color.GRAY;

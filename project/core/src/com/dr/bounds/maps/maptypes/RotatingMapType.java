@@ -10,7 +10,7 @@ import com.dr.bounds.maps.obstacles.RotatingObstacle;
 public class RotatingMapType extends MapType{
 
 	public RotatingMapType(int type, Player player, MapGenerator generator) {
-		super(type, player, generator, AssetManager.getBackground("DEFAULT_BG.png"));
+		super(type, player, generator);
 		this.MIN_WIDTH = 256;
 		this.MAX_WIDTH = 456 - MIN_WIDTH / 2;
 		this.MIN_DISTANCE = 512;

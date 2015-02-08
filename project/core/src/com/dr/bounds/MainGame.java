@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -75,6 +76,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		bgMusic = Gdx.audio.newMusic(Gdx.files.internal("GoCartLoop.mp3"));
 		
 		fpsText = new dText(5,5,80,"FPS: 60");
+		fpsText.setColor(Color.WHITE);
 		currentScreen = menuScreen;
 		currentScreen.show();
 		
@@ -107,6 +109,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();	
 		currentScreen.render(batch);
+		fpsText.render(batch);
 		batch.end();
 	}
 	

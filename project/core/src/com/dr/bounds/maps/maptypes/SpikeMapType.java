@@ -10,7 +10,7 @@ import com.dr.bounds.maps.obstacles.SpikeObstacle;
 public class SpikeMapType extends MapType{
 
 	public SpikeMapType(int type, Player player, MapGenerator generator) {
-		super(type, player, generator, AssetManager.getBackground("FALLING_BG.png"));
+		super(type, player, generator);
 		MIN_DISTANCE = MAX_DISTANCE;
 		MAX_DISTANCE *= 1.5f;
 		MIN_WIDTH = 192;

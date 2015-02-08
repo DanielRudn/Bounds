@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="com.DR.dLib.TimerListener"/>
 <fullyQualifiedTypeName name="com.dr.bounds.maps.MapGenerator"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.audio.Sound"/>
 <fullyQualifiedTypeName name="com.dr.bounds.ui.RecentGamesGraph"/>
@@ -38,7 +37,6 @@
 <fullyQualifiedTypeName name="com.DR.dLib.animations.dAnimation"/>
 <fullyQualifiedTypeName name="com.DR.dLib.dTweener"/>
 <fullyQualifiedTypeName name="com.dr.bounds.animations.PlayerDeathAnimation"/>
-<fullyQualifiedTypeName name="com.DR.dLib.ui.dText"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.utils.GdxRuntimeException"/>
 <fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
@@ -56,8 +54,10 @@
 <fullyQualifiedTypeName name="com.dr.bounds.AssetManager"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.SpriteBatch"/>
 <fullyQualifiedTypeName name="com.dr.bounds.maps.obstacles.ForestObstacle"/>
-<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Color"/>
 <fullyQualifiedTypeName name="com.dr.bounds.maps.obstacles.IceObstacle"/>
 <fullyQualifiedTypeName name="com.dr.bounds.maps.maptypes.MapGenerator"/>
+<fullyQualifiedTypeName name="com.DR.dLib.ui.dText"/>
+<fullyQualifiedTypeName name="com.dr.bounds.ui.ScoreCard"/>
 <fullyQualifiedTypeName name="com.DR.dLib.ui.dUICard"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Color"/>
 </qualifiedTypeNameHistroy>

@@ -15,7 +15,7 @@ public class SpaceMapType extends MapType {
 	private Rectangle useless = new Rectangle(0,0,0,0);
 	
 	public SpaceMapType(int type, Player player, MapGenerator generator) {
-		super(type, player, generator, AssetManager.getBackground("SPACE_BG.png"));
+		super(type, player, generator);
 		MIN_DISTANCE = MAX_DISTANCE;
 		MAX_DISTANCE *= 2;
 		MIN_WIDTH = 192;

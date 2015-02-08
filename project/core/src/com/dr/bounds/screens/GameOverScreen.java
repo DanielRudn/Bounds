@@ -44,8 +44,8 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 	
 	public GameOverScreen(float x, float y, Texture texture, Player player) {
 		super(x, y, texture, new ArrayList<dUICard>());
-	//	setColor(37f/256f, 116f/256f, 169f/256f,1f);
-		setColor(52f/256f, 152f/256f, 219f/256f,1f);
+		setColor(37f/256f, 116f/256f, 169f/256f,1f);
+	//	setColor(52f/256f, 152f/256f, 219f/256f,1f);
 		setPadding(32f);
 		setPaddingLeft(64f);
 		
