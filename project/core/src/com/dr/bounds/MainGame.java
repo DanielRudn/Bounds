@@ -12,6 +12,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.dr.bounds.screens.GameScreen;
 import com.dr.bounds.screens.MenuScreen;
 
@@ -47,7 +49,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 	private static Sound scoreSound, deathSound;
 	private static Music bgMusic;
 	private dText fpsText;
-	
+
 	public MainGame(RequestHandler h)
 	{
 		requestHandler = h;
@@ -83,7 +85,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		
 		bgMusic.setLooping(true);
 		bgMusic.setVolume(.4f);
-		//bgMusic.play();
+	//	bgMusic.play();
 	}
 
 	@Override
@@ -110,7 +112,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();	
 		currentScreen.render(batch);
-		fpsText.render(batch);
+	//	fpsText.render(batch);
 		batch.end();
 	}
 	

@@ -6,13 +6,13 @@ import com.DR.dLib.animations.AnimationStatusListener;
 import com.DR.dLib.animations.dAnimation;
 import com.DR.dLib.dTweener;
 import com.DR.dLib.ui.dUICard;
-import com.dr.bounds.MainGame;
 
 public class SlideOutArrayAnimation extends dAnimation {
 
 	private ArrayList<dUICard> objectsToAnimate;
 	private ArrayList<Float> yPosAtStart;
 	
+	@SuppressWarnings(value = { "all" })
 	public SlideOutArrayAnimation(ArrayList<dUICard> objectsToAnimate, float duration, AnimationStatusListener listener, int ID) {
 		super(duration, listener, ID, null);
 		this.objectsToAnimate = objectsToAnimate;

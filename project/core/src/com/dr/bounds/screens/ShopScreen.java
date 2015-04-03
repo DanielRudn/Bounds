@@ -14,6 +14,7 @@ import com.DR.dLib.ui.dUICard;
 import com.DR.dLib.ui.dUICardList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Net.HttpMethods;
 import com.badlogic.gdx.Net.HttpRequest;
 import com.badlogic.gdx.Net.HttpResponse;
@@ -33,7 +34,7 @@ import com.dr.bounds.animations.ShopItemsSlideAnimation;
 import com.dr.bounds.ui.LoadingIcon;
 import com.dr.bounds.ui.ShopItemCard;
 
-public class ShopScreen extends dUICardList implements HttpResponseListener, AnimationStatusListener {
+public class ShopScreen extends dUICardList implements HttpResponseListener, AnimationStatusListener, InputProcessor {
 
 	// Holds ShopItemCard Containers
 	private static ArrayList<dUICard> itemCardContainers = new ArrayList<dUICard>();
@@ -71,12 +72,15 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 	private LoadingIcon loadingIcon;
 	// text for player coins
 	private dText coinText;
+	// used to determine when to expand a shopItemCard, when clicked
+	private int touchedIndex = -1;
 	
 	public ShopScreen(float x, float y, Texture texture, Player p) {
 		super(x, y, texture, itemCardContainers);
 		this.setColor(236f/256f, 240f/256f, 241f/256f,0f);
 		cardTexture = texture;
 		player = p;
+		Gdx.input.setInputProcessor(this);
 		
 		Texture circle = new Texture("circle.png");
 		circleCover = new dImage(0,0,circle);
@@ -98,6 +102,7 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 		sidebar = new ShopSideBar(0,0,texture,this);
 		
 		coinText = new dText(0,0,48f, "Coins: " + player.getCoins());
+		coinText.setColor(title.getColor());
 		titleCard.addObject(coinText, dUICard.RIGHT, dUICard.CENTER);
 		
 		//cardShowAnim = new SlideInArrayAnimation(getList(), 2.5f, this, SHOW_CARD_ANIM_ID);
@@ -170,14 +175,9 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 		{
 			cardShowAnim.update(delta);
 		}
-		for(int x = 0; x < itemCardList.size(); x++)
-		{
-				if(itemCardList.get(x).isClicked() && Math.abs((double)getScrollDelta()) < .1f)
-				{
-					expandedItem = (ShopItemCard) itemCardList.get(x);
-					expandedItem.expand();
-				}
-		}
+		// update number of coins 
+		// TODO: FIX
+		coinText.setText("Coins: " + player.getCoins());
 	}
 
 	@Override
@@ -335,6 +335,62 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 	@Override
 	public void onAnimationFinish(int ID)
 	{}
+
+	@Override
+	public boolean keyDown(int keycode) {
+		return false;
+	}
+
+	@Override
+	public boolean keyUp(int keycode) {
+		return false;
+	}
+
+	@Override
+	public boolean keyTyped(char character) {
+		return false;
+	}
+
+	@Override
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		for(int x = 0; x < itemCardList.size(); x++)
+		{
+				if(expandedItem == null && itemCardList.get(x).getBoundingRectangle().contains(MainGame.getVirtualMouseX(), MainGame.getVirtualMouseY()))
+				{
+					touchedIndex = x;
+					return false;
+				}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		for(int x = 0; x < itemCardList.size(); x++)
+		{
+				if(touchedIndex == x && expandedItem == null && itemCardList.get(x).getBoundingRectangle().contains(MainGame.getVirtualMouseX(), MainGame.getVirtualMouseY()) && this.getScrollDelta() <= 0.2f)
+				{
+					expandedItem = (ShopItemCard) itemCardList.get(x);
+					expandedItem.expand();
+				}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean touchDragged(int screenX, int screenY, int pointer) {
+		return false;
+	}
+
+	@Override
+	public boolean mouseMoved(int screenX, int screenY) {
+		return false;
+	}
+
+	@Override
+	public boolean scrolled(int amount) {
+		return false;
+	}
 
 }
 

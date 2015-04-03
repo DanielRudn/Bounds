@@ -48,6 +48,7 @@ public class PlanetObstacle extends dObstacle {
 			
 	// rng to determine values
 	private Random rng;
+
 	
 	public PlanetObstacle(float x, float y, Texture texture, Player p, Random rng) {
 		super(x, y, texture, p);

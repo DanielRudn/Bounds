@@ -13,7 +13,7 @@ public class SpaceMapType extends MapType {
 
 	// useless
 	private Rectangle useless = new Rectangle(0,0,0,0);
-	
+
 	public SpaceMapType(int type, Player player, MapGenerator generator) {
 		super(type, player, generator);
 		MIN_DISTANCE = MAX_DISTANCE;

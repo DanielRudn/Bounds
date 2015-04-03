@@ -1,25 +1,19 @@
 <Shop>
-	<MOTD> Message</MOTD>
+	<MOTD> Donut sale! </MOTD>
 	<Item>
-		<name>Hey</name>
-		<id>0</id>
-		<price>500</price>
-	</Item>
-
-	<Item>
-		<name>blue</name>
+		<name>Blue</name>
 		<id>1</id>
 		<price>100</price>
 	</Item>
 
 	<Item>
-		<name>orange</name>
+		<name>Orange</name>
 		<id>2</id>
 		<price>30</price>
 	</Item>
 
 	<Item>
-		<name>surprise</name>
+		<name>Surprise</name>
 		<id>3</id>
 		<price>1000</price>
 	</Item>
@@ -45,7 +39,7 @@
 	<Item>
 		<name>Package</name>
 		<id>7</id>
-		<price>777</price>
+		<price>500</price>
 	</Item>
 <Item>
 		<name>Canadian Flag</name>
@@ -53,10 +47,10 @@
 		<price>2121</price>
 	</Item>
 
-<Item>
-		<name>Best Korea</name>
-		<id>9</id>
-		<price>1949</price>
+	<Item>
+		<name>Hey</name>
+		<id>0</id>
+		<price>500</price>
 	</Item>
 
 <Item>
@@ -68,7 +62,7 @@
 <Item>
 		<name>Donut</name>
 		<id>11</id>
-		<price>2500</price>
+		<price>99</price>
 	</Item>
 
 <Item>
@@ -83,9 +77,4 @@
 		<price>999</price>
 	</Item>
 
-<Item>
-		<name>Money Waster</name>
-		<id>14</id>
-		<price>4300</price>
-	</Item>
 </Shop>

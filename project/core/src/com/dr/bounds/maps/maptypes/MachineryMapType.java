@@ -12,7 +12,7 @@ public class MachineryMapType extends MapType{
 		// this map type awards 1 point per obstacle
 		gen.setScoreIncrementAmount(1);
 		typeName = "Machinery";
-		bgColor = Color.GRAY;
+		bgColor = new Color(69f/256f, 90f/256f, 100f/256f, 1f);
 		// add 12 obstacles to start with
 		for(int x = 0; x < 12; x++)
 		{

@@ -14,6 +14,7 @@ public class ShopItemsSlideAnimation extends dAnimation {
 	private ArrayList<Float> startY;
 	private static final float DELAY = 0.1f;
 
+	@SuppressWarnings(value = { "all" })
 	public ShopItemsSlideAnimation(float duration,	AnimationStatusListener listener, int ID, ArrayList<dUICard> objectToAnimate) {
 		super(duration, listener, ID, null);
 		items = objectToAnimate;

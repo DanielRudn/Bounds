@@ -13,7 +13,7 @@ public class ForestMapType extends MapType {
 		super(type, player, generator);
 		MIN_WIDTH = 64;
 		typeName = "Forest";
-		bgColor = new Color(38f/256f, 194f/256f, 129f/256f, 1f);
+		bgColor = new Color(135f/256f, 211f/256f, 124f/256f, 1f);
 		gen.setScoreIncrementAmount(1);
 		
 		// make 8 obstacles
@@ -43,7 +43,7 @@ public class ForestMapType extends MapType {
 		int dimensions = MIN_WIDTH + MapGenerator.rng.nextInt(64);
 		obstacles.get(index).setDimensions(dimensions, dimensions);
 		// set trunk dimensions
-		((ForestObstacle)obstacles.get(index)).getTrunk().setDimensions(16f + MapGenerator.rng.nextInt(16), 16f + MapGenerator.rng.nextInt(256));
+		((ForestObstacle)obstacles.get(index)).getTrunk().setDimensions(16f + MapGenerator.rng.nextInt(8), 16f + MapGenerator.rng.nextInt(256));
 		int side = MapGenerator.rng.nextInt(11); // 0,1,5,6,7 is LEFT, 2,3,8,9,10 is RIGHT, 4 is center
 		if(side == 0 || side == 1 || side == 5 || side == 6 || side == 7)// left
 		{

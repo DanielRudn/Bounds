@@ -16,7 +16,8 @@ public class SpikeMapType extends MapType{
 		MIN_WIDTH = 192;
 		MAX_WIDTH = 333 - MIN_WIDTH;
 		this.typeName = "SPIKES";
-		bgColor = new Color(20f/256f,20f/256f,20f/256f,1f);
+	//	bgColor = new Color(20f/256f,20f/256f,20f/256f,1f);
+		bgColor = new Color(248f/256f, 148f/256f, 6f/256f, 1f);
 		gen.setScoreIncrementAmount(1);
 		for(int x = 0; x < 6; x++)
 		{

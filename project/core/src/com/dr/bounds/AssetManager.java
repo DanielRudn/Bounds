@@ -88,8 +88,10 @@ public class AssetManager {
 		return background;
 	}
 	
-	public static class SkinLoader
+
+	public static class SkinLoader 
 	{
+	
 		public static final Texture SKINS = new Texture("skins.png");
 		private static final int SKINS_PER_LINE = 8;
 		private static final int SKIN_DIMENSIONS = 64;

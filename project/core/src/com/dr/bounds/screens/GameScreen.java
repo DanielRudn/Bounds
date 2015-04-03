@@ -47,8 +47,8 @@ public class GameScreen extends dScreen {
 		player = new Player(MainGame.VIRTUAL_WIDTH/2f-32f,MainGame.VIRTUAL_HEIGHT/2f-32f, 6);
 		deathAnim = new PlayerDeathAnimation(.75f,player);
 		
-		//mapGen = new MapGenerator(MapGenerator.TYPE_ICE, player);
-		mapGen = new MapGenerator(player);
+		mapGen = new MapGenerator(MapGenerator.TYPE_SPACE, player);
+	//	mapGen = new MapGenerator(player);
 		mapGen.generateSeed();
 		// TODO: might remove
 		mapGen.generateFirstSet();
@@ -58,9 +58,11 @@ public class GameScreen extends dScreen {
 		
 		comboText = new dText(0,0,64f,"COMBO: 0");
 		comboText.setColor(Color.WHITE);
+		comboText.setShadow(true);
 		
 		scoreText = new dText(0,0,192f,"0");
 		scoreText.setColor(1,1,1,1);
+		scoreText.setShadow(true);
 		
 		coinInfo = new dUICard(16,0,AssetManager.getTexture("card"));
 		coinInfo.setClipping(false);
@@ -68,8 +70,10 @@ public class GameScreen extends dScreen {
 		coinInfo.setHasShadow(false);
 		coinInfo.setDimensions(128f, 64f);
 		dImage coinImage = new dImage(0,0,AssetManager.getTexture("coin.png"));
+		coinImage.setHasShadow(true);
 		dText coinText = new dText(0,0,55f,"x0");
 		coinText.setColor(Color.WHITE);
+		coinText.setShadow(true);
 		coinInfo.addObject(coinText, dUICard.RIGHT, dUICard.CENTER);
 		coinInfo.addObject(coinImage, dUICard.LEFT, dUICard.CENTER);	
 		
@@ -103,12 +107,8 @@ public class GameScreen extends dScreen {
 			else if(mapGen.hadCollision() && gameOverScreen.wantsReplay())
 			{
 				// player wants a replay
-				deathAnim.stop();
-				player.reset();
-				mapGen.setHadCollision(false);
-				scoreText.setText(Integer.toString(0));
-				playerCoins = 0;
-				scoreText.setX(getX() + getWidth()/2f - scoreText.getWidth()/2f);
+				reset();
+				mapGen.update(delta); // TODO: FIX, this is here to set the bgColor after switching map types on start
 			}
 			else if(!mapGen.hadCollision() && gameOverScreen.isVisible() == false)
 			{
@@ -163,6 +163,19 @@ public class GameScreen extends dScreen {
 		super.resume();
 	}
 	
+	/**
+	 * Reset the game state
+	 */
+	private void reset()
+	{
+		deathAnim.stop();
+		player.reset();
+		mapGen.setHadCollision(false);
+		scoreText.setText(Integer.toString(0));
+		playerCoins = 0;
+		scoreText.setX(getX() + getWidth()/2f - scoreText.getWidth()/2f);
+	}
+	
 	public long getSeed()
 	{
 		return mapGen.getSeed();
@@ -202,6 +215,8 @@ public class GameScreen extends dScreen {
 		{
 			switchScreen(MainGame.previousScreen);
 		}
+		MainGame.camera.position.y = MainGame.VIRTUAL_HEIGHT / 2f;
+		reset();
 	}
 
 	@Override

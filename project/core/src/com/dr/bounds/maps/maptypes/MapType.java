@@ -59,6 +59,8 @@ public abstract class MapType {
 	private static Color firstTop, firstBottom, secondTop, secondBottom;
 	// Rectangles for background colors and changing
 	protected Rectangle firstBG, secondBG;
+	// test
+	private static boolean switchColors = false;
 	
 	public MapType(int type, Player player, MapGenerator generator)
 	{
@@ -68,11 +70,15 @@ public abstract class MapType {
 		this.player = player;
 		firstBG = new Rectangle(0,0,MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_HEIGHT);
 		secondBG = new Rectangle(0, -MainGame.VIRTUAL_HEIGHT, MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_HEIGHT);
+		switchColors = true;
 		// TODO: FIND A BETTER SOLUTION
-		firstTop = Color.WHITE;
-		firstBottom = Color.WHITE;
-		secondTop = Color.WHITE;
-		secondBottom = Color.WHITE;
+		if(firstTop == null)
+		{
+			firstTop = Color.WHITE;
+			firstBottom = Color.WHITE;
+			secondTop = Color.WHITE;
+			secondBottom = Color.WHITE;
+		}
 	}
 	
 	public void render(SpriteBatch batch)
@@ -84,8 +90,6 @@ public abstract class MapType {
 		sr.rect(secondBG.getX(), secondBG.getY(), secondBG.getWidth(), secondBG.getHeight(), secondTop,secondTop,secondBottom,secondBottom);
 		sr.end();
 		batch.begin();
-		//firstBG.render(batch);
-		//secondBG.render(batch);
 		if(coinSet != null)
 		{
 			coinSet.render(batch);
@@ -108,12 +112,13 @@ public abstract class MapType {
 	public void update(float delta)
 	{
 		// update backgrounds
-		if(firstTop == Color.WHITE)
+		if(switchColors)
 		{
 			firstTop = bgColor;
 			firstBottom = bgColor;
 			secondTop = bgColor;
 			secondBottom = bgColor;
+			switchColors = false;
 		}
 		if(firstBG.getY() >= MainGame.camera.position.y + MainGame.VIRTUAL_HEIGHT / 2f)
 		{

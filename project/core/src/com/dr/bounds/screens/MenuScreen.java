@@ -1,11 +1,12 @@
 package com.dr.bounds.screens;
 
 import com.DR.dLib.animations.AnimationStatusListener;
-import com.DR.dLib.animations.SlideElasticAnimation;
+import com.DR.dLib.animations.SlideExponentialAnimation;
 import com.DR.dLib.animations.SlideInOrderAnimation;
+import com.DR.dLib.animations.dAnimation;
 import com.DR.dLib.ui.dButton;
+import com.DR.dLib.ui.dImage;
 import com.DR.dLib.ui.dScreen;
-import com.DR.dLib.ui.dText;
 import com.DR.dLib.ui.dUICard;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -20,10 +21,10 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 	// animations
 	private SlideInOrderAnimation showButtonsAnimation;
 	private final int SHOW_BUTTONS_ID = 123;
-	private SlideElasticAnimation hideAnimation;
+	private dAnimation hideAnimation;
 	private final int HIDE_ANIM_ID = 12345;
 	// title
-	private dText titleText;
+	private dImage titleImage;
 	private float titleTime = 0f, titleDuration = (float)Math.PI/2f;
 	// BUTTONS
 	private dButton playButton;
@@ -41,36 +42,35 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		super(x, y, texture);
 		setColor(52f/256f, 73f/256f, 94f/256f,1f);
 		setPaddingTop(16f);
-		//setColor(236f/256f, 240f/256f, 241f/256f, 1f);
-		hideAnimation = new SlideElasticAnimation(1f, this, HIDE_ANIM_ID,0, 0, this);
+		hideAnimation = new SlideExponentialAnimation(1.5f, this, HIDE_ANIM_ID, 0, MainGame.VIRTUAL_HEIGHT, this);
 		setHideAnimation(hideAnimation);
 		player = p;
 		
-		titleText = new dText(0,0,192f,"Bounds");
-		titleText.setColor(Color.WHITE);
+		titleImage = new dImage(0,0,AssetManager.getTexture("BoundsLogo.png"));
+		titleImage.setColor(Color.WHITE);
 		
-		Color buttonColor = new Color(210f/256f, 82f/256f, 127f/256f, 1f);
+		Color buttonColor = new Color(68f/256f,108f/256f,179f/256f, 1f);
 		
 		//fix
 		Texture buttonTexture = AssetManager.getTexture("button");
-		playButton = new dButton(0,0, new Sprite(buttonTexture), "play");
+		playButton = new dButton(0,0, new Sprite(buttonTexture), "PLAY");
 		playButton.setTextSize(92f);
 		playButton.setColor(buttonColor);
 		
-		skinsButton = new dButton(0,0, new Sprite(buttonTexture), "skins");
+		skinsButton = new dButton(0,0, new Sprite(buttonTexture), "SHOP");
 		skinsButton.setTextSize(92f);
 		skinsButton.setColor(buttonColor);
 		
-		leaderboardsButton = new dButton(0,0, new Sprite(buttonTexture), "scores");
+		leaderboardsButton = new dButton(0,0, new Sprite(buttonTexture), "SCORES");
 		leaderboardsButton.setTextSize(92f);
-		leaderboardsButton.setColor(buttonColor);
+		leaderboardsButton.setColor(Color.GRAY);
 		
-		achievementsButton = new dButton(0,0, new Sprite(buttonTexture), "trophies");
+		achievementsButton = new dButton(0,0, new Sprite(buttonTexture), "TROPHIES");
 		achievementsButton.setTextSize(92f);
-		achievementsButton.setColor(buttonColor);
+		achievementsButton.setColor(Color.GRAY);
 		
-		addObject(titleText, dUICard.CENTER, dUICard.TOP);
-		titleText.setY(titleText.getY() + titleText.getHeight());
+		addObject(titleImage, dUICard.CENTER, dUICard.TOP);
+		titleImage.setY(titleImage.getY() + titleImage.getHeight()/2f);
 		addObject(playButton, dUICard.CENTER, dUICard.TOP);
 		playButton.setY(playButton.getY() + 364f);
 		addObjectUnder(skinsButton, getIndexOf(playButton));
@@ -83,8 +83,12 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 	@Override
 	public void render(SpriteBatch batch)
 	{
+		if(nextScreen != null && nextScreen instanceof GameScreen)
+		{
+			nextScreen.render(batch);
+		}
 		super.render(batch);
-		if(nextScreen != null)
+		if(nextScreen != null && nextScreen instanceof ShopScreen)
 		{
 			nextScreen.render(batch);
 		}
@@ -98,7 +102,7 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		if(titleTime < titleDuration)
 		{
 			titleTime+=delta;
-			titleText.setY(titleText.getY() - (float)Math.sin(titleTime));
+			titleImage.setY(titleImage.getY() - (float)Math.sin(titleTime));
 		}
 		else
 		{
@@ -116,6 +120,7 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		{
 			showButtonsAnimation.update(delta);
 		}
+		
 		if(playButton.isClicked())
 		{
 			switchScreen(MainGame.gameScreen);
@@ -126,7 +131,7 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 			{
 				shopScreen = new ShopScreen(0,0, AssetManager.getTexture("card"), player);
 			}
-			switchScreen(shopScreen);
+			switchScreen(shopScreen, false);
 		}
 	}
 	
@@ -134,11 +139,20 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 	public void show()
 	{
 		super.show();
+		setPos(0,0);
 		playButton.setX(playButton.getX() - MainGame.VIRTUAL_WIDTH);
 		skinsButton.setX(skinsButton.getX() - MainGame.VIRTUAL_WIDTH);
 		leaderboardsButton.setX(leaderboardsButton.getX() - MainGame.VIRTUAL_WIDTH);
 		achievementsButton.setX(achievementsButton.getX() - MainGame.VIRTUAL_WIDTH);
 		showButtonsAnimation.start();
+		nextScreen = null;
+	}
+	
+	@Override
+	public void hide()
+	{
+		hideAnimation.start();
+		setVisible(true);
 	}
 
 	@Override
@@ -148,20 +162,33 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 			//switchScreen(MainGame.previousScreen);
 		}
 	}
+	
+	public void switchScreen(dScreen newScreen, boolean hideThis)
+	{
+		if(hideThis)
+		{
+			switchScreen(newScreen);
+		}
+		else
+		{
+			nextScreen = newScreen;
+			nextScreen.show();
+			MainGame.currentScreen = nextScreen;
+		}
+	}
 
 	@Override
 	public void switchScreen(dScreen newScreen) {
-		//this.hide();
-		nextScreen = newScreen;
-		nextScreen.show();
 		this.hide();
+		nextScreen = newScreen;
+		//nextScreen.show();
+		//this.hide();
 	}
 
 	@Override
 	public void onAnimationStart(int ID, float duration) {
 		if(ID == HIDE_ANIM_ID)
 		{
-			setVisible(true);
 		}
 	}
 
@@ -176,6 +203,7 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 			setVisible(false);
 			MainGame.currentScreen = nextScreen;
 			MainGame.previousScreen = this;
+			nextScreen.show();
 			nextScreen = null;
 		}
 	}

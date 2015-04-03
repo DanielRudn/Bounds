@@ -11,7 +11,7 @@ public class IceMapType extends MapType {
 	public IceMapType(int type, Player player, MapGenerator generator) {
 		super(type, player, generator);
 		typeName = "Falling Ice";
-		bgColor = new Color(197f/256f, 239f/256f, 247f/256f,1f);
+		bgColor = new Color(228f/256f, 241f/256f, 254f/256f,1f);
 		for(int x = 0; x < 10; x++)
 		{
 			obstacles.add(new IceObstacle(0,0, AssetManager.getTexture("ice.png"), player));
