@@ -11,7 +11,7 @@ public class SpikeMapType extends MapType{
 
 	public SpikeMapType(int type, Player player, MapGenerator generator) {
 		super(type, player, generator);
-		MIN_DISTANCE = MAX_DISTANCE;
+		MIN_DISTANCE = MAX_DISTANCE / 2;
 		MAX_DISTANCE *= 1.5f;
 		MIN_WIDTH = 192;
 		MAX_WIDTH = 333 - MIN_WIDTH;

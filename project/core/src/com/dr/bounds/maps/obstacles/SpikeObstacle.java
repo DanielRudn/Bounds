@@ -9,6 +9,7 @@ public class SpikeObstacle extends MovingObstacle {
 	
 	public SpikeObstacle(float x, float y, Texture texture, Player p) {
 		super(x, y, texture, p);
+		this.setColor(96f/255f,125f/255f,139f/255f, 1f);
 	}
 	
 	@Override

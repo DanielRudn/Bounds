@@ -16,7 +16,7 @@ public class SpaceMapType extends MapType {
 
 	public SpaceMapType(int type, Player player, MapGenerator generator) {
 		super(type, player, generator);
-		MIN_DISTANCE = MAX_DISTANCE;
+		MIN_DISTANCE = MAX_DISTANCE / 2;
 		MAX_DISTANCE *= 2;
 		MIN_WIDTH = 192;
 		MAX_WIDTH = 333 - MIN_WIDTH;

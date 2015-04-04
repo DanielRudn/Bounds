@@ -31,6 +31,7 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 	private dButton skinsButton;
 	private dButton leaderboardsButton;
 	private dButton achievementsButton;
+	private SettingsScreen settingsScreen;
 	// shop screen
 	private ShopScreen shopScreen = null;
 	// next screen
@@ -48,6 +49,8 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		
 		titleImage = new dImage(0,0,AssetManager.getTexture("BoundsLogo.png"));
 		titleImage.setColor(Color.WHITE);
+		
+		settingsScreen = new SettingsScreen(0, 0);
 		
 		Color buttonColor = new Color(68f/256f,108f/256f,179f/256f, 1f);
 		
@@ -76,6 +79,7 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		addObjectUnder(skinsButton, getIndexOf(playButton));
 		addObjectUnder(leaderboardsButton, getIndexOf(skinsButton));
 		addObjectUnder(achievementsButton, getIndexOf(leaderboardsButton));
+		addObject(settingsScreen, dUICard.LEFT, dUICard.BOTTOM);
 		
 		showButtonsAnimation = new SlideInOrderAnimation(2f, this, SHOW_BUTTONS_ID, MainGame.VIRTUAL_WIDTH, new dButton[]{playButton, skinsButton, leaderboardsButton, achievementsButton});
 	}
@@ -161,6 +165,7 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		{
 			//switchScreen(MainGame.previousScreen);
 		}
+		settingsScreen.goBack();
 	}
 	
 	public void switchScreen(dScreen newScreen, boolean hideThis)
@@ -173,7 +178,7 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		{
 			nextScreen = newScreen;
 			nextScreen.show();
-			MainGame.currentScreen = nextScreen;
+		//	MainGame.currentScreen = nextScreen;
 		}
 	}
 

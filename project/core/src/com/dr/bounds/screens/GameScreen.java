@@ -47,8 +47,7 @@ public class GameScreen extends dScreen {
 		player = new Player(MainGame.VIRTUAL_WIDTH/2f-32f,MainGame.VIRTUAL_HEIGHT/2f-32f, 6);
 		deathAnim = new PlayerDeathAnimation(.75f,player);
 		
-		mapGen = new MapGenerator(MapGenerator.TYPE_SPACE, player);
-	//	mapGen = new MapGenerator(player);
+		mapGen = new MapGenerator(player);
 		mapGen.generateSeed();
 		// TODO: might remove
 		mapGen.generateFirstSet();

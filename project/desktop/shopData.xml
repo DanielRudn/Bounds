@@ -1,5 +1,5 @@
 <Shop>
-	<MOTD> Donut sale! </MOTD>
+	<MOTD> We are back! </MOTD>
 	<Item>
 		<name>Blue</name>
 		<id>1</id>
@@ -15,7 +15,7 @@
 	<Item>
 		<name>Surprise</name>
 		<id>3</id>
-		<price>1000</price>
+		<price>100</price>
 	</Item>
 
 	<Item>
@@ -62,7 +62,7 @@
 <Item>
 		<name>Donut</name>
 		<id>11</id>
-		<price>99</price>
+		<price>999</price>
 	</Item>
 
 <Item>
