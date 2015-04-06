@@ -90,17 +90,25 @@ public class PlanetObstacle extends dObstacle {
 			}
 		}
 	}
-	
+
+	@Override
+	protected boolean checkCollision()
+	{
+		if(this.hasMoon() && Intersector.intersectRectangles(player.getBoundingRectangle(), this.getMoonBoundingRectangle(), useless))	
+		{
+			return true;
+		}
+		if(hadCirclularCollision(this.getPos(), player.getPos(), index))
+		{
+			return true;
+		}
+		return false;
+	} 
+
 	public void generate()
 	{
 		int colorIndex = rng.nextInt(planetColors.length);
 		setColor(planetColors[colorIndex]);
-		/*
-		shadeImage.setColor(getColor().r + 0.1f, getColor().g + 0.1f, getColor().b + 0.1f, 1f);
-		shadeImage.setWidth(getWidth() - 64);
-		shadeImage.setHeight(getHeight());
-		shadeImage.setPos(getX() + 32, getY());
-		*/
 		int flip = rng.nextInt(3);
 		if(flip == 0)
 		{
@@ -198,6 +206,13 @@ public class PlanetObstacle extends dObstacle {
 	public boolean hasMoon()
 	{
 		return hasMoon;
+	}
+
+	private boolean hadCirclularCollision(Vector2 f, Vector2 i, int index)
+	{
+		float radiusPlanet = obstacles.get(index).getWidth() / 2f;
+		float radiusPlayer = player.getWidth() / 2f;
+		return Math.pow((f.x + radiusPlanet) - (i.x + radiusPlayer), 2) + Math.pow((f.y + radiusPlanet) - (i.y + radiusPlayer), 2) <= Math.pow(radiusPlanet + radiusPlayer, 2); 
 	}
 
 }

@@ -28,7 +28,7 @@ public class GapMapType extends MapType {
 		obstacles.get(index).setY(obstacles.get(getPreviousIndex(index)).getY() - MIN_DISTANCE - MapGenerator.rng.nextInt(MAX_DISTANCE));
 	}
 	
-	@Override
+	/*@Override
 	protected void checkCollision(int index)
 	{
 		if(!gen.hadCollision() &&
@@ -37,5 +37,5 @@ public class GapMapType extends MapType {
 		{
 			gen.setHadCollision(true);
 		}
-	}
+	}*/
 }

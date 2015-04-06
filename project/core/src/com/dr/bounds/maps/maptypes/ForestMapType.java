@@ -24,7 +24,7 @@ public class ForestMapType extends MapType {
 		}
 	}
 	
-	@Override
+/*	@Override
 	protected void checkCollision(int index)
 	{
 		if(gen.hadCollision() == false && Intersector.intersectRectangles(player.getBoundingRectangle(), obstacles.get(index).getBoundingRectangle(), useless)) // FIX
@@ -35,7 +35,7 @@ public class ForestMapType extends MapType {
 		{
 			gen.setHadCollision(true);
 		}
-	}
+	}*/
 
 	@Override
 	protected void generateBlock(int index)

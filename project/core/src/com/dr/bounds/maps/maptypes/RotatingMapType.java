@@ -27,7 +27,7 @@ public class RotatingMapType extends MapType{
 		}
 	}
 	
-	@Override
+	/*@Override
 	protected void checkCollision(int index)
 	{
 		if(Intersector.distanceSegmentPoint(getObstacles().get(index).getSprite().getVertices()[0], getObstacles().get(index).getSprite().getVertices()[1],
@@ -44,7 +44,7 @@ public class RotatingMapType extends MapType{
 		{
 			gen.setHadCollision(true);
 		}
-	}
+	} */
 	
 	@Override
 	protected void generateBlock(int index)

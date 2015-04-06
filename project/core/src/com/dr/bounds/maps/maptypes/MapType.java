@@ -194,7 +194,7 @@ public abstract class MapType {
 				obstacles.get(x).setRegenerate(false);
 			}
 			// check if player had collision
-			checkCollision(x);
+		//	checkCollision(x);
 		}
 	}
 	
@@ -202,13 +202,13 @@ public abstract class MapType {
 	 * Checks collision using obstacles bounding rectangle by default
 	 * @param index index of current obstacle
 	 */
-	protected void checkCollision(int index)
+	/*protected void checkCollision(int index)
 	{
 		if(gen.hadCollision() == false && Intersector.intersectRectangles(player.getBoundingRectangle(), obstacles.get(index).getBoundingRectangle(), useless)) // FIX
 		{
 			gen.setHadCollision(true);
 		}
-	}
+	}*/
 	
 	protected void generateFirstSet()
 	{

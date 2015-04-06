@@ -39,7 +39,6 @@ public class BirdObstacle extends dObstacle{
 			moveTime = 0;
 		}
 	}
-	
 
 	public void setDirection(boolean goingEast)
 	{

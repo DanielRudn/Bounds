@@ -24,7 +24,7 @@ public class SpikeMapType extends MapType{
 			this.getObstacles().add(new SpikeObstacle(0,0,AssetManager.getTexture("spike2.png"), player));
 		}
 	}
-	
+/*	
 	@Override
 	protected void checkCollision(int index)
 	{
@@ -39,7 +39,7 @@ public class SpikeMapType extends MapType{
 		float radiusPlanet = obstacles.get(index).getWidth() / 2f;
 		float radiusPlayer = player.getWidth() / 2f;
 		return Math.pow((f.x + radiusPlanet) - (i.x + radiusPlayer), 2) + Math.pow((f.y + radiusPlanet) - (i.y + radiusPlayer), 2) <= Math.pow(radiusPlanet + radiusPlayer, 2); 
-	}
+	} */
 	
 	@Override
 	protected void generateBlock(int index)
