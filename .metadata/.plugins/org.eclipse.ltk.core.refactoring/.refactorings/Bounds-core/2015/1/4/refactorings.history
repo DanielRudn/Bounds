@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Move element &apos;CoinSet.java&apos; to &apos;Bounds-core/src/com.dr.bounds.maps.obstacles&apos;&#x0D;&#x0A;- Original project: &apos;Bounds-core&apos;&#x0D;&#x0A;- Destination element: &apos;Bounds-core/src/com.dr.bounds.maps.obstacles&apos;&#x0D;&#x0A;- Original element: &apos;com.dr.bounds.maps.maptypes.CoinSet.java&apos;&#x0D;&#x0A;- Update references to refactored element" description="Move compilation unit" destination="/src&lt;com.dr.bounds.maps.obstacles" element1="/src&lt;com.dr.bounds.maps.maptypes{CoinSet.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.move" patterns="*" policy="org.eclipse.jdt.ui.moveResources" qualified="false" references="true" stamp="1422063441486" units="1" version="1.0"/>
-</session>

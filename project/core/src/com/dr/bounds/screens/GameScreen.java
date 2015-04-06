@@ -1,5 +1,7 @@
 package com.dr.bounds.screens;
 
+import com.DR.dLib.animations.AnimationStatusListener;
+import com.DR.dLib.animations.dAnimation;
 import com.DR.dLib.ui.dImage;
 import com.DR.dLib.ui.dScreen;
 import com.DR.dLib.ui.dText;
@@ -11,10 +13,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dr.bounds.AssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
-import com.dr.bounds.animations.PlayerDeathAnimation;
+import com.dr.bounds.animations.CameraShakeAnimation;
 import com.dr.bounds.maps.maptypes.MapGenerator;
 
-public class GameScreen extends dScreen {
+public class GameScreen extends dScreen implements AnimationStatusListener {
 	
 	// current clients player
 	private Player player;
@@ -39,15 +41,18 @@ public class GameScreen extends dScreen {
 	// used to display current coins
 	private dUICard coinInfo;
 	// death animation for the player
-	private PlayerDeathAnimation deathAnim;
+	private dAnimation deathAnim;
+	private final static int DEATH_ANIM_ID = 321;
 
 	public GameScreen(float x, float y, Texture texture) {
 		super(x, y, texture);
 		
 		player = new Player(MainGame.VIRTUAL_WIDTH/2f-32f,MainGame.VIRTUAL_HEIGHT/2f-32f, 6);
-		deathAnim = new PlayerDeathAnimation(.75f,player);
+		//deathAnim = new PlayerDeathAnimation(.75f,player);
+		deathAnim = new CameraShakeAnimation(0.32f, this, DEATH_ANIM_ID);
 		
-		mapGen = new MapGenerator(player);
+		//mapGen = new MapGenerator(player);
+		mapGen = new MapGenerator(MapGenerator.TYPE_GAP, player);
 		mapGen.generateSeed();
 		// TODO: might remove
 		mapGen.generateFirstSet();
@@ -94,13 +99,10 @@ public class GameScreen extends dScreen {
 			if(mapGen.hadCollision() && gameOverScreen.isVisible() == false)
 			{
 				gameOverScreen.setScore(playerScore);
-				try {
-					Thread.sleep(40);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+				if(deathAnim.isActive() == false)
+				{
+					deathAnim.start();
 				}
-				gameOverScreen.show(playerScore, playerCombo, playerCoins);
-				//deathAnim.start();
 			}
 			// single player game over screen
 			else if(mapGen.hadCollision() && gameOverScreen.wantsReplay())
@@ -135,8 +137,14 @@ public class GameScreen extends dScreen {
 					scoreText.setSize(dTweener.ElasticOut(scoreTime, 300f, 192f - 300f, 1.5f));
 				}
 				// move camera upward
-				MainGame.setCameraPos(MainGame.camera.position.x, MainGame.camera.position.y - CAMERA_SPEED * delta);
-			
+				if(playerCombo < 3)
+				{
+					MainGame.setCameraPos(MainGame.camera.position.x, MainGame.camera.position.y - CAMERA_SPEED * delta);
+				}
+				else
+				{ 
+					MainGame.setCameraPos(MainGame.camera.position.x, player.getY() + player.getWidth() / 2f); // follow player vertically as long as they have a combo going.
+				}
 			}
 		}
 	}
@@ -222,5 +230,35 @@ public class GameScreen extends dScreen {
 	public void switchScreen(dScreen newScreen) {
 		newScreen.show();
 		MainGame.currentScreen = newScreen;
+	}
+
+
+	@Override
+	public void onAnimationStart(int ID, float duration)
+	{
+		if(ID == DEATH_ANIM_ID)
+		{
+			
+		}
+	}
+
+	@Override
+	public void whileAnimating(int ID, float time, float duration, float delta)
+	{
+		if(ID == DEATH_ANIM_ID)
+		{
+			player.setAlpha(dTweener.LinearEase(time, 1f, -1f, duration));
+		}
+	}
+	
+	@Override
+	public void onAnimationFinish(int ID) {
+		if(ID == DEATH_ANIM_ID)
+		{
+			MainGame.camera.position.set(((CameraShakeAnimation)deathAnim).getCameraStartPosition());
+			MainGame.camera.rotate(((CameraShakeAnimation)deathAnim).getRotation());
+			MainGame.camera.update();
+			gameOverScreen.show(playerScore, playerCombo, playerCoins);
+		}
 	}
 }

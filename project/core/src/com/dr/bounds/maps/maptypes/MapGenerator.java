@@ -14,9 +14,9 @@ import com.dr.bounds.Player;
 public class MapGenerator implements TimerListener {
 
 	// map generation type
-	public static final int TYPE_DEFAULT = 0, TYPE_SPACE = 1, TYPE_MACHINERY = 2, TYPE_SKY = 3, TYPE_SPIKE = 4, TYPE_ROTATE = 5, TYPE_FOREST = 6, TYPE_ICE = 7;
+	public static final int TYPE_DEFAULT = 0, TYPE_SPACE = 1, TYPE_MACHINERY = 2, TYPE_SKY = 3, TYPE_SPIKE = 4, TYPE_ROTATE = 5, TYPE_FOREST = 6, TYPE_ICE = 7, TYPE_GAP = 8;
 	// number of map types
-	public static final int NUMBER_MAPS = 8;
+	public static final int NUMBER_MAPS = 9;
 	// the current map generation type
 	private MapType currentType; 
 	// the next map generation type
@@ -85,6 +85,10 @@ public class MapGenerator implements TimerListener {
 		else if(mapType == TYPE_ICE)
 		{
 			currentType = new IceMapType(TYPE_ICE, player, this);
+		}
+		else if(mapType == TYPE_GAP)
+		{
+			currentType = new GapMapType(TYPE_GAP, player, this);
 		}
 		
 		transitionImage = new dImage(0,2000, AssetManager.getTexture("transitionDevice.png"));
@@ -230,6 +234,10 @@ public class MapGenerator implements TimerListener {
 		{
 			currentType = new IceMapType(TYPE_ICE, player, this);
 		}
+		else if(newType == 8)
+		{
+			currentType = new GapMapType(TYPE_GAP, player, this);
+		}
 		generateSeed();
 		generateFirstSet();
 		checkComboRecord();
@@ -321,6 +329,13 @@ public class MapGenerator implements TimerListener {
 			if(currentType.getMapType() != TYPE_ICE)
 			{
 				nextType = new IceMapType(TYPE_ICE, player, this);
+			}
+		}
+		else if(MAP_TYPE == 8)
+		{
+			if(currentType.getMapType() != TYPE_GAP)
+			{
+				nextType = new GapMapType(TYPE_GAP, player, this);
 			}
 		}
 	}

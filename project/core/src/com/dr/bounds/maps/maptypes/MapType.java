@@ -220,10 +220,9 @@ public abstract class MapType {
 	}
 	
 	/**
-	 * DO NOT OVERRIDE
 	 * @param index
 	 */
-	protected void generate(int index)
+	protected final void generate(int index)
 	{
 		// only regenerate if the map type is not changing yet
 		if(isTransitioning == false)

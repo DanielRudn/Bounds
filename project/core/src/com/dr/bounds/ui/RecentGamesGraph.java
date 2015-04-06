@@ -2,6 +2,7 @@ package com.dr.bounds.ui;
 
 import java.util.ArrayList;
 
+import com.DR.dLib.dTweener;
 import com.DR.dLib.dValues;
 import com.DR.dLib.ui.dImage;
 import com.DR.dLib.ui.dText;
@@ -28,16 +29,21 @@ public class RecentGamesGraph extends dUICard {
 	private dText[] yLabels = new dText[5];
 	// fix
 	private Texture pointTexture;
-	// test
+	// Index of the highest score, draws a circle around the point
 	private int highestScoreIndex = 0;
 	
 	// shape renderer to draw connected lines between the points
 	private ShapeRenderer sr;
 	
+	// test
+	private boolean animActive = false;
+	private float time = 0, duration = 1.5f;
+	private ArrayList<Vector2> pointPos;
+	
 	public RecentGamesGraph(float x, float y, Texture axisTexture, float width, float height, String title)
 	{
 		super(x, y, axisTexture);
-		this.setUpdatable(false);
+		this.setUpdatable(true);
 		yAxis = new dImage(0,0, axisTexture);
 		xAxis = new dImage(0,0, axisTexture);
 		xAxis.setDimensions(width, 3f);
@@ -52,6 +58,8 @@ public class RecentGamesGraph extends dUICard {
 		sr = new ShapeRenderer();
 		sr.setProjectionMatrix(dValues.camera.combined);
 		
+		pointPos = new ArrayList<Vector2>();
+		
 		addObject(xAxis,dUICard.CENTER,dUICard.CENTER);
 		addObject(yAxis,dUICard.CENTER, dUICard.CENTER);
 		addObject(this.title, dUICard.CENTER, dUICard.CENTER);
@@ -62,8 +70,26 @@ public class RecentGamesGraph extends dUICard {
 		
 	}
 
+	// TODO: Make an animation class for this 
 	@Override
-	public void update(float delta) {}
+	public void update(float delta) {
+		super.update(delta);
+		if(time <= duration && animActive)
+		{
+			time += delta;
+			for (int x = 0; x < points.size(); x++)
+			{
+				if(time - 0.15f*x > 0)
+				{
+					points.get(x).setY(dTweener.ExponentialEaseOut(time - 0.15f*x, this.getGraphZeroY(), pointPos.get(x).y - this.getGraphZeroY(), duration));
+				}
+				else
+				{
+					points.get(x).setY(this.getGraphZeroY());
+				}
+			}
+		}
+	}
 
 	@Override
 	public void render(SpriteBatch batch) {
@@ -93,12 +119,12 @@ public class RecentGamesGraph extends dUICard {
 		}
 		sr.end();
 		sr.begin(ShapeType.Filled);
+		sr.setColor(46f/256f, 204f/256f, 113f/256f, 1f);
 		// draw lines
 		for(int x = 0; x < points.size(); x++)
 		{
 			if(x != 0)
 			{
-				sr.setColor(new Color(46f/256f, 204f/256f, 113f/256f, 1f));
 				sr.rectLine(points.get(x-1).getX(), points.get(x-1).getY(),points.get(x).getX(), points.get(x).getY(), 5f);
 			}
 		}
@@ -144,9 +170,9 @@ public class RecentGamesGraph extends dUICard {
 			}
 			yLabels[x].setPos(getX() - yLabels[x].getWidth() - 8f, getGraphZeroY() - yAxis.getHeight() * ((x+1)*.2f) - yLabels[x].getHeight() / 2f);
 			points.get(x).setPos(getGraphZeroX() + xAxis.getWidth() * normalizeX(p.get(x).x, xMin, xMax), getGraphZeroY() - yAxis.getHeight() * normalizeY(p.get(x).y, yMin, yMax));
+			pointPos.add(new Vector2(points.get(x).getPos()));
 		}
 	}
-	
 	
 	private float getGraphZeroX()
 	{
@@ -273,6 +299,12 @@ public class RecentGamesGraph extends dUICard {
 	{
 		super.setY(y);
 		sr.translate(0, position.y - y, 0);
+	}
+	
+	public void show()
+	{
+		this.animActive = true;
+		time = 0;
 	}
 	
  }

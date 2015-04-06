@@ -34,7 +34,7 @@ public class CameraShakeAnimation extends dAnimation {
 	@Override
 	protected void animate(float time, float duration, float delta)
 	{
-		dValues.camera.translate(MathUtils.random(-2f,2f), MathUtils.random(-4f,4f), 0);
+		dValues.camera.translate(MathUtils.random(-3f,3f), MathUtils.random(-4f,4f), 0);
 		currentTickRotation = MathUtils.random(-.25f,.25f);
 		((OrthographicCamera)dValues.camera).rotate(currentTickRotation);
 		rotation+=currentTickRotation;
@@ -47,7 +47,6 @@ public class CameraShakeAnimation extends dAnimation {
 		super.start();
 		startPos = new Vector3(dValues.camera.position);
 		rotation = 0f;
-		//((OrthographicCamera)dValues.camera).zoom = 0.99f;
 	}
 	
 	public Vector3 getCameraStartPosition()

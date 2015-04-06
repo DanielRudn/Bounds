@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.DR.dLib.dObject;
+import com.DR.dLib.dTweener;
 import com.DR.dLib.ui.dImage;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -23,7 +24,7 @@ public class CoinSet extends dObject
 	// current type of layout,
 	private int currentLayout;
 	// collection of coins
-	private List<dImage> coins;
+	private List<Coin> coins;
 	// player instance
 	private Player player;
 	// whether we can regenerate
@@ -34,10 +35,10 @@ public class CoinSet extends dObject
 		super(x,y,texture);
 		player = p;
 		currentLayout = MapGenerator.rng.nextInt(5);
-		coins = new ArrayList<dImage>();
+		coins = new ArrayList<Coin>();
 		for(int i = 0; i < 9; i++)
 		{
-			coins.add(new dImage(0,0,texture));
+			coins.add(new Coin(0,0,texture));
 		}
 		setCoinPos(x,y);
 	}
@@ -56,18 +57,19 @@ public class CoinSet extends dObject
 	{
 		for(int x = 0; x < coins.size(); x++)
 		{
+			coins.get(x).update(delta);
 			if(player.getBoundingRectangle().overlaps(coins.get(x).getBoundingRectangle()) && coins.get(x).getWidth() != 0)
 			{
 				// player hit a coin
-				MainGame.playDeathSound();
-				coins.get(x).setDimensions(0,0);
+				MainGame.playCoinSound();
+				coins.get(x).hide();
 				player.setCoins(player.getCoins() + 1);
 				GameScreen.incrementPlayerCoins();
 			}	
-		}
-		if(coins.get(0).getY() > MainGame.camera.position.y + MainGame.VIRTUAL_WIDTH / 2f && canRegenerate == false)
-		{
-			canRegenerate = true;
+			if(coins.get(0).getY() > MainGame.camera.position.y + MainGame.VIRTUAL_WIDTH / 2f && canRegenerate == false)
+			{
+				canRegenerate = true;
+			}
 		}
 	}
 	
@@ -149,6 +151,7 @@ public class CoinSet extends dObject
 		for(int x = 0; x < coins.size(); x++)
 		{
 			coins.get(x).setDimensions(64, 64);
+			coins.get(x).show();
 		}
 		currentLayout = MapGenerator.rng.nextInt(5);
 		canRegenerate = false;
@@ -163,4 +166,44 @@ public class CoinSet extends dObject
 	{
 		return canRegenerate;
 	}
+}
+
+class Coin extends dImage {
+
+	private float time = 0, duration = 0.5f;
+	private boolean active = false;
+	public Coin(float x, float y, Texture texture) {
+		super(x, y, texture);
+		this.setUpdatable(true);
+	}
+	
+
+	@Override
+	public void update(float delta)
+	{
+		super.update(delta);
+		if(time <= duration && active)
+		{
+			time += delta;
+			this.setAlpha(dTweener.LinearEase(time, 1f, -1f, duration));
+			this.setOriginCenter();
+			this.setDimensions(dTweener.LinearEase(time, 64f, -64f, duration), dTweener.LinearEase(time, 64f, -64f, duration));
+		}
+	}
+	
+	/**
+	 * Starts the hide animation
+	 */
+	public void hide()
+	{
+		active = true;
+	}
+	
+	public void show()
+	{
+		active = false;
+		this.setOrigin(0, 0);
+		time = 0;
+	}
+	
 }

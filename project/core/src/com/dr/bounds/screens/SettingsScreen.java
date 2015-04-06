@@ -27,6 +27,7 @@ public class SettingsScreen extends dScreen implements AnimationStatusListener {
 		super(x, y, AssetManager.getTexture("circle"));
 		this.setColor(68f/256f,108f/256f,179f/256f, 1f);
 		this.setClickable(true);
+		this.setHasShadow(true);
 		this.setDimensions(128f, 128f);
 		this.setClipping(true);
 		circleImage = new dImage(-256,0, AssetManager.getTexture("circle"));

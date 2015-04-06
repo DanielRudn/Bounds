@@ -1,9 +1,0 @@
-package com.dr.bounds.ui;
-
-/**
- * Used in GameOverScreen to display score, combo, coins.
- * @author Daniel
- */
-public class ScoreCard {
-
-}

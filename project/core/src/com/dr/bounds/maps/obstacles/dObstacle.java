@@ -19,7 +19,7 @@ public class dObstacle extends dObject{
 	private boolean incrementedScore = false;
 	// player object to check for score updates
 	private Player player;
-
+	
 	public dObstacle(float x, float y, Texture texture, Player p) {
 		super(x, y, texture);
 		objWidth = texture.getWidth();
@@ -37,6 +37,11 @@ public class dObstacle extends dObject{
 		setOrigin(0,0);
 		
 		player = p;
+	}
+	
+	@Override
+	public void render(SpriteBatch batch) {
+		getSprite().draw(batch);
 	}
 	
 	@Override
@@ -61,11 +66,6 @@ public class dObstacle extends dObject{
 	public void setRegenerate(boolean r)
 	{
 		regenerate = r;
-	}
-	
-	@Override
-	public void render(SpriteBatch batch) {
-		getSprite().draw(batch);
 	}
 	
 	public void setWidth(float w)

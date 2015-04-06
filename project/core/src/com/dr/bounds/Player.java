@@ -10,6 +10,7 @@ import java.util.TreeSet;
 import com.DR.dLib.dObject;
 import com.DR.dLib.dTweener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -73,7 +74,7 @@ public class Player extends dObject {
 		boundingRect.set(getX() + 8f, getY() + 8f, getWidth()-16f, getHeight()-16f);
 		trailEffect.update(delta);
 		trailEffect.setPosition(getX() + getWidth()/2f, getY() + getHeight() / 2f);
-		if(Gdx.input.isTouched() && Gdx.input.justTouched())
+		if((Gdx.input.isTouched() && Gdx.input.justTouched()) || Gdx.input.isKeyJustPressed(Keys.ANY_KEY))
 		{
 			if(touchedLeftSide())// user touched left half of screen
 			{
@@ -163,9 +164,13 @@ public class Player extends dObject {
 	
 	private boolean touchedLeftSide()
 	{
-		if(MainGame.getVirtualMouseX() <= MainGame.VIRTUAL_WIDTH/2f)
+		if(MainGame.getVirtualMouseX() <= MainGame.VIRTUAL_WIDTH/2f || Gdx.input.isKeyJustPressed(Keys.LEFT))
 		{
 			return true;
+		}
+		else if(Gdx.input.isKeyJustPressed(Keys.RIGHT))
+		{
+			return false;
 		}
 		return false;
 	}

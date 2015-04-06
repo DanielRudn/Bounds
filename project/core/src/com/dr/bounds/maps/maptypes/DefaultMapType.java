@@ -11,14 +11,13 @@ public class DefaultMapType extends MapType {
 		super(type, player, generator);
 		typeName = "Void/Default";
 		gen.setScoreIncrementAmount(1);
-	//	bgColor = new Color(20f/256f,20f/256f,20f/256f,1f);
 		bgColor = new Color(44f/256f, 62f/256f, 80f/256f,1f);
 		// add 12 obstacles to start with
 		for(int x = 0; x < 12; x++)
 		{
 			obstacles.add(new dObstacle(0,0, AssetManager.getTexture("obstacle.png"), player));
+			obstacles.get(x).setHeight(32f);
 			obstacles.get(x).setRegenerate(false);
-		//	obstacles.get(x).setColor(65f/256f,177f/256f,202f/256f,1f);
 			obstacles.get(x).setColor(210f/256f, 82f/256f, 127f/256f,1f);
 		}
 	}

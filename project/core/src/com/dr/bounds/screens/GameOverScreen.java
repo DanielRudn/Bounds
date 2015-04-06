@@ -39,7 +39,7 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 	private dUICard topCard;
 	// animations
 	private SlideExponentialAnimation showAnimation;
-	// test
+	// graph
 	private RecentGamesGraph rgg;
 	
 	public GameOverScreen(float x, float y, Texture texture, Player player) {
@@ -71,8 +71,6 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		replayButton.setDimensions(192f, 192f);
 		replayButton.setColor(scoreCard.getColor());
 		
-	
-		
 		topCard.addObject(topText,dUICard.CENTER,dUICard.TOP);
 		topCard.addObjectUnder(scoreCard, dUICard.LEFT, topCard.getIndexOf(topText));
 		topCard.addObjectUnder(comboCard, dUICard.RIGHT, topCard.getIndexOf(topText));
@@ -85,6 +83,10 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 	public void update(float delta)
 	{
 		super.update(delta);
+		if(rgg != null)
+		{
+			rgg.update(delta);
+		}
 		if(showAnimation.isActive())
 		{
 			showAnimation.update(delta);
@@ -106,7 +108,6 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 			// single player reset
 			if(wantsReplay)
 			{
-				replayButton.getSprite().setRotation(dTweener.MoveToAndSlow(replayButton.getSprite().getRotation(), 360f, 5f*delta));
 				setX(dTweener.MoveToAndSlow(getX(), 0 + MainGame.VIRTUAL_WIDTH * 2f,3f*delta));
 				rgg.setX(rgg.getX() + getX());
 				if(getX() >= MainGame.VIRTUAL_WIDTH)
@@ -196,6 +197,7 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 			}
 			rgg.setPoints(scores);
 			player.savePlayerData();
+			rgg.show();
 		}
 	}
 

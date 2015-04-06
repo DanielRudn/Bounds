@@ -110,7 +110,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();	
 		currentScreen.render(batch);
-	//	fpsText.render(batch);
+		fpsText.render(batch);
 		batch.end();
 	}
 	
@@ -146,6 +146,11 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 	}
 	
 	public static void playDeathSound()
+	{
+		deathSound.play();
+	}
+	
+	public static void playCoinSound()
 	{
 		deathSound.play();
 	}
