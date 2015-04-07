@@ -6,9 +6,7 @@ import com.DR.dLib.ui.dImage;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.dr.bounds.AssetManager;
 import com.dr.bounds.Player;
 
@@ -92,25 +90,7 @@ public class PlanetObstacle extends dObstacle {
 			}
 		}
 	}
-<<<<<<< HEAD
-
-	@Override
-	protected boolean checkCollision()
-	{
-		if(this.hasMoon() && Intersector.intersectRectangles(player.getBoundingRectangle(), this.getMoonBoundingRectangle(), useless))	
-		{
-			return true;
-		}
-		if(hadCirclularCollision(this.getPos(), player.getPos()))
-		{
-			return true;
-		}
-		return false;
-	} 
-
-=======
 	
->>>>>>> parent of 713cce7... * Refactored collision method. Now in dObstacle rather than MapType.
 	public void generate()
 	{
 		int colorIndex = rng.nextInt(planetColors.length);
@@ -220,14 +200,4 @@ public class PlanetObstacle extends dObstacle {
 		return hasMoon;
 	}
 
-<<<<<<< HEAD
-	private boolean hadCirclularCollision(Vector2 f, Vector2 i)
-	{
-		float radiusPlanet = this.getWidth() / 2f;
-		float radiusPlayer = player.getWidth() / 2f;
-		return Math.pow((f.x + radiusPlanet) - (i.x + radiusPlayer), 2) + Math.pow((f.y + radiusPlanet) - (i.y + radiusPlayer), 2) <= Math.pow(radiusPlanet + radiusPlayer, 2); 
-	}
-
-=======
->>>>>>> parent of 713cce7... * Refactored collision method. Now in dObstacle rather than MapType.
 }

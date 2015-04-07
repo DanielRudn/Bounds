@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.dr.bounds.AssetManager;
 import com.dr.bounds.MainGame;
@@ -56,6 +57,8 @@ public abstract class MapType {
 	private static Color firstTop, firstBottom, secondTop, secondBottom;
 	// Rectangles for background colors and changing
 	protected Rectangle firstBG, secondBG;
+	// rectangle for collision
+	protected static final Rectangle useless = new Rectangle();
 	// test
 	private static boolean switchColors = false;
 	

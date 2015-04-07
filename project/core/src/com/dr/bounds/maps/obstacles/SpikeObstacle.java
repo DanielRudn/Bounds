@@ -1,7 +1,6 @@
 package com.dr.bounds.maps.obstacles;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector2;
 import com.dr.bounds.Player;
 
 public class SpikeObstacle extends MovingObstacle {
@@ -29,24 +28,4 @@ public class SpikeObstacle extends MovingObstacle {
 		getSprite().setRotation(angle);
 	}
 	
-
-<<<<<<< HEAD
-	@Override
-	protected boolean checkCollision()
-	{
-		if(hadCirclularCollision(this.getPos(), player.getPos()))
-		{
-			return true;
-		}
-		return false;
-	}
-
-	private boolean hadCirclularCollision(Vector2 f, Vector2 i)
-	{
-		float radiusPlanet = this.getWidth() / 2f;
-		float radiusPlayer = player.getWidth() / 2f;
-		return Math.pow((f.x + radiusPlanet) - (i.x + radiusPlayer), 2) + Math.pow((f.y + radiusPlanet) - (i.y + radiusPlayer), 2) <= Math.pow(radiusPlanet + radiusPlayer, 2); 
-	} 
-=======
->>>>>>> parent of 713cce7... * Refactored collision method. Now in dObstacle rather than MapType.
 }

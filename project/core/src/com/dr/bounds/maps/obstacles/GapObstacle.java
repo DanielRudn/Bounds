@@ -4,7 +4,6 @@ import com.DR.dLib.dTweener;
 import com.DR.dLib.ui.dImage;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.dr.bounds.Player;
