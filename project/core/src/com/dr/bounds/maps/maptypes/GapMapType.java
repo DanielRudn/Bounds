@@ -1,7 +1,6 @@
 package com.dr.bounds.maps.maptypes;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Intersector;
 import com.dr.bounds.AssetManager;
 import com.dr.bounds.Player;
 import com.dr.bounds.maps.obstacles.GapObstacle;

@@ -1,18 +1,12 @@
 package com.dr.bounds.maps.maptypes;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.dr.bounds.AssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 import com.dr.bounds.maps.obstacles.PlanetObstacle;
 
 public class SpaceMapType extends MapType {
-
-	// useless
-	private Rectangle useless = new Rectangle(0,0,0,0);
 
 	public SpaceMapType(int type, Player player, MapGenerator generator) {
 		super(type, player, generator);

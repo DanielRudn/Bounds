@@ -3,6 +3,7 @@ package com.dr.bounds.maps.obstacles;
 import com.DR.dLib.ui.dImage;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Intersector;
 import com.dr.bounds.AssetManager;
 import com.dr.bounds.Player;
 import com.dr.bounds.maps.maptypes.MapGenerator;
@@ -55,7 +56,7 @@ public class ForestObstacle extends dObstacle {
 		trunk.setY(y + getHeight() - 8f);
 	}
 
-	private dImage getTrunk()
+	public dImage getTrunk()
 	{
 		return trunk;
 	}

@@ -1,6 +1,7 @@
 package com.dr.bounds.maps.obstacles;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Intersector;
 import com.dr.bounds.Player;
 import com.dr.bounds.maps.maptypes.MapGenerator;
 
@@ -35,15 +36,15 @@ public class RotatingObstacle extends dObstacle {
 	@Override
 	protected boolean checkCollision()
 	{
-		if(Intersector.distanceSegmentPoint(getObstacles().get(index).getSprite().getVertices()[0], getObstacles().get(index).getSprite().getVertices()[1],
-				getObstacles().get(index).getSprite().getVertices()[15], getObstacles().get(index).getSprite().getVertices()[16],
+		if(Intersector.distanceSegmentPoint(this.getVertices()[0], this.getVertices()[1],
+				this.getVertices()[15],this.getVertices()[16],
 				player.getX() + player.getWidth()/2f,
 				player.getY() + player.getHeight()/2f) <= player.getWidth() / 2f)
 		{
 			return true;
 		}
-		if(Intersector.distanceSegmentPoint(getObstacles().get(index).getSprite().getVertices()[5], getObstacles().get(index).getSprite().getVertices()[6],
-				getObstacles().get(index).getSprite().getVertices()[10], getObstacles().get(index).getSprite().getVertices()[11],
+		if(Intersector.distanceSegmentPoint(this.getVertices()[5], this.getVertices()[6],
+			this.getVertices()[10], this.getSprite().getVertices()[11],
 				player.getX() + player.getWidth()/2f,
 				player.getY() + player.getHeight()/2f) <= player.getWidth() / 2f)
 		{

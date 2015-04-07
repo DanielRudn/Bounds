@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.dr.bounds.AssetManager;
 import com.dr.bounds.MainGame;
@@ -47,8 +46,6 @@ public abstract class MapType {
 	private boolean moveTransitionImage = true;
 	// whether the obstacles for the new type have been generated
 	private boolean newTypeGenerated = false;
-	// useless rectangle for collsiion, temporary
-	protected final static Rectangle useless = new Rectangle();
 	// coin set for the maps
 	private static CoinSet coinSet;
 	// ShapeRenderer for rectangles nad backgrounds
