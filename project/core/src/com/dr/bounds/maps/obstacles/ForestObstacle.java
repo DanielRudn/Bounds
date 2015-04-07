@@ -27,20 +27,6 @@ public class ForestObstacle extends dObstacle {
 		trunk.render(batch);
 		super.render(batch);
 	}
-
-	@Override
-	protected boolean checkCollision()
-	{
-		if(Intersector.intersectRectangles(player.getBoundingRectangle(), this.getBoundingRectangle(), useless)) // FIX
-		{
-			return true;
-		}
-		if(Intersector.intersectRectangles(player.getBoundingRectangle(), this.getTrunk().getBoundingRectangle(), useless))
-		{
-			return true;
-		}
-		return false;
-	}
 	
 	@Override
 	public void setX(float x)

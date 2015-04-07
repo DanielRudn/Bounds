@@ -20,9 +20,7 @@ public class dObstacle extends dObject{
 	// whether or not we counted the score for this obstacle
 	private boolean incrementedScore = false;
 	// player object to check for score updates
-	protected Player player;
-	// used for collision, TODO: fix find a different way to do this 
-	protected Rectangle useless = new Rectangle();
+	private Player player;
 	
 	public dObstacle(float x, float y, Texture texture, Player p) {
 		super(x, y, texture);
@@ -60,23 +58,6 @@ public class dObstacle extends dObject{
 		{
 			passed = true;
 		}
-		// check collision
-		if(gen.hadCollision() == false && checkCollision())
-		{
-			gen.setHadCollision(true);
-		}
-	}
-
-	/**
-	 * Checks collision using obstacles bounding rectangle by default
-	 */
-	protected boolean checkCollision()
-	{
-		if(Intersector.intersectRectangles(player.getBoundingRectangle(), getBoundingRectangle(), useless))
-		{
-			return true;
-		}
-		return false;
 	}
 
 	public boolean shouldRegenerate()

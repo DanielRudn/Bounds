@@ -27,7 +27,7 @@ public class SpaceMapType extends MapType {
 		}
 	}
 
-	/*@Override
+	@Override
 	protected void checkCollision(int index)
 	{
 		if(obstacles.get(index).getClass().getName().equals(PlanetObstacle.class.getName()))
@@ -41,14 +41,14 @@ public class SpaceMapType extends MapType {
 				gen.setHadCollision(true);
 			}
 		}
-	} 
+	}
 
 	private boolean hadCirclularCollision(Vector2 f, Vector2 i, int index)
 	{
 		float radiusPlanet = obstacles.get(index).getWidth() / 2f;
 		float radiusPlayer = player.getWidth() / 2f;
 		return Math.pow((f.x + radiusPlanet) - (i.x + radiusPlayer), 2) + Math.pow((f.y + radiusPlanet) - (i.y + radiusPlayer), 2) <= Math.pow(radiusPlanet + radiusPlayer, 2); 
-	} */
+	}
 	
 	@Override
 	protected void generateBlock(int index)

@@ -60,17 +60,6 @@ public class GapObstacle extends dObstacle {
 			moveRight = !moveRight;
 		}
 	}
-
-	@Override
-	protected boolean checkCollision()
-	{
-		if(Intersector.intersectRectangles(player.getBoundingRectangle(), this.getBoundingRectangle(), useless) || 
-				Intersector.intersectRectangles(player.getBoundingRectangle(), this.getRightBoundRectangle(), useless))
-		{
-			return true;
-		}
-		return false;
-	}
 	
 	@Override
 	protected void onPositionChanged(float x, float y)
@@ -78,7 +67,7 @@ public class GapObstacle extends dObstacle {
 		rightSide.setPos(x + this.getWidth() + GAP_WIDTH, y);
 	}
 	
-	private Rectangle getRightBoundRectangle()
+	public Rectangle getRightBoundRectangle()
 	{
 		return rightSide.getBoundingRectangle();
 	}

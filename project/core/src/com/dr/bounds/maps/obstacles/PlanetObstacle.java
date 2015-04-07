@@ -92,6 +92,7 @@ public class PlanetObstacle extends dObstacle {
 			}
 		}
 	}
+<<<<<<< HEAD
 
 	@Override
 	protected boolean checkCollision()
@@ -107,10 +108,19 @@ public class PlanetObstacle extends dObstacle {
 		return false;
 	} 
 
+=======
+	
+>>>>>>> parent of 713cce7... * Refactored collision method. Now in dObstacle rather than MapType.
 	public void generate()
 	{
 		int colorIndex = rng.nextInt(planetColors.length);
 		setColor(planetColors[colorIndex]);
+		/*
+		shadeImage.setColor(getColor().r + 0.1f, getColor().g + 0.1f, getColor().b + 0.1f, 1f);
+		shadeImage.setWidth(getWidth() - 64);
+		shadeImage.setHeight(getHeight());
+		shadeImage.setPos(getX() + 32, getY());
+		*/
 		int flip = rng.nextInt(3);
 		if(flip == 0)
 		{
@@ -210,6 +220,7 @@ public class PlanetObstacle extends dObstacle {
 		return hasMoon;
 	}
 
+<<<<<<< HEAD
 	private boolean hadCirclularCollision(Vector2 f, Vector2 i)
 	{
 		float radiusPlanet = this.getWidth() / 2f;
@@ -217,4 +228,6 @@ public class PlanetObstacle extends dObstacle {
 		return Math.pow((f.x + radiusPlanet) - (i.x + radiusPlayer), 2) + Math.pow((f.y + radiusPlanet) - (i.y + radiusPlayer), 2) <= Math.pow(radiusPlanet + radiusPlayer, 2); 
 	}
 
+=======
+>>>>>>> parent of 713cce7... * Refactored collision method. Now in dObstacle rather than MapType.
 }

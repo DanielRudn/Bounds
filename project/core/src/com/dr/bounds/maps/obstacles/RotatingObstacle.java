@@ -31,6 +31,7 @@ public class RotatingObstacle extends dObstacle {
 		setOriginCenter();
 		getSprite().setRotation(rotation);
 	}
+<<<<<<< HEAD
 
 	// TODO: redo this collision.
 	@Override
@@ -52,13 +53,15 @@ public class RotatingObstacle extends dObstacle {
 		}
 		return false;
 	}
+=======
+>>>>>>> parent of 713cce7... * Refactored collision method. Now in dObstacle rather than MapType.
 	
 	public void setRotation(float r)
 	{
 		rotation = r;
 	}
 	
-	private float[] getVertices()
+	public float[] getVertices()
 	{
 		//0,1, 5,6, 10,11, 15,16
 		return getSprite().getVertices();
