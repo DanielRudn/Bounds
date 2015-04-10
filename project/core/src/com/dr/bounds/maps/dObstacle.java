@@ -1,4 +1,4 @@
-package com.dr.bounds.maps.obstacles;
+package com.dr.bounds.maps;
 
 import com.DR.dLib.dObject;
 import com.badlogic.gdx.graphics.Texture;

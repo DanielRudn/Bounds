@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.dr.bounds.AssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
+import com.dr.bounds.maps.MapGenerator;
+import com.dr.bounds.maps.MapType;
 import com.dr.bounds.maps.obstacles.IceObstacle;
 
 public class IceMapType extends MapType {

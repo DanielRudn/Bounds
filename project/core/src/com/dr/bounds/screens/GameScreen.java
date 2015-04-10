@@ -14,7 +14,7 @@ import com.dr.bounds.AssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 import com.dr.bounds.animations.CameraShakeAnimation;
-import com.dr.bounds.maps.maptypes.MapGenerator;
+import com.dr.bounds.maps.MapGenerator;
 
 public class GameScreen extends dScreen implements AnimationStatusListener {
 	
@@ -51,8 +51,7 @@ public class GameScreen extends dScreen implements AnimationStatusListener {
 		//deathAnim = new PlayerDeathAnimation(.75f,player);
 		deathAnim = new CameraShakeAnimation(0.32f, this, DEATH_ANIM_ID);
 		
-		//mapGen = new MapGenerator(player);
-		mapGen = new MapGenerator(MapGenerator.TYPE_GAP, player);
+		mapGen = new MapGenerator(player);
 		mapGen.generateSeed();
 		// TODO: might remove
 		mapGen.generateFirstSet();

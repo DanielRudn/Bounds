@@ -6,6 +6,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.dr.bounds.AssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
+import com.dr.bounds.maps.MapGenerator;
+import com.dr.bounds.maps.MapType;
 import com.dr.bounds.maps.obstacles.PlanetObstacle;
 
 public class SpaceMapType extends MapType {

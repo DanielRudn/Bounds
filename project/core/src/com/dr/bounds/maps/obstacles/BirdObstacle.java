@@ -4,7 +4,8 @@ import com.DR.dLib.dTweener;
 import com.badlogic.gdx.graphics.Texture;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
-import com.dr.bounds.maps.maptypes.MapGenerator;
+import com.dr.bounds.maps.MapGenerator;
+import com.dr.bounds.maps.dObstacle;
 
 public class BirdObstacle extends dObstacle{
 

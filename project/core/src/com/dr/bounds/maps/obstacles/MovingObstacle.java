@@ -2,7 +2,8 @@ package com.dr.bounds.maps.obstacles;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.dr.bounds.Player;
-import com.dr.bounds.maps.maptypes.MapGenerator;
+import com.dr.bounds.maps.MapGenerator;
+import com.dr.bounds.maps.dObstacle;
 
 public class MovingObstacle extends dObstacle {
 	

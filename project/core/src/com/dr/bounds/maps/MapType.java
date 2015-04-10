@@ -1,4 +1,4 @@
-package com.dr.bounds.maps.maptypes;
+package com.dr.bounds.maps;
 
 import java.util.ArrayList;
 
@@ -12,7 +12,6 @@ import com.dr.bounds.AssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 import com.dr.bounds.maps.obstacles.CoinSet;
-import com.dr.bounds.maps.obstacles.dObstacle;
 
 public abstract class MapType {
 

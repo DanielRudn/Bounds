@@ -366,7 +366,7 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		for(int x = 0; x < itemCardList.size(); x++)
+		for(int x = 1; x < itemCardList.size(); x++)
 		{
 				if(touchedIndex == x && expandedItem == null && itemCardList.get(x).getBoundingRectangle().contains(MainGame.getVirtualMouseX(), MainGame.getVirtualMouseY()) && this.getScrollDelta() <= 0.2f)
 				{

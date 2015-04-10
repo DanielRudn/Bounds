@@ -5,6 +5,8 @@ import com.badlogic.gdx.math.Intersector;
 import com.dr.bounds.AssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
+import com.dr.bounds.maps.MapGenerator;
+import com.dr.bounds.maps.MapType;
 import com.dr.bounds.maps.obstacles.ForestObstacle;
 
 public class ForestMapType extends MapType {

@@ -3,7 +3,9 @@ package com.dr.bounds.maps.maptypes;
 import com.badlogic.gdx.graphics.Color;
 import com.dr.bounds.AssetManager;
 import com.dr.bounds.Player;
-import com.dr.bounds.maps.obstacles.dObstacle;
+import com.dr.bounds.maps.MapGenerator;
+import com.dr.bounds.maps.MapType;
+import com.dr.bounds.maps.dObstacle;
 
 public class DefaultMapType extends MapType {
 	

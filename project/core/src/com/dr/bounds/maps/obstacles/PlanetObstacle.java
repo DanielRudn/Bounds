@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.dr.bounds.AssetManager;
 import com.dr.bounds.Player;
+import com.dr.bounds.maps.dObstacle;
 
 public class PlanetObstacle extends dObstacle {
 

@@ -5,7 +5,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dr.bounds.AssetManager;
 import com.dr.bounds.Player;
-import com.dr.bounds.maps.maptypes.MapGenerator;
+import com.dr.bounds.maps.MapGenerator;
+import com.dr.bounds.maps.dObstacle;
 
 public class ForestObstacle extends dObstacle {
 
