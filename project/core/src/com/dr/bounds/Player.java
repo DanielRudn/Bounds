@@ -50,6 +50,8 @@ public class Player extends dObject {
 	private int bestCombo = 0;
 	// amount of coins
 	private int numCoins = 0;
+	// whether the player has completed the tutorial
+	private boolean completedTutorial = false;
 	// temp
 	private ParticleEffect trailEffect = new ParticleEffect();
 	
@@ -175,21 +177,6 @@ public class Player extends dObject {
 		return false;
 	}
 	
-	// runs when the program fails to load player data
-	private void setDefaultValues()
-	{
-		for(int x = 0; x < 5; x++)
-		{
-			recentScores.add(0);
-		}
-		// default skin
-		unlockedSkins.add((byte) 1);
-		setSkinID(unlockedSkins.iterator().next());
-		bestScore = 0;
-		bestCombo = 0;
-		numCoins = 0;
-	}
-	
 	private void loadPlayerData()
 	{
 		XmlReader reader = new XmlReader();
@@ -197,6 +184,8 @@ public class Player extends dObject {
 			Element pData = reader.parse(Gdx.files.local("pData.xml"));
 			// load coins
 			numCoins = Integer.parseInt(pData.getChildByName("Coins").getAttribute("amount"));
+			// load complete tutorial
+			completedTutorial = Boolean.parseBoolean(pData.getChildByName("Tutorial").getAttribute("complete"));
 			// load scores
 			Element scores = pData.getChildByName("Scores").getChildByName("RecentScores");
 			bestScore = Integer.parseInt(pData.getChildByName("Scores").getAttribute("best"));
@@ -228,6 +217,11 @@ public class Player extends dObject {
 			// error parsing file
 			setDefaultValues();
 		}
+		catch (Exception e)
+		{
+			// missing something from pData
+			setDefaultValues();
+		}
 	}
 	
 	public void savePlayerData()
@@ -238,6 +232,7 @@ public class Player extends dObject {
 		try {
 			writer.element("pData")
 				.element("Coins").attribute("amount", numCoins).pop()
+				.element("Tutorial").attribute("complete", completedTutorial).pop()
 				.element("Scores").attribute("best", bestScore).attribute("combo", bestCombo)
 					.element("RecentScores").attribute("OldestToLatest", recentScores.toString().replaceAll("\\[", "").replaceAll("\\]", "")).pop()
 				.pop()
@@ -250,6 +245,24 @@ public class Player extends dObject {
 		}catch (IOException e)	{
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Runs when the game fails to load player data for some reason
+	 */
+	private void setDefaultValues()
+	{
+		for(int x = 0; x < 5; x++)
+		{
+			recentScores.add(0);
+		}
+		// add default skin
+		unlockedSkins.add((byte) 1);
+		setSkinID(unlockedSkins.iterator().next());
+		bestScore = 0;
+		bestCombo = 0;
+		numCoins = 0;
+		completedTutorial = false;
 	}
 	
 	public void addRecentScore(int score)

@@ -40,11 +40,11 @@ public class MapTypeFactory {
 		}
 		else if(mapID == TYPE_SPIKE)
 		{
-			return new SpikeMapType(TYPE_SPIKE,player,gen);
+			return new SpikeMapType(TYPE_SPIKE, player, gen);
 		}
 		else if(mapID == TYPE_ROTATE)
 		{
-			return new RotatingMapType(TYPE_ROTATE,player,gen);
+			return new RotatingMapType(TYPE_ROTATE, player, gen);
 		}
 		else if(mapID == TYPE_FOREST)
 		{
