@@ -243,6 +243,13 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 				acceptButton.setAlpha(dTweener.ExponentialEaseOut(time,1f, -1f, duration/2f));
 				cancelButton.setAlpha(acceptButton.getColor().a);
 			}
+			else
+			{
+				acceptButton.setY(MainGame.VIRTUAL_HEIGHT);
+				cancelButton.setY(acceptButton.getY());
+				acceptButton.setAlpha(1f);
+				cancelButton.setAlpha(1f);
+			}
 			fadeCover.setAlpha(dTweener.ExponentialEaseOut(time, .4f, -.395f, duration));
 			if(ownedImage != null)
 			{
@@ -264,10 +271,6 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 			setClickable(true);
 			expanded = false;
 			fadeCover.setAlpha(0);
-			acceptButton.setAlpha(1f);
-			cancelButton.setAlpha(1f);
-			acceptButton.setY(MainGame.VIRTUAL_HEIGHT);
-			cancelButton.setY(acceptButton.getY());
 		}
 	}
 

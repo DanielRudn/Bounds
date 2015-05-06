@@ -24,39 +24,39 @@ public class MapTypeFactory {
 	{
 		if(mapID == TYPE_DEFAULT)
 		{
-			return new DefaultMapType(TYPE_DEFAULT, player, gen);
+			return new DefaultMapType(mapID, player, gen);
 		}
 		else if(mapID == TYPE_MACHINERY)
 		{
-			return new MachineryMapType(TYPE_MACHINERY, player, gen);
+			return new MachineryMapType(mapID, player, gen);
 		}
 		else if(mapID == TYPE_SPACE)
 		{
-			return new SpaceMapType(TYPE_SPACE, player, gen);
+			return new SpaceMapType(mapID, player, gen);
 		}
 		else if(mapID == TYPE_SKY)
 		{
-			return new SkyMapType(TYPE_SKY, player, gen);
+			return new SkyMapType(mapID, player, gen);
 		}
 		else if(mapID == TYPE_SPIKE)
 		{
-			return new SpikeMapType(TYPE_SPIKE, player, gen);
+			return new SpikeMapType(mapID, player, gen);
 		}
 		else if(mapID == TYPE_ROTATE)
 		{
-			return new RotatingMapType(TYPE_ROTATE, player, gen);
+			return new RotatingMapType(mapID, player, gen);
 		}
 		else if(mapID == TYPE_FOREST)
 		{
-			return new ForestMapType(TYPE_FOREST, player, gen);
+			return new ForestMapType(mapID, player, gen);
 		}
 		else if(mapID == TYPE_ICE)
 		{
-			return new IceMapType(TYPE_ICE, player, gen);
+			return new IceMapType(mapID, player, gen);
 		}
 		else if(mapID == TYPE_GAP)
 		{
-			return new GapMapType(TYPE_GAP, player, gen);
+			return new GapMapType(mapID, player, gen);
 		}
 		return null;
 	}

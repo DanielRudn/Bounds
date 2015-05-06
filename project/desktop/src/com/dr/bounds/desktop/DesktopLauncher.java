@@ -59,4 +59,10 @@ public class DesktopLauncher implements RequestHandler {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void showShareIntent(String text) {
+		// TODO Auto-generated method stub
+		
+	}
 }

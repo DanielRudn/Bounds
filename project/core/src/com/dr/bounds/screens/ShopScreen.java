@@ -3,6 +3,8 @@ package com.dr.bounds.screens;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.DR.dLib.utils.DocGrabberListener;
+import com.DR.dLib.utils.GoogleDocGrabber;
 import com.DR.dLib.dTweener;
 import com.DR.dLib.animations.AnimationStatusListener;
 import com.DR.dLib.animations.ExpandAnimation;
@@ -15,10 +17,6 @@ import com.DR.dLib.ui.dUICardList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Net.HttpMethods;
-import com.badlogic.gdx.Net.HttpRequest;
-import com.badlogic.gdx.Net.HttpResponse;
-import com.badlogic.gdx.Net.HttpResponseListener;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -34,23 +32,19 @@ import com.dr.bounds.animations.ShopItemsSlideAnimation;
 import com.dr.bounds.ui.LoadingIcon;
 import com.dr.bounds.ui.ShopItemCard;
 
-public class ShopScreen extends dUICardList implements HttpResponseListener, AnimationStatusListener, InputProcessor {
+public class ShopScreen extends dUICardList implements DocGrabberListener, AnimationStatusListener, InputProcessor {
 
+	// String for shop file
+	private final String url ="https://docs.google.com/document/d/1fapoD_xnTPEAYMpJUGr9zWHy1vKzDvybvoDcWkcHQOU/edit?usp=sharing";
+	private GoogleDocGrabber docGrabber;
 	// Holds ShopItemCard Containers
 	private static ArrayList<dUICard> itemCardContainers = new ArrayList<dUICard>();
 	// Holds 1 ShopItemCard
 	private static ArrayList<dUICard> itemCardList = new ArrayList<dUICard>();
 	private Texture cardTexture;
 	private dUICard titleCard;
-	// String for shop file
-	private final String url ="https://docs.google.com/document/d/1fapoD_xnTPEAYMpJUGr9zWHy1vKzDvybvoDcWkcHQOU/edit?usp=sharing";
-	private final String LESS_THAN = "\\u003c", GREATER_THAN = "\\u003e";
-	private final String[] symbols = new String[]{"\\u003c", "\\u003e", "\\u003d", "’","\\n", "\\t"};
-	private final String[] actual = new String[]{"<", ">","=","'","\n","\t"};
 	private dUICard currentContainer;
 	private dUICard itemCard;
-	private HttpRequest request;
-	private String response = "";
 	private boolean itemsLoaded = false;
 	// Player instance
 	private Player player;
@@ -84,12 +78,10 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 		
 		Texture circle = new Texture("circle.png");
 		circleCover = new dImage(0,0,circle);
-		//showAnim = new SlideExponentialAnimation(1f, this, SHOW_ANIM_ID, MainGame.VIRTUAL_WIDTH, 0, this);
 		showAnim = new ExpandAnimation(circleCover, 2.75f, this, SHOW_ANIM_ID, new Color(236f/256f, 240f/256f, 241f/256f,1f), MainGame.VIRTUAL_HEIGHT * 2f);
 		this.setShowAnimation(showAnim);
 		titleCard = new dUICard(0,0, texture);
 		titleCard.setDimensions(getWidth(), 92f);
-	//	titleCard.setColor(26f/256f, 188f/256f, 156f/256f, 1f);
 		titleCard.setColor(234f/256f,76f/256f,136f/256f,1f);
 		titleCard.setHasShadow(false);
 		dText title = new dText(0,0,64f,"SHOP");
@@ -110,6 +102,7 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 		
 		if(itemsLoaded == false)
 		{
+			docGrabber = new GoogleDocGrabber(url, this);
 			loadItemsFromBackend();
 			itemsLoaded = true;
 		}
@@ -117,12 +110,7 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 	
 	private void loadItemsFromBackend()
 	{
-		request = new HttpRequest(HttpMethods.GET);
-		request.setUrl(url);
-		request.setHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/21.0");
-		request.setTimeOut(5000);
-		System.out.println("Sending request");
-		Gdx.net.sendHttpRequest(request, this);
+		docGrabber.connect();
 		loadingIcon.start();
 	}
 	
@@ -196,19 +184,6 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 		titleCard.setColor(c);
 	}
 	
-	@Override
-	public void handleHttpResponse(HttpResponse httpResponse) {
-		System.out.println("Connected");
-		response = httpResponse.getResultAsString();
-		response = response.substring(response.indexOf(LESS_THAN + "Shop" + GREATER_THAN), response.indexOf(LESS_THAN + "/Shop" + GREATER_THAN) + (LESS_THAN + "/Shop" + GREATER_THAN).length());
-		for(int x = 0; x < symbols.length; x++)
-		{
-			response = response.replace(symbols[x], actual[x]);
-		}
-		loadDataFromXML(response);
-		Gdx.net.cancelHttpRequest(request);
-	}
-	
 	/**
 	 * load shop data from a string. Used when loading from the google doc
 	 * @param xmlString
@@ -217,7 +192,7 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 	{
 		System.out.println("Loading from string");
 		XmlReader reader = new XmlReader();
-		Element shop = reader.parse(response);
+		Element shop = reader.parse(xmlString);
 		parseShopXML(shop);
 		// if everything was ok, save the xml
 		saveShopXML(xmlString);
@@ -273,16 +248,19 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 					for(int x = 0; x < shop.getChildrenByName("Item").size; x++)
 					{
 						final Element e = shop.getChildrenByName("Item").get(x);
-						itemCard = new ShopItemCard(0,0,cardTexture,e.get("name"), Integer.parseInt(e.get("price")), Byte.parseByte(e.get("id")), player);
-						itemCardList.add(itemCard);
-						currentContainer = new dUICard(0,0,cardTexture);
-						currentContainer.setClipping(false);
-						currentContainer.setDimensions(itemCard.getWidth(), itemCard.getHeight()*1.25f);
-						currentContainer.setHasShadow(false);
-						currentContainer.setAlpha(0);
-						currentContainer.addObject(itemCard, dUICard.CENTER, dUICard.CENTER);
-						addCardAsObject(currentContainer);
-						currentContainer.setX(currentContainer.getX() + getPadding()*4f);
+						if(Integer.parseInt(e.get("version")) <= MainGame.GAME_VERSION)
+						{
+							itemCard = new ShopItemCard(0,0,cardTexture,e.get("name"), Integer.parseInt(e.get("price")), Byte.parseByte(e.get("id")), player);
+							itemCardList.add(itemCard);
+							currentContainer = new dUICard(0,0,cardTexture);
+							currentContainer.setClipping(false);
+							currentContainer.setDimensions(itemCard.getWidth(), itemCard.getHeight()*1.25f);
+							currentContainer.setHasShadow(false);
+							currentContainer.setAlpha(0);
+							currentContainer.addObject(itemCard, dUICard.CENTER, dUICard.CENTER);
+							addCardAsObject(currentContainer);
+							currentContainer.setX(currentContainer.getX() + getPadding()*4f);
+						}
 					}
 					cardShowAnim = new ShopItemsSlideAnimation(2.5f,null,SHOW_CARD_ANIM_ID, itemCardList);
 					cardShowAnim.start();
@@ -290,9 +268,23 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 				}
 		});
 	}
+	
+	/*
+	 * ====================LISTENERS===================
+	 */
+	
+	/*
+	 * DocGrabberListener
+	 */
+	
+	@Override
+	public void onConnected(String docURL, String docText) {
+		System.out.println("Connected\n" + docText);
+		loadDataFromXML(docText);
+	}
 
 	@Override
-	public void failed(Throwable t) {
+	public void onConnectionFailed(Throwable t) {
 		System.out.println("Failed " +  t.getMessage());
 		try{
 			//System.out.println("File string: " + Gdx.files.local("shopData.xml").readString());
@@ -304,9 +296,13 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 	}
 
 	@Override
-	public void cancelled() {
+	public void onConnectionCancelled() {
 		System.out.println("cancelled");
 	}
+	
+	/*
+	 * AnimationStatusListener
+	 */
 
 	@Override
 	public void onAnimationStart(int ID, float duration)
@@ -336,6 +332,10 @@ public class ShopScreen extends dUICardList implements HttpResponseListener, Ani
 	public void onAnimationFinish(int ID)
 	{}
 
+	/*
+	 * InputProcessor
+	 */
+	
 	@Override
 	public boolean keyDown(int keycode) {
 		return false;

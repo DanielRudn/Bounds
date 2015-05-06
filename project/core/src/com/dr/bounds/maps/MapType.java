@@ -281,7 +281,7 @@ public abstract class MapType {
 		if(coinSet != null && coinSet.canRegenerate())
 		{
 			coinSet.generate();
-			int side = MapGenerator.rng.nextInt(11); // 0,1,5,6,7 is LEFT, 2,3,8,9,10 is RIGHT, 4 is center
+			/*int side = MapGenerator.rng.nextInt(11); // 0,1,5,6,7 is LEFT, 2,3,8,9,10 is RIGHT, 4 is center
 			if(side == 0 || side == 1 || side == 6 || side == 7)// left
 			{
 				coinSet.setX(64);
@@ -294,7 +294,8 @@ public abstract class MapType {
 			else if(side == 4 || side == 5 || side == 9)// center
 			{
 				coinSet.setX(MainGame.VIRTUAL_WIDTH / 2f - obstacles.get(index).getWidth() / 2f + (-50 + MapGenerator.rng.nextInt(100)));
-			}
+			}*/
+			coinSet.setX(MainGame.VIRTUAL_WIDTH / 2f - obstacles.get(index).getWidth() / 2f + (-50 + MapGenerator.rng.nextInt(100)));
 			coinSet.setY(obstacles.get(index).getY() - MIN_DISTANCE - MapGenerator.rng.nextInt(MAX_DISTANCE));
 			//System.out.println("generated at x: " + coinSet.getX() + " y: " + coinSet.getY());
 		}

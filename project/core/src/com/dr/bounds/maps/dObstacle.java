@@ -4,6 +4,8 @@ import com.DR.dLib.dObject;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 
@@ -19,6 +21,7 @@ public class dObstacle extends dObject{
 	private boolean incrementedScore = false;
 	// player object to check for score updates
 	private Player player;
+	private final static ShapeRenderer sr = new ShapeRenderer();
 	
 	public dObstacle(float x, float y, Texture texture, Player p) {
 		super(x, y, texture);
@@ -42,6 +45,17 @@ public class dObstacle extends dObject{
 	@Override
 	public void render(SpriteBatch batch) {
 		getSprite().draw(batch);
+	//	renderDebug(batch);
+	}
+	
+	private void renderDebug(SpriteBatch batch)
+	{
+		batch.end();
+		sr.setProjectionMatrix(batch.getProjectionMatrix());
+		sr.begin(ShapeType.Line);
+		sr.rect(this.getBoundingRectangle().x, this.getBoundingRectangle().y, this.getBoundingRectangle().width, this.getBoundingRectangle().height);
+		sr.end();
+		batch.begin();
 	}
 	
 	@Override

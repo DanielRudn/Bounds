@@ -58,7 +58,7 @@ public class CoinSet extends dObject
 		for(int x = 0; x < coins.size(); x++)
 		{
 			coins.get(x).update(delta);
-			if(player.getBoundingRectangle().overlaps(coins.get(x).getBoundingRectangle()) && coins.get(x).getWidth() != 0)
+			if(player.getBoundingRectangle().overlaps(coins.get(x).getBoundingRectangle()) && coins.get(x).getWidth() == 64)
 			{
 				// player hit a coin
 				MainGame.playCoinSound();
@@ -66,7 +66,7 @@ public class CoinSet extends dObject
 				player.setCoins(player.getCoins() + 1);
 				GameScreen.incrementPlayerCoins();
 			}	
-			if(coins.get(0).getY() > MainGame.camera.position.y + MainGame.VIRTUAL_WIDTH / 2f && canRegenerate == false)
+			if((coins.get(0).getY() - coins.get(0).getHeight()*2) > MainGame.camera.position.y + MainGame.VIRTUAL_WIDTH / 2f && canRegenerate == false)
 			{
 				canRegenerate = true;
 			}
@@ -151,6 +151,7 @@ public class CoinSet extends dObject
 		for(int x = 0; x < coins.size(); x++)
 		{
 			coins.get(x).setDimensions(64, 64);
+			coins.get(x).setAlpha(1f);
 			coins.get(x).show();
 		}
 		currentLayout = MapGenerator.rng.nextInt(5);
@@ -186,6 +187,7 @@ class Coin extends dImage {
 		{
 			time += delta;
 			this.setAlpha(dTweener.LinearEase(time, 1f, -1f, duration));
+			this.getSprite().setRotation(dTweener.ExponentialEaseOut(time, 0, 360, duration));
 			this.setOriginCenter();
 			this.setDimensions(dTweener.LinearEase(time, 64f, -64f, duration), dTweener.LinearEase(time, 64f, -64f, duration));
 		}

@@ -10,10 +10,12 @@ import com.DR.dLib.ui.dUICard;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.dr.bounds.AssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 import com.dr.bounds.animations.CameraShakeAnimation;
+import com.dr.bounds.animations.TranslateCameraAnimation;
 import com.dr.bounds.maps.MapGenerator;
 
 public class GameScreen extends dScreen implements AnimationStatusListener {
@@ -43,6 +45,8 @@ public class GameScreen extends dScreen implements AnimationStatusListener {
 	// death animation for the player
 	private dAnimation deathAnim;
 	private final static int DEATH_ANIM_ID = 321;
+	// Animation to move the camera so the player is vertically centered when on a combo >= 3.
+	private TranslateCameraAnimation camAnim;
 
 	public GameScreen(float x, float y, Texture texture) {
 		super(x, y, texture);
@@ -142,7 +146,19 @@ public class GameScreen extends dScreen implements AnimationStatusListener {
 				}
 				else
 				{ 
-					MainGame.setCameraPos(MainGame.camera.position.x, player.getY() + player.getWidth() / 2f); // follow player vertically as long as they have a combo going.
+					// follow player vertically as long as they have a combo going.
+					if(player.getY() >= MainGame.camera.position.y - 50 && player.getY() <= MainGame.camera.position.y + 50)
+					{
+						MainGame.setCameraPos(MainGame.camera.position.x, player.getY() + player.getWidth() / 2f); 
+					}
+					else if((MainGame.camera.position.y + 60) <= (player.getY() + player.getWidth()))
+					{
+						MainGame.setCameraPos(MainGame.camera.position.x, MainGame.camera.position.y + 1250f * delta);
+					}
+					else if((MainGame.camera.position.y + 60) >= (player.getY() + player.getWidth()))
+					{
+						MainGame.setCameraPos(MainGame.camera.position.x, MainGame.camera.position.y - 1250f * delta);
+					}
 				}
 			}
 		}

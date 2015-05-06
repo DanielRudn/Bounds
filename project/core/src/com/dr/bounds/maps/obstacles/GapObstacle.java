@@ -67,6 +67,13 @@ public class GapObstacle extends dObstacle {
 		rightSide.setPos(x + this.getWidth() + GAP_WIDTH, y);
 	}
 	
+	public void reset()
+	{
+		this.moveTime = 0f;
+		this.startX = -300f;
+		this.setX(startX);
+	}
+	
 	public Rectangle getRightBoundRectangle()
 	{
 		return rightSide.getBoundingRectangle();

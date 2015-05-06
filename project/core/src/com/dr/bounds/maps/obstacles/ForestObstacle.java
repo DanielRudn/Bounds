@@ -18,7 +18,8 @@ public class ForestObstacle extends dObstacle {
 		setColor(30f/256f, 130f/256f, 76f/256f,1f);
 		trunk = new dImage(x + dimensions / 2f - 8f,y + dimensions - 8f,AssetManager.getTexture("card"));
 		trunk.setDimensions(16f, 92f);
-		trunk.setColor(230f/256f, 131f/256f, 100f/256f,1f);
+		
+		trunk.setColor(130f/255f, 90f/255f, 44f/255f, 1f);
 	}
 	
 	@Override

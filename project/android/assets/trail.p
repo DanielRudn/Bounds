@@ -8,12 +8,12 @@ lowMin: 5000.0
 lowMax: 5000.0
 - Count - 
 min: 100
-max: 199
+max: 250
 - Emission - 
-lowMin: 75.0
-lowMax: 75.0
-highMin: 150.0
-highMax: 150.0
+lowMin: 150.0
+lowMax: 150.0
+highMin: 250.0
+highMax: 250.0
 relative: false
 scalingCount: 1
 scaling0: 1.0

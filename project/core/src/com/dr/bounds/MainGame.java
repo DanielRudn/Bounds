@@ -29,6 +29,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 	// CONSTANTS
 	public static final float VIRTUAL_WIDTH = 720f, VIRTUAL_HEIGHT = 1280f, ASPECT_RATIO = VIRTUAL_WIDTH / VIRTUAL_HEIGHT;
 	public static final int PLACEHOLDER_SKIN_ID = 0;
+	public static final int GAME_VERSION = 1;
 	
 	// SCREENS
 	public static dScreen currentScreen;
@@ -76,7 +77,7 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 		
 		bgMusic = Gdx.audio.newMusic(Gdx.files.internal("GoCartLoop.mp3"));
 		
-		fpsText = new dText(5,5,80,"FPS: 60");
+		fpsText = new dText(5,5,24,"FPS: 60");
 		fpsText.setColor(Color.WHITE);
 		currentScreen = menuScreen;
 		currentScreen.show();

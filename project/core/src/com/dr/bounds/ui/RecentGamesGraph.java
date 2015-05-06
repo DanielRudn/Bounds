@@ -22,9 +22,11 @@ public class RecentGamesGraph extends dUICard {
 	/**
 	 * A graph class that can plot connected points 
 	 */
-	private dImage xAxis, yAxis;
-	private dText title;
+	private dImage xAxis, yAxis, scoreTag;
+	private dText title, scoreText;
 	private ArrayList<dImage> points;
+	// radius of the points connecting lines
+	private static final float POINT_RADIUS = 8f;
 	private dText yLabelMin;
 	private dText[] yLabels = new dText[5];
 	// fix
@@ -49,7 +51,13 @@ public class RecentGamesGraph extends dUICard {
 		xAxis.setDimensions(width, 3f);
 		yAxis.setDimensions(3f, height);
 		
-		this.title = new dText(0,0,32f, title);
+		scoreTag = new dImage(0,0, AssetManager.getTexture("tag.png"));
+		scoreTag.setAlpha(0.5f);
+		scoreTag.setDimensions(92f, 48f);
+		scoreText = new dText(0,0, 42f, "0");
+		scoreText.setColor(210f/256f, 82f/256f, 127f/256f,1f);
+		
+		this.title = new dText(0,0,36f, title);
 		this.title.setColor(Color.WHITE);
 		
 		pointTexture = AssetManager.getTexture("circle");
@@ -65,7 +73,7 @@ public class RecentGamesGraph extends dUICard {
 		addObject(this.title, dUICard.CENTER, dUICard.CENTER);
 		xAxis.setPos(x,y + yAxis.getHeight());
 		yAxis.setPos(x,y + xAxis.getHeight());
-		this.title.setPosition(getGraphZeroX() + xAxis.getWidth()/2f - this.title.getWidth() / 2f, getY() - 16f - this.title.getHeight());
+		this.title.setPosition(getGraphZeroX() + xAxis.getWidth()/2f - this.title.getWidth() / 2f, getY() - 24f - this.title.getHeight());
 	//	this.title.setPosition(getGraphZeroX(), getY() - 24f - this.title.getHeight());
 		
 	}
@@ -81,7 +89,10 @@ public class RecentGamesGraph extends dUICard {
 			{
 				if(time - 0.15f*x > 0)
 				{
-					points.get(x).setY(dTweener.ExponentialEaseOut(time - 0.15f*x, this.getGraphZeroY(), pointPos.get(x).y - this.getGraphZeroY(), duration));
+					//points.get(x).setY(dTweener.ExponentialEaseOut(time - 0.15f*x, this.getGraphZeroY(), pointPos.get(x).y - this.getGraphZeroY(), duration));
+					points.get(x).setY(dTweener.ElasticOut(time - 0.15f*x, this.getGraphZeroY(), pointPos.get(x).y - this.getGraphZeroY(), duration,7f));
+					scoreTag.setPos(points.get(points.size()-1).getX() + scoreTag.getWidth()/2f - this.getPadding()*4f, points.get(points.size()-1).getY() - scoreTag.getHeight()/2f);
+					scoreText.setPos(scoreTag.getX() + scoreTag.getWidth() / 2f - scoreText.getWidth()/2f + getPadding(), scoreTag.getY() + scoreTag.getHeight()/2f - scoreText.getHeight() /2f);
 				}
 				else
 				{
@@ -96,6 +107,8 @@ public class RecentGamesGraph extends dUICard {
 		title.render(batch);
 		xAxis.render(batch);
 		yAxis.render(batch);
+		scoreTag.render(batch);
+		scoreText.render(batch);
 		yLabelMin.render(batch);
 		for(int x = 0; x < yLabels.length; x++)
 		{
@@ -119,7 +132,8 @@ public class RecentGamesGraph extends dUICard {
 		}
 		sr.end();
 		sr.begin(ShapeType.Filled);
-		sr.setColor(46f/256f, 204f/256f, 113f/256f, 1f);
+		//sr.setColor(46f/256f, 204f/256f, 113f/256f, 1f);
+		sr.setColor(151f/256f, 216f/256f, 84f/256f, 1f);
 		// draw lines
 		for(int x = 0; x < points.size(); x++)
 		{
@@ -137,7 +151,7 @@ public class RecentGamesGraph extends dUICard {
 				sr.circle(points.get(x).getX(), points.get(x).getY(), 16);
 			}
 			sr.setColor(new Color(236f/256f, 240f/256f, 241f/256f, 1f));
-			sr.circle(points.get(x).getX(),points.get(x).getY(), 6f);
+			sr.circle(points.get(x).getX(),points.get(x).getY(), POINT_RADIUS);
 		}
 		sr.end();
 		Gdx.gl.glDisable(GL20.GL_BLEND);
@@ -154,6 +168,7 @@ public class RecentGamesGraph extends dUICard {
 			addObject(points.get(x), dUICard.CENTER, dUICard.CENTER);
 			points.get(x).setPos(p.get(x).x,p.get(x).y);
 		}
+		scoreText.setText(Integer.toString((int)points.get(points.size()-1).getY()));
 		float xMin = getMinX(), xMax = getMaxX(), yMin = 0, yMax = getMaxY();
 		yLabelMin = new dText(0,0,32f,"" + (int)yMin);
 		yLabelMin.setColor(Color.WHITE);

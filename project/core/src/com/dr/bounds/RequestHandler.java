@@ -32,6 +32,8 @@ public interface RequestHandler {
 	
 	public void showLeaderboard(String leaderboardID);
 	
+	public void showShareIntent(String text);
+	
 //	public void sendReliableMessage(byte[] message);
 	
 //  public void sendUnreliableMessage(byte[] message);

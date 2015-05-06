@@ -5,6 +5,8 @@ import java.util.List;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.os.Bundle;
+import android.provider.Contacts.Intents;
+import android.test.InstrumentationTestSuite;
 import android.util.Log;
 import android.view.WindowManager;
 
@@ -25,12 +27,16 @@ import com.google.android.gms.games.multiplayer.realtime.RealTimeMessageReceived
 import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener;
 import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
+import com.google.android.gms.identity.intents.AddressConstants.Extras;
 import com.google.android.gms.plus.Plus;
+import com.sun.org.apache.xerces.internal.impl.ExternalSubsetResolver;
 
 public class AndroidLauncher extends AndroidApplication implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
 	RequestHandler, RoomUpdateListener, RealTimeMessageReceivedListener, RoomStatusUpdateListener, OnInvitationReceivedListener{
 	
 	private GoogleApiClient apiClient;
+	
+	private static final int SHARE_INTENT_ID = 13513;
 	
 	private final int RC_CONNECTION_RESOLUTION = 1361;
 	private String currentRoomID = null;
@@ -211,11 +217,11 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 		// show different screen
 		
 	}
-	*/
+	
 	private void preventSleep()
 	{
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-	}
+	}*/
 	
 	private void enableSleep()
 	{
@@ -384,6 +390,17 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 	{
 		startActivityForResult(Games.Leaderboards.getLeaderboardIntent(apiClient, leaderboardID), 20001);
 	}
+	
+	@Override
+	public void showShareIntent(String text)
+	{
+		Intent shareIntent = new Intent();
+		shareIntent.setAction(Intent.ACTION_SEND);
+		shareIntent.putExtra(Intent.EXTRA_TEXT, text);
+		shareIntent.setType("text/plain");
+		startActivityForResult(Intent.createChooser(shareIntent, "Share to.."), SHARE_INTENT_ID);
+	}
+	
 	/*
 	@Override
 	public void sendReliableMessage(byte[] message)
