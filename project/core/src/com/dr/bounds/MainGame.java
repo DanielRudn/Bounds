@@ -15,7 +15,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dr.bounds.screens.GameScreen;
 import com.dr.bounds.screens.MenuScreen;
 
-public class MainGame extends ApplicationAdapter implements MultiplayerListener {
+public class MainGame extends ApplicationAdapter {
 	
 	/*==================================================
 	 *					VARIABLES					   |
@@ -164,12 +164,5 @@ public class MainGame extends ApplicationAdapter implements MultiplayerListener 
 	public static void setPlayerSkin(byte id) {
 		gameScreen.setPlayerSkin(id);
 	}
-	
-	/*
-	 * MULTIPLAYER LISTENER METHODS
-	 */
-	
-	@Override
-	public void onConnected(){}
 
 }

@@ -1,5 +1,6 @@
 package com.dr.bounds.maps.maptypes;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
@@ -18,7 +19,8 @@ public class SpaceMapType extends MapType {
 		MAX_DISTANCE *= 2;
 		MIN_WIDTH = 192;
 		MAX_WIDTH = 333 - MIN_WIDTH;
-		bgColor = new Color(82f/256f, 74f/256f, 115f/256f, 1f);
+	//	bgColor = new Color(82f/256f, 74f/256f, 115f/256f, 1f);
+		bgColor = new Color(39f/256f, 15f/256f, 48f/256f, 1f);
 		// this map type awards 2 points per obstacle
 		gen.setScoreIncrementAmount(2);
 		
@@ -29,6 +31,7 @@ public class SpaceMapType extends MapType {
 			obstacles.add(new PlanetObstacle(0,0, AssetManager.getTexture("planet.png"), player, MapGenerator.rng));
 			obstacles.get(x).setRegenerate(false);
 		}
+		super.particleEffect.load(Gdx.files.internal("stars.p"), Gdx.files.internal(""));
 	}
 
 	@Override

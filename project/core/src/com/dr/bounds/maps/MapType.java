@@ -3,6 +3,7 @@ package com.dr.bounds.maps;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -60,6 +61,8 @@ public abstract class MapType {
 	protected static final Rectangle useless = new Rectangle();
 	// test
 	private static boolean switchColors = false;
+	// particle effect in the background
+	protected ParticleEffect particleEffect = new ParticleEffect();
 	
 	public MapType(int type, Player player, MapGenerator generator)
 	{
@@ -89,6 +92,7 @@ public abstract class MapType {
 		sr.rect(secondBG.getX(), secondBG.getY(), secondBG.getWidth(), secondBG.getHeight(), secondTop,secondTop,secondBottom,secondBottom);
 		sr.end();
 		batch.begin();
+		particleEffect.draw(batch);
 		if(coinSet != null)
 		{
 			coinSet.render(batch);
@@ -110,6 +114,11 @@ public abstract class MapType {
 	
 	public void update(float delta)
 	{
+		if(switchBG == false)
+		{
+			particleEffect.update(delta);
+			particleEffect.setPosition(0, MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f);
+		}
 		// update backgrounds
 		if(switchColors)
 		{

@@ -5,6 +5,7 @@ import java.util.Random;
 import com.DR.dLib.TimerListener;
 import com.DR.dLib.dTimer;
 import com.DR.dLib.ui.dImage;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.dr.bounds.AssetManager;
@@ -142,6 +143,7 @@ public class MapGenerator implements TimerListener {
 		if(hadCollision == false && c == true)
 		{
 			MainGame.playDeathSound();
+			Gdx.input.vibrate(50);
 		}
 		hadCollision = c;
 		if(c == false) // reset

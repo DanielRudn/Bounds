@@ -85,7 +85,6 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		shareButton.addObject(shareIcon, dUICard.LEFT, dUICard.CENTER);
 		shareButton.addObject(shareText, dUICard.RIGHT, dUICard.CENTER);
 		shareButton.setClickable(true);
-		shareButton.setDimensions(0, 0);
 		
 		topCard.addObject(topText,dUICard.CENTER,dUICard.TOP);
 		addObject(infoCard, dUICard.LEFT_NO_PADDING, dUICard.CENTER);

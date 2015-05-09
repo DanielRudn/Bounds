@@ -12,9 +12,12 @@ import com.DR.dLib.dTweener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.GdxRuntimeException;
@@ -58,8 +61,9 @@ public class Player extends dObject {
 	public Player(float x,float y, int id)
 	{
 		super(x,y,new Sprite(AssetManager.SkinLoader.getTextureForSkinID(MainGame.PLACEHOLDER_SKIN_ID)));
-		setSkinID(id);
 		trailEffect.load(Gdx.files.internal("trail.p"), Gdx.files.internal(""));
+		trailEffect.getEmitters().get(0).getTint().setColors(new float[]{Color.GREEN.r,Color.GREEN.g, Color.GREEN.b, 1f});
+		setSkinID(id);
 		loadPlayerData();
 	}
 

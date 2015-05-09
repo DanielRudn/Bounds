@@ -1,5 +1,6 @@
 package com.dr.bounds.maps.maptypes;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.dr.bounds.AssetManager;
 import com.dr.bounds.MainGame;
@@ -22,8 +23,9 @@ public class SkyMapType extends MapType {
 			obstacles.add(new BirdObstacle(0,0, AssetManager.getTexture("birdObstacle.png"), player));
 			obstacles.get(x).setRegenerate(false);
 		}
+		super.particleEffect.load(Gdx.files.internal("clouds.p"), Gdx.files.internal(""));
 	}
-	
+
 	@Override
 	protected void generateBlock(int index)
 	{

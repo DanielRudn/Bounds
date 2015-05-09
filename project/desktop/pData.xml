@@ -1,8 +1,8 @@
 <pData>
-	<Coins amount="761"/>
+	<Coins amount="1411"/>
 	<Tutorial complete="false"/>
 	<Scores best="92" combo="51">
-		<RecentScores OldestToLatest="0, 1, 0, 14, 14"/>
+		<RecentScores OldestToLatest="2, 1, 0, 0, 4"/>
 	</Scores>
-	<Skins current="1" SkinID="1, 11"/>
+	<Skins current="6" SkinID="1, 3, 6, 11"/>
 </pData>
