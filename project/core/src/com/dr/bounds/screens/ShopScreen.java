@@ -242,9 +242,9 @@ public class ShopScreen extends dUICardList implements DocGrabberListener, Anima
 					dText motd = new dText(0,0,48f, shop.get("MOTD"));
 					motd.setColor(236f/256f, 240f/256f, 241f/256f,1f);
 					motdContainer.addObject(motd, dUICard.CENTER, dUICard.CENTER);
-					addCardAsObject(motdContainer);
+				//	addCardAsObject(motdContainer);
 					itemCardList.add(motdContainer);
-					motdContainer.setX(motdContainer.getX() + getPadding()*4f);
+				//	motdContainer.setX(motdContainer.getX() + getPadding()*4f);
 					for(int x = 0; x < shop.getChildrenByName("Item").size; x++)
 					{
 						final Element e = shop.getChildrenByName("Item").get(x);
@@ -368,9 +368,9 @@ public class ShopScreen extends dUICardList implements DocGrabberListener, Anima
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		for(int x = 1; x < itemCardList.size(); x++)
 		{
-				if(touchedIndex == x && expandedItem == null && itemCardList.get(x).getBoundingRectangle().contains(MainGame.getVirtualMouseX(), MainGame.getVirtualMouseY()) && this.getScrollDelta() <= 0.2f)
+				if(touchedIndex == x && expandedItem == null && itemCardList.get(x).getBoundingRectangle().contains(MainGame.getVirtualMouseX(), MainGame.getVirtualMouseY()) && this.getScrollDelta() <= 0.1f)
 				{
-					expandedItem = (ShopItemCard) itemCardList.get(x);
+					expandedItem = (ShopItemCard)itemCardList.get(x);
 					expandedItem.expand();
 				}
 		}

@@ -28,6 +28,8 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 
 	// two darker panels containing info about users score and money won
 	private GameInfoCard infoCard;
+	// best score
+	private dText bestScoreText;
 	// players final score for score counter
 	private float playerScore = 0;
 	// player instance
@@ -72,13 +74,17 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		
 		infoCard = new GameInfoCard(0,0, AssetManager.getTexture("card"));
 		
+		bestScoreText = new dText(0,0, 48f, "BEST: 0");
+		bestScoreText.setColor(Color.WHITE);
+		
 		replayButton = new dButton(0,0, new Sprite(AssetManager.getTexture("replay.png")), "");
 		replayButton.setDimensions(192f, 192f);
 		replayButton.setColor(24f/256f, 39f/256f, 53f/256f, .5f);
 		
 		shareButton = new dUICard(0,0, AssetManager.getTexture("card.png"));
 		shareButton.setDimensions(160f, 64f);
-		shareButton.setColor(1f,1f,1f,0f);
+		shareButton.setHasShadow(false);
+		shareButton.setColor(34f/256f, 49f/256f, 63f/256f,1f);
 		dImage shareIcon = new dImage(0,0, AssetManager.getTexture("shareIcon.png"));
 		dText shareText = new dText(0,0,32f, "SHARE");
 		shareText.setColor(Color.WHITE);
@@ -87,6 +93,7 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		shareButton.setClickable(true);
 		
 		topCard.addObject(topText,dUICard.CENTER,dUICard.TOP);
+		topCard.addObject(bestScoreText, dUICard.CENTER, dUICard.BOTTOM);
 		addObject(infoCard, dUICard.LEFT_NO_PADDING, dUICard.CENTER);
 		addCardAsObject(topCard);
 		addObject(shareButton, dUICard.LEFT, dUICard.CENTER);
@@ -172,6 +179,7 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		// set score, combo, and coins
 		infoCard.setCoinText(Integer.toString(player.getCoins()));
 		infoCard.setComboText(Integer.toString(combo));
+		bestScoreText.setText("BEST: " + player.getBestScore());
 	}
 	
 	public void reset()

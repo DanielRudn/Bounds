@@ -97,6 +97,11 @@ public class SettingsScreen extends dScreen implements AnimationStatusListener {
 			hideAnim.start();
 		}
 	}
+	
+	public boolean isOpen()
+	{
+		return expandedCard.getX() == 0;
+	}
 
 	@Override
 	public void switchScreen(dScreen newScreen) { }

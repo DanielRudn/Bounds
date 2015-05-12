@@ -46,7 +46,6 @@ public class GameInfoCard extends dUICard {
 		this.addObjectUnder(coinLabel, this.getIndexOf(coinText));
 		this.addObject(comboText, dUICard.RIGHT, dUICard.CENTER);
 		this.addObjectUnder(comboLabel, this.getIndexOf(comboText));
-		comboLabel.setX(comboText.getX() + comboText.getWidth()/2f - comboLabel.getWidth()/2f);
 		this.addObject(dividerImage, dUICard.CENTER, dUICard.CENTER);
 	}
 	

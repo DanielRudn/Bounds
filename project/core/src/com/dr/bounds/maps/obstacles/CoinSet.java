@@ -61,7 +61,7 @@ public class CoinSet extends dObject
 			if(player.getBoundingRectangle().overlaps(coins.get(x).getBoundingRectangle()) && coins.get(x).getWidth() == 64)
 			{
 				// player hit a coin
-				MainGame.playCoinSound();
+				MainGame.playSound("coin");
 				coins.get(x).hide();
 				player.setCoins(player.getCoins() + 1);
 				GameScreen.incrementPlayerCoins();

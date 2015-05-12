@@ -28,7 +28,7 @@ public class AssetManager {
 			texture.setFilter(filter, filter);
 			textures.put(path.substring(0,path.indexOf(".")), texture);
 		}
-	//	System.out.println("[AssetManager]: loaded texture " + path + " succesfully");
+		System.out.println("[AssetManager]: loaded texture " + path + " succesfully. " + textures.size() + " textures loaded.");
 	}
 	
 	public static void loadAll()

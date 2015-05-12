@@ -8,6 +8,7 @@ import com.DR.dLib.ui.dButton;
 import com.DR.dLib.ui.dImage;
 import com.DR.dLib.ui.dScreen;
 import com.DR.dLib.ui.dUICard;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -161,11 +162,14 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 
 	@Override
 	public void goBack() {
-		if(MainGame.previousScreen != null)
+		if(settingsScreen.isOpen())
 		{
-			//switchScreen(MainGame.previousScreen);
+			settingsScreen.goBack();
 		}
-		settingsScreen.goBack();
+		else
+		{
+			Gdx.app.exit();
+		}
 	}
 	
 	public void switchScreen(dScreen newScreen, boolean hideThis)

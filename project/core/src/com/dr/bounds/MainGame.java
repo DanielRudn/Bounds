@@ -141,19 +141,20 @@ public class MainGame extends ApplicationAdapter {
 		camera.position.set(x,y, camera.position.z);
 	}
 	
-	public static void playScoreSound()
+	public static void playSound(String sound)
 	{
-		scoreSound.play();
-	}
-	
-	public static void playDeathSound()
-	{
-		deathSound.play();
-	}
-	
-	public static void playCoinSound()
-	{
-		deathSound.play();
+		if(sound.equalsIgnoreCase("score"))
+		{
+			scoreSound.play();
+		}
+		else if(sound.equalsIgnoreCase("death"))
+		{
+			deathSound.play();
+		}
+		else if(sound.equalsIgnoreCase("coin"))
+		{
+			deathSound.play();
+		}
 	}
 
 	public static int getPlayerSkinID()

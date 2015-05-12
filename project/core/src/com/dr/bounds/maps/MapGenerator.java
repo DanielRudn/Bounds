@@ -142,7 +142,7 @@ public class MapGenerator implements TimerListener {
 	{
 		if(hadCollision == false && c == true)
 		{
-			MainGame.playDeathSound();
+			MainGame.playSound("death");
 			Gdx.input.vibrate(50);
 		}
 		hadCollision = c;
@@ -196,7 +196,7 @@ public class MapGenerator implements TimerListener {
 		// update combo
 		combo++;
 		// play sound
-		MainGame.playScoreSound();
+		MainGame.playSound("score");
 	}
 	
 	private void setNextType(int mapType)
