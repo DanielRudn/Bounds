@@ -13,7 +13,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.dr.bounds.AssetManager;
+import com.dr.bounds.BoundsAssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 
@@ -48,7 +48,7 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		setHideAnimation(hideAnimation);
 		player = p;
 		
-		titleImage = new dImage(0,0,AssetManager.getTexture("BoundsLogo.png"));
+		titleImage = new dImage(0,0,BoundsAssetManager.getTexture("BoundsLogo.png"));
 		titleImage.setColor(Color.WHITE);
 		
 		settingsScreen = new SettingsScreen(0, 0);
@@ -56,7 +56,7 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		Color buttonColor = new Color(68f/256f,108f/256f,179f/256f, 1f);
 		
 		//fix
-		Texture buttonTexture = AssetManager.getTexture("button");
+		Texture buttonTexture = BoundsAssetManager.getTexture("button");
 		playButton = new dButton(0,0, new Sprite(buttonTexture), "PLAY");
 		playButton.setTextSize(92f);
 		playButton.setColor(buttonColor);
@@ -113,10 +113,6 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		{
 			titleTime = (float)-Math.PI/2f;
 		}
-		if(nextScreen != null)
-		{
-			nextScreen.update(delta);
-		}
 		if(hideAnimation.isActive())
 		{
 			hideAnimation.update(delta);
@@ -126,17 +122,24 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 			showButtonsAnimation.update(delta);
 		}
 		
-		if(playButton.isClicked())
+		if(nextScreen != null)
 		{
-			switchScreen(MainGame.gameScreen);
+			nextScreen.update(delta);
 		}
-		if(skinsButton.isClicked() && nextScreen == null)
+		else
 		{
-			if(shopScreen == null)
+			if(playButton.isClicked())
 			{
-				shopScreen = new ShopScreen(0,0, AssetManager.getTexture("card"), player);
+				switchScreen(MainGame.gameScreen);
 			}
-			switchScreen(shopScreen, false);
+			if(skinsButton.isClicked() && nextScreen == null)
+			{
+				if(shopScreen == null)
+				{
+					shopScreen = new ShopScreen(0,0, BoundsAssetManager.getTexture("card"), player);
+				}
+				switchScreen(shopScreen, false);
+			}
 		}
 	}
 	
@@ -165,6 +168,12 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		if(settingsScreen.isOpen())
 		{
 			settingsScreen.goBack();
+		}
+		else if(nextScreen == shopScreen)
+		{
+			nextScreen.hide();
+			this.show();
+			nextScreen = null;
 		}
 		else
 		{

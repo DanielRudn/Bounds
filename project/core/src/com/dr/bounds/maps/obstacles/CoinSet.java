@@ -20,7 +20,7 @@ public class CoinSet extends dObject
 {
 
 	// types of layouts for the coins
-	private final static int LINEAR = 0, SQUARE = 1, STRAIGHT = 2, HORIZONTAL_WAVE = 3, VERTICAL_WAVE = 4;
+	private final static int DIAGONAL = 0, SQUARE = 1, STRAIGHT = 2, HORIZONTAL_WAVE = 3, VERTICAL_WAVE = 4;
 	// current type of layout,
 	private int currentLayout;
 	// collection of coins
@@ -66,7 +66,7 @@ public class CoinSet extends dObject
 				player.setCoins(player.getCoins() + 1);
 				GameScreen.incrementPlayerCoins();
 			}	
-			if((coins.get(0).getY() - coins.get(0).getHeight()*2) > MainGame.camera.position.y + MainGame.VIRTUAL_WIDTH / 2f && canRegenerate == false)
+			if((coins.get(0).getY()) > MainGame.camera.position.y + MainGame.VIRTUAL_WIDTH / 2f && coins.get(coins.size()-1).getY() > MainGame.camera.position.y + MainGame.VIRTUAL_HEIGHT/2f && canRegenerate == false)
 			{
 				canRegenerate = true;
 			}
@@ -75,16 +75,20 @@ public class CoinSet extends dObject
 	
 	private void setCoinPos(float x, float y)
 	{
-		if(currentLayout == LINEAR)
+		if(currentLayout == DIAGONAL)
 		{
+			// Left side horizontally
+			x = Coin.COIN_WIDTH / 2f;
 			for(int i = 0; i < 9; i++)
 			{
-					coins.get(i).setPos(x + (8 + 64)*i,y + (8 + 64)*i);
+					coins.get(i).setPos(x + (8 + Coin.COIN_WIDTH)*i,y + (8 + Coin.COIN_WIDTH)*i);
 			}
 		}
 		else if(currentLayout == SQUARE)
 		{
 			int row = 0, column = 0;
+			// Centered horizontally
+			x = MainGame.VIRTUAL_WIDTH / 2f - Coin.COIN_WIDTH * 2f;
 			for(int i = 0; i < 9; i++)
 			{
 				if(i % 3 == 0 && i != 0)
@@ -92,29 +96,35 @@ public class CoinSet extends dObject
 					row++;
 					column = 0;
 				}
-				coins.get(i).setPos(x + (16 + 64)*column,y + (16 + 64)*row);
+				coins.get(i).setPos(x + (16 + Coin.COIN_WIDTH)*column,y + (16 + Coin.COIN_WIDTH)*row);
 				column++;
 			}
 		}	
 		else if(currentLayout == STRAIGHT)
 		{
+			// Left side horizontally
+			x = 8f;
 			for(int i = 0; i < 9; i++)
 			{
-				coins.get(i).setPos(x + (16 + 64)*i, y);
+				coins.get(i).setPos(x + (16 + Coin.COIN_WIDTH)*i, y);
 			}
 		}
 		else if(currentLayout == HORIZONTAL_WAVE)
 		{
+			// Left side horizontally
+			x = 8f;
 			for(int i = 0; i < 9; i++)
 			{
-				coins.get(i).setPos(x + (16 + 64)*i, (float) (y + 64*Math.sin((45*i))));
+				coins.get(i).setPos(x + (16 + Coin.COIN_WIDTH)*i, (float) (y + Coin.COIN_WIDTH*Math.sin((45*i))));
 			}
 		}
 		else if(currentLayout == VERTICAL_WAVE)
 		{
+			// Centered horizontally
+			x = MainGame.VIRTUAL_WIDTH / 2f - Coin.COIN_WIDTH;
 			for(int i = 0; i < 9; i++)
 			{
-				coins.get(i).setPos((float) (x + 64*Math.cos(45*i)), y + (16 + 64)*i);
+				coins.get(i).setPos((float) (x + Coin.COIN_WIDTH*Math.cos(45*i)), y + (16 + Coin.COIN_WIDTH)*i);
 			}
 		}
 	}
@@ -152,6 +162,7 @@ public class CoinSet extends dObject
 		{
 			coins.get(x).setDimensions(64, 64);
 			coins.get(x).setAlpha(1f);
+			coins.get(x).getSprite().setRotation(0);
 			coins.get(x).show();
 		}
 		currentLayout = MapGenerator.rng.nextInt(5);
@@ -171,13 +182,14 @@ public class CoinSet extends dObject
 
 class Coin extends dImage {
 
+	public static final float COIN_WIDTH = 64f;
 	private float time = 0, duration = 0.5f;
 	private boolean active = false;
+	
 	public Coin(float x, float y, Texture texture) {
 		super(x, y, texture);
 		this.setUpdatable(true);
 	}
-	
 
 	@Override
 	public void update(float delta)
@@ -199,6 +211,7 @@ class Coin extends dImage {
 	public void hide()
 	{
 		active = true;
+		time = 0;
 	}
 	
 	public void show()

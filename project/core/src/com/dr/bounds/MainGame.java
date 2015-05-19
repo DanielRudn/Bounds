@@ -6,12 +6,12 @@ import com.DR.dLib.dValues;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.dr.bounds.screens.GameScreen;
 import com.dr.bounds.screens.MenuScreen;
 
@@ -30,6 +30,7 @@ public class MainGame extends ApplicationAdapter {
 	public static final float VIRTUAL_WIDTH = 720f, VIRTUAL_HEIGHT = 1280f, ASPECT_RATIO = VIRTUAL_WIDTH / VIRTUAL_HEIGHT;
 	public static final int PLACEHOLDER_SKIN_ID = 0;
 	public static final int GAME_VERSION = 1;
+	public static final String COMBO_LEADERBOARD_ID = "CggI-byO8BkQAhAC", SCORE_LEADERBOARD_ID = "CggI-byO8BkQAhAB";
 	
 	// SCREENS
 	public static dScreen currentScreen;
@@ -38,6 +39,8 @@ public class MainGame extends ApplicationAdapter {
 	public static GameScreen gameScreen;
 	
 	public static boolean isPlaying = false;
+	public static boolean isSoundEnabled = false;
+	public static boolean isVibrationEnabled = true;
 	
 	// the time difference between frames
 	private final float DELTA = 1f/60f;
@@ -45,8 +48,7 @@ public class MainGame extends ApplicationAdapter {
 	private float accumulator = 0f;
 	
 	// test, remove
-	private static Sound scoreSound, deathSound;
-	private static Music bgMusic;
+	private static Sound scoreSound, scoreSound2, deathSound;
 	private dText fpsText;
 
 	public MainGame(RequestHandler h)
@@ -59,32 +61,23 @@ public class MainGame extends ApplicationAdapter {
 		Gdx.input.setCatchBackKey(true);
 		camera = new OrthographicCamera(VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
 		camera.setToOrtho(true,VIRTUAL_WIDTH,VIRTUAL_HEIGHT);
-		dValues.camera = camera;
-		dValues.VH = VIRTUAL_HEIGHT;
-		dValues.VW = VIRTUAL_WIDTH;
+		dValues.init(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, camera);
+		BoundsAssetManager.loadAll();
 		
-		AssetManager.loadAll();
+		gameScreen = new GameScreen(0,0,BoundsAssetManager.getTexture("card.png"));
 		
-		gameScreen = new GameScreen(0,0,AssetManager.getTexture("card"));
-		
-		
-		menuScreen = new MenuScreen(0,0,AssetManager.getTexture("card"), gameScreen.getPlayer());
+		menuScreen = new MenuScreen(0,0,BoundsAssetManager.getTexture("card"), gameScreen.getPlayer());
 		
 		batch = new SpriteBatch();
 		
 		scoreSound = Gdx.audio.newSound(Gdx.files.internal("score.wav"));
+		scoreSound2 = Gdx.audio.newSound(Gdx.files.internal("score2.wav"));
 		deathSound = Gdx.audio.newSound(Gdx.files.internal("death.wav"));
-		
-		bgMusic = Gdx.audio.newMusic(Gdx.files.internal("GoCartLoop.mp3"));
 		
 		fpsText = new dText(5,5,24,"FPS: 60");
 		fpsText.setColor(Color.WHITE);
 		currentScreen = menuScreen;
 		currentScreen.show();
-		
-		bgMusic.setLooping(true);
-		bgMusic.setVolume(.4f);
-	//	bgMusic.play();
 	}
 
 	@Override
@@ -102,7 +95,6 @@ public class MainGame extends ApplicationAdapter {
 		accumulator += Gdx.graphics.getDeltaTime();
 		while(accumulator >= DELTA)
 		{
-			//inviteCard.update(DELTA);
 			update(DELTA);
 			fpsText.setPos(camera.position.x - MainGame.VIRTUAL_WIDTH / 2f + 5, camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f + 5f);
 			fpsText.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
@@ -143,17 +135,27 @@ public class MainGame extends ApplicationAdapter {
 	
 	public static void playSound(String sound)
 	{
-		if(sound.equalsIgnoreCase("score"))
+		if(isSoundEnabled)
 		{
-			scoreSound.play();
-		}
-		else if(sound.equalsIgnoreCase("death"))
-		{
-			deathSound.play();
-		}
-		else if(sound.equalsIgnoreCase("coin"))
-		{
-			deathSound.play();
+			if(sound.equalsIgnoreCase("score"))
+			{
+				if(MathUtils.randomBoolean())
+				{
+					scoreSound.play(0.75f);
+				}
+				else
+				{
+					scoreSound2.play(0.75f);
+				}
+			}
+			else if(sound.equalsIgnoreCase("death"))
+			{
+				deathSound.play();
+			}
+			else if(sound.equalsIgnoreCase("coin"))
+			{
+				deathSound.play();
+			}
 		}
 	}
 
@@ -165,5 +167,10 @@ public class MainGame extends ApplicationAdapter {
 	public static void setPlayerSkin(byte id) {
 		gameScreen.setPlayerSkin(id);
 	}
-
+	
+	@Override
+	public void dispose()
+	{
+		BoundsAssetManager.disposeAll();
+	}
 }

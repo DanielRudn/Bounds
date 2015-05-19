@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.dr.bounds.AssetManager;
+import com.dr.bounds.BoundsAssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 import com.dr.bounds.animations.ShopItemCardExpandAnimation;
@@ -62,10 +62,10 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 		imageCard.setDimensions(CARD_WIDTH*.25f, CARD_HEIGHT);
 		imageCard.setHasShadow(false);
 		imageCard.setColor(246f/256f, 246f/256f, 246f/256f, 1f);
-		itemImage = new dImage(0,0,AssetManager.SkinLoader.getTextureForSkinID((int)id));
+		itemImage = new dImage(0,0,BoundsAssetManager.SkinLoader.getTextureForSkinID((int)id));
 		itemImage.setHasShadow(true);
 		
-		coinImage = new dImage(0,0, AssetManager.getTexture("coin.png"));
+		coinImage = new dImage(0,0, BoundsAssetManager.getTexture("coin.png"));
 		coinImage.setDimensions(32f, 32f);
 	
 		imageCard.addObject(itemImage,dUICard.CENTER, dUICard.CENTER);
@@ -79,16 +79,16 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 		
 		if(player.isSkinUnlocked(id))
 		{
-			acceptButton = new dButton(MainGame.VIRTUAL_WIDTH/2f, MainGame.VIRTUAL_HEIGHT*2f, new Sprite(texture), "SET", AssetManager.getTexture("circle"), 2f);
+			acceptButton = new dButton(MainGame.VIRTUAL_WIDTH/2f, MainGame.VIRTUAL_HEIGHT*2f, new Sprite(texture), "SET", BoundsAssetManager.getTexture("circle"), 2f);
 			acceptButton.setColor(46f/256f, 204f/256f, 113f/256f,1f);
 
-			ownedImage=  new dImage(0,0,AssetManager.getTexture("checkMark.png"));
+			ownedImage=  new dImage(0,0,BoundsAssetManager.getTexture("checkMark.png"));
 			ownedImage.setDimensions(40f, 40f);
 			addObject(ownedImage,dUICard.RIGHT, dUICard.CENTER);
 		}
 		else
 		{
-			acceptButton = new dButton(MainGame.VIRTUAL_WIDTH/2f, MainGame.VIRTUAL_HEIGHT*2f, new Sprite(texture), "BUY", AssetManager.getTexture("circle"), 2f);
+			acceptButton = new dButton(MainGame.VIRTUAL_WIDTH/2f, MainGame.VIRTUAL_HEIGHT*2f, new Sprite(texture), "BUY", BoundsAssetManager.getTexture("circle"), 2f);
 			acceptButton.setColor(Color.GRAY);
 		}
 		acceptButton.setTextSize(92f);
@@ -143,7 +143,7 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 						player.setCoins(player.getCoins() - Integer.parseInt(itemPrice.getText()));
 						acceptButton.setText("SET");
 						acceptButton.setColor(46f/256f, 204f/256f, 113f/256f,1f);
-						ownedImage=  new dImage(0,0,AssetManager.getTexture("checkMark.png"));
+						ownedImage=  new dImage(0,0,BoundsAssetManager.getTexture("checkMark.png"));
 						ownedImage.setDimensions(40f, 40f);
 						addObject(ownedImage,dUICard.RIGHT, dUICard.CENTER);
 						ownedImage.setPos(getX() + getWidth() - getPadding() - ownedImage.getWidth(), getY() + CARD_HEIGHT - getPadding() - ownedImage.getHeight());

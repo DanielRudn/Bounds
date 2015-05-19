@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import com.DR.dLib.animations.AnimationStatusListener;
 import com.DR.dLib.animations.SlideExponentialAnimation;
 import com.DR.dLib.ui.dButton;
-import com.DR.dLib.ui.dImage;
 import com.DR.dLib.ui.dScreen;
 import com.DR.dLib.ui.dText;
 import com.DR.dLib.ui.dUICardList;
@@ -18,9 +17,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
-import com.dr.bounds.AssetManager;
+import com.dr.bounds.BoundsAssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
+import com.dr.bounds.ui.ImageButton;
 import com.dr.bounds.ui.RecentGamesGraph;
 import com.dr.bounds.ui.GameInfoCard;
 
@@ -49,7 +49,7 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 	// test
 	private ShapeRenderer sr;
 	// buttons
-	private dUICard shareButton;
+	private ImageButton shareButton, leaderboardsButton, achievementsButton;
 	
 	public GameOverScreen(float x, float y, Texture texture, Player player) {
 		super(x, y, texture, new ArrayList<dUICard>());
@@ -60,7 +60,7 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		this.player = player;
 		
 		showAnimation = new SlideExponentialAnimation(1f, this, 123, -MainGame.VIRTUAL_WIDTH, 0, this);
-		setShowAnimation(showAnimation);
+		this.setShowAnimation(showAnimation);
 		
 		topCard = new dUICard(getX(), getY(), texture);
 		topCard.setColor(getColor());
@@ -72,32 +72,34 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		topText = new dText(0,0,64f,"GAME OVER");
 		topText.setColor(Color.WHITE);
 		
-		infoCard = new GameInfoCard(0,0, AssetManager.getTexture("card"));
+		infoCard = new GameInfoCard(0,0, BoundsAssetManager.getTexture("card"));
 		
 		bestScoreText = new dText(0,0, 48f, "BEST: 0");
 		bestScoreText.setColor(Color.WHITE);
 		
-		replayButton = new dButton(0,0, new Sprite(AssetManager.getTexture("replay.png")), "");
+		replayButton = new dButton(0,0, new Sprite(BoundsAssetManager.getTexture("replay.png")), "");
 		replayButton.setDimensions(192f, 192f);
 		replayButton.setColor(24f/256f, 39f/256f, 53f/256f, .5f);
 		
-		shareButton = new dUICard(0,0, AssetManager.getTexture("card.png"));
-		shareButton.setDimensions(160f, 64f);
-		shareButton.setHasShadow(false);
+		shareButton = new ImageButton(0, 0, BoundsAssetManager.getTexture("card"), BoundsAssetManager.getTexture("shareIcon.png"), "SHARE");
 		shareButton.setColor(34f/256f, 49f/256f, 63f/256f,1f);
-		dImage shareIcon = new dImage(0,0, AssetManager.getTexture("shareIcon.png"));
-		dText shareText = new dText(0,0,32f, "SHARE");
-		shareText.setColor(Color.WHITE);
-		shareButton.addObject(shareIcon, dUICard.LEFT, dUICard.CENTER);
-		shareButton.addObject(shareText, dUICard.RIGHT, dUICard.CENTER);
-		shareButton.setClickable(true);
+		
+		leaderboardsButton = new ImageButton(0, 0, BoundsAssetManager.getTexture("card"), BoundsAssetManager.getTexture("leaderboardsIcon.png"), "SCORES");
+		leaderboardsButton.setColor(34f/256f, 49f/256f, 63f/256f,1f);
+		
+		achievementsButton = new ImageButton(0, 0, BoundsAssetManager.getTexture("card"), BoundsAssetManager.getTexture("achievementsIcon.png"), "TROPHIES");
+		achievementsButton.setColor(34f/256f, 49f/256f, 63f/256f,1f);
 		
 		topCard.addObject(topText,dUICard.CENTER,dUICard.TOP);
 		topCard.addObject(bestScoreText, dUICard.CENTER, dUICard.BOTTOM);
 		addObject(infoCard, dUICard.LEFT_NO_PADDING, dUICard.CENTER);
 		addCardAsObject(topCard);
 		addObject(shareButton, dUICard.LEFT, dUICard.CENTER);
+		addObject(leaderboardsButton, dUICard.CENTER, dUICard.CENTER);
+		addObject(achievementsButton, dUICard.RIGHT, dUICard.CENTER);
 		shareButton.setY(shareButton.getY() + 192f);
+		leaderboardsButton.setY(shareButton.getY());
+		achievementsButton.setY(shareButton.getY());
 		addObject(replayButton, dUICard.RIGHT, dUICard.BOTTOM);
 		replayButton.setOriginCenter();
 		
@@ -116,7 +118,6 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		{
 			showAnimation.update(delta);
 		}
-		// spin replay button on click
 		if(isVisible())
 		{
 			if(replayButton.isClicked())
@@ -133,6 +134,15 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 			{
 				MainGame.requestHandler.showShareIntent("I got a score of " + this.playerScore + " in Bounds!");
 			}
+			else if(leaderboardsButton.isClicked())
+			{
+				MainGame.requestHandler.showLeaderboard("");
+			}
+			else if(achievementsButton.isClicked())
+			{
+				System.out.println("achievements");
+			}
+			
 			
 			// single player reset
 			if(wantsReplay)
@@ -179,6 +189,7 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		// set score, combo, and coins
 		infoCard.setCoinText(Integer.toString(player.getCoins()));
 		infoCard.setComboText(Integer.toString(combo));
+		infoCard.setBestComboText(Integer.toString(player.getBestCombo()));
 		bestScoreText.setText("BEST: " + player.getBestScore());
 	}
 	
@@ -228,7 +239,7 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		if(ID == 123)
 		{
 			setPos(MainGame.camera.position.x + MainGame.VIRTUAL_WIDTH /2f,MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f);
-			rgg = new RecentGamesGraph(getWidth() + getWidth()/2f - 396f / 2f , topText.getY() + 128f, AssetManager.getTexture("card"), 396,256, "Score Last 5 Games");
+			rgg = new RecentGamesGraph(getWidth() + getWidth()/2f - 396f / 2f , topText.getY() + 128f, BoundsAssetManager.getTexture("card"), 396,256, "Score Last 5 Games");
 			player.addRecentScore((int) playerScore);
 			if(playerScore > player.getBestScore())
 			{

@@ -1,7 +1,7 @@
 package com.dr.bounds.maps.maptypes;
 
 import com.badlogic.gdx.graphics.Color;
-import com.dr.bounds.AssetManager;
+import com.dr.bounds.BoundsAssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 import com.dr.bounds.maps.MapGenerator;
@@ -16,7 +16,7 @@ public class IceMapType extends MapType {
 		bgColor = new Color(228f/256f, 241f/256f, 254f/256f,1f);
 		for(int x = 0; x < 10; x++)
 		{
-			obstacles.add(new IceObstacle(0,0, AssetManager.getTexture("ice.png"), player));
+			obstacles.add(new IceObstacle(0,0, BoundsAssetManager.getTexture("ice.png"), player));
 			obstacles.get(x).setRegenerate(false);
 		}
 	}
@@ -28,4 +28,10 @@ public class IceMapType extends MapType {
 		obstacles.get(index).setY(obstacles.get(getPreviousIndex(index)).getY() - MIN_DISTANCE - MapGenerator.rng.nextInt(MAX_DISTANCE));
 	}
 
+	@Override
+	public void dispose()
+	{
+		super.dispose();
+		BoundsAssetManager.dispose("ice.png");
+	}
 }

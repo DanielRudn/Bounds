@@ -11,7 +11,7 @@ import com.DR.dLib.ui.dText;
 import com.DR.dLib.ui.dToggleCard;
 import com.DR.dLib.ui.dUICard;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.dr.bounds.AssetManager;
+import com.dr.bounds.BoundsAssetManager;
 import com.dr.bounds.MainGame;
 
 public class SettingsScreen extends dScreen implements AnimationStatusListener {
@@ -24,19 +24,19 @@ public class SettingsScreen extends dScreen implements AnimationStatusListener {
 	private dToggleCard soundCard, vibrationCard;
 	
 	public SettingsScreen(float x, float y) {
-		super(x, y, AssetManager.getTexture("circle"));
+		super(x, y, BoundsAssetManager.getTexture("circle"));
 		this.setColor(68f/256f,108f/256f,179f/256f, 1f);
 		this.setClickable(true);
 		this.setHasShadow(true);
 		this.setDimensions(128f, 128f);
 		this.setClipping(true);
-		circleImage = new dImage(-256,0, AssetManager.getTexture("circle"));
+		circleImage = new dImage(-256,0, BoundsAssetManager.getTexture("circle"));
 		circleImage.setColor(this.getColor());
-		gearImage = new dImage(0, 0, AssetManager.getTexture("gear.png"));
+		gearImage = new dImage(0, 0, BoundsAssetManager.getTexture("gear.png"));
 		showAnim = new ExpandAnimation(circleImage, 3f, this, SHOW_ANIM_ID, circleImage.getColor(), MainGame.VIRTUAL_HEIGHT*2f);
 		hideAnim = new ShrinkAnimation(circleImage, 2f, this, HIDE_ANIM_ID, 128f, MainGame.VIRTUAL_HEIGHT * 2f);
 		
-		expandedCard = new dUICard(0,0, AssetManager.getTexture("card"));
+		expandedCard = new dUICard(0,0, BoundsAssetManager.getTexture("card"));
 		expandedCard.setDimensions(MainGame.VIRTUAL_WIDTH, 444f);
 		expandedCard.setHasShadow(false);
 		expandedCard.setAlpha(0f);
@@ -48,13 +48,13 @@ public class SettingsScreen extends dScreen implements AnimationStatusListener {
 		settingsText.setColor(0f, 0f, 0f, 0f);
 		expandedCard.addObject(settingsText, dUICard.CENTER, dUICard.TOP);
 		
-		soundCard = new dToggleCard(0,0, AssetManager.getTexture("card"), AssetManager.getTexture("button"), AssetManager.getTexture("circle"), "SOUND", expandedCard.getWidth(), 64f);
+		soundCard = new dToggleCard(0,0, BoundsAssetManager.getTexture("card"), BoundsAssetManager.getTexture("button"), BoundsAssetManager.getTexture("circle"), "SOUND", expandedCard.getWidth(), 64f);
 		soundCard.setToggleColor(this.getColor());
 		soundCard.setHasShadow(false);
 		soundCard.setAlpha(0f);
 		expandedCard.addObjectUnder(soundCard, expandedCard.getIndexOf(settingsText));
 		
-		vibrationCard = new dToggleCard(0,0, AssetManager.getTexture("card"), AssetManager.getTexture("button"), AssetManager.getTexture("circle"), "VIBRATION", expandedCard.getWidth(), 64f);
+		vibrationCard = new dToggleCard(0,0, BoundsAssetManager.getTexture("card"), BoundsAssetManager.getTexture("button"), BoundsAssetManager.getTexture("circle"), "VIBRATION", expandedCard.getWidth(), 64f);
 		vibrationCard.setToggleColor(this.getColor());
 		vibrationCard.setHasShadow(false);
 		vibrationCard.setAlpha(0f);
@@ -160,7 +160,7 @@ public class SettingsScreen extends dScreen implements AnimationStatusListener {
 				gearImage.setColor(dTweener.LinearEase(time, 0f, 1f, duration / 4f),
 						dTweener.LinearEase(time, 0f, 1f, duration / 4f),
 							dTweener.LinearEase(time, 0f, 1f, duration / 4f), 1f);
-				circleImage.setX(dTweener.LinearEase(time, 128f, -112f, duration / 4f));
+				circleImage.setX(dTweener.LinearEase(time, 128f, -192f, duration / 4f));
 				soundCard.setX(dTweener.ExponentialEaseOut(time - 0.15f, 0, -MainGame.VIRTUAL_WIDTH,  duration / 4f));
 				vibrationCard.setX(dTweener.ExponentialEaseOut(time, 0, -MainGame.VIRTUAL_WIDTH, duration / 4f));
 			}

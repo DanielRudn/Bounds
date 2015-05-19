@@ -2,7 +2,7 @@ package com.dr.bounds.maps.maptypes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.dr.bounds.AssetManager;
+import com.dr.bounds.BoundsAssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 import com.dr.bounds.maps.MapGenerator;
@@ -19,7 +19,7 @@ public class DefaultMapType extends MapType {
 		// add 12 obstacles to start with
 		for(int x = 0; x < 12; x++)
 		{
-			obstacles.add(new dObstacle(0,0, AssetManager.getTexture("obstacle.png"), player));
+			obstacles.add(new dObstacle(0,0, BoundsAssetManager.getTexture("obstacle.png"), player));
 			obstacles.get(x).setHeight(32f);
 			obstacles.get(x).setRegenerate(false);
 			obstacles.get(x).setColor(210f/256f, 82f/256f, 127f/256f,1f);
@@ -31,9 +31,9 @@ public class DefaultMapType extends MapType {
 	public void update(float delta)
 	{
 		super.update(delta);
-		if(super.switchBG == false)
+		if(super.isTransitioning == false)
 		{
-			super.particleEffect.setPosition(0, MainGame.camera.position.y);
+			super.particleEffect.setPosition(MainGame.VIRTUAL_WIDTH/2f + 32f, MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT);
 		}
 	}
 	
@@ -59,5 +59,11 @@ public class DefaultMapType extends MapType {
 		obstacles.get(index).setY(obstacles.get(getPreviousIndex(index)).getY() - MIN_DISTANCE - MapGenerator.rng.nextInt(MAX_DISTANCE));
 	}
 	
+	@Override
+	public void dispose()
+	{
+		super.dispose();
+		BoundsAssetManager.dispose("obstacle.png");
+	}
 
 }

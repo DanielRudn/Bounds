@@ -61,6 +61,12 @@
 		<price>2000</price>
 		<version>1</version>
 	</Item>
+	<Item>
+		<name>Android</name>
+		<id>14</id>
+		<price>499</price>
+		<version>1</version>
+	</Item>
 <Item>
 		<name>Donut</name>
 		<id>11</id>
@@ -77,6 +83,24 @@
 		<name>Environment</name>
 		<id>13</id>
 		<price>999</price>
+		<version>1</version>
+	</Item>
+<Item>
+		<name>Cracks</name>
+		<id>15</id>
+		<price>1200</price>
+		<version>1</version>
+	</Item>
+<Item>
+		<name>Green Eye</name>
+		<id>16</id>
+		<price>333</price>
+		<version>1</version>
+	</Item>
+<Item>
+		<name>Heart</name>
+		<id>17</id>
+		<price>500</price>
 		<version>1</version>
 	</Item>
 </Shop>

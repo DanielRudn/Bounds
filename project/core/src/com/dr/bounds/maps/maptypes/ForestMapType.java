@@ -2,7 +2,7 @@ package com.dr.bounds.maps.maptypes;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Intersector;
-import com.dr.bounds.AssetManager;
+import com.dr.bounds.BoundsAssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 import com.dr.bounds.maps.MapGenerator;
@@ -21,7 +21,7 @@ public class ForestMapType extends MapType {
 		// make 8 obstacles
 		for(int x = 0; x < 8; x++)
 		{
-			obstacles.add(new ForestObstacle(0,0, AssetManager.getTexture("circle.png"), player));
+			obstacles.add(new ForestObstacle(0,0, BoundsAssetManager.getTexture("treetop.png"), player));
 			obstacles.get(x).setRegenerate(false);
 		}
 	}
@@ -42,10 +42,10 @@ public class ForestMapType extends MapType {
 	@Override
 	protected void generateBlock(int index)
 	{
-		int dimensions = MIN_WIDTH + MapGenerator.rng.nextInt(64);
+		int dimensions = MIN_WIDTH + MapGenerator.rng.nextInt(128);
 		obstacles.get(index).setDimensions(dimensions, dimensions);
 		// set trunk dimensions
-		((ForestObstacle)obstacles.get(index)).getTrunk().setDimensions(16f + MapGenerator.rng.nextInt(8), 16f + MapGenerator.rng.nextInt(256));
+		((ForestObstacle)obstacles.get(index)).getTrunk().setDimensions(16f + MapGenerator.rng.nextInt(8), 16f + MapGenerator.rng.nextInt(48));
 		int side = MapGenerator.rng.nextInt(11); // 0,1,5,6,7 is LEFT, 2,3,8,9,10 is RIGHT, 4 is center
 		if(side == 0 || side == 1 || side == 5 || side == 6 || side == 7)// left
 		{
@@ -62,4 +62,10 @@ public class ForestMapType extends MapType {
 		obstacles.get(index).setY(obstacles.get(getPreviousIndex(index)).getY() - MIN_DISTANCE - MapGenerator.rng.nextInt(MAX_DISTANCE));
 	}
 
+	@Override
+	public void dispose()
+	{
+		super.dispose();
+		BoundsAssetManager.dispose("treetop.png");
+	}
 }

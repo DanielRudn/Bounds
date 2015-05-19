@@ -54,7 +54,7 @@ public class AndroidLauncher extends AndroidApplication implements RequestHandle
 		else
 		{
 			Log.d("BOUNDS","Connecting client..");
-		//	apiClient.connect();
+			apiClient.connect();
 		}
 	}
 	
@@ -161,13 +161,24 @@ public class AndroidLauncher extends AndroidApplication implements RequestHandle
 	@Override
 	public void submitToLeaderboard(int data, String leaderboardID)
 	{
-		Games.Leaderboards.submitScore(apiClient, leaderboardID, data);
+		if(isConnected())
+		{
+			Games.Leaderboards.submitScore(apiClient, leaderboardID, data);
+		}
 	}
 	
 	@Override
 	public void showLeaderboard(String leaderboardID)
 	{
-		startActivityForResult(Games.Leaderboards.getLeaderboardIntent(apiClient, leaderboardID), 20001);
+		if(isConnected())
+		{
+		//	startActivityForResult(Games.Leaderboards.getLeaderboardIntent(apiClient, leaderboardID), 20001);
+			startActivityForResult(Games.Leaderboards.getAllLeaderboardsIntent(apiClient), 20001);
+		}
+		else
+		{
+			apiClient.connect();
+		}
 	}
 	
 	@Override

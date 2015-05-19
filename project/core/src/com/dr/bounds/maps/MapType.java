@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
-import com.dr.bounds.AssetManager;
+import com.dr.bounds.BoundsAssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 import com.dr.bounds.maps.obstacles.CoinSet;
@@ -114,7 +114,8 @@ public abstract class MapType {
 	
 	public void update(float delta)
 	{
-		if(switchBG == false)
+	//	if(switchBG == false)
+		if(this.isTransitioning == false)
 		{
 			particleEffect.update(delta);
 			particleEffect.setPosition(0, MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f);
@@ -290,28 +291,13 @@ public abstract class MapType {
 		if(coinSet != null && coinSet.canRegenerate())
 		{
 			coinSet.generate();
-			/*int side = MapGenerator.rng.nextInt(11); // 0,1,5,6,7 is LEFT, 2,3,8,9,10 is RIGHT, 4 is center
-			if(side == 0 || side == 1 || side == 6 || side == 7)// left
-			{
-				coinSet.setX(64);
-			}
-			else if(side == 2 || side == 3 || side == 8 || side == 10)// right
-			{
-				// 64 is the width of the coins
-				coinSet.setX(MainGame.VIRTUAL_WIDTH - (64 + 16) * coinSet.getNumberOfCoins() - 64);	
-			}
-			else if(side == 4 || side == 5 || side == 9)// center
-			{
-				coinSet.setX(MainGame.VIRTUAL_WIDTH / 2f - obstacles.get(index).getWidth() / 2f + (-50 + MapGenerator.rng.nextInt(100)));
-			}*/
-			coinSet.setX(MainGame.VIRTUAL_WIDTH / 2f - obstacles.get(index).getWidth() / 2f + (-50 + MapGenerator.rng.nextInt(100)));
+			coinSet.setX(0);
 			coinSet.setY(obstacles.get(index).getY() - MIN_DISTANCE - MapGenerator.rng.nextInt(MAX_DISTANCE));
-			//System.out.println("generated at x: " + coinSet.getX() + " y: " + coinSet.getY());
 		}
 		else if(coinSet == null)
 		{
 			// make a new CoinSet and then generate it
-			coinSet = new CoinSet(0,0,AssetManager.getTexture("coin.png"), player);
+			coinSet = new CoinSet(0,0,BoundsAssetManager.getTexture("coin.png"), player);
 			generateCoinSet(index);
 		}
 	}
@@ -392,4 +378,10 @@ public abstract class MapType {
 		}
 		return i-1;
 	}	
+	
+	public void dispose()
+	{
+		particleEffect.dispose();
+	}
+
 }

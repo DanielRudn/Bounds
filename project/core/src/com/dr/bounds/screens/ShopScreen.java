@@ -25,7 +25,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
-import com.dr.bounds.AssetManager;
+import com.dr.bounds.BoundsAssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 import com.dr.bounds.animations.ShopItemsSlideAnimation;
@@ -236,7 +236,7 @@ public class ShopScreen extends dUICardList implements DocGrabberListener, Anima
 				@Override
 				public void run() {
 					// load motd
-					motdContainer = new dUICard(0,0,AssetManager.getTexture("card"));
+					motdContainer = new dUICard(0,0,BoundsAssetManager.getTexture("card"));
 					motdContainer.setColor(titleCard.getColor());
 					motdContainer.setDimensions(ShopItemCard.CARD_WIDTH, 64f);
 					dText motd = new dText(0,0,48f, shop.get("MOTD"));
@@ -411,14 +411,14 @@ class ShopSideBar extends dUICard
 		this.setPadding(0);
 		this.setHasShadow(false);
 		shopScreen = container;
-		Texture circle = AssetManager.getTexture("circle");
+		Texture circle = BoundsAssetManager.getTexture("circle");
 		circle.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		shopHome = new dUICard(0,0,texture);
 		shopHome.setHasShadow(false);
 		shopHome.setClickable(true, circle);
 		shopHome.setDimensions(getWidth(),getWidth());
 		shopHome.setColor(234f/256f,76f/256f,136f/256f,1f);
-		homeIcon = new dImage(0,0,new Sprite(AssetManager.getTexture("homeIcon.png")));
+		homeIcon = new dImage(0,0,new Sprite(BoundsAssetManager.getTexture("homeIcon.png")));
 		homeIcon.setColor(0,0,0,0.25f);
 		homeIcon.setDimensions(shopHome.getWidth() / 2f, shopHome.getHeight() / 2f);
 		shopHome.addObject(homeIcon, dUICard.CENTER, dUICard.CENTER);

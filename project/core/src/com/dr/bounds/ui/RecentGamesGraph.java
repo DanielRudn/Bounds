@@ -15,7 +15,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
-import com.dr.bounds.AssetManager;
+import com.dr.bounds.BoundsAssetManager;
 
 public class RecentGamesGraph extends dUICard {
 
@@ -51,7 +51,7 @@ public class RecentGamesGraph extends dUICard {
 		xAxis.setDimensions(width, 3f);
 		yAxis.setDimensions(3f, height);
 		
-		scoreTag = new dImage(0,0, AssetManager.getTexture("tag.png"));
+		scoreTag = new dImage(0,0, BoundsAssetManager.getTexture("tag.png"));
 		scoreTag.setAlpha(0.5f);
 		scoreTag.setDimensions(92f, 48f);
 		scoreText = new dText(0,0, 42f, "0");
@@ -60,7 +60,7 @@ public class RecentGamesGraph extends dUICard {
 		this.title = new dText(0,0,36f, title);
 		this.title.setColor(Color.WHITE);
 		
-		pointTexture = AssetManager.getTexture("circle");
+		pointTexture = BoundsAssetManager.getTexture("circle");
 		points = new ArrayList<dImage>();
 		
 		sr = new ShapeRenderer();

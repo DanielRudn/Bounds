@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
-import com.dr.bounds.AssetManager;
+import com.dr.bounds.BoundsAssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 import com.dr.bounds.maps.MapGenerator;
@@ -28,7 +28,7 @@ public class SpaceMapType extends MapType {
 		// add 4 obstacles to start with
 		for(int x = 0; x < 4; x++)
 		{
-			obstacles.add(new PlanetObstacle(0,0, AssetManager.getTexture("planet.png"), player, MapGenerator.rng));
+			obstacles.add(new PlanetObstacle(0,0, BoundsAssetManager.getTexture("planet.png"), player, MapGenerator.rng));
 			obstacles.get(x).setRegenerate(false);
 		}
 		super.particleEffect.load(Gdx.files.internal("stars.p"), Gdx.files.internal(""));
@@ -81,6 +81,15 @@ public class SpaceMapType extends MapType {
 		}
 		((PlanetObstacle)obstacles.get(index)).generate();
 		obstacles.get(index).setY(obstacles.get(getPreviousIndex(index)).getY() - MIN_DISTANCE - MapGenerator.rng.nextInt(MAX_DISTANCE));
+	}
+	
+	@Override
+	public void dispose()
+	{
+		super.dispose();
+		BoundsAssetManager.dispose("planet.png");
+		BoundsAssetManager.dispose("planetRing.png");
+		BoundsAssetManager.dispose("moon.png");
 	}
 
 }

@@ -2,7 +2,7 @@ package com.dr.bounds.maps.maptypes;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
-import com.dr.bounds.AssetManager;
+import com.dr.bounds.BoundsAssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 import com.dr.bounds.maps.MapGenerator;
@@ -23,7 +23,7 @@ public class SpikeMapType extends MapType{
 		gen.setScoreIncrementAmount(1);
 		for(int x = 0; x < 6; x++)
 		{
-			this.getObstacles().add(new SpikeObstacle(0,0,AssetManager.getTexture("spike2.png"), player));
+			this.getObstacles().add(new SpikeObstacle(0,0,BoundsAssetManager.getTexture("spike2.png"), player));
 		}
 	}
 	
@@ -66,6 +66,13 @@ public class SpikeMapType extends MapType{
 			obstacles.get(index).setX(MainGame.VIRTUAL_WIDTH / 2f - obstacles.get(index).getWidth() / 2f + (-50 + MapGenerator.rng.nextInt(100)));
 		}
 		obstacles.get(index).setY(obstacles.get(getPreviousIndex(index)).getY() - MIN_DISTANCE - MapGenerator.rng.nextInt(MAX_DISTANCE));
+	}
+	
+	@Override
+	public void dispose()
+	{
+		super.dispose();
+		BoundsAssetManager.dispose("spike2.png");
 	}
 
 }

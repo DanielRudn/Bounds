@@ -8,7 +8,7 @@ import com.DR.dLib.ui.dImage;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.dr.bounds.AssetManager;
+import com.dr.bounds.BoundsAssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 
@@ -53,9 +53,9 @@ public class MapGenerator implements TimerListener {
 		this.player = player;
 		currentType = MapTypeFactory.getMapType(mapType, this.player, this);
 		
-		transitionImage = new dImage(0,2000, AssetManager.getTexture("transitionDevice.png"));
+		transitionImage = new dImage(0,2000, BoundsAssetManager.getTexture("transitionDevice.png"));
 		
-		typeSwitchTimer = new dTimer(5f,5f,0,this);
+		typeSwitchTimer = new dTimer(7.5f,7.5f,0,this);
 		typeSwitchTimer.start();
 	}
 	
@@ -70,6 +70,7 @@ public class MapGenerator implements TimerListener {
 		typeSwitchTimer.update(delta);
 		if(nextType != null && currentType.shouldSwitch())
 		{
+			currentType.dispose();
 			currentType = nextType;
 			nextType = null;
 			typeSwitchTimer.start();
@@ -173,6 +174,7 @@ public class MapGenerator implements TimerListener {
 		score = 0;
 		combo = 0;
 		transitionImage.setY(MainGame.VIRTUAL_HEIGHT * 2f);
+		typeSwitchTimer.stop();
 	}
 	
 	public void generateFirstSet()
@@ -215,6 +217,11 @@ public class MapGenerator implements TimerListener {
 	public int getScore()
 	{
 		return score;
+	}
+	
+	public int getScoreIncrementAmount()
+	{
+		return scoreIncrementAmount;
 	}
 	
 	public int getCombo()

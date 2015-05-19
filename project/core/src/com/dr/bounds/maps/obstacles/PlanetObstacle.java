@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.dr.bounds.AssetManager;
+import com.dr.bounds.BoundsAssetManager;
 import com.dr.bounds.Player;
 import com.dr.bounds.maps.dObstacle;
 
@@ -121,7 +121,7 @@ public class PlanetObstacle extends dObstacle {
 		{
 			if(hasMoon == false)
 			{
-				moonImage = new dImage(0,0,AssetManager.getTexture("moon.png"));
+				moonImage = new dImage(0,0,BoundsAssetManager.getTexture("moon.png"));
 			}
 			hasMoon = true;
 			moonImage.setDimensions(64f, 64f);
@@ -148,7 +148,7 @@ public class PlanetObstacle extends dObstacle {
 		{
 			if(hasRing == false)
 			{
-				ringImage = new dImage(0,0,AssetManager.getTexture("planetRing.png"));
+				ringImage = new dImage(0,0,BoundsAssetManager.getTexture("planetRing.png"));
 			}
 			hasRing = true;
 			ringImage.setHeight(this.getHeight() * 1.5f);

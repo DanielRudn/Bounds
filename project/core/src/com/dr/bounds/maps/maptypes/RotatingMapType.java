@@ -2,7 +2,7 @@ package com.dr.bounds.maps.maptypes;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Intersector;
-import com.dr.bounds.AssetManager;
+import com.dr.bounds.BoundsAssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 import com.dr.bounds.maps.MapGenerator;
@@ -24,7 +24,7 @@ public class RotatingMapType extends MapType{
 
 		for(int x = 0; x < 15; x++)
 		{
-			obstacles.add(new RotatingObstacle(0,0, AssetManager.getTexture("rotating.png"), player));
+			obstacles.add(new RotatingObstacle(0,0, BoundsAssetManager.getTexture("rotating.png"), player));
 			obstacles.get(x).setRegenerate(false);
 		}
 	}
@@ -70,4 +70,10 @@ public class RotatingMapType extends MapType{
 		obstacles.get(index).setY(obstacles.get(getPreviousIndex(index)).getY() - MIN_DISTANCE - MapGenerator.rng.nextInt(MAX_DISTANCE));
 	}
 
+	@Override
+	public void dispose()
+	{
+		super.dispose();
+		BoundsAssetManager.dispose("rotating.png");
+	}
 }

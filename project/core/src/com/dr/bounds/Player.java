@@ -13,11 +13,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.GdxRuntimeException;
@@ -60,7 +58,7 @@ public class Player extends dObject {
 	
 	public Player(float x,float y, int id)
 	{
-		super(x,y,new Sprite(AssetManager.SkinLoader.getTextureForSkinID(MainGame.PLACEHOLDER_SKIN_ID)));
+		super(x,y,new Sprite(BoundsAssetManager.SkinLoader.getTextureForSkinID(MainGame.PLACEHOLDER_SKIN_ID)));
 		trailEffect.load(Gdx.files.internal("trail.p"), Gdx.files.internal(""));
 		trailEffect.getEmitters().get(0).getTint().setColors(new float[]{Color.GREEN.r,Color.GREEN.g, Color.GREEN.b, 1f});
 		setSkinID(id);
@@ -80,6 +78,7 @@ public class Player extends dObject {
 		boundingRect.set(getX() + 8f, getY() + 8f, getWidth()-16f, getHeight()-16f);
 		trailEffect.update(delta);
 		trailEffect.setPosition(getX() + getWidth()/2f, getY() + getHeight() / 2f);
+		//if(Gdx.input.isTouched()|| Gdx.input.isKeyJustPressed(Keys.ANY_KEY))
 		if((Gdx.input.isTouched() && Gdx.input.justTouched()) || Gdx.input.isKeyJustPressed(Keys.ANY_KEY))
 		{
 			if(touchedLeftSide())// user touched left half of screen
@@ -290,6 +289,7 @@ public class Player extends dObject {
 		setOrigin(0,0);
 		setPos(MainGame.VIRTUAL_WIDTH / 2f - getWidth()/2f, MainGame.VIRTUAL_HEIGHT / 2f - getHeight() / 2f);
 		moveCenter = false;
+		changeVelocity = false;
 		startY = getY();
 		setAlpha(1f);
 		getSprite().setSize(64f,64f);
@@ -299,12 +299,16 @@ public class Player extends dObject {
 	public void setSkinID(int id)
 	{
 		skinID = id;
-		getSprite().setRegion(AssetManager.SkinLoader.getTextureForSkinID(skinID));
+		getSprite().setRegion(BoundsAssetManager.SkinLoader.getTextureForSkinID(skinID));
 	}
 	
 	public void setBestCombo(int combo)
 	{
-		bestCombo = combo;
+		if(combo > bestCombo)
+		{
+			bestCombo = combo;
+			MainGame.requestHandler.submitToLeaderboard(bestCombo, MainGame.COMBO_LEADERBOARD_ID);
+		}
 	}
 	
 	public int getBestCombo()
@@ -314,7 +318,11 @@ public class Player extends dObject {
 	
 	public void setBestScore(int score)
 	{
-		bestScore = score;
+		if(score > bestScore)
+		{
+			bestScore = score;
+			MainGame.requestHandler.submitToLeaderboard(bestScore, MainGame.SCORE_LEADERBOARD_ID);
+		}
 	}
 	
 	public int getBestScore()

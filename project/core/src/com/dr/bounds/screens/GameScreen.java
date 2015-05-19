@@ -10,14 +10,11 @@ import com.DR.dLib.ui.dUICard;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
-import com.dr.bounds.AssetManager;
+import com.dr.bounds.BoundsAssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 import com.dr.bounds.animations.CameraShakeAnimation;
-import com.dr.bounds.animations.TranslateCameraAnimation;
 import com.dr.bounds.maps.MapGenerator;
-import com.dr.bounds.maps.MapTypeFactory;
 
 public class GameScreen extends dScreen implements AnimationStatusListener {
 	
@@ -33,6 +30,8 @@ public class GameScreen extends dScreen implements AnimationStatusListener {
 	private int playerScore = 0;
 	// keep track of players combo this round
 	private int playerCombo = 0;
+	// keep track of players HIGHEST combo this round
+	private int highestCombo = 0;
 	// keep track of players coins this round
 	private static int playerCoins = 0;
 	// used to display player score
@@ -46,8 +45,6 @@ public class GameScreen extends dScreen implements AnimationStatusListener {
 	// death animation for the player
 	private dAnimation deathAnim;
 	private final static int DEATH_ANIM_ID = 321;
-	// Animation to move the camera so the player is vertically centered when on a combo >= 3.
-	private TranslateCameraAnimation camAnim;
 
 	public GameScreen(float x, float y, Texture texture) {
 		super(x, y, texture);
@@ -56,8 +53,8 @@ public class GameScreen extends dScreen implements AnimationStatusListener {
 		//deathAnim = new PlayerDeathAnimation(.75f,player);
 		deathAnim = new CameraShakeAnimation(0.32f, this, DEATH_ANIM_ID);
 		
-		//mapGen = new MapGenerator(player);
-		mapGen = new MapGenerator(MapTypeFactory.TYPE_DEFAULT, player);
+		mapGen = new MapGenerator(player);
+//		mapGen = new MapGenerator(MapTypeFactory.TYPE_GAP, player);
 		mapGen.generateSeed();
 		// TODO: might remove
 		mapGen.generateFirstSet();
@@ -73,12 +70,12 @@ public class GameScreen extends dScreen implements AnimationStatusListener {
 		scoreText.setColor(1,1,1,1);
 		scoreText.setShadow(true);
 		
-		coinInfo = new dUICard(16,0,AssetManager.getTexture("card"));
+		coinInfo = new dUICard(16,0,BoundsAssetManager.getTexture("card"));
 		coinInfo.setClipping(false);
 		coinInfo.setAlpha(0);
 		coinInfo.setHasShadow(false);
 		coinInfo.setDimensions(128f, 64f);
-		dImage coinImage = new dImage(0,0,AssetManager.getTexture("coin.png"));
+		dImage coinImage = new dImage(0,0,BoundsAssetManager.getTexture("coin.png"));
 		coinImage.setHasShadow(true);
 		dText coinText = new dText(0,0,55f,"x0");
 		coinText.setColor(Color.WHITE);
@@ -124,6 +121,11 @@ public class GameScreen extends dScreen implements AnimationStatusListener {
 				// get players score from the map gen
 				playerScore = mapGen.getScore();
 				playerCombo = mapGen.getCombo();
+				// keep track of the highest combo this round.
+				if(playerCombo > highestCombo) 
+				{
+					highestCombo = playerCombo;
+				}
 				comboText.setText("COMBO: " + Integer.toString(playerCombo));
 				scoreText.setY(MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f + 16f);
 				coinInfo.setY(MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f + 16f);
@@ -197,6 +199,7 @@ public class GameScreen extends dScreen implements AnimationStatusListener {
 		mapGen.setHadCollision(false);
 		scoreText.setText(Integer.toString(0));
 		playerCoins = 0;
+		highestCombo = 0;
 		scoreText.setX(getX() + getWidth()/2f - scoreText.getWidth()/2f);
 	}
 	
@@ -275,7 +278,7 @@ public class GameScreen extends dScreen implements AnimationStatusListener {
 			MainGame.camera.position.set(((CameraShakeAnimation)deathAnim).getCameraStartPosition());
 			MainGame.camera.rotate(((CameraShakeAnimation)deathAnim).getRotation());
 			MainGame.camera.update();
-			gameOverScreen.show(playerScore, playerCombo, playerCoins);
+			gameOverScreen.show(playerScore, highestCombo, playerCoins);
 		}
 	}
 }

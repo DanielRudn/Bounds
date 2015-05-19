@@ -1,8 +1,10 @@
 package com.dr.bounds.maps.maptypes;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Intersector;
-import com.dr.bounds.AssetManager;
+import com.dr.bounds.BoundsAssetManager;
+import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 import com.dr.bounds.maps.MapGenerator;
 import com.dr.bounds.maps.MapType;
@@ -19,11 +21,21 @@ public class GapMapType extends MapType {
 		bgColor = new Color(48f/256f, 63f/256f, 159f/256f,1f);
 		for(int x = 0; x < 10; x++)
 		{
-			obstacles.add(new GapObstacle(0,0, AssetManager.getTexture("card.png"), player));
+			obstacles.add(new GapObstacle(0,0, BoundsAssetManager.getTexture("card.png"), player));
 			obstacles.get(x).setRegenerate(false);
 		}
+		super.particleEffect.load(Gdx.files.internal("spin.p"), Gdx.files.internal(""));
 	}
-
+	
+	@Override
+	public void update(float delta)
+	{
+		super.update(delta);
+		if(super.isTransitioning == false)
+		{
+			super.particleEffect.setPosition(MainGame.VIRTUAL_WIDTH/2f + 32f, MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT);
+		}
+	}
 	@Override
 	protected void generateBlock(int index)
 	{
@@ -41,4 +53,5 @@ public class GapMapType extends MapType {
 			gen.setHadCollision(true);
 		}
 	}
+	
 }
