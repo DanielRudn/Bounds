@@ -48,7 +48,7 @@ public abstract class MapType {
 	// whether the obstacles for the new type have been generated
 	private boolean newTypeGenerated = false;
 	// coin set for the maps
-	private static CoinSet coinSet;
+	protected CoinSet coinSet;
 	// ShapeRenderer for rectangles nad backgrounds
 	private static ShapeRenderer sr = new ShapeRenderer();
 	// color for backgrounds of each individual maptype.
@@ -70,8 +70,8 @@ public abstract class MapType {
 		obstacles = new ArrayList<dObstacle>();
 		gen = generator;
 		this.player = player;
-		firstBG = new Rectangle(0,0,MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_HEIGHT);
-		secondBG = new Rectangle(0, -MainGame.VIRTUAL_HEIGHT, MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_HEIGHT);
+		firstBG = new Rectangle(0,0,MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_HEIGHT+10);
+		secondBG = new Rectangle(0, -MainGame.VIRTUAL_HEIGHT-5, MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_HEIGHT+10);
 		switchColors = true;
 		// TODO: FIND A BETTER SOLUTION
 		if(firstTop == null)
@@ -152,7 +152,7 @@ public abstract class MapType {
 			firstBG.setY(secondBG.getY() - firstBG.getHeight());
 			if(showTransitionImage && moveTransitionImage)
 			{
-				MapGenerator.transitionImage.setPos(firstBG.getX(), firstBG.getY() + firstBG.getHeight() - MapGenerator.transitionImage.getHeight() / 2f);
+				//MapGenerator.transitionImage.setPos(firstBG.getX(), firstBG.getY() + firstBG.getHeight() - MapGenerator.transitionImage.getHeight() / 2f);
 				moveTransitionImage = false;
 				nextType.generateNewType();
 			}
@@ -180,7 +180,7 @@ public abstract class MapType {
 			secondBG.setY(firstBG.getY() - secondBG.getHeight());
 			if(showTransitionImage && moveTransitionImage)
 			{
-				MapGenerator.transitionImage.setPos(secondBG.getX(), secondBG.getY() + secondBG.getHeight() - MapGenerator.transitionImage.getHeight() / 2f);
+			//	MapGenerator.transitionImage.setPos(secondBG.getX(), secondBG.getY() + secondBG.getHeight() - MapGenerator.transitionImage.getHeight() / 2f);
 				moveTransitionImage = false;
 				nextType.generateNewType();
 			}

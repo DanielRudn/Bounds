@@ -33,12 +33,16 @@ public class BoundsAssetManager {
 		{
 
 		}
-	//	System.out.println("[AssetManager (" + manager.getLoadedAssets() + " items)]: loaded in: " + path);
+		System.out.println("[AssetManager (" + manager.getLoadedAssets() + " items)]: loaded in: " + path);
 	}
 	
 	public static void loadAll()
 	{
-		manager = new AssetManager();
+		if(manager == null)
+		{
+			manager = new AssetManager();
+		}
+		Texture.setAssetManager(manager);
 		try
 		{
 			loadTexture("card.png", TextureFilter.Linear);
@@ -102,12 +106,12 @@ public class BoundsAssetManager {
 		if(manager.isLoaded(name))
 		{
 			manager.unload(name);
-		//	System.out.println("[AssetManager (" + manager.getLoadedAssets() + " items)]: disposed of " + name);
+			System.out.println("[AssetManager (" + manager.getLoadedAssets() + " items)]: disposed of " + name);
 		}
 		else if(manager.isLoaded(nameNoExtensions))
 		{
 			manager.unload(nameNoExtensions);
-	//		System.out.println("[AssetManager (" + manager.getLoadedAssets() + " items)]: disposed of " + nameNoExtensions);
+			System.out.println("[AssetManager (" + manager.getLoadedAssets() + " items)]: disposed of " + nameNoExtensions);
 		}
 	}
 	
@@ -118,7 +122,7 @@ public class BoundsAssetManager {
 	{
 		manager.clear();
 		dText.GAME_FONT.dispose();
-		manager.dispose();
+		//manager.dispose();
 	}
 	
 	private static String removeExtensions(String name)

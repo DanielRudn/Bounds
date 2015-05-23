@@ -4,11 +4,9 @@ import java.util.Random;
 
 import com.DR.dLib.TimerListener;
 import com.DR.dLib.dTimer;
-import com.DR.dLib.ui.dImage;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.dr.bounds.BoundsAssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 
@@ -40,9 +38,6 @@ public class MapGenerator implements TimerListener {
 	// timer for switching map type
 	private dTimer typeSwitchTimer;
 	
-	// test, remove
-	public static dImage transitionImage;
-	
 	/**
 	 * Creates a new generator and sets the level type
 	 * @param mapType Type of map to generate, use static attributes from this class as parameters
@@ -52,8 +47,6 @@ public class MapGenerator implements TimerListener {
 		generateSeed();
 		this.player = player;
 		currentType = MapTypeFactory.getMapType(mapType, this.player, this);
-		
-		transitionImage = new dImage(0,2000, BoundsAssetManager.getTexture("transitionDevice.png"));
 		
 		typeSwitchTimer = new dTimer(7.5f,7.5f,0,this);
 		typeSwitchTimer.start();
@@ -71,6 +64,7 @@ public class MapGenerator implements TimerListener {
 		if(nextType != null && currentType.shouldSwitch())
 		{
 			currentType.dispose();
+			nextType.coinSet = currentType.coinSet;
 			currentType = nextType;
 			nextType = null;
 			typeSwitchTimer.start();
@@ -173,7 +167,6 @@ public class MapGenerator implements TimerListener {
 		currentType.reset();
 		score = 0;
 		combo = 0;
-		transitionImage.setY(MainGame.VIRTUAL_HEIGHT * 2f);
 		typeSwitchTimer.stop();
 	}
 	

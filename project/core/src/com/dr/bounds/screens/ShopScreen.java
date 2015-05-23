@@ -38,9 +38,9 @@ public class ShopScreen extends dUICardList implements DocGrabberListener, Anima
 	private final String url ="https://docs.google.com/document/d/1fapoD_xnTPEAYMpJUGr9zWHy1vKzDvybvoDcWkcHQOU/edit?usp=sharing";
 	private GoogleDocGrabber docGrabber;
 	// Holds ShopItemCard Containers
-	private static ArrayList<dUICard> itemCardContainers = new ArrayList<dUICard>();
+	//private static ArrayList<dUICard> itemCardContainers = new ArrayList<dUICard>();
 	// Holds 1 ShopItemCard
-	private static ArrayList<dUICard> itemCardList = new ArrayList<dUICard>();
+	private ArrayList<dUICard> itemCardList = new ArrayList<dUICard>();
 	private Texture cardTexture;
 	private dUICard titleCard;
 	private dUICard currentContainer;
@@ -70,7 +70,7 @@ public class ShopScreen extends dUICardList implements DocGrabberListener, Anima
 	private int touchedIndex = -1;
 	
 	public ShopScreen(float x, float y, Texture texture, Player p) {
-		super(x, y, texture, itemCardContainers);
+		super(x, y, texture, new ArrayList<dUICard>());
 		this.setColor(236f/256f, 240f/256f, 241f/256f,0f);
 		cardTexture = texture;
 		player = p;
@@ -330,7 +330,9 @@ public class ShopScreen extends dUICardList implements DocGrabberListener, Anima
 	
 	@Override
 	public void onAnimationFinish(int ID)
-	{}
+	{
+		
+	}
 
 	/*
 	 * InputProcessor
