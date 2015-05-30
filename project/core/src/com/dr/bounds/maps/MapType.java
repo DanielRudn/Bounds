@@ -63,6 +63,7 @@ public abstract class MapType {
 	private static boolean switchColors = false;
 	// particle effect in the background
 	protected ParticleEffect particleEffect = new ParticleEffect();
+	protected boolean hideParticleEffect = false;
 	
 	public MapType(int type, Player player, MapGenerator generator)
 	{
@@ -115,10 +116,15 @@ public abstract class MapType {
 	public void update(float delta)
 	{
 	//	if(switchBG == false)
-		if(this.isTransitioning == false)
+		if(this.hideParticleEffect == false)
 		{
 			particleEffect.update(delta);
 			particleEffect.setPosition(0, MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f);
+			hideParticleEffect = true;
+			for(dObstacle obstacle : obstacles)
+			{
+				hideParticleEffect &= obstacle.getY() + MainGame.VIRTUAL_HEIGHT/2f >= MainGame.camera.position.y + MainGame.VIRTUAL_HEIGHT/2f; 
+			}
 		}
 		// update backgrounds
 		if(switchColors)

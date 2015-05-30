@@ -207,11 +207,8 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 			this.setClipping(false);
 			imageCard.setClipping(false);
 			expanded = true;
-			//acceptButton.setY(dTweener.ExponentialEaseOut(time, MainGame.VIRTUAL_HEIGHT, -MainGame.VIRTUAL_HEIGHT + imageCard.getY() + imageCard.getHeight(), duration));
 			acceptButton.setY(MainGame.VIRTUAL_HEIGHT / 2f);
 			cancelButton.setY(acceptButton.getY());
-			acceptButton.setAlpha(0);
-			cancelButton.setAlpha(0);
 		}
 		else if(ID == SHRINK_ANIM_ID)
 		{
@@ -230,10 +227,10 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 			itemName.setPos(getX() + imageCard.getWidth() + getPadding()*2f, getY() + getPadding()*2f);
 			itemPrice.setPos(getX() + imageCard.getWidth() + getPadding()*2f + COIN_PRICE_PADDING, itemName.getY() + itemName.getHeight() + getPadding()*4f);	
 			coinImage.setY(itemPrice.getY());
-			if(time < duration/2f)
+			if(time < duration * 0.75f)
 			{
-				acceptButton.setAlpha(dTweener.LinearEase(time,0, 1f, duration/2f));
-				cancelButton.setAlpha(acceptButton.getColor().a);
+				acceptButton.setX(dTweener.ExponentialEaseOut(time, -MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_WIDTH*1.5f + 2f, duration * 0.75f));
+				cancelButton.setX(acceptButton.getX() - cancelButton.getWidth());
 			}
 			fadeCover.setAlpha(dTweener.LinearEase(time, 0, .4f, duration));
 			if(ownedImage != null)
@@ -250,15 +247,13 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 			coinImage.setY(itemPrice.getY());
 			if(time < duration/2f)
 			{
-				acceptButton.setAlpha(dTweener.ExponentialEaseOut(time,1f, -1f, duration/2f));
-				cancelButton.setAlpha(acceptButton.getColor().a);
+				acceptButton.setX(dTweener.ExponentialEaseOut(time, MainGame.VIRTUAL_WIDTH/2f,-MainGame.VIRTUAL_WIDTH, duration/2f));
+				cancelButton.setX(acceptButton.getX() - cancelButton.getWidth());
 			}
 			else
 			{
 				acceptButton.setY(MainGame.VIRTUAL_HEIGHT);
 				cancelButton.setY(acceptButton.getY());
-				acceptButton.setAlpha(1f);
-				cancelButton.setAlpha(1f);
 			}
 			fadeCover.setAlpha(dTweener.ExponentialEaseOut(time, .4f, -.395f, duration));
 			if(ownedImage != null)

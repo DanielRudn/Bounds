@@ -88,6 +88,8 @@ public class ShopScreen extends dUICardList implements DocGrabberListener, Anima
 		title.setColor(236f/256f, 240f/256f, 241f/256f,1f);
 		titleCard.addObject(title, dUICard.CENTER, dUICard.CENTER);
 		this.setTitleCard(titleCard);
+		titleCard.addObject(player, dUICard.RIGHT, dUICard.CENTER);
+		titleCard.setUpdatable(false);
 		titleCard.setY(getY() - titleCard.getHeight() - getPadding());
 		
 		loadingIcon = new LoadingIcon(getX() + getWidth() / 2f - 92f, getY() + getHeight()/2f - 92f, circle);
@@ -95,7 +97,7 @@ public class ShopScreen extends dUICardList implements DocGrabberListener, Anima
 		
 		coinText = new dText(0,0,48f, "Coins: " + player.getCoins());
 		coinText.setColor(title.getColor());
-		titleCard.addObject(coinText, dUICard.RIGHT, dUICard.CENTER);
+		//titleCard.addObject(coinText, dUICard.RIGHT, dUICard.CENTER);
 		
 		//cardShowAnim = new SlideInArrayAnimation(getList(), 2.5f, this, SHOW_CARD_ANIM_ID);
 		cardShowAnim = new ShopItemsSlideAnimation(2.5f,this,SHOW_CARD_ANIM_ID,itemCardList);
@@ -230,7 +232,7 @@ public class ShopScreen extends dUICardList implements DocGrabberListener, Anima
 	
 	private void parseShopXML(final Element shop)
 	{
-		System.out.println("called");
+		System.out.println("called parseShopXML");
 		Gdx.app.postRunnable(new Runnable()
 		{
 				@Override
@@ -362,19 +364,21 @@ public class ShopScreen extends dUICardList implements DocGrabberListener, Anima
 					touchedIndex = x;
 					return false;
 				}
+				System.out.println("called touchDown");
 		}
 		return false;
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		for(int x = 1; x < itemCardList.size(); x++)
+		for(int x = 0; x < itemCardList.size(); x++)
 		{
-				if(touchedIndex == x && expandedItem == null && itemCardList.get(x).getBoundingRectangle().contains(MainGame.getVirtualMouseX(), MainGame.getVirtualMouseY()) && this.getScrollDelta() <= 0.1f)
+				if(touchedIndex == x && expandedItem == null && itemCardList.get(x).getBoundingRectangle().contains(MainGame.getVirtualMouseX(), MainGame.getVirtualMouseY()))
 				{
 					expandedItem = (ShopItemCard)itemCardList.get(x);
 					expandedItem.expand();
 				}
+				System.out.println("called touchUp");
 		}
 		return false;
 	}

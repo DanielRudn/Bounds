@@ -21,7 +21,7 @@ public class dObstacle extends dObject{
 	private boolean incrementedScore = false;
 	// player object to check for score updates
 	private Player player;
-	private final static ShapeRenderer sr = new ShapeRenderer();
+	protected final static ShapeRenderer sr = new ShapeRenderer();
 	
 	public dObstacle(float x, float y, Texture texture, Player p) {
 		super(x, y, texture);
@@ -45,10 +45,10 @@ public class dObstacle extends dObject{
 	@Override
 	public void render(SpriteBatch batch) {
 		getSprite().draw(batch);
-	//	renderDebug(batch);
+		renderDebug(batch);
 	}
 	
-	private void renderDebug(SpriteBatch batch)
+	protected void renderDebug(SpriteBatch batch)
 	{
 		batch.end();
 		sr.setProjectionMatrix(batch.getProjectionMatrix());

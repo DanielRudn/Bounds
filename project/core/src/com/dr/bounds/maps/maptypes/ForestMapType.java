@@ -29,13 +29,20 @@ public class ForestMapType extends MapType {
 	@Override
 	protected void checkCollision(int index)
 	{
-		if(gen.hadCollision() == false && Intersector.intersectRectangles(player.getBoundingRectangle(), obstacles.get(index).getBoundingRectangle(), useless)) // FIX
+		if(gen.hadCollision() == false)
 		{
-			gen.setHadCollision(true);
-		}
-		if(gen.hadCollision() == false && Intersector.intersectRectangles(player.getBoundingRectangle(), ((ForestObstacle)obstacles.get(index)).getTrunk().getBoundingRectangle(), useless))
-		{
-			gen.setHadCollision(true);
+			if(Intersector.intersectRectangles(player.getBoundingRectangle(), obstacles.get(index).getBoundingRectangle(), useless)) // FIX
+			{
+				gen.setHadCollision(true);
+			}
+			else if(Intersector.intersectRectangles(player.getBoundingRectangle(), ((ForestObstacle)obstacles.get(index)).getTopRectangle(), useless))
+			{
+				gen.setHadCollision(true);
+			}
+			else if(Intersector.intersectRectangles(player.getBoundingRectangle(), ((ForestObstacle)obstacles.get(index)).getTrunk().getBoundingRectangle(), useless))
+			{
+				gen.setHadCollision(true);
+			}
 		}
 	}
 

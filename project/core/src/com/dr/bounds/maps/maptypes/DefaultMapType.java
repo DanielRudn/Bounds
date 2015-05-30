@@ -31,7 +31,7 @@ public class DefaultMapType extends MapType {
 	public void update(float delta)
 	{
 		super.update(delta);
-		if(super.isTransitioning == false)
+		if(super.hideParticleEffect == false)
 		{
 			super.particleEffect.setPosition(MainGame.VIRTUAL_WIDTH/2f + 32f, MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT);
 		}

@@ -12,6 +12,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dr.bounds.screens.GameScreen;
 import com.dr.bounds.screens.MenuScreen;
 
@@ -25,6 +27,9 @@ public class MainGame extends ApplicationAdapter {
 	public static OrthographicCamera camera;
 	private SpriteBatch batch;
 	public static RequestHandler requestHandler;
+	
+	//test
+	private Viewport viewport;
 	
 	// CONSTANTS
 	public static final float VIRTUAL_WIDTH = 720f, VIRTUAL_HEIGHT = 1280f, ASPECT_RATIO = VIRTUAL_WIDTH / VIRTUAL_HEIGHT;
@@ -63,6 +68,10 @@ public class MainGame extends ApplicationAdapter {
 		camera.setToOrtho(true,VIRTUAL_WIDTH,VIRTUAL_HEIGHT);
 		dValues.init(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, camera);
 		BoundsAssetManager.loadAll();
+		if(Gdx.graphics.getWidth() / Gdx.graphics.getHeight() > ASPECT_RATIO)
+		{
+			viewport = new FitViewport(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, camera);
+		}
 		
 		gameScreen = new GameScreen(0,0,BoundsAssetManager.getTexture("card.png"));
 		
@@ -82,7 +91,10 @@ public class MainGame extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		Gdx.gl.glViewport(0,0, (int)Gdx.graphics.getWidth(), (int)Gdx.graphics.getHeight());
+		if(viewport == null)
+		{
+			Gdx.gl.glViewport(0,0, (int)Gdx.graphics.getWidth(), (int)Gdx.graphics.getHeight());
+		}
 		Gdx.gl.glClearColor(189f/256f, 195f/256f, 199f/256f,.5f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 	
@@ -169,8 +181,27 @@ public class MainGame extends ApplicationAdapter {
 	}
 	
 	@Override
+	public void resize(int width, int height)
+	{
+		super.resize(width, height);
+		if(width / height > ASPECT_RATIO)
+		{
+			viewport = new FitViewport(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, camera);
+		}
+		else
+		{
+			viewport = null;
+		}
+		if(viewport != null)
+		{
+			viewport.update(width, height);
+		}
+	}
+	
+	@Override
 	public void dispose()
 	{
+		super.dispose();
 		BoundsAssetManager.disposeAll();
 	}
 }

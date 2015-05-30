@@ -55,7 +55,7 @@ public class GameScreen extends dScreen implements AnimationStatusListener {
 		deathAnim = new CameraShakeAnimation(0.32f, this, DEATH_ANIM_ID);
 		
 	//	mapGen = new MapGenerator(player);
-		mapGen = new MapGenerator(MapTypeFactory.TYPE_DEFAULT, player);
+		mapGen = new MapGenerator(MapTypeFactory.TYPE_SPIKE, player);
 		mapGen.generateSeed();
 		// TODO: might remove
 		mapGen.generateFirstSet();

@@ -1,6 +1,7 @@
 package com.dr.bounds.maps.maptypes;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Intersector;
 import com.dr.bounds.BoundsAssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
@@ -18,6 +19,16 @@ public class IceMapType extends MapType {
 		{
 			obstacles.add(new IceObstacle(0,0, BoundsAssetManager.getTexture("ice.png"), player));
 			obstacles.get(x).setRegenerate(false);
+		}
+	}
+	
+	@Override
+	protected void checkCollision(int index)
+	{
+		super.checkCollision(index);
+		if(gen.hadCollision() == false && Intersector.intersectRectangles(player.getBoundingRectangle(), ((IceObstacle)obstacles.get(index)).getBottomRectangle(), useless))
+		{
+			gen.setHadCollision(true);
 		}
 	}
 	

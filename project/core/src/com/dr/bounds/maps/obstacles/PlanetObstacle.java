@@ -6,6 +6,7 @@ import com.DR.dLib.ui.dImage;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
 import com.dr.bounds.BoundsAssetManager;
 import com.dr.bounds.Player;
@@ -31,8 +32,6 @@ public class PlanetObstacle extends dObstacle {
 	private boolean hasRing = false;
 	// object for the ring
 	private dImage ringImage;
-	// circle object to help complement the planet shape
-	private dImage shadeImage;
 	// colors for planet and moon
 	private static Color[] planetColors = new Color[]{new Color(38f/256f, 194f/256f, 129f/256f,1f), // green
 			new Color(52f/256f, 152f/256f, 219f/256f,1f), // blue
@@ -54,15 +53,28 @@ public class PlanetObstacle extends dObstacle {
 	public PlanetObstacle(float x, float y, Texture texture, Player p, Random rng) {
 		super(x, y, texture, p);
 		this.rng = rng;
-		shadeImage = new dImage(0,0,texture);
 		generate();
+	}
+	
+	@Override
+	protected void renderDebug(SpriteBatch batch)
+	{
+		batch.end();
+		sr.setProjectionMatrix(batch.getProjectionMatrix());
+		sr.begin(ShapeType.Line);
+		if(moonImage != null)
+		{
+			sr.rect(moonImage.getBoundingRectangle().x, moonImage.getBoundingRectangle().y, moonImage.getBoundingRectangle().width, moonImage.getBoundingRectangle().height);
+		}
+		sr.circle(this.getX() + this.getWidth()/2f, this.getY() +  this.getHeight()/2f, this.getWidth()/2f);
+		sr.end();
+		batch.begin();
 	}
 	
 	@Override
 	public void render(SpriteBatch batch)
 	{
 		super.render(batch);
-		//shadeImage.render(batch);
 		if(hasMoon)
 		{
 			moonImage.render(batch);
@@ -167,7 +179,6 @@ public class PlanetObstacle extends dObstacle {
 		{
 			ringImage.setPos(getX() + getWidth() / 2f, getY() - ringImage.getHeight() / 5.75f);
 		}
-		shadeImage.setPos(getX() + 32, getY());
 	}
 	
 	@Override

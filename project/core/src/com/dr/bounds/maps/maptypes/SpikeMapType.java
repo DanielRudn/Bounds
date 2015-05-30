@@ -15,11 +15,10 @@ public class SpikeMapType extends MapType{
 		super(type, player, generator);
 		MIN_DISTANCE = MAX_DISTANCE / 2;
 		MAX_DISTANCE *= 1.5f;
-		MIN_WIDTH = 192;
-		MAX_WIDTH = 333 - MIN_WIDTH;
+		MIN_WIDTH = 92;
+		MAX_WIDTH = 256 - MIN_WIDTH;
 		this.typeName = "SPIKES";
-	//	bgColor = new Color(20f/256f,20f/256f,20f/256f,1f);
-		bgColor = new Color(248f/256f, 148f/256f, 6f/256f, 1f);
+		bgColor = new Color(51f/256f, 110f/256f, 123f/256f,1f);
 		gen.setScoreIncrementAmount(1);
 		for(int x = 0; x < 6; x++)
 		{
