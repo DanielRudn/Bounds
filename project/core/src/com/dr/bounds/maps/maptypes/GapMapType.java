@@ -24,18 +24,19 @@ public class GapMapType extends MapType {
 			obstacles.add(new GapObstacle(0,0, BoundsAssetManager.getTexture("card.png"), player));
 			obstacles.get(x).setRegenerate(false);
 		}
-		super.particleEffect.load(Gdx.files.internal("spin.p"), Gdx.files.internal(""));
+		super.particleEffect.load(Gdx.files.internal("spin2.p"), Gdx.files.internal(""));
 	}
 	
 	@Override
 	public void update(float delta)
 	{
 		super.update(delta);
-		if(super.isTransitioning == false)
+		if(super.hideParticleEffect == false)
 		{
 			super.particleEffect.setPosition(MainGame.VIRTUAL_WIDTH/2f + 32f, MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT);
 		}
 	}
+	
 	@Override
 	protected void generateBlock(int index)
 	{

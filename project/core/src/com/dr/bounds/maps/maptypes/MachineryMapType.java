@@ -1,7 +1,9 @@
 package com.dr.bounds.maps.maptypes;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.dr.bounds.BoundsAssetManager;
+import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 import com.dr.bounds.maps.MapGenerator;
 import com.dr.bounds.maps.MapType;
@@ -20,6 +22,17 @@ public class MachineryMapType extends MapType{
 		{
 			obstacles.add(new MovingObstacle(0,0, BoundsAssetManager.getTexture("girder.png"), p));
 			obstacles.get(x).setRegenerate(false);
+		}
+		super.particleEffect.load(Gdx.files.internal("spin3.p"), Gdx.files.internal(""));
+	}
+	
+	@Override
+	public void update(float delta)
+	{
+		super.update(delta);
+		if(super.hideParticleEffect == false)
+		{
+			super.particleEffect.setPosition(MainGame.VIRTUAL_WIDTH/2f + 32f, MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT);
 		}
 	}
 	

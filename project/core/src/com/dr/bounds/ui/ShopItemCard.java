@@ -63,7 +63,6 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 		imageCard.setHasShadow(false);
 		imageCard.setColor(246f/256f, 246f/256f, 246f/256f, 1f);
 		itemImage = new dImage(0,0,BoundsAssetManager.SkinLoader.getTextureForSkinID((int)id));
-		itemImage.setHasShadow(true);
 		
 		coinImage = new dImage(0,0, BoundsAssetManager.getTexture("coin.png"));
 		coinImage.setDimensions(32f, 32f);
@@ -112,8 +111,11 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 	{
 		fadeCover.render(batch);
 		super.render(batch);
-		acceptButton.render(batch);
-		cancelButton.render(batch);
+		if(expanded)
+		{
+			acceptButton.render(batch);
+			cancelButton.render(batch);
+		}
 	}
 	
 	@Override
@@ -193,7 +195,7 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 		return cancelButton;
 	}
 	
-	public boolean isFinishedShrink()
+	public boolean isFinishedShrinking()
 	{
 		return shrinkAnimation.isFinished();
 	}

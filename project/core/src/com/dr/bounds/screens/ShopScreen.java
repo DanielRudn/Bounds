@@ -151,7 +151,7 @@ public class ShopScreen extends dUICardList implements DocGrabberListener, Anima
 				expandedItem.shrink();
 				startedShrink = true;
 			}
-			if(expandedItem.isFinishedShrink() && startedShrink)
+			if(expandedItem.isFinishedShrinking() && startedShrink)
 			{
 				startedShrink = false;
 				expandedItem = null;

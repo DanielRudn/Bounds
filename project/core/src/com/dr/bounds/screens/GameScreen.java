@@ -7,6 +7,8 @@ import com.DR.dLib.ui.dScreen;
 import com.DR.dLib.ui.dText;
 import com.DR.dLib.dTweener;
 import com.DR.dLib.ui.dUICard;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -27,6 +29,8 @@ public class GameScreen extends dScreen implements AnimationStatusListener {
 	private MapGenerator mapGen;
 	// screen that will show when game ends
 	private GameOverScreen gameOverScreen;
+	// screen that will show when game is paused
+	private PauseScreen pauseScreen;
 	// keep track of players score this round
 	private int playerScore = 0;
 	// keep track of players combo this round
@@ -54,14 +58,16 @@ public class GameScreen extends dScreen implements AnimationStatusListener {
 		//deathAnim = new PlayerDeathAnimation(.75f,player);
 		deathAnim = new CameraShakeAnimation(0.32f, this, DEATH_ANIM_ID);
 		
-	//	mapGen = new MapGenerator(player);
-		mapGen = new MapGenerator(MapTypeFactory.TYPE_SPIKE, player);
+		//mapGen = new MapGenerator(player);
+		mapGen = new MapGenerator(MapTypeFactory.TYPE_GAP, player);
 		mapGen.generateSeed();
 		// TODO: might remove
 		mapGen.generateFirstSet();
 		
 		gameOverScreen = new GameOverScreen(getX(), getY(), texture, player);
 		gameOverScreen.hide();
+		
+		pauseScreen = new PauseScreen(getX(), getY(), texture, this);
 		
 		comboText = new dText(0,0,64f,"COMBO: 0");
 		comboText.setColor(Color.WHITE);
@@ -91,7 +97,7 @@ public class GameScreen extends dScreen implements AnimationStatusListener {
 	@Override
 	public void update(float delta)
 	{
-		if(isPaused() == false)
+		if(pauseScreen.isPaused() == false)
 		{
 			super.update(delta);
 			gameOverScreen.update(delta);
@@ -152,7 +158,7 @@ public class GameScreen extends dScreen implements AnimationStatusListener {
 				else
 				{ 
 					// follow player vertically as long as they have a combo going.
-					if(player.getY() >= MainGame.camera.position.y - 50 && player.getY() <= MainGame.camera.position.y + 50)
+					/*if(player.getY() >= MainGame.camera.position.y - 50 && player.getY() <= MainGame.camera.position.y + 50)
 					{
 						MainGame.setCameraPos(MainGame.camera.position.x, player.getY() + player.getWidth() / 2f); 
 					}
@@ -163,9 +169,32 @@ public class GameScreen extends dScreen implements AnimationStatusListener {
 					else if((MainGame.camera.position.y + 60) >= (player.getY() + player.getWidth()))
 					{
 						MainGame.setCameraPos(MainGame.camera.position.x, MainGame.camera.position.y - 1250f * delta);
+					}*/
+					if(player.getY() >= MainGame.camera.position.y - 50 && player.getY() <= MainGame.camera.position.y + 50)
+					{
+						MainGame.setCameraPos(MainGame.camera.position.x, player.getY() + player.getWidth() / 2f); 
+					}
+					else if((MainGame.camera.position.y + 60) <= (player.getY() + player.getWidth()))
+					{
+						MainGame.camera.position.y = dTweener.MoveToAndSlow(MainGame.camera.position.y, MainGame.camera.position.y + MainGame.VIRTUAL_HEIGHT, 1f*delta);
+					}
+					else if((MainGame.camera.position.y + 60) >= (player.getY() + player.getWidth()))
+					{
+						MainGame.camera.position.y = dTweener.MoveToAndSlow(MainGame.camera.position.y, MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT, 1f*delta);
 					}
 				}
 			}
+			
+			
+			// test, remove
+			if(Gdx.input.isKeyJustPressed(Keys.ALT_LEFT))
+			{
+				pauseScreen.show();
+			}
+		}
+		else
+		{
+			pauseScreen.update(delta);
 		}
 	}
 	
@@ -182,6 +211,10 @@ public class GameScreen extends dScreen implements AnimationStatusListener {
 		{
 			comboText.render(batch);
 		}
+		if(pauseScreen.isPaused())
+		{
+			pauseScreen.render(batch);
+		}
 	}
 	
 	@Override
@@ -193,7 +226,7 @@ public class GameScreen extends dScreen implements AnimationStatusListener {
 	/**
 	 * Reset the game state
 	 */
-	private void reset()
+	public void reset()
 	{
 		deathAnim.stop();
 		player.reset();
@@ -202,6 +235,7 @@ public class GameScreen extends dScreen implements AnimationStatusListener {
 		playerCoins = 0;
 		highestCombo = 0;
 		scoreText.setX(getX() + getWidth()/2f - scoreText.getWidth()/2f);
+		MainGame.camera.position.y = MainGame.VIRTUAL_HEIGHT/2f;
 	}
 	
 	public long getSeed()
