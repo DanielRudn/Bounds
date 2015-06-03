@@ -109,12 +109,16 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 	@Override
 	public void render(SpriteBatch batch)
 	{
-		fadeCover.render(batch);
-		super.render(batch);
 		if(expanded)
 		{
+			fadeCover.render(batch);
+			super.render(batch);
 			acceptButton.render(batch);
 			cancelButton.render(batch);
+		}
+		else
+		{
+			super.render(batch);
 		}
 	}
 	
