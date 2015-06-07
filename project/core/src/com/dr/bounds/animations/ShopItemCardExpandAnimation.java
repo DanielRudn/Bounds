@@ -16,8 +16,8 @@ public class ShopItemCardExpandAnimation extends dAnimation {
 
 	@Override
 	protected void animate(float time, float duration, float delta) {
-		getAnimatedObjects()[0].setPos(dTweener.ExponentialEaseOut(time, startX, -startX + 64f, duration),
-				dTweener.ExponentialEaseOut(time, startY, -startY + MainGame.VIRTUAL_HEIGHT / 2f - (ShopItemCard.CARD_HEIGHT + 128f) / 2f, duration));
+		getAnimatedObjects()[0].setPos(dTweener.ExponentialEaseOut(time, startX, -startX + MainGame.VIRTUAL_WIDTH / 2f - getAnimatedObjects()[0].getWidth() / 2f, duration),
+			dTweener.ExponentialEaseOut(time, startY, -startY + MainGame.VIRTUAL_HEIGHT / 2f - (ShopItemCard.CARD_HEIGHT + 128f) / 2f, duration));
 	}
 
 	@Override

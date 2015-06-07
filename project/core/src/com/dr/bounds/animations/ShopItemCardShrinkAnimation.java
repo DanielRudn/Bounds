@@ -13,8 +13,7 @@ public class ShopItemCardShrinkAnimation extends dAnimation {
 
 	@Override
 	protected void animate(float time, float duration, float delta) {
-		((ShopItemCard)getAnimatedObjects()[0]).setDimensions(dTweener.ExponentialEaseOut(time, ShopItemCard.CARD_WIDTH + 128f, -128f, duration),
-				dTweener.ExponentialEaseOut(time, ShopItemCard.CARD_HEIGHT + 128f,-128f, duration));
+		((ShopItemCard)getAnimatedObjects()[0]).setHeight(dTweener.ExponentialEaseOut(time, ShopItemCard.CARD_HEIGHT + 128f,-128f, duration));
 	}
 
 }

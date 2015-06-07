@@ -177,5 +177,6 @@ public class SettingsScreen extends dScreen implements AnimationStatusListener {
 	}
 	
 	@Override
-	public void onAnimationFinish(int ID) { }
+	public void onAnimationFinish(int ID) { 
+	}
 }

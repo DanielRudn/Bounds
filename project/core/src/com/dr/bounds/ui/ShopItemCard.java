@@ -25,7 +25,7 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 	private dUICard imageCard;
 	private byte skinID;
 	private static final float COIN_PRICE_PADDING = 40f;
-	public static final float CARD_HEIGHT = 128f, CARD_WIDTH = MainGame.VIRTUAL_WIDTH - 256f;
+	public static final float CARD_HEIGHT = 256f, CARD_WIDTH = 256f;
 	private dAnimation expandAnimation;
 	private final int EXPAND_ANIM_ID = 2015;
 	// for expand anim
@@ -46,7 +46,7 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 	
 	public ShopItemCard(float x, float y, Texture texture, String name, int price, byte id, Player p) {
 		super(x, y, texture);
-		this.setClickable(true);
+		this.setClickable(true, BoundsAssetManager.getTexture("circle"));
 		this.setDimensions(CARD_WIDTH, CARD_HEIGHT);
 		player = p;
 		
@@ -55,25 +55,23 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 		itemName.setColor(Color.BLACK);
 		
 		itemPrice = new dText(0,0,48f,Integer.toString(price));
-	//	itemPrice.setColor(44f/256f, 62f/256f, 80f/256f,1f);
 		itemPrice.setColor(234f/256f,76f/256f,136f/256f,1f);
 		
 		imageCard = new dUICard(0,0,texture);
-		imageCard.setDimensions(CARD_WIDTH*.25f, CARD_HEIGHT);
+		imageCard.setDimensions(CARD_WIDTH, CARD_HEIGHT * 0.2f);
 		imageCard.setHasShadow(false);
-		imageCard.setColor(246f/256f, 246f/256f, 246f/256f, 1f);
+		imageCard.setColor(240f/256f, 240f/256f, 240f/256f, 1f);
 		itemImage = new dImage(0,0,BoundsAssetManager.SkinLoader.getTextureForSkinID((int)id));
+		itemImage.setDimensions(92f, 92f);
 		
 		coinImage = new dImage(0,0, BoundsAssetManager.getTexture("coin.png"));
 		coinImage.setDimensions(32f, 32f);
 	
-		imageCard.addObject(itemImage,dUICard.CENTER, dUICard.CENTER);
-		addObject(imageCard,dUICard.LEFT_NO_PADDING, dUICard.TOP_NO_PADDING);
-		addObjectUnder(itemName, getIndexOf(imageCard));
-		itemName.setPos(imageCard.getX() + imageCard.getWidth() + getPadding()*1.5f, getY() + getPadding());
-		addObjectUnder(itemPrice, getIndexOf(itemName));
-		itemPrice.setPos(itemPrice.getX() + COIN_PRICE_PADDING, getY() + getHeight() - getPadding()*2f - itemPrice.getHeight());
-		addObjectUnder(coinImage, getIndexOf(itemName));
+		addObject(itemImage,dUICard.CENTER, dUICard.CENTER);
+		addObject(imageCard,dUICard.LEFT_NO_PADDING, dUICard.BOTTOM_NO_PADDING);
+		addObject(itemName, dUICard.CENTER, dUICard.TOP);
+		imageCard.addObject(itemPrice, dUICard.LEFT, dUICard.CENTER);
+		imageCard.addObjectToRightOf(coinImage, imageCard.getIndexOf(itemPrice));
 		coinImage.setY(itemPrice.getY());
 		
 		if(player.isSkinUnlocked(id))
@@ -82,20 +80,20 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 			acceptButton.setColor(46f/256f, 204f/256f, 113f/256f,1f);
 
 			ownedImage=  new dImage(0,0,BoundsAssetManager.getTexture("checkMark.png"));
-			ownedImage.setDimensions(40f, 40f);
-			addObject(ownedImage,dUICard.RIGHT, dUICard.CENTER);
+			ownedImage.setDimensions(32f, 32f);
+			imageCard.addObject(ownedImage,dUICard.RIGHT, dUICard.CENTER);
 		}
 		else
 		{
 			acceptButton = new dButton(MainGame.VIRTUAL_WIDTH/2f, MainGame.VIRTUAL_HEIGHT*2f, new Sprite(texture), "BUY", BoundsAssetManager.getTexture("circle"), 2f);
 			acceptButton.setColor(Color.GRAY);
 		}
-		acceptButton.setTextSize(92f);
-		acceptButton.setDimensions((CARD_WIDTH + 128f)/2f, 128f);
+		acceptButton.setTextSize(48f);
+		acceptButton.setDimensions(CARD_WIDTH/2f, 128f);
 		
 		cancelButton = new dButton(acceptButton.getX() - acceptButton.getWidth(), MainGame.VIRTUAL_HEIGHT*2f, new Sprite(texture), "BACK");
-		cancelButton.setTextSize(92f);
-		cancelButton.setDimensions((CARD_WIDTH + 128f)/2f, 128f);
+		cancelButton.setTextSize(48f);
+		cancelButton.setDimensions(CARD_WIDTH/2f, 128f);
 		cancelButton.setColor(231f/256f, 76f/256f, 60f/256f,1f);
 		
 		expandAnimation = new ShopItemCardExpandAnimation(1f, this, EXPAND_ANIM_ID, this);
@@ -112,14 +110,8 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 		if(expanded)
 		{
 			fadeCover.render(batch);
-			super.render(batch);
-			acceptButton.render(batch);
-			cancelButton.render(batch);
 		}
-		else
-		{
-			super.render(batch);
-		}
+		super.render(batch);
 	}
 	
 	@Override
@@ -210,11 +202,11 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 		{
 			startX = getX();
 			startY = getY();
-			this.setClipping(false);
-			imageCard.setClipping(false);
+			this.setClipping(true);
+			imageCard.setClipping(true);
 			expanded = true;
-			acceptButton.setY(MainGame.VIRTUAL_HEIGHT / 2f);
-			cancelButton.setY(acceptButton.getY());
+			addObjectUnder(cancelButton, getIndexOf(imageCard));
+			addObjectToRightOf(acceptButton, getIndexOf(cancelButton));
 		}
 		else if(ID == SHRINK_ANIM_ID)
 		{
@@ -227,45 +219,23 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 	public void whileAnimating(int ID, float time, float duration, float delta) {
 		if(ID == EXPAND_ANIM_ID)
 		{
-			setDimensions(dTweener.ExponentialEaseOut(time, ShopItemCard.CARD_WIDTH, 128f, duration)
-					, dTweener.ExponentialEaseOut(time, ShopItemCard.CARD_HEIGHT, 128f, duration));
-			itemImage.setPos(getX() + imageCard.getWidth() / 2f - itemImage.getWidth() / 2f, getY() + imageCard.getHeight() / 2f - itemImage.getHeight() / 2f);
-			itemName.setPos(getX() + imageCard.getWidth() + getPadding()*2f, getY() + getPadding()*2f);
-			itemPrice.setPos(getX() + imageCard.getWidth() + getPadding()*2f + COIN_PRICE_PADDING, itemName.getY() + itemName.getHeight() + getPadding()*4f);	
-			coinImage.setY(itemPrice.getY());
-			if(time < duration * 0.75f)
-			{
-				acceptButton.setX(dTweener.ExponentialEaseOut(time, -MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_WIDTH*1.5f + 2f, duration * 0.75f));
-				cancelButton.setX(acceptButton.getX() - cancelButton.getWidth());
-			}
+			setHeight(dTweener.ExponentialEaseOut(time, ShopItemCard.CARD_HEIGHT, 128f, duration));
+			itemImage.setPos(getX() + ShopItemCard.CARD_WIDTH / 2f - itemImage.getWidth() / 2f, getY() + ShopItemCard.CARD_HEIGHT / 2f - itemImage.getHeight() / 2f);
+			itemName.setPos(getX() + ShopItemCard.CARD_WIDTH / 2f - itemName.getWidth() / 2f, getY() + this.getPadding());
+			imageCard.setPos(getX(), getY() + ShopItemCard.CARD_HEIGHT - imageCard.getHeight());
+			cancelButton.setPos(imageCard.getX(), imageCard.getY() + imageCard.getHeight());
+			acceptButton.setPos(cancelButton.getX() + cancelButton.getWidth(), cancelButton.getY());
 			fadeCover.setAlpha(dTweener.LinearEase(time, 0, .4f, duration));
-			if(ownedImage != null)
-			{
-				ownedImage.setPos(getX() + getWidth() - getPadding() - ownedImage.getWidth(), getY() + CARD_HEIGHT - getPadding() - ownedImage.getHeight());
-			}
 		}
 		else if(ID == SHRINK_ANIM_ID)
 		{
 			setPosition(dTweener.ExponentialEaseOut(time, endX,-endX + startX, duration),dTweener.ExponentialEaseOut(time, endY,-endY + startY, duration));
-			itemImage.setPos(getX() + imageCard.getWidth() / 2f - itemImage.getWidth() / 2f, getY() + imageCard.getHeight() / 2f - itemImage.getHeight() / 2f);
-			itemName.setPos(getX() + imageCard.getWidth() + getPadding()*2f, getY() + getPadding()*2f);
-			itemPrice.setPos(getX() + imageCard.getWidth() + getPadding()*2f + COIN_PRICE_PADDING, itemName.getY() + itemName.getHeight() + getPadding()*4f);
-			coinImage.setY(itemPrice.getY());
-			if(time < duration/2f)
-			{
-				acceptButton.setX(dTweener.ExponentialEaseOut(time, MainGame.VIRTUAL_WIDTH/2f,-MainGame.VIRTUAL_WIDTH, duration/2f));
-				cancelButton.setX(acceptButton.getX() - cancelButton.getWidth());
-			}
-			else
-			{
-				acceptButton.setY(MainGame.VIRTUAL_HEIGHT);
-				cancelButton.setY(acceptButton.getY());
-			}
+			itemImage.setPos(getX() + ShopItemCard.CARD_WIDTH / 2f - itemImage.getWidth() / 2f, getY() + ShopItemCard.CARD_HEIGHT / 2f - itemImage.getHeight() / 2f);
+			itemName.setPos(getX() + ShopItemCard.CARD_WIDTH / 2f - itemName.getWidth() / 2f, getY() + this.getPadding());
+			imageCard.setPos(getX(), getY() + ShopItemCard.CARD_HEIGHT - imageCard.getHeight());
+			cancelButton.setPos(imageCard.getX(), imageCard.getY() + imageCard.getHeight());
+			acceptButton.setPos(cancelButton.getX() + cancelButton.getWidth(), cancelButton.getY());
 			fadeCover.setAlpha(dTweener.ExponentialEaseOut(time, .4f, -.395f, duration));
-			if(ownedImage != null)
-			{
-				ownedImage.setPos(getX() + getWidth() - getPadding() - ownedImage.getWidth(), getY() + CARD_HEIGHT/2f - ownedImage.getHeight()/2f);
-			}
 		}
 	}
 	
@@ -282,6 +252,8 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 			setClickable(true);
 			expanded = false;
 			fadeCover.setAlpha(0);
+			this.removeObject(this.getIndexOf(acceptButton));
+			this.removeObject(this.getIndexOf(cancelButton));
 		}
 	}
 

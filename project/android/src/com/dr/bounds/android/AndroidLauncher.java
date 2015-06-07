@@ -54,7 +54,7 @@ public class AndroidLauncher extends AndroidApplication implements RequestHandle
 		else
 		{
 			Log.d("BOUNDS","Connecting client..");
-			apiClient.connect();
+		//	apiClient.connect();
 		}
 	}
 	

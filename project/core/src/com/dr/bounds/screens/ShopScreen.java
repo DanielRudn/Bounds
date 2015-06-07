@@ -38,7 +38,6 @@ public class ShopScreen extends dUICardList implements DocGrabberListener, Anima
 	private final String url ="https://docs.google.com/document/d/1fapoD_xnTPEAYMpJUGr9zWHy1vKzDvybvoDcWkcHQOU/edit?usp=sharing";
 	private GoogleDocGrabber docGrabber;
 	// Holds ShopItemCard Containers
-	//private static ArrayList<dUICard> itemCardContainers = new ArrayList<dUICard>();
 	// Holds 1 ShopItemCard
 	private ArrayList<dUICard> itemCardList = new ArrayList<dUICard>();
 	private Texture cardTexture;
@@ -172,6 +171,7 @@ public class ShopScreen extends dUICardList implements DocGrabberListener, Anima
 
 	@Override
 	public void goBack() {
+		Gdx.input.setInputProcessor(null);
 		switchScreen(MainGame.menuScreen);
 	}
 
@@ -245,23 +245,33 @@ public class ShopScreen extends dUICardList implements DocGrabberListener, Anima
 					motd.setColor(236f/256f, 240f/256f, 241f/256f,1f);
 					motdContainer.addObject(motd, dUICard.CENTER, dUICard.CENTER);
 				//	addCardAsObject(motdContainer);
-					itemCardList.add(motdContainer);
+				//	itemCardList.add(motdContainer);
 				//	motdContainer.setX(motdContainer.getX() + getPadding()*4f);
 					for(int x = 0; x < shop.getChildrenByName("Item").size; x++)
 					{
 						final Element e = shop.getChildrenByName("Item").get(x);
 						if(Integer.parseInt(e.get("version")) <= MainGame.GAME_VERSION)
 						{
-							itemCard = new ShopItemCard(0,0,cardTexture,e.get("name"), Integer.parseInt(e.get("price")), Byte.parseByte(e.get("id")), player);
-							itemCardList.add(itemCard);
-							currentContainer = new dUICard(0,0,cardTexture);
-							currentContainer.setClipping(false);
-							currentContainer.setDimensions(itemCard.getWidth(), itemCard.getHeight()*1.25f);
-							currentContainer.setHasShadow(false);
-							currentContainer.setAlpha(0);
-							currentContainer.addObject(itemCard, dUICard.CENTER, dUICard.CENTER);
-							addCardAsObject(currentContainer);
-							currentContainer.setX(currentContainer.getX() + getPadding()*4f);
+							if(x % 2 != 0)
+							{
+								itemCard = new ShopItemCard(0,0,cardTexture,e.get("name"), Integer.parseInt(e.get("price")), Byte.parseByte(e.get("id")), player);
+								itemCardList.add(itemCard);
+								currentContainer.addObject(itemCard, dUICard.RIGHT, dUICard.CENTER);
+								addCardAsObject(currentContainer);
+								currentContainer.setX(currentContainer.getX() + getPadding()*4f);
+							}
+							else
+							{
+								itemCard = new ShopItemCard(0,0,cardTexture,e.get("name"), Integer.parseInt(e.get("price")), Byte.parseByte(e.get("id")), player);
+								itemCardList.add(itemCard);
+								currentContainer = new dUICard(0,0,cardTexture);
+								currentContainer.setClipping(false);
+								currentContainer.setDimensions(itemCard.getWidth()*2.25f, itemCard.getHeight()*1.25f);
+								currentContainer.setHasShadow(false);
+								currentContainer.setAlpha(0);
+								currentContainer.addObject(itemCard, dUICard.LEFT, dUICard.CENTER);
+								//addCardAsObject(currentContainer);
+							}
 						}
 					}
 					cardShowAnim = new ShopItemsSlideAnimation(2.5f,null,SHOW_CARD_ANIM_ID, itemCardList);
