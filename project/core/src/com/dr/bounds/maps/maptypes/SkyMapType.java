@@ -16,7 +16,7 @@ public class SkyMapType extends MapType {
 		MIN_WIDTH = 64;
 		typeName = "Sky";
 		bgColor = new Color(129f/256f,207f/256f, 224f/256f,1f);
-		gen.setScoreIncrementAmount(1);
+		super.setScoreIncrementAmount(1);
 		// add 8 obstacles 
 		for(int x = 0; x < 8; x++)
 		{

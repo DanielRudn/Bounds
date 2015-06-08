@@ -12,7 +12,6 @@ import com.DR.dLib.dTweener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -59,8 +58,8 @@ public class Player extends dObject {
 	public Player(float x,float y, int id)
 	{
 		super(x,y,new Sprite(BoundsAssetManager.SkinLoader.getTextureForSkinID(MainGame.PLACEHOLDER_SKIN_ID)));
-		trailEffect.load(Gdx.files.internal("trail.p"), Gdx.files.internal(""));
-		trailEffect.getEmitters().get(0).getTint().setColors(new float[]{Color.GREEN.r,Color.GREEN.g, Color.GREEN.b, 1f});
+		trailEffect.load(Gdx.files.internal("trail2.p"), Gdx.files.internal(""));
+	//	trailEffect.getEmitters().get(0).getTint().setColors(new float[]{Color.GREEN.r,Color.GREEN.g, Color.GREEN.b, 1f});
 		setSkinID(id);
 		loadPlayerData();
 	}
@@ -127,7 +126,7 @@ public class Player extends dObject {
 	
 	private void changeVelocity(float delta)
 	{
-		playerVelocity.set(dTweener.MoveToAndSlow(playerVelocity.x, targetVelocity.x, delta*10f), dTweener.MoveToAndSlow(playerVelocity.y, targetVelocity.y, delta));
+		playerVelocity.set(dTweener.MoveToAndSlow(playerVelocity.x, targetVelocity.x, delta*11f), dTweener.MoveToAndSlow(playerVelocity.y, targetVelocity.y, delta));
 		setY(getY() - GameScreen.CAMERA_SPEED * delta * 1.1f);
 		// check if passed bounds and need to move back to center
 		checkBounds();
@@ -292,7 +291,7 @@ public class Player extends dObject {
 		changeVelocity = false;
 		startY = getY();
 		setAlpha(1f);
-		getSprite().setSize(64f,64f);
+		getSprite().setSize(SKIN_DIMENSIONS,SKIN_DIMENSIONS);
 	}
 	
 	
@@ -311,11 +310,6 @@ public class Player extends dObject {
 		}
 	}
 	
-	public int getBestCombo()
-	{
-		return bestCombo;
-	}
-	
 	public void setBestScore(int score)
 	{
 		if(score > bestScore)
@@ -323,6 +317,11 @@ public class Player extends dObject {
 			bestScore = score;
 			MainGame.requestHandler.submitToLeaderboard(bestScore, MainGame.SCORE_LEADERBOARD_ID);
 		}
+	}
+	
+	public int getBestCombo()
+	{
+		return bestCombo;
 	}
 	
 	public int getBestScore()
@@ -370,4 +369,5 @@ public class Player extends dObject {
 	{
 		return boundingRect;
 	}
+
 }

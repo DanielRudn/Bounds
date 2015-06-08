@@ -24,7 +24,6 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 	private dImage itemImage, coinImage;
 	private dUICard imageCard;
 	private byte skinID;
-	private static final float COIN_PRICE_PADDING = 40f;
 	public static final float CARD_HEIGHT = 256f, CARD_WIDTH = 256f;
 	private dAnimation expandAnimation;
 	private final int EXPAND_ANIM_ID = 2015;

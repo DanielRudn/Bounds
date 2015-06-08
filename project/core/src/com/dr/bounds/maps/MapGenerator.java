@@ -33,8 +33,6 @@ public class MapGenerator implements TimerListener {
 	private int combo = 0;
 	// used to let gamescreen know that it should show the score change animation
 	private boolean scoreChanged = false;
-	// amount to increment score by since the MapTypes can vary in difficulty and award different amounts of score
-	private int scoreIncrementAmount = 1;
 	// timer for switching map type
 	private dTimer typeSwitchTimer;
 	
@@ -180,14 +178,9 @@ public class MapGenerator implements TimerListener {
 		this.scoreChanged = scoreChanged;
 	}
 	
-	public void setScoreIncrementAmount(int amount)
-	{
-		scoreIncrementAmount = amount;
-	}
-	
 	public void incrementScore()
 	{
-		score += scoreIncrementAmount;
+		score += currentType.getScoreIncrementAmount();
 		// update combo
 		combo++;
 		// play sound
@@ -210,11 +203,6 @@ public class MapGenerator implements TimerListener {
 	public int getScore()
 	{
 		return score;
-	}
-	
-	public int getScoreIncrementAmount()
-	{
-		return scoreIncrementAmount;
 	}
 	
 	public int getCombo()

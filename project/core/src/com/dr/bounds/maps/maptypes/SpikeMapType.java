@@ -19,7 +19,7 @@ public class SpikeMapType extends MapType{
 		MAX_WIDTH = 256 - MIN_WIDTH;
 		this.typeName = "SPIKES";
 		bgColor = new Color(51f/256f, 110f/256f, 123f/256f,1f);
-		gen.setScoreIncrementAmount(1);
+		super.setScoreIncrementAmount(1);
 		for(int x = 0; x < 6; x++)
 		{
 			this.getObstacles().add(new SpikeObstacle(0,0,BoundsAssetManager.getTexture("spike2.png"), player));

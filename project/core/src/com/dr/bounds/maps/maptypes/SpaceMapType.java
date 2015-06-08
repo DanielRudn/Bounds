@@ -22,7 +22,7 @@ public class SpaceMapType extends MapType {
 	//	bgColor = new Color(82f/256f, 74f/256f, 115f/256f, 1f);
 		bgColor = new Color(39f/256f, 15f/256f, 48f/256f, 1f);
 		// this map type awards 2 points per obstacle
-		gen.setScoreIncrementAmount(2);
+		super.setScoreIncrementAmount(2);
 		
 		typeName = "Space";
 		// add 4 obstacles to start with

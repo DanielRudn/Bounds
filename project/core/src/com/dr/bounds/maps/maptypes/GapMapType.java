@@ -16,7 +16,7 @@ public class GapMapType extends MapType {
 		super(type, player, generator);
 		this.MIN_DISTANCE = this.MAX_DISTANCE;
 		this.MAX_DISTANCE = this.MAX_DISTANCE + 128;
-		gen.setScoreIncrementAmount(2);
+		super.setScoreIncrementAmount(2);
 		typeName = "Gap";
 		bgColor = new Color(48f/256f, 63f/256f, 159f/256f,1f);
 		for(int x = 0; x < 10; x++)

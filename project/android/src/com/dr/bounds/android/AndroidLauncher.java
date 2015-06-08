@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.os.Bundle;
 import android.util.Log;
+
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.dr.bounds.MainGame;
@@ -54,7 +55,7 @@ public class AndroidLauncher extends AndroidApplication implements RequestHandle
 		else
 		{
 			Log.d("BOUNDS","Connecting client..");
-		//	apiClient.connect();
+			apiClient.connect();
 		}
 	}
 	

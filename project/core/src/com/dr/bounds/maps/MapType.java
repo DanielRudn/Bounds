@@ -64,6 +64,8 @@ public abstract class MapType {
 	// particle effect in the background
 	protected ParticleEffect particleEffect = new ParticleEffect();
 	protected boolean hideParticleEffect = false;
+	// amount to increment score by since the MapTypes can vary in difficulty and award different amounts of score
+	protected int scoreIncrementAmount = 1;
 	
 	public MapType(int type, Player player, MapGenerator generator)
 	{
@@ -351,6 +353,11 @@ public abstract class MapType {
 		}
 	}
 	
+	protected void setScoreIncrementAmount(int amt)
+	{
+		scoreIncrementAmount = amt;
+	}
+	
 	public boolean shouldSwitch()
 	{
 		return shouldSwitch;
@@ -384,6 +391,11 @@ public abstract class MapType {
 		}
 		return i-1;
 	}	
+	
+	public int getScoreIncrementAmount()
+	{
+		return scoreIncrementAmount;
+	}
 	
 	public void dispose()
 	{

@@ -7,8 +7,6 @@ import com.DR.dLib.ui.dScreen;
 import com.DR.dLib.ui.dText;
 import com.DR.dLib.dTweener;
 import com.DR.dLib.ui.dUICard;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -17,7 +15,6 @@ import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 import com.dr.bounds.animations.CameraShakeAnimation;
 import com.dr.bounds.maps.MapGenerator;
-import com.dr.bounds.maps.MapTypeFactory;
 
 public class GameScreen extends dScreen implements AnimationStatusListener {
 	
@@ -58,8 +55,8 @@ public class GameScreen extends dScreen implements AnimationStatusListener {
 		//deathAnim = new PlayerDeathAnimation(.75f,player);
 		deathAnim = new CameraShakeAnimation(0.32f, this, DEATH_ANIM_ID);
 		
-		//mapGen = new MapGenerator(player);
-		mapGen = new MapGenerator(MapTypeFactory.TYPE_SKY, player);
+		mapGen = new MapGenerator(player);
+	//	mapGen = new MapGenerator(MapTypeFactory.TYPE_GAP, player);
 		mapGen.generateSeed();
 		// TODO: might remove
 		mapGen.generateFirstSet();
@@ -184,13 +181,6 @@ public class GameScreen extends dScreen implements AnimationStatusListener {
 					}
 				}
 			}
-			
-			
-			// test, remove
-			if(Gdx.input.isKeyJustPressed(Keys.ALT_LEFT))
-			{
-				pauseScreen.show();
-			}
 		}
 		else
 		{
@@ -273,12 +263,13 @@ public class GameScreen extends dScreen implements AnimationStatusListener {
 	
 	@Override
 	public void goBack() {
-		if(MainGame.previousScreen != null)
+	/*	if(MainGame.previousScreen != null)
 		{
 			switchScreen(MainGame.previousScreen);
 		}
 		MainGame.camera.position.y = MainGame.VIRTUAL_HEIGHT / 2f;
-		reset();
+		reset();*/
+		pauseScreen.show();
 	}
 
 	@Override

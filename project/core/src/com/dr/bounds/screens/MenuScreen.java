@@ -169,7 +169,7 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		{
 			settingsScreen.goBack();
 		}
-		else if(nextScreen == shopScreen)
+		else if(nextScreen != null && nextScreen == shopScreen)
 		{
 			nextScreen.hide();
 			this.show();

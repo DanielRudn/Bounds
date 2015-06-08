@@ -20,7 +20,7 @@ public class RotatingMapType extends MapType{
 		this.typeName = "ROTATING";
 		//bgColor = new Color(20f/256f,20f/256f,20f/256f,1f);
 		bgColor = new Color(96f/256f, 125f/256f, 139f/256f, 1f);
-		gen.setScoreIncrementAmount(1);
+		super.setScoreIncrementAmount(1);
 
 		for(int x = 0; x < 15; x++)
 		{

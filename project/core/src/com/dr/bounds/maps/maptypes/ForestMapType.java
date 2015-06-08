@@ -16,7 +16,7 @@ public class ForestMapType extends MapType {
 		MIN_WIDTH = 64;
 		typeName = "Forest";
 		bgColor = new Color(135f/256f, 211f/256f, 124f/256f, 1f);
-		gen.setScoreIncrementAmount(1);
+		super.setScoreIncrementAmount(1);
 		
 		// make 8 obstacles
 		for(int x = 0; x < 8; x++)
