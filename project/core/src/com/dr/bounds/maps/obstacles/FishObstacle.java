@@ -7,13 +7,13 @@ import com.dr.bounds.Player;
 import com.dr.bounds.maps.MapGenerator;
 import com.dr.bounds.maps.dObstacle;
 
-public class BirdObstacle extends dObstacle{
+public class FishObstacle extends dObstacle{
 
 	private float moveTime = 0;
 	private float moveSpeed = 0;
 	private boolean goingEast = true;
 	
-	public BirdObstacle(float x, float y, Texture texture, Player p) {
+	public FishObstacle(float x, float y, Texture texture, Player p) {
 		super(x, y, texture, p);
 		moveSpeed = 5f + MapGenerator.rng.nextInt(5);
 	}
