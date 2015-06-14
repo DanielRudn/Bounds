@@ -13,7 +13,7 @@ public class GapObstacle extends dObstacle {
 
 	private float moveTime = 0f, moveDuration = 7f, startX = -300f, moveRightDistance = 200f, moveLeftDistance = -256f;
 	private static final float GAP_WIDTH = 392f;
-	private dImage rightSide;
+	private dImage rightSide, leftShadow, rightShadow;
 	private boolean moveRight = true;
 	
 	public GapObstacle(float x, float y, Texture texture, Player p) {
@@ -26,11 +26,17 @@ public class GapObstacle extends dObstacle {
 		moveRightDistance += MathUtils.random(64);
 		moveLeftDistance -= MathUtils.random(128f);
 		moveTime = MathUtils.random(7f);
+		leftShadow = new dImage(0,0, texture);
+		leftShadow.setColor(0,0,0,0.5f);
+		rightShadow = new dImage(0,0, texture);
+		rightShadow.setColor(0,0,0,0.5f);
 	}
 	
 	@Override
 	public void render(SpriteBatch batch)
 	{
+		leftShadow.render(batch);
+		rightShadow.render(batch);
 		super.render(batch);
 		rightSide.render(batch);
 	}
@@ -39,6 +45,10 @@ public class GapObstacle extends dObstacle {
 	public void update(float delta)
 	{
 		super.update(delta);
+		leftShadow.setPos(this.getX() + 2, this.getY() + 2);
+		leftShadow.setDimensions(getWidth(), getHeight());
+		rightShadow.setPos(rightSide.getX() + 2, rightSide.getY() + 2);
+		rightShadow.setDimensions(rightSide.getWidth(), rightSide.getHeight());
 		if(moveTime <= moveDuration)
 		{
 			moveTime += delta;

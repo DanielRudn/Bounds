@@ -1,7 +1,0 @@
-
-Applications cannot be upgraded if their certificate changes from one version to another, forcing a full uninstall/install, which will make the user lose his/her data.
-Google Play(Android Market) currently requires certificates to be valid until 2033.
-Certificate fingerprints:
-MD5 : 56:BD:7A:69:A5:0F:3C:91:E1:0C:65:37:13:6C:88:36
-SHA1: 2D:9E:8B:99:8C:21:6E:41:F4:1C:64:25:5A:FC:00:57:06:0C:CC:9E
-WARNING: destination file already exists

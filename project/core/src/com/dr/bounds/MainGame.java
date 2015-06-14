@@ -85,6 +85,8 @@ public class MainGame extends ApplicationAdapter {
 		fpsText.setColor(Color.WHITE);
 		currentScreen = menuScreen;
 		currentScreen.show();
+		
+		dText.GAME_FONT.setUseIntegerPositions(false);
 	}
 
 	@Override

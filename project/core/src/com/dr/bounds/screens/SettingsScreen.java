@@ -25,16 +25,15 @@ public class SettingsScreen extends dScreen implements AnimationStatusListener {
 	
 	public SettingsScreen(float x, float y) {
 		super(x, y, BoundsAssetManager.getTexture("circle"));
-		this.setColor(68f/256f,108f/256f,179f/256f, 1f);
+		this.setColor(0f, 188f/256f, 212f/256f, 1f);
 		this.setClickable(true);
 		this.setHasShadow(true);
-		this.setDimensions(128f, 128f);
-		this.setClipping(true);
+		this.setDimensions(92f, 92f);
 		circleImage = new dImage(-256,0, BoundsAssetManager.getTexture("circle"));
 		circleImage.setColor(this.getColor());
 		gearImage = new dImage(0, 0, BoundsAssetManager.getTexture("gear.png"));
 		showAnim = new ExpandAnimation(circleImage, 3f, this, SHOW_ANIM_ID, circleImage.getColor(), MainGame.VIRTUAL_HEIGHT*2f);
-		hideAnim = new ShrinkAnimation(circleImage, 2f, this, HIDE_ANIM_ID, 128f, MainGame.VIRTUAL_HEIGHT * 2f);
+		hideAnim = new ShrinkAnimation(circleImage, 2f, this, HIDE_ANIM_ID, 92f, MainGame.VIRTUAL_HEIGHT * 2f);
 		
 		expandedCard = new dUICard(0,0, BoundsAssetManager.getTexture("card"));
 		expandedCard.setDimensions(MainGame.VIRTUAL_WIDTH, 444f);
@@ -42,7 +41,7 @@ public class SettingsScreen extends dScreen implements AnimationStatusListener {
 		expandedCard.setAlpha(0f);
 		expandedCard.setPadding(16f);
 		expandedCard.addObject(circleImage, dUICard.CENTER, dUICard.CENTER);
-		expandedCard.addObject(gearImage, dUICard.LEFT, dUICard.TOP);
+		expandedCard.addObject(gearImage, dUICard.LEFT, dUICard.BOTTOM);
 		
 		settingsText = new dText(0,0, 48f, "SETTINGS");
 		settingsText.setColor(0f, 0f, 0f, 0f);
@@ -67,6 +66,7 @@ public class SettingsScreen extends dScreen implements AnimationStatusListener {
 	public void render(SpriteBatch batch)
 	{
 		super.render(batch);
+		gearImage.render(batch);
 		expandedCard.render(batch);
 	}
 	
@@ -75,6 +75,10 @@ public class SettingsScreen extends dScreen implements AnimationStatusListener {
 	{
 		super.update(delta);
 		expandedCard.update(delta);
+		if(this.isOpen())
+		{
+			expandedCard.setPos(0,MainGame.camera.position.y + MainGame.VIRTUAL_HEIGHT / 2f - expandedCard.getHeight());
+		}
 		if(this.isClicked() && hideAnim.isActive() == false)
 		{
 			showAnim.start();
@@ -87,7 +91,8 @@ public class SettingsScreen extends dScreen implements AnimationStatusListener {
 		{
 			hideAnim.update(delta);
 		}
-		gearImage.setPos(this.getX() + 64f - gearImage.getWidth() / 2f, this.getY() + 64f - gearImage.getHeight() / 2f);
+//		circleImage.setPos(this.getPos());
+		gearImage.setPos(this.getX() + 46f - gearImage.getWidth() / 2f,this.getY() + 40f - gearImage.getHeight() / 2f);
 	}
 
 	@Override
@@ -111,13 +116,13 @@ public class SettingsScreen extends dScreen implements AnimationStatusListener {
 	{
 		if(ID == SHOW_ANIM_ID)
 		{
-			expandedCard.setPos(0, MainGame.VIRTUAL_HEIGHT - expandedCard.getHeight());
+			expandedCard.setPos(0,MainGame.camera.position.y + MainGame.VIRTUAL_HEIGHT / 2f - expandedCard.getHeight());
 			circleImage.setDimensions(this.getWidth(), this.getHeight());
 			circleImage.setPos(this.getX(), this.getY());
 		}
 		else if(ID == HIDE_ANIM_ID)
 		{
-			this.setDimensions(128f, 128f);
+			this.setDimensions(92f, 92f);
 		}
 	}
 

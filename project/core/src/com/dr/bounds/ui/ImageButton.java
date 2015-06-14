@@ -7,6 +7,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.dr.bounds.BoundsAssetManager;
 
+/** 
+ * Rectangular button with an image/icon in the center and text at the bottom.
+ * @author Daniel
+ */
 public class ImageButton extends dUICard {
 	
 	private static final float WIDTH = 128f, HEIGHT = 128f;

@@ -11,7 +11,7 @@ import com.dr.bounds.maps.MapType;
 import com.dr.bounds.maps.obstacles.GapObstacle;
 
 public class GapMapType extends MapType {
-
+	
 	public GapMapType(int type, Player player, MapGenerator generator) {
 		super(type, player, generator);
 		this.MIN_DISTANCE = this.MAX_DISTANCE;

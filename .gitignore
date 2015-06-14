@@ -1,1 +1,11 @@
+# Ignore non-code
 /build/
+/bin/
+/apk/
+/art/
+
+# Ignore Eclipse settings
+/.metadata/
+
+# Ignore gradle local preferences
+local.properties

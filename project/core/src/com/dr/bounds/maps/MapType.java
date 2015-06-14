@@ -98,7 +98,7 @@ public abstract class MapType {
 		particleEffect.draw(batch);
 		if(coinSet != null)
 		{
-			//coinSet.render(batch);
+			coinSet.render(batch);
 		}
 		renderObstacles(batch);
 		if(nextType != null && showTransitionImage)
