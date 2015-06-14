@@ -45,7 +45,7 @@ public class dObstacle extends dObject{
 	@Override
 	public void render(SpriteBatch batch) {
 		getSprite().draw(batch);
-	//	renderDebug(batch);
+		//renderDebug(batch);
 	}
 	
 	protected void renderDebug(SpriteBatch batch)

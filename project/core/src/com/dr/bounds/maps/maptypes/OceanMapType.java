@@ -2,6 +2,7 @@ package com.dr.bounds.maps.maptypes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Intersector;
 import com.dr.bounds.BoundsAssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
@@ -25,6 +26,20 @@ public class OceanMapType extends MapType {
 			obstacles.get(x).setColor(88f/256f, 179f/256f, 124f/256f, 1f);
 		}
 		super.particleEffect.load(Gdx.files.internal("ocean.p"), Gdx.files.internal(""));
+	}
+	
+	@Override
+	protected void checkCollision(int index)
+	{
+		super.checkCollision(index);
+		if(gen.hadCollision() == false && Intersector.intersectRectangles(player.getBoundingRectangle(), ((FishObstacle)obstacles.get(index)).getBodyRectangle(), useless))
+		{
+			gen.setHadCollision(true);
+		}
+		else if(gen.hadCollision() == false && Intersector.intersectRectangles(player.getBoundingRectangle(), ((FishObstacle)obstacles.get(index)).getMouthRectangle(), useless))
+		{
+			gen.setHadCollision(true);
+		}
 	}
 
 	@Override

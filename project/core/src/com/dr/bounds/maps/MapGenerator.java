@@ -210,6 +210,12 @@ public class MapGenerator implements TimerListener {
 		return combo;
 	}
 	
+	// TEMP
+	public MapType getCurrentMapType()
+	{
+		return currentType;
+	}
+	
 	public int getMapType()
 	{
 		return currentType.getMapType();

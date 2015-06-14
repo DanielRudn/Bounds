@@ -10,12 +10,14 @@ import com.DR.dLib.ui.dScreen;
 import com.DR.dLib.ui.dUICard;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dr.bounds.BoundsAssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
+import com.dr.bounds.maps.MapGenerator;
 
 public class MenuScreen extends dScreen implements AnimationStatusListener {
 
@@ -26,7 +28,6 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 	private final int HIDE_ANIM_ID = 12345;
 	// title
 	private dImage titleImage;
-	private float titleTime = 0f, titleDuration = (float)Math.PI/2f;
 	// BUTTONS
 	private dButton playButton;
 	private dButton skinsButton;
@@ -39,10 +40,21 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 	private dScreen nextScreen = null;
 	// Player instance
 	private Player player;
+	private OrthographicCamera test;
+	private MapGenerator gen;
 	
 	public MenuScreen(float x, float y, Texture texture, Player p) {
 		super(x, y, texture);
-		setColor(52f/256f, 73f/256f, 94f/256f,1f);
+		test = new OrthographicCamera(MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_HEIGHT);
+		test.setToOrtho(true, MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_HEIGHT);
+		gen = new MapGenerator(p);
+		gen.generateSeed();
+		// TODO: might remove
+		gen.generateFirstSet();
+		
+		this.setClipping(false);
+		//setColor(52f/256f, 73f/256f, 94f/256f,1f);
+		setColor(236f/256f, 239f/256f, 241f/256f, 0f);
 		setPaddingTop(16f);
 		hideAnimation = new SlideExponentialAnimation(1.5f, this, HIDE_ANIM_ID, 0, MainGame.VIRTUAL_HEIGHT, this);
 		setHideAnimation(hideAnimation);
@@ -50,37 +62,38 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		
 		titleImage = new dImage(0,0,BoundsAssetManager.getTexture("BoundsLogo.png"));
 		titleImage.setColor(Color.WHITE);
+		titleImage.setHasShadow(true);
 		
 		settingsScreen = new SettingsScreen(0, 0);
 		
-		Color buttonColor = new Color(68f/256f,108f/256f,179f/256f, 1f);
+		//Color buttonColor = new Color(3f/256f, 169f/256f, 244f/256f, 1f);
 		
 		//fix
 		Texture buttonTexture = BoundsAssetManager.getTexture("button");
-		playButton = new dButton(0,0, new Sprite(buttonTexture), "PLAY");
-		playButton.setTextSize(92f);
-		playButton.setColor(buttonColor);
+		playButton = new dButton(0,0, new Sprite(buttonTexture), "Tap to begin");
+		playButton.setTextSize(64f);
+		playButton.setTextColor(Color.WHITE);
+		playButton.setColor(253f/256f, 216f/256f, 53f/256f, 0f);
 		
-		skinsButton = new dButton(0,0, new Sprite(buttonTexture), "SHOP");
-		skinsButton.setTextSize(92f);
-		skinsButton.setColor(buttonColor);
+		skinsButton = new dButton(0,0, new Sprite(buttonTexture), "Shop");
+		skinsButton.setTextSize(64f);
+		skinsButton.setColor(1f, 193f/256f, 7f/256f, 1f);
 		
-		leaderboardsButton = new dButton(0,0, new Sprite(buttonTexture), "SCORES");
-		leaderboardsButton.setTextSize(92f);
-		leaderboardsButton.setColor(Color.GRAY);
+		leaderboardsButton = new dButton(0,0, new Sprite(buttonTexture), "Leaderboards");
+		leaderboardsButton.setTextSize(64f);
+		leaderboardsButton.setColor(0, 188f/256f, 212f/256f, 1f);
 		
-		achievementsButton = new dButton(0,0, new Sprite(buttonTexture), "TROPHIES");
-		achievementsButton.setTextSize(92f);
-		achievementsButton.setColor(Color.GRAY);
+		achievementsButton = new dButton(0,0, new Sprite(buttonTexture), "Achievements");
+		achievementsButton.setTextSize(64f);
+		achievementsButton.setColor(41f/256f, 182f/256f, 246f/256f, 1);
 		
-		addObject(titleImage, dUICard.CENTER, dUICard.TOP);
-		titleImage.setY(titleImage.getY() + titleImage.getHeight()/2f);
-		addObject(playButton, dUICard.CENTER, dUICard.TOP);
-		playButton.setY(playButton.getY() + 364f);
-		addObjectUnder(skinsButton, getIndexOf(playButton));
-		addObjectUnder(leaderboardsButton, getIndexOf(skinsButton));
-		addObjectUnder(achievementsButton, getIndexOf(leaderboardsButton));
-		addObject(settingsScreen, dUICard.LEFT, dUICard.BOTTOM);
+		addObject(titleImage, dUICard.CENTER, dUICard.CENTER);
+		//titleImage.setY(titleImage.getY() + titleImage.getHeight()/2f);
+		addObjectUnder(playButton, this.getIndexOf(titleImage));
+	//	addObjectUnder(skinsButton, getIndexOf(playButton));
+	//	addObjectUnder(leaderboardsButton, getIndexOf(skinsButton));
+	//	addObjectUnder(achievementsButton, getIndexOf(leaderboardsButton));
+	//	addObject(settingsScreen, dUICard.LEFT, dUICard.BOTTOM);
 		
 		showButtonsAnimation = new SlideInOrderAnimation(2f, this, SHOW_BUTTONS_ID, MainGame.VIRTUAL_WIDTH, new dButton[]{playButton, skinsButton, leaderboardsButton, achievementsButton});
 	}
@@ -88,14 +101,30 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 	@Override
 	public void render(SpriteBatch batch)
 	{
-		if(nextScreen != null && nextScreen instanceof GameScreen)
+		if(!this.hideAnimation.isActive())
 		{
-			nextScreen.render(batch);
+			gen.render(batch);
+			batch.setProjectionMatrix(test.combined);
+			if(nextScreen != null && nextScreen instanceof GameScreen)
+			{
+				nextScreen.render(batch);
+			}
+			super.render(batch);
+			if(nextScreen != null && nextScreen instanceof ShopScreen)
+			{
+				nextScreen.render(batch);
+			}
+			batch.setProjectionMatrix(MainGame.camera.combined);
 		}
-		super.render(batch);
-		if(nextScreen != null && nextScreen instanceof ShopScreen)
+		else
 		{
-			nextScreen.render(batch);
+			batch.setProjectionMatrix(MainGame.camera.combined);
+			gen.render(batch);
+			if(nextScreen != null && nextScreen instanceof GameScreen)
+			{
+				nextScreen.render(batch);
+			}
+			super.render(batch);
 		}
 	}
 	
@@ -103,15 +132,11 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 	public void update(float delta)
 	{
 		super.update(delta);
-		// move the title text up and down
-		if(titleTime < titleDuration)
+		if(!hideAnimation.isActive())
 		{
-			titleTime+=delta;
-			titleImage.setY(titleImage.getY() - (float)Math.sin(titleTime));
-		}
-		else
-		{
-			titleTime = (float)-Math.PI/2f;
+			gen.update(delta);
+			// move camera up
+			MainGame.setCameraPos(MainGame.camera.position.x, MainGame.camera.position.y - GameScreen.CAMERA_SPEED * delta);
 		}
 		if(hideAnimation.isActive())
 		{
@@ -140,6 +165,12 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 				}
 				switchScreen(shopScreen, false);
 			}
+		}
+		if(Gdx.input.justTouched() && !hideAnimation.isActive())
+		{
+			MainGame.gameScreen = new GameScreen(0, 0, BoundsAssetManager.getTexture("card.png"), gen.getMapType());
+			switchScreen(MainGame.gameScreen);
+			MainGame.setCameraPos(MainGame.camera.position.x, MainGame.VIRTUAL_HEIGHT / 2f);
 		}
 	}
 	
@@ -199,8 +230,8 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 	public void switchScreen(dScreen newScreen) {
 		this.hide();
 		nextScreen = newScreen;
-		//nextScreen.show();
-		//this.hide();
+		nextScreen.show();
+		this.hide();
 	}
 
 	@Override

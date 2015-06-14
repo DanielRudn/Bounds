@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dr.bounds.screens.GameScreen;
@@ -53,7 +52,7 @@ public class MainGame extends ApplicationAdapter {
 	private float accumulator = 0f;
 	
 	// test, remove
-	private static Sound scoreSound, scoreSound2, deathSound;
+	private static Sound scoreSound, deathSound;
 	private dText fpsText;
 
 	public MainGame(RequestHandler h)
@@ -80,7 +79,6 @@ public class MainGame extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		
 		scoreSound = Gdx.audio.newSound(Gdx.files.internal("score.wav"));
-		scoreSound2 = Gdx.audio.newSound(Gdx.files.internal("score2.wav"));
 		deathSound = Gdx.audio.newSound(Gdx.files.internal("death.wav"));
 		
 		fpsText = new dText(5,5,24,"FPS: 60");
@@ -95,7 +93,8 @@ public class MainGame extends ApplicationAdapter {
 		{
 			Gdx.gl.glViewport(0,0, (int)Gdx.graphics.getWidth(), (int)Gdx.graphics.getHeight());
 		}
-		Gdx.gl.glClearColor(189f/256f, 195f/256f, 199f/256f,.5f);
+		//Gdx.gl.glClearColor(189f/256f, 195f/256f, 199f/256f,.5f);
+		Gdx.gl.glClearColor(gameScreen.getCurrentMapType().getBackgroundColor().r, gameScreen.getCurrentMapType().getBackgroundColor().g, gameScreen.getCurrentMapType().getBackgroundColor().b, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 	
 		if(Gdx.input.isKeyPressed(Keys.BACK) || Gdx.input.isKeyJustPressed(Keys.SPACE))
@@ -151,14 +150,7 @@ public class MainGame extends ApplicationAdapter {
 		{
 			if(sound.equalsIgnoreCase("score"))
 			{
-				if(MathUtils.randomBoolean())
-				{
-					scoreSound.play(0.75f);
-				}
-				else
-				{
-					scoreSound2.play(0.75f);
-				}
+				scoreSound.play(0.75f);
 			}
 			else if(sound.equalsIgnoreCase("death"))
 			{
