@@ -3,7 +3,8 @@
 ### How do I get set up? ###
 
 * #### To use with Eclipse:
-  1. Make sure Eclipse has the Gradle integration plugin in order to import the plugin which can be downloaded from ```http://dist.springsource.com/release/TOOLS/gradle (latest release)```
+  1. Make sure Eclipse has the Gradle integration plugin in order to import the plugin which can be downloaded from ```http://dist.springsource.com/release/TOOLS/gradle (latest release)``` as well as the Eclipse ADT plugin which is located at the repo  ```https://dl-ssl.google.com/android/eclipse/```
+  1. Make sure the Android SDK is downloaded from ```https://developer.android.com/sdk/index.html#Other```
   1. Pull this repository
   1. Inside ```/Bounds/project/``` create a ```local.properties``` file and inside write ```sdk.dir=/path/to/android/sdk/``` with NO quotes
   1. Open Eclipse with the Bounds folder as the workspace.
