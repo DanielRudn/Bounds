@@ -11,4 +11,3 @@
   1. Import the project ```File > Import... > Gradle > Gradle Project``` then select the project folder and click Build Model.
   1. For each seperate project (android, desktop, core) you need to configure the build path and include ```dLib.jar``` in the Libraries and Order and Export tabs
 ***
-###### Created by Daniel Rudnitski ######
