@@ -29,7 +29,7 @@ public class PauseScreen extends dScreen implements AnimationStatusListener {
 	private dAnimation hideAnim;
 	private static final int HIDE_ANIM_ID = 05312015;
 	
-	private GameScreen gs;
+//	private GameScreen gs;
 	
 	public PauseScreen(float x, float y, Texture texture, GameScreen gameScreen) {
 		super(x, y, texture);
@@ -48,7 +48,7 @@ public class PauseScreen extends dScreen implements AnimationStatusListener {
 		hideAnim = new SlideInOrderAnimation(2f, this, HIDE_ANIM_ID, 0, 256f, resumeButton, resetButton, menuButton); // same as above but reverse
 		this.setHideAnimation(hideAnim);
 		
-		this.gs = gameScreen;
+//		this.gs = gameScreen;
 	}
 	
 	@Override
@@ -62,14 +62,6 @@ public class PauseScreen extends dScreen implements AnimationStatusListener {
 	public void update(float delta)
 	{
 		super.update(delta);
-		if(showAnim.isActive())
-		{
-			showAnim.update(delta);
-		}
-		if(hideAnim.isActive())
-		{
-			hideAnim.update(delta);
-		}
 		resumeButton.update(delta);
 		if(resumeButton.isClicked() && hideAnim.isActive() == false)
 		{
@@ -91,12 +83,6 @@ public class PauseScreen extends dScreen implements AnimationStatusListener {
 		resumeButton.setY(resumeButton.getY() + 256f);
 		pauseText.setX(pauseText.getX() - MainGame.VIRTUAL_WIDTH);
 		super.show();
-	}
-	
-	@Override
-	public void hide()
-	{
-		hideAnim.start();
 	}
 	
 	@Override

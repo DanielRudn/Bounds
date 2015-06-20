@@ -81,7 +81,7 @@ public class MainGame extends ApplicationAdapter {
 		scoreSound = Gdx.audio.newSound(Gdx.files.internal("score.wav"));
 		deathSound = Gdx.audio.newSound(Gdx.files.internal("death.wav"));
 		
-		fpsText = new dText(5,5,24,"FPS: 60");
+		fpsText = new dText(5,5,24,"FPS: ");
 		fpsText.setColor(Color.WHITE);
 		currentScreen = menuScreen;
 		currentScreen.show();

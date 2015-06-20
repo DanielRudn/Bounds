@@ -75,7 +75,7 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 		
 		if(player.isSkinUnlocked(id))
 		{
-			acceptButton = new dButton(MainGame.VIRTUAL_WIDTH/2f, MainGame.VIRTUAL_HEIGHT*2f, new Sprite(texture), "SET", BoundsAssetManager.getTexture("circle"), 2f);
+			acceptButton = new dButton(MainGame.VIRTUAL_WIDTH/2f, MainGame.VIRTUAL_HEIGHT*2f, texture, "SET", BoundsAssetManager.getTexture("circle"), 2f);
 			acceptButton.setColor(46f/256f, 204f/256f, 113f/256f,1f);
 
 			ownedImage=  new dImage(0,0,BoundsAssetManager.getTexture("checkMark.png"));
@@ -84,13 +84,13 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 		}
 		else
 		{
-			acceptButton = new dButton(MainGame.VIRTUAL_WIDTH/2f, MainGame.VIRTUAL_HEIGHT*2f, new Sprite(texture), "BUY", BoundsAssetManager.getTexture("circle"), 2f);
+			acceptButton = new dButton(MainGame.VIRTUAL_WIDTH/2f, MainGame.VIRTUAL_HEIGHT*2f, texture, "BUY", BoundsAssetManager.getTexture("circle"), 2f);
 			acceptButton.setColor(Color.GRAY);
 		}
 		acceptButton.setTextSize(48f);
 		acceptButton.setDimensions(CARD_WIDTH/2f, 128f);
 		
-		cancelButton = new dButton(acceptButton.getX() - acceptButton.getWidth(), MainGame.VIRTUAL_HEIGHT*2f, new Sprite(texture), "BACK");
+		cancelButton = new dButton(acceptButton.getX() - acceptButton.getWidth(), MainGame.VIRTUAL_HEIGHT*2f, texture, "BACK");
 		cancelButton.setTextSize(48f);
 		cancelButton.setDimensions(CARD_WIDTH/2f, 128f);
 		cancelButton.setColor(231f/256f, 76f/256f, 60f/256f,1f);

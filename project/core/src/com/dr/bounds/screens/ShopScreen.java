@@ -156,10 +156,6 @@ public class ShopScreen extends dUICardList implements DocGrabberListener, Anima
 				expandedItem = null;
 			}
 		}
-		if(showAnim.isActive())
-		{
-			showAnim.update(delta);
-		}
 		if(cardShowAnim.isActive())
 		{
 			cardShowAnim.update(delta);

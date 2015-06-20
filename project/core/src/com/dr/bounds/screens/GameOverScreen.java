@@ -12,7 +12,6 @@ import com.DR.dLib.dTweener;
 import com.DR.dLib.ui.dUICard;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -77,7 +76,7 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		bestScoreText = new dText(0,0, 48f, "BEST: 0");
 		bestScoreText.setColor(Color.WHITE);
 		
-		replayButton = new dButton(0,0, new Sprite(BoundsAssetManager.getTexture("replay.png")), "");
+		replayButton = new dButton(0,0, BoundsAssetManager.getTexture("replay.png"), "");
 		replayButton.setDimensions(192f, 192f);
 		replayButton.setColor(24f/256f, 39f/256f, 53f/256f, .5f);
 		
@@ -113,10 +112,6 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		if(rgg != null)
 		{
 			rgg.update(delta);
-		}
-		if(showAnimation.isActive())
-		{
-			showAnimation.update(delta);
 		}
 		if(isVisible())
 		{

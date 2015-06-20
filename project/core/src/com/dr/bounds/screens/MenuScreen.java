@@ -35,16 +35,20 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 	/*private dButton skinsButton;
 	private dButton leaderboardsButton;
 	private dButton achievementsButton;*/
-	private CircleImageButton shopButton, leaderboardsButton, achievementsButton;
+	private CircleImageButton shopButton, inventoryButton, leaderboardsButton, achievementsButton;
 	private SettingsScreen settingsScreen;
 	// shop screen
 	private ShopScreen shopScreen = null;
+	// inventory screen
+	private InventoryScreen inventoryScreen = null;
 	// next screen
 	private dScreen nextScreen = null;
 	// Player instance
 	private Player player;
 	private OrthographicCamera test;
 	private MapGenerator gen;
+	// whether the player can tap to play since the menu has various other screens.
+	private boolean canPlay = true;
 	
 	public MenuScreen(float x, float y, Texture texture, Player p) {
 		super(x, y, texture);
@@ -73,13 +77,15 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		
 		//fix
 		Texture buttonTexture = BoundsAssetManager.getTexture("button");
-		playButton = new dButton(0,0, new Sprite(buttonTexture), "Tap to play");
+		playButton = new dButton(0,0, buttonTexture, "Tap to play");
 		playButton.setTextSize(64f);
 		playButton.setTextColor(Color.WHITE);
 		playButton.setColor(253f/256f, 216f/256f, 53f/256f, 0f);
 		
 		shopButton = new CircleImageButton(0, 0, BoundsAssetManager.getTexture("replay.png"), Color.WHITE);
 		shopButton.setColor(buttonColor);
+		inventoryButton = new CircleImageButton(0, 0, BoundsAssetManager.getTexture("homeIcon.png"), Color.WHITE);
+		inventoryButton.setColor(buttonColor);
 		leaderboardsButton = new CircleImageButton(0, 0, BoundsAssetManager.getTexture("leaderboardsIcon.png"), Color.WHITE);
 		leaderboardsButton.setColor(buttonColor);
 		achievementsButton = new CircleImageButton(0, 0, BoundsAssetManager.getTexture("achievementsIcon.png"), Color.WHITE);
@@ -104,51 +110,32 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		addObjectToLeftOf(leaderboardsButton, this.getIndexOf(shopButton));
 		addObjectToLeftOf(achievementsButton, this.getIndexOf(leaderboardsButton));
 		addObject(settingsScreen, dUICard.LEFT, dUICard.BOTTOM);
+		addObjectToRightOf(inventoryButton, this.getIndexOf(settingsScreen));
+		inventoryButton.setX(inventoryButton.getX() - 16f);
 		
-		showButtonsAnimation = new SlideInOrderAnimation(2f, this, SHOW_BUTTONS_ID, 0, -256f, new dObject[]{playButton, settingsScreen, shopButton, leaderboardsButton, achievementsButton});
+		showButtonsAnimation = new SlideInOrderAnimation(2f, this, SHOW_BUTTONS_ID, 0, -256f, new dObject[]{playButton, settingsScreen, inventoryButton, shopButton, leaderboardsButton, achievementsButton});
 	}
 	
 	@Override
 	public void render(SpriteBatch batch)
 	{
-		/*if(!this.hideAnimation.isActive())
-		{
-			gen.render(batch);
-			batch.setProjectionMatrix(test.combined);
-			if(nextScreen != null && nextScreen instanceof GameScreen)
-			{
-				nextScreen.render(batch);
-			}
-			super.render(batch);
-			if(nextScreen != null && nextScreen instanceof ShopScreen)
-			{
-				nextScreen.render(batch);
-			}
-			batch.setProjectionMatrix(MainGame.camera.combined);
-		}
-		else
-		{
-			batch.setProjectionMatrix(MainGame.camera.combined);
-			gen.render(batch);
-			if(nextScreen != null && nextScreen instanceof GameScreen)
-			{
-				nextScreen.render(batch);
-			}
-			super.render(batch);
-		}*/
 		gen.render(batch);
 		if(nextScreen != null && nextScreen instanceof GameScreen)
 		{
 			nextScreen.render(batch);
 		}
 		super.render(batch);
+		if(nextScreen != null && nextScreen instanceof ShopScreen)
+		{
+			nextScreen.render(batch);
+		}
 	}
 	
 	@Override
 	public void update(float delta)
 	{
 		super.update(delta);
-		if(!hideAnimation.isActive())
+		if(!hideAnimation.isActive() && nextScreen == null)
 		{
 			gen.update(delta);
 			if(showButtonsAnimation.isFinished())
@@ -158,15 +145,16 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 				this.setY(MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f);
 			}
 		}
-		if(hideAnimation.isActive())
-		{
-			hideAnimation.update(delta);
-		}
 		if(showButtonsAnimation.isActive())
 		{
 			showButtonsAnimation.update(delta);
 		}
 
+		if(settingsScreen.isOpen())
+		{
+			canPlay = false;
+		}
+		
 		if(nextScreen != null)
 		{
 			nextScreen.update(delta);
@@ -175,19 +163,28 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		{
 			if(Gdx.input.justTouched() && !hideAnimation.isActive())
 			{
-				if(playButton.isClicked())
-				{
-					switchScreen(MainGame.gameScreen);
-				}
-				else if(shopButton.isClicked() && nextScreen == null)
+				if(shopButton.isClicked() && nextScreen == null)
 				{
 					if(shopScreen == null)
 					{
 						shopScreen = new ShopScreen(0,0, BoundsAssetManager.getTexture("card"), player);
 					}
 					switchScreen(shopScreen, false);
+					canPlay = false;
 				}
-				else 
+				else if(inventoryButton.isClicked())
+				{
+					// Remove the inventory screen from the list if we already had one.
+					if(inventoryScreen != null)
+					{
+						this.removeObject(this.getIndexOf(inventoryScreen));
+					}
+					inventoryScreen = new InventoryScreen(player);
+					this.addObject(inventoryScreen, dUICard.CENTER, dUICard.CENTER);
+					inventoryScreen.show();
+					canPlay = false;
+				}
+				else if(MainGame.getVirtualMouseY() <= shopButton.getY() && canPlay) // only start if the players tap is above the button row
 				{
 					MainGame.gameScreen = new GameScreen(0, 0, BoundsAssetManager.getTexture("card.png"), gen.getMapType());
 					switchScreen(MainGame.gameScreen);
@@ -206,16 +203,10 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		settingsScreen.setY(settingsScreen.getY() + 256f);
 		shopButton.setY(shopButton.getY() + 256f);
 		leaderboardsButton.setY(leaderboardsButton.getY() + 256f);
+		inventoryButton.setY(inventoryButton.getY() + 256f);
 		achievementsButton.setY(achievementsButton.getY() + 256f);
 		showButtonsAnimation.start();
 		nextScreen = null;
-	}
-	
-	@Override
-	public void hide()
-	{
-		hideAnimation.start();
-		setVisible(true);
 	}
 
 	@Override
@@ -230,10 +221,15 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 			this.show();
 			nextScreen = null;
 		}
+		else if(inventoryScreen != null)
+		{
+			inventoryScreen.hide();
+		}
 		else
 		{
 			Gdx.app.exit();
 		}
+		canPlay = true;
 	}
 	
 	public void switchScreen(dScreen newScreen, boolean hideThis)

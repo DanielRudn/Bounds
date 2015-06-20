@@ -30,14 +30,14 @@ public class GameInfoCard extends dUICard {
 		
 		coinText = new dText(0, 0, 64f, "0");
 		coinText.setColor(210f/256f, 82f/256f, 127f/256f,1f);
-		coinLabel = new dText(0,0, 32f, "COINS");
+		coinLabel = new dText(0,0, 32f, "Coins");
 		coinLabel.setColor(coinText.getColor());
 		
 		comboText = new dText(0, 0, 64f, "0");
 		comboText.setColor(210f/256f, 82f/256f, 127f/256f,1f);
-		comboLabel = new dText(0,0, 32f, "COMBO");
+		comboLabel = new dText(0,0, 32f, "Combo");
 		comboLabel.setColor(coinText.getColor());
-		bestComboText = new dText(0, 0, 32f, "BEST: 0");
+		bestComboText = new dText(0, 0, 32f, "Record: 0");
 		bestComboText.setColor(comboLabel.getColor());
 		
 		dividerImage = new dImage(0,0, BoundsAssetManager.getTexture("card"));
