@@ -43,7 +43,7 @@ public class SpikeMapType extends MapType{
 	}
 	
 	@Override
-	protected void generateBlock(int index)
+	protected void generateObstacle(int index)
 	{
 		int side = MapGenerator.rng.nextInt(11); // 0,1,5,6,7 is LEFT, 2,3,8,9,10 is RIGHT, 4 is center
 		if(side == 0 || side == 1 || side == 5 || side == 6 || side == 7)// left

@@ -47,7 +47,7 @@ public class ForestMapType extends MapType {
 	}
 
 	@Override
-	protected void generateBlock(int index)
+	protected void generateObstacle(int index)
 	{
 		int dimensions = MIN_WIDTH + MapGenerator.rng.nextInt(128);
 		obstacles.get(index).setDimensions(dimensions, dimensions);

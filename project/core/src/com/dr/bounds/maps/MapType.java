@@ -65,7 +65,7 @@ public abstract class MapType {
 	protected ParticleEffect particleEffect = new ParticleEffect();
 	protected boolean hideParticleEffect = false;
 	// amount to increment score by since the MapTypes can vary in difficulty and award different amounts of score
-	protected int scoreIncrementAmount = 1;
+	private int scoreIncrementAmount = 1;
 	
 	public MapType(int type, Player player, MapGenerator generator)
 	{
@@ -122,6 +122,7 @@ public abstract class MapType {
 		{
 			particleEffect.update(delta);
 			particleEffect.setPosition(0, MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f);
+			// only hide the particle effect if all obstacles are under the screen and done regenerating.
 			hideParticleEffect = true;
 			for(dObstacle obstacle : obstacles)
 			{
@@ -193,14 +194,14 @@ public abstract class MapType {
 				nextType.generateNewType();
 			}
 		}
-		updateBlocks(delta);
+		updateObstacles(delta);
 		if(coinSet != null)
 		{
 			coinSet.update(delta);
 		}
 	}
 	
-	private void updateBlocks(float delta)
+	private void updateObstacles(float delta)
 	{
 		for(int x = 0; x < obstacles.size(); x++)
 		{
@@ -208,10 +209,13 @@ public abstract class MapType {
 			if(obstacles.get(x).shouldRegenerate())
 			{
 				generate(x);
-				obstacles.get(x).setRegenerate(false);
 			}
 			// check if player had collision
 			checkCollision(x);
+		}
+		if(nextType != null && showTransitionImage)
+		{
+			nextType.updateObstacles(delta);
 		}
 	}
 	
@@ -246,14 +250,9 @@ public abstract class MapType {
 		{
 			//reset passed for this obstacles
 			obstacles.get(index).setPassed(false);
-			generateBlock(index);
-			// 30% chance to generate a set of coins
-			// TODO: make it so there's a boolean to prevent two coin sets generating in a row
-			//int genCoins = MapGenerator.rng.nextInt(10);
-		//	if(genCoins == 5 || genCoins == 7 || genCoins == 1)
-			//{
-				generateCoinSet(index);
-			//}
+			obstacles.get(index).setRegenerate(false);
+			generateObstacle(index);
+			generateCoinSet(index);
 		}
 		else
 		{
@@ -273,7 +272,7 @@ public abstract class MapType {
 		}
 	}
 	
-	protected void generateBlock(int index)
+	protected void generateObstacle(int index)
 	{
 		int side = MapGenerator.rng.nextInt(11); // 0,1,5,6,7 is LEFT, 2,3,8,9,10 is RIGHT, 4 is center
 		if(side == 0 || side == 1 || side == 5 || side == 6 || side == 7)// left

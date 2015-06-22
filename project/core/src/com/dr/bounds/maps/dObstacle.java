@@ -29,7 +29,6 @@ public class dObstacle extends dObject{
 		objHeight = texture.getHeight();
 		// set origin 0,0
 		setOrigin(0,0);
-		
 		player = p;
 	}
 
@@ -45,7 +44,7 @@ public class dObstacle extends dObject{
 	@Override
 	public void render(SpriteBatch batch) {
 		getSprite().draw(batch);
-		//renderDebug(batch);
+//		renderDebug(batch);
 	}
 	
 	protected void renderDebug(SpriteBatch batch)

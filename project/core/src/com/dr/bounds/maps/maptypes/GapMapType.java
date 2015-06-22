@@ -38,7 +38,7 @@ public class GapMapType extends MapType {
 	}
 	
 	@Override
-	protected void generateBlock(int index)
+	protected void generateObstacle(int index)
 	{
 		((GapObstacle) obstacles.get(index)).reset();
 		obstacles.get(index).setY(obstacles.get(getPreviousIndex(index)).getY() - MIN_DISTANCE - MapGenerator.rng.nextInt(MAX_DISTANCE));

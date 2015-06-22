@@ -43,7 +43,7 @@ public class OceanMapType extends MapType {
 	}
 
 	@Override
-	protected void generateBlock(int index)
+	protected void generateObstacle(int index)
 	{
 		// get direction, 0 = east, 1 = west
 		int direction = MapGenerator.rng.nextInt(2);

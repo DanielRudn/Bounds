@@ -10,7 +10,7 @@ import com.dr.bounds.maps.dObstacle;
 public class RotatingObstacle extends dObstacle {
 	
 	private float rotation = 0;
-	private float DEGREES_PER_SECOND = 45f;
+	private float DEGREES_PER_SECOND = 65f;
 
 	public RotatingObstacle(float x, float y, Texture texture, Player p) {
 		super(x, y, texture, p);

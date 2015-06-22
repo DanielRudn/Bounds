@@ -33,7 +33,7 @@ public class IceMapType extends MapType {
 	}
 	
 	@Override
-	protected void generateBlock(int index)
+	protected void generateObstacle(int index)
 	{
 		obstacles.get(index).setX(16 + MapGenerator.rng.nextInt((int) (MainGame.VIRTUAL_WIDTH - obstacles.get(index).getWidth())));
 		obstacles.get(index).setY(obstacles.get(getPreviousIndex(index)).getY() - MIN_DISTANCE - MapGenerator.rng.nextInt(MAX_DISTANCE));

@@ -49,7 +49,7 @@ public class RotatingMapType extends MapType{
 	}
 	
 	@Override
-	protected void generateBlock(int index)
+	protected void generateObstacle(int index)
 	{
 		((RotatingObstacle)obstacles.get(index)).setRotation(0);
 		obstacles.get(index).setWidth(MIN_WIDTH + MapGenerator.rng.nextInt(MAX_WIDTH) - 32f);

@@ -37,7 +37,7 @@ public class MapGenerator implements TimerListener {
 	private dTimer typeSwitchTimer;
 	
 	/**
-	 * Creates a new generator and sets the level type
+	 * Creates a new MapGenerator and sets the given MapType
 	 * @param mapType Type of map to generate, use static attributes from this class as parameters
 	 */
 	public MapGenerator(int mapType, Player player)
@@ -50,6 +50,10 @@ public class MapGenerator implements TimerListener {
 		typeSwitchTimer.start();
 	}
 	
+	/**
+	 * Creates a new MapGenerator and randomly chooses the map type
+	 * @param player
+	 */
 	public MapGenerator(Player player)
 	{
 		this(rng.nextInt(MapTypeFactory.NUMBER_MAPS), player);
@@ -89,11 +93,11 @@ public class MapGenerator implements TimerListener {
 				}
 			}
 		}
-		
 		// loop through all currentType.getObstacles()
+		// TODO: Move to MapType itself.
 		for(int x = 0; x < currentType.getObstacles().size(); x++)
 		{
-			currentType.getObstacles().get(x).update(delta);
+			//currentType.getObstacles().get(x).update(delta);
 			// check players score
 			if(currentType.getObstacles().get(x).hasPassed() && currentType.getObstacles().get(x).hasIncrementedScore() == false)
 			{
@@ -116,7 +120,6 @@ public class MapGenerator implements TimerListener {
 	public void render(SpriteBatch batch)
 	{
 		currentType.render(batch);
-	//	transitionImage.render(batch);
 	}
 	
 	public void setSeed(long s)
@@ -208,12 +211,6 @@ public class MapGenerator implements TimerListener {
 	public int getCombo()
 	{
 		return combo;
-	}
-	
-	// TEMP
-	public MapType getCurrentMapType()
-	{
-		return currentType;
 	}
 	
 	public int getMapType()

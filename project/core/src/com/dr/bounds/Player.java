@@ -55,6 +55,10 @@ public class Player extends dObject {
 	// temp
 	private ParticleEffect trailEffect = new ParticleEffect();
 	
+	
+	// test
+	private float targetRotation = 0f, startRotation = 0f;
+	
 	public Player(float x,float y, int id)
 	{
 		super(x,y,new Sprite(BoundsAssetManager.SkinLoader.getTextureForSkinID(MainGame.PLACEHOLDER_SKIN_ID)));
@@ -78,7 +82,7 @@ public class Player extends dObject {
 		trailEffect.update(delta);
 		trailEffect.setPosition(getX() + getWidth()/2f, getY() + getHeight() / 2f);
 		//if(Gdx.input.isTouched()|| Gdx.input.isKeyJustPressed(Keys.ANY_KEY))
-		if((Gdx.input.isTouched() && Gdx.input.justTouched()) || Gdx.input.isKeyJustPressed(Keys.ANY_KEY))
+		if((Gdx.input.isTouched() && Gdx.input.justTouched()))
 		{
 			if(touchedLeftSide())// user touched left half of screen
 			{
@@ -88,6 +92,8 @@ public class Player extends dObject {
 					playerVelocity.set(-18*18f,0);
 					moveCenter = false;
 				}
+			//	this.getSprite().setRotation(-45f);
+				targetRotation = -45f;
 			}
 			else // user touched right half of screen
 			{
@@ -97,8 +103,14 @@ public class Player extends dObject {
 					playerVelocity.set(18*18f,0);
 					moveCenter = false;
 				}
+			//	this.getSprite().setRotation(45f);
+				targetRotation = 45f;
 			}
 			changeVelocity = true;
+			setScale(16f / getWidth(),76f / getHeight());
+			squeezeTime = 0;
+			squeezed = true;
+			startRotation = this.getSprite().getRotation();
 		}
 		
 		if(changeVelocity)
@@ -115,15 +127,17 @@ public class Player extends dObject {
 			if(squeezeTime <= 1.5f)
 			{
 				squeezeTime+=delta;
-				setScale(dTweener.ExponentialEaseOut(squeezeTime, 24f, 40f, 1.5f) / getWidth(), dTweener.ExponentialEaseOut(squeezeTime, 76f, -12f, 1.5f) / getHeight());
+				this.getSprite().setRotation(dTweener.ElasticOut(squeezeTime, startRotation, targetRotation - startRotation, 1.5f));
+				setScale(dTweener.ElasticOut(squeezeTime, 24f, 40f, 1.5f) / getWidth(), dTweener.ExponentialEaseOut(squeezeTime, 76f, -12f, 1.5f) / getHeight());
+			//	System.out.println("TARGET: " + targetRotation + " START: " + startRotation + " current: " + getSprite().getRotation() + " origin: " + this.getOriginX() + "," + this.getOriginY());
 			}
 			else
 			{
 				squeezed = false;
 			}
 		}
+		this.getSprite().setOriginCenter();
 	}
-	
 	private void changeVelocity(float delta)
 	{
 		playerVelocity.set(dTweener.MoveToAndSlow(playerVelocity.x, targetVelocity.x, delta*11f), dTweener.MoveToAndSlow(playerVelocity.y, targetVelocity.y, delta));
@@ -145,6 +159,8 @@ public class Player extends dObject {
 			squeezed = true;
 			startY = getY();
 			hitWall = true;
+			startRotation = this.getSprite().getRotation();
+			targetRotation = 0f;
 		}
 		else
 		{
@@ -285,7 +301,7 @@ public class Player extends dObject {
 	// reset state when player dies in a level
 	public void reset()
 	{
-		setOrigin(0,0);
+	//	setOrigin(0,0);
 		setPos(MainGame.VIRTUAL_WIDTH / 2f - getWidth()/2f, MainGame.VIRTUAL_HEIGHT / 2f - getHeight() / 2f);
 		moveCenter = false;
 		changeVelocity = false;

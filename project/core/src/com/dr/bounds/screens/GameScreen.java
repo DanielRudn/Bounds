@@ -16,7 +16,6 @@ import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 import com.dr.bounds.animations.CameraShakeAnimation;
 import com.dr.bounds.maps.MapGenerator;
-import com.dr.bounds.maps.MapType;
 
 public class GameScreen extends dScreen implements AnimationStatusListener {
 	
@@ -52,13 +51,12 @@ public class GameScreen extends dScreen implements AnimationStatusListener {
 	// camera to display score and coin count so they don't move with the game camera
 	private OrthographicCamera uiCam;
 
-	public GameScreen(float x, float y, Texture texture) {
+	public GameScreen(float x, float y, Texture texture, Player p) {
 		super(x, y, texture);
 		uiCam = new OrthographicCamera(MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_HEIGHT);
 		uiCam.setToOrtho(true, MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_HEIGHT);
-		
-		player = new Player(MainGame.VIRTUAL_WIDTH/2f-32f,MainGame.VIRTUAL_HEIGHT/2f-32f, 6);
-	//	deathAnim = new CameraShakeAnimation(0.32f, this, DEATH_ANIM_ID);
+		this.player = p;
+		player.reset();
 		deathAnim = new CameraShakeAnimation(0.48f, this, DEATH_ANIM_ID);
 
 		mapGen = new MapGenerator(player);
@@ -78,14 +76,13 @@ public class GameScreen extends dScreen implements AnimationStatusListener {
 		scoreText = new dText(0,0,192f,"0");
 		scoreText.setColor(1,1,1,1);
 		scoreText.setShadow(true);
-		scoreText.setY(uiCam.position.y - MainGame.VIRTUAL_HEIGHT / 2f + 16f);
 		
 		coinInfo = new dUICard(16,0,BoundsAssetManager.getTexture("card"));
 		coinInfo.setClipping(false);
 		coinInfo.setAlpha(0);
 		coinInfo.setHasShadow(false);
 		coinInfo.setDimensions(128f, 64f);
-		coinInfo.setY(uiCam.position.y - MainGame.VIRTUAL_HEIGHT / 2f + 16f);
+		coinInfo.setY(uiCam.position.y - MainGame.VIRTUAL_HEIGHT / 2f + 32f);
 		dImage coinImage = new dImage(0,0,BoundsAssetManager.getTexture("coin.png"));
 		coinImage.setHasShadow(true);
 		dText coinText = new dText(0,0,55f,"x0");
@@ -96,11 +93,12 @@ public class GameScreen extends dScreen implements AnimationStatusListener {
 		
 		addObject(scoreText,dUICard.CENTER, dUICard.TOP);
 		comboText.setPos(scoreText.getX(), scoreText.getY() + scoreText.getHeight() + 4f);
+		scoreText.setY(uiCam.position.y - MainGame.VIRTUAL_HEIGHT / 2f + 32f);
 	}
 	
-	public GameScreen(float x, float y, Texture texture, int mapType)
+	public GameScreen(float x, float y, Texture texture, Player p, int mapType)
 	{
-		this(x, y, texture);
+		this(x, y, texture, p);
 		mapGen = new MapGenerator(mapType, player);
 		mapGen.generateSeed();
 		// TODO: might remove
@@ -170,18 +168,6 @@ public class GameScreen extends dScreen implements AnimationStatusListener {
 				else
 				{ 
 					// follow player vertically as long as they have a combo going.
-					/*if(player.getY() >= MainGame.camera.position.y - 50 && player.getY() <= MainGame.camera.position.y + 50)
-					{
-						MainGame.setCameraPos(MainGame.camera.position.x, player.getY() + player.getWidth() / 2f); 
-					}
-					else if((MainGame.camera.position.y + 60) <= (player.getY() + player.getWidth()))
-					{
-						MainGame.setCameraPos(MainGame.camera.position.x, MainGame.camera.position.y + 1250f * delta);
-					}
-					else if((MainGame.camera.position.y + 60) >= (player.getY() + player.getWidth()))
-					{
-						MainGame.setCameraPos(MainGame.camera.position.x, MainGame.camera.position.y - 1250f * delta);
-					}*/
 					if(player.getY() >= MainGame.camera.position.y - 50 && player.getY() <= MainGame.camera.position.y + 50)
 					{
 						MainGame.setCameraPos(MainGame.camera.position.x, player.getY() + player.getWidth() / 2f); 
@@ -213,27 +199,15 @@ public class GameScreen extends dScreen implements AnimationStatusListener {
 		{
 			pauseScreen.render(batch);
 		}
-		batch.end();
 		batch.setProjectionMatrix(uiCam.combined);
-		batch.begin();
 		scoreText.render(batch);
 		coinInfo.render(batch);
 		if(playerCombo >= 2)
 		{
-		comboText.render(batch);
+			comboText.render(batch);
 		}
-		batch.end();
-		batch.setProjectionMatrix(MainGame.camera.combined);
-		batch.begin();		
+		batch.setProjectionMatrix(MainGame.camera.combined);	
 		gameOverScreen.render(batch);
-	}
-	
-	@Override
-	public void resume()
-	{
-		super.resume();
-		//	scoreText.render(batch);
-		//coinInfo.render(batch);
 	}
 	
 	/**
@@ -249,11 +223,6 @@ public class GameScreen extends dScreen implements AnimationStatusListener {
 		highestCombo = 0;
 		scoreText.setX(getX() + getWidth()/2f - scoreText.getWidth()/2f);
 		MainGame.camera.position.y = MainGame.VIRTUAL_HEIGHT/2f;
-	}
-	
-	public long getSeed()
-	{
-		return mapGen.getSeed();
 	}
 	
 	/**
@@ -329,11 +298,5 @@ public class GameScreen extends dScreen implements AnimationStatusListener {
 			MainGame.camera.update();
 			gameOverScreen.show(playerScore, highestCombo, playerCoins);
 		}
-	}
-	
-	// TEMP
-	public MapType getCurrentMapType()
-	{
-		return mapGen.getCurrentMapType();
 	}
 }

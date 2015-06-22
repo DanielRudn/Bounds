@@ -33,7 +33,7 @@ public class BoundsAssetManager {
 		{
 
 		}
-		System.out.println("[AssetManager (" + manager.getLoadedAssets() + " items)]: loaded in: " + path);
+	//	System.out.println("[AssetManager (" + manager.getLoadedAssets() + " items)]: loaded in: " + path);
 	}
 	
 	public static void loadAll()
@@ -41,8 +41,8 @@ public class BoundsAssetManager {
 		if(manager == null)
 		{
 			manager = new AssetManager();
+			Texture.setAssetManager(manager);
 		}
-		Texture.setAssetManager(manager);
 		try
 		{
 			loadTexture("card.png", TextureFilter.Linear);

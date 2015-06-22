@@ -32,7 +32,7 @@ public class MainGame extends ApplicationAdapter {
 	
 	// CONSTANTS
 	public static final float VIRTUAL_WIDTH = 720f, VIRTUAL_HEIGHT = 1280f, ASPECT_RATIO = VIRTUAL_WIDTH / VIRTUAL_HEIGHT;
-	public static final int PLACEHOLDER_SKIN_ID = 0;
+	public static final int PLACEHOLDER_SKIN_ID = 1;
 	public static final int GAME_VERSION = 1;
 	public static final String COMBO_LEADERBOARD_ID = "CggI-byO8BkQAhAC", SCORE_LEADERBOARD_ID = "CggI-byO8BkQAhAB";
 	
@@ -72,9 +72,11 @@ public class MainGame extends ApplicationAdapter {
 			viewport = new FitViewport(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, camera);
 		}
 		
-		gameScreen = new GameScreen(0,0,BoundsAssetManager.getTexture("card.png"));
+		Player player = new Player(-100, -100, MainGame.PLACEHOLDER_SKIN_ID);
 		
-		menuScreen = new MenuScreen(0,0,BoundsAssetManager.getTexture("card"), gameScreen.getPlayer());
+		//gameScreen = new GameScreen(0,0,BoundsAssetManager.getTexture("card.png"), player);
+		
+		menuScreen = new MenuScreen(0,0,BoundsAssetManager.getTexture("card"), player);
 		
 		batch = new SpriteBatch();
 		
@@ -95,8 +97,7 @@ public class MainGame extends ApplicationAdapter {
 		{
 			Gdx.gl.glViewport(0,0, (int)Gdx.graphics.getWidth(), (int)Gdx.graphics.getHeight());
 		}
-		//Gdx.gl.glClearColor(189f/256f, 195f/256f, 199f/256f,.5f);
-		Gdx.gl.glClearColor(gameScreen.getCurrentMapType().getBackgroundColor().r, gameScreen.getCurrentMapType().getBackgroundColor().g, gameScreen.getCurrentMapType().getBackgroundColor().b, 1f);
+		Gdx.gl.glClearColor(189f/256f, 195f/256f, 199f/256f,.5f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 	
 		if(Gdx.input.isKeyPressed(Keys.BACK) || Gdx.input.isKeyJustPressed(Keys.SPACE))
@@ -104,20 +105,44 @@ public class MainGame extends ApplicationAdapter {
 			currentScreen.goBack();
 		}
 		
-		// UPDATE
-		accumulator += Gdx.graphics.getDeltaTime();
-		while(accumulator >= DELTA)
+		if(Gdx.input.isKeyPressed(Keys.EQUALS))
 		{
-			update(DELTA);
-			fpsText.setPos(camera.position.x - MainGame.VIRTUAL_WIDTH / 2f + 5, camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f + 5f);
-			fpsText.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
-			accumulator -= DELTA;
+			camera.zoom = 0.5f;
 		}
+		
+		if(camera.zoom == 0.5f)
+		{
+			camera.position.set(gameScreen.getPlayer().getPos(), 0);
+			camera.update();
+		}
+		
+	//	if(Gdx.input.isKeyPressed(Keys.RIGHT_BRACKET))
+	//	{
+			// UPDATE
+			accumulator += Gdx.graphics.getDeltaTime();
+			while(accumulator >= DELTA)
+			{
+				update(DELTA);
+				fpsText.setPos(camera.position.x - MainGame.VIRTUAL_WIDTH / 2f + 5, camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f + 5f);
+				fpsText.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
+				accumulator -= DELTA;
+			}
+			
+			// limit the accumulator to stop stuttering and keep the updating/rendering in sync.
+			if(((accumulator / DELTA) * 100f) >= 40f)
+			{
+				accumulator /= 2f;
+			}
+		
+	//	}
+		
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();	
 		currentScreen.render(batch);
 		fpsText.render(batch);
 		batch.end();
+		
+//		System.out.println("DELTA: " + Gdx.graphics.getDeltaTime() + " Accumulator: " + accumulator + " % of an update remaining: " + (accumulator / Gdx.graphics.getDeltaTime()) * 100f);
 	}
 	
 	public void update(float delta)

@@ -1,7 +1,5 @@
 package com.dr.bounds.desktop;
 
-import java.util.Random;
-
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.dr.bounds.MainGame;
@@ -13,7 +11,7 @@ public class DesktopLauncher implements RequestHandler {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width = 480;
 		config.height = 800;
-		new Random();
+		config.vSyncEnabled = false;
 		DesktopLauncher l = new DesktopLauncher();
 		MainGame game = new MainGame(l);
 		new LwjglApplication(game, config);
@@ -33,7 +31,7 @@ public class DesktopLauncher implements RequestHandler {
 
 	@Override
 	public String getCurrentAccountName() {
-		return "Daniel Rudn";
+		return "name";
 	}
 
 	@Override

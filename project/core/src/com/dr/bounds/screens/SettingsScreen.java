@@ -5,11 +5,13 @@ import com.DR.dLib.animations.AnimationStatusListener;
 import com.DR.dLib.animations.ExpandAnimation;
 import com.DR.dLib.animations.ShrinkAnimation;
 import com.DR.dLib.animations.dAnimation;
+import com.DR.dLib.ui.dButton;
 import com.DR.dLib.ui.dImage;
 import com.DR.dLib.ui.dScreen;
 import com.DR.dLib.ui.dText;
 import com.DR.dLib.ui.dToggleCard;
 import com.DR.dLib.ui.dUICard;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dr.bounds.BoundsAssetManager;
 import com.dr.bounds.MainGame;
@@ -18,6 +20,7 @@ public class SettingsScreen extends dScreen implements AnimationStatusListener {
 
 	private dAnimation showAnim, hideAnim;
 	private dImage circleImage, gearImage;
+	private dButton googleButton;
 	private dUICard expandedCard;
 	private final static int SHOW_ANIM_ID = 777, HIDE_ANIM_ID = 888;
 	private dText settingsText;
@@ -59,6 +62,10 @@ public class SettingsScreen extends dScreen implements AnimationStatusListener {
 		vibrationCard.setAlpha(0f);
 		expandedCard.addObjectUnder(vibrationCard, expandedCard.getIndexOf(soundCard));
 		
+		googleButton = new dButton(0, 0, BoundsAssetManager.getTexture("googleButton.png"),"", BoundsAssetManager.getTexture("circle"), 2f);
+		expandedCard.addObject(googleButton, dUICard.RIGHT, dUICard.BOTTOM);
+		googleButton.setY(googleButton.getY() - 48f);
+		
 		expandedCard.setX(-expandedCard.getWidth() * 1.5f);
 	}
 	
@@ -93,6 +100,17 @@ public class SettingsScreen extends dScreen implements AnimationStatusListener {
 		}
 //		circleImage.setPos(this.getPos());
 		gearImage.setPos(this.getX() + 46f - gearImage.getWidth() / 2f,this.getY() + 40f - gearImage.getHeight() / 2f);
+		
+		// TODO: FIX
+		if(MainGame.requestHandler.isConnected())
+		{
+			googleButton.setColor(Color.GRAY);
+		}
+		if(googleButton.isClicked())
+		{
+			MainGame.requestHandler.requestSignIn();
+		}
+		// TODO: FIX ^
 	}
 
 	@Override
@@ -145,6 +163,7 @@ public class SettingsScreen extends dScreen implements AnimationStatusListener {
 			{
 				soundCard.setX(dTweener.ExponentialEaseOut(time, -MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_WIDTH, duration / 2f));
 				vibrationCard.setX(dTweener.ExponentialEaseOut(time - 0.15f, -MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_WIDTH, duration / 2f));
+				googleButton.setX(dTweener.ExponentialEaseOut(time - 0.2f, -MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_WIDTH * 2f - expandedCard.getPadding() - googleButton.getWidth(), duration / 2f));
 				gearImage.setOriginCenter();
 				gearImage.getSprite().setRotation(dTweener.ExponentialEaseOut(time, 0, 360, duration / 2f));
 			}
@@ -166,6 +185,7 @@ public class SettingsScreen extends dScreen implements AnimationStatusListener {
 						dTweener.LinearEase(time, 0f, 1f, duration / 4f),
 							dTweener.LinearEase(time, 0f, 1f, duration / 4f), 1f);
 				circleImage.setX(dTweener.LinearEase(time, 128f, -192f, duration / 4f));
+				googleButton.setX(dTweener.ExponentialEaseOut(time - 0.1f, MainGame.VIRTUAL_WIDTH - expandedCard.getPadding() - googleButton.getWidth(), -MainGame.VIRTUAL_WIDTH, duration / 4f));
 				soundCard.setX(dTweener.ExponentialEaseOut(time - 0.15f, 0, -MainGame.VIRTUAL_WIDTH,  duration / 4f));
 				vibrationCard.setX(dTweener.ExponentialEaseOut(time, 0, -MainGame.VIRTUAL_WIDTH, duration / 4f));
 			}
