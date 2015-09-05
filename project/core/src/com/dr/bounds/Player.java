@@ -9,6 +9,7 @@ import java.util.TreeSet;
 
 import com.DR.dLib.dObject;
 import com.DR.dLib.dTweener;
+import com.DR.dLib.utils.dUtils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.files.FileHandle;
@@ -61,9 +62,9 @@ public class Player extends dObject {
 	
 	public Player(float x,float y, int id)
 	{
-		super(x,y,new Sprite(BoundsAssetManager.SkinLoader.getTextureForSkinID(MainGame.PLACEHOLDER_SKIN_ID)));
+		super(x, y, new Sprite(BoundsAssetManager.SkinLoader.getTextureForSkinID(MainGame.PLACEHOLDER_SKIN_ID)));
 		trailEffect.load(Gdx.files.internal("trail2.p"), Gdx.files.internal(""));
-	//	trailEffect.getEmitters().get(0).getTint().setColors(new float[]{Color.GREEN.r,Color.GREEN.g, Color.GREEN.b, 1f});
+//		trailEffect.getEmitters().get(0).getTint().setColors(new float[]{Color.GREEN.r,Color.GREEN.g, Color.GREEN.b, 1f});
 		setSkinID(id);
 		loadPlayerData();
 	}
@@ -184,7 +185,7 @@ public class Player extends dObject {
 	
 	private boolean touchedLeftSide()
 	{
-		if(MainGame.getVirtualMouseX() <= MainGame.VIRTUAL_WIDTH/2f || Gdx.input.isKeyJustPressed(Keys.LEFT))
+		if(dUtils.getVirtualMouseX() <= MainGame.VIRTUAL_WIDTH/2f || Gdx.input.isKeyJustPressed(Keys.LEFT))
 		{
 			return true;
 		}

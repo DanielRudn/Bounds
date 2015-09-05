@@ -43,6 +43,7 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 	private dUICard topCard;
 	// animations
 	private SlideExponentialAnimation showAnimation;
+	private static final int SHOW_ANIM_ID = 123;
 	// graph
 	private RecentGamesGraph rgg;
 	// test
@@ -58,7 +59,7 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		
 		this.player = player;
 		
-		showAnimation = new SlideExponentialAnimation(1f, this, 123, -MainGame.VIRTUAL_WIDTH, 0, this);
+		showAnimation = new SlideExponentialAnimation(1f, this, SHOW_ANIM_ID, -MainGame.VIRTUAL_WIDTH, 0, this);
 		this.setShowAnimation(showAnimation);
 		
 		topCard = new dUICard(getX(), getY(), texture);
@@ -78,7 +79,7 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 		
 		replayButton = new dButton(0,0, BoundsAssetManager.getTexture("replay.png"), "");
 		replayButton.setDimensions(192f, 192f);
-		replayButton.setColor(24f/256f, 39f/256f, 53f/256f, .5f);
+		replayButton.setColor(1f, 1f , 1f, 0.85f);
 		
 		shareButton = new ImageButton(0, 0, BoundsAssetManager.getTexture("card"), BoundsAssetManager.getTexture("shareIcon.png"), "SHARE");
 		shareButton.setColor(34f/256f, 49f/256f, 63f/256f,1f);
@@ -231,7 +232,7 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 
 	@Override
 	public void onAnimationStart(int ID, float duration) {
-		if(ID == 123)
+		if(ID == SHOW_ANIM_ID)
 		{
 			setPos(MainGame.camera.position.x + MainGame.VIRTUAL_WIDTH /2f,MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f);
 			rgg = new RecentGamesGraph(getWidth() + getWidth()/2f - 396f / 2f , topText.getY() + 128f, BoundsAssetManager.getTexture("card"), 396,256, "Score Last 5 Games");
@@ -253,7 +254,7 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 
 	@Override
 	public void whileAnimating(int ID, float time, float duration, float delta) {
-		if(ID == 123 && time > duration / 6f)
+		if(ID == SHOW_ANIM_ID && time > duration / 6f)
 		{
 			rgg.setX(dTweener.ExponentialEaseOut(time, getWidth() + getWidth() / 2f - 396f / 2f, -getWidth(), duration));
 		}
@@ -261,5 +262,9 @@ public class GameOverScreen extends dUICardList implements AnimationStatusListen
 	
 	@Override
 	public void onAnimationFinish(int ID) {
+		if(ID == SHOW_ANIM_ID)
+		{
+			this.setX(MainGame.camera.position.x - MainGame.VIRTUAL_WIDTH / 2f);
+		}
 	}
 }

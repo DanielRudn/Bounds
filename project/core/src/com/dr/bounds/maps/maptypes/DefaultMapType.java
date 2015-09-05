@@ -22,7 +22,8 @@ public class DefaultMapType extends MapType {
 			obstacles.add(new dObstacle(0,0, BoundsAssetManager.getTexture("obstacle.png"), player));
 			obstacles.get(x).setHeight(32f);
 			obstacles.get(x).setRegenerate(false);
-			obstacles.get(x).setColor(210f/256f, 82f/256f, 127f/256f,1f);
+		//	obstacles.get(x).setColor(210f/256f, 82f/256f, 127f/256f,1f);
+			obstacles.get(x).setColor(236f/256f, 64f/256f, 122f/256f, 1f);
 		}
 		super.particleEffect.load(Gdx.files.internal("spin.p"), Gdx.files.internal(""));
 	}

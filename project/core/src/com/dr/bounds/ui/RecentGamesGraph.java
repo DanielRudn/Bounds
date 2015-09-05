@@ -7,6 +7,7 @@ import com.DR.dLib.dValues;
 import com.DR.dLib.ui.dImage;
 import com.DR.dLib.ui.dText;
 import com.DR.dLib.ui.dUICard;
+import com.DR.dLib.utils.dUtils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -132,7 +133,6 @@ public class RecentGamesGraph extends dUICard {
 		}
 		sr.end();
 		sr.begin(ShapeType.Filled);
-		//sr.setColor(46f/256f, 204f/256f, 113f/256f, 1f);
 		sr.setColor(151f/256f, 216f/256f, 84f/256f, 1f);
 		// draw lines
 		for(int x = 0; x < points.size(); x++)
@@ -184,7 +184,7 @@ public class RecentGamesGraph extends dUICard {
 				highestScoreIndex = x;
 			}
 			yLabels[x].setPos(getX() - yLabels[x].getWidth() - 8f, getGraphZeroY() - yAxis.getHeight() * ((x+1)*.2f) - yLabels[x].getHeight() / 2f);
-			points.get(x).setPos(getGraphZeroX() + xAxis.getWidth() * normalizeX(p.get(x).x, xMin, xMax), getGraphZeroY() - yAxis.getHeight() * normalizeY(p.get(x).y, yMin, yMax));
+			points.get(x).setPos(getGraphZeroX() + xAxis.getWidth() * dUtils.normalize(p.get(x).x, xMin, xMax), getGraphZeroY() - yAxis.getHeight() * dUtils.normalize(p.get(x).y, yMin, yMax));
 			pointPos.add(new Vector2(points.get(x).getPos()));
 		}
 	}
@@ -225,11 +225,6 @@ public class RecentGamesGraph extends dUICard {
 		return min;
 	}
 	
-	private float normalizeY(float point, float min, float max)
-	{
-		return (point- min) / (max - min);
-	}
-	
 	private float getMaxX()
 	{
 		float max = points.get(0).getX();
@@ -254,11 +249,6 @@ public class RecentGamesGraph extends dUICard {
 			}
 		}
 		return min;
-	}
-	
-	private float normalizeX(float point, float min, float max)
-	{
-		return (point - min) / (max - min);
 	}
 	
 	@Override

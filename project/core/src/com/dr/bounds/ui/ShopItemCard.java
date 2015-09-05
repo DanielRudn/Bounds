@@ -77,6 +77,7 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 		{
 			acceptButton = new dButton(MainGame.VIRTUAL_WIDTH/2f, MainGame.VIRTUAL_HEIGHT*2f, texture, "SET", BoundsAssetManager.getTexture("circle"), 2f);
 			acceptButton.setColor(46f/256f, 204f/256f, 113f/256f,1f);
+			acceptButton.setTextColor(this.getColor());
 
 			ownedImage=  new dImage(0,0,BoundsAssetManager.getTexture("checkMark.png"));
 			ownedImage.setDimensions(32f, 32f);
@@ -86,6 +87,7 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 		{
 			acceptButton = new dButton(MainGame.VIRTUAL_WIDTH/2f, MainGame.VIRTUAL_HEIGHT*2f, texture, "BUY", BoundsAssetManager.getTexture("circle"), 2f);
 			acceptButton.setColor(Color.GRAY);
+			acceptButton.setTextColor(this.getColor());
 		}
 		acceptButton.setTextSize(48f);
 		acceptButton.setDimensions(CARD_WIDTH/2f, 128f);
@@ -94,6 +96,7 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 		cancelButton.setTextSize(48f);
 		cancelButton.setDimensions(CARD_WIDTH/2f, 128f);
 		cancelButton.setColor(231f/256f, 76f/256f, 60f/256f,1f);
+		cancelButton.setTextColor(this.getColor());
 		
 		expandAnimation = new ShopItemCardExpandAnimation(1f, this, EXPAND_ANIM_ID, this);
 		shrinkAnimation = new ShopItemCardShrinkAnimation(1f,this,SHRINK_ANIM_ID,this);

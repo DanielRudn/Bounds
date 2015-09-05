@@ -116,7 +116,7 @@ public class MainGame extends ApplicationAdapter {
 			camera.update();
 		}
 		
-	//	if(Gdx.input.isKeyPressed(Keys.RIGHT_BRACKET))
+		//if(Gdx.input.isKeyPressed(Keys.RIGHT_BRACKET))
 	//	{
 			// UPDATE
 			accumulator += Gdx.graphics.getDeltaTime();
@@ -154,16 +154,6 @@ public class MainGame extends ApplicationAdapter {
 		}
 		//update camera
 		camera.update();
-	}
-	
-	public static int getVirtualMouseX()
-	{
-		return (int) (camera.position.x - VIRTUAL_WIDTH / 2f + (Gdx.input.getX() / (Gdx.graphics.getWidth() / VIRTUAL_WIDTH)));
-	}
-	
-	public static int getVirtualMouseY()
-	{
-		return (int) (camera.position.y - VIRTUAL_HEIGHT / 2f + Gdx.input.getY() / (Gdx.graphics.getHeight() / VIRTUAL_HEIGHT));
 	}
 	
 	public static void setCameraPos(float x, float y)

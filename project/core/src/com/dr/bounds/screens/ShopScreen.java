@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import com.DR.dLib.utils.DocGrabberListener;
 import com.DR.dLib.utils.GoogleDocGrabber;
+import com.DR.dLib.utils.dUtils;
 import com.DR.dLib.dTweener;
 import com.DR.dLib.animations.AnimationStatusListener;
 import com.DR.dLib.animations.ExpandAnimation;
@@ -318,7 +319,7 @@ public class ShopScreen extends dUICardList implements DocGrabberListener, Anima
 		if(ID == SHOW_ANIM_ID)
 		{
 			circleCover.setPos(MainGame.camera.position.x, MainGame.camera.position.y);
-			sidebar.setX(-sidebar.getWidth());
+			sidebar.setPos(-sidebar.getWidth(), this.getY());
 			titleCard.setY(-titleCard.getHeight());
 		}
 	}
@@ -365,7 +366,7 @@ public class ShopScreen extends dUICardList implements DocGrabberListener, Anima
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		for(int x = 0; x < itemCardList.size(); x++)
 		{
-				if(expandedItem == null && itemCardList.get(x).getBoundingRectangle().contains(MainGame.getVirtualMouseX(), MainGame.getVirtualMouseY()))
+				if(expandedItem == null && itemCardList.get(x).getBoundingRectangle().contains(dUtils.getVirtualMouseX(), dUtils.getVirtualMouseY()))
 				{
 					touchedIndex = x;
 					return false;
@@ -379,12 +380,11 @@ public class ShopScreen extends dUICardList implements DocGrabberListener, Anima
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		for(int x = 0; x < itemCardList.size(); x++)
 		{
-				if(touchedIndex == x && expandedItem == null && itemCardList.get(x).getBoundingRectangle().contains(MainGame.getVirtualMouseX(), MainGame.getVirtualMouseY()))
+				if(touchedIndex == x && expandedItem == null && itemCardList.get(x).getBoundingRectangle().contains(dUtils.getVirtualMouseX(), dUtils.getVirtualMouseY()))
 				{
 					expandedItem = (ShopItemCard)itemCardList.get(x);
 					expandedItem.expand();
 				}
-				System.out.println("called touchUp");
 		}
 		return false;
 	}

@@ -21,7 +21,7 @@ public class GameInfoCard extends dUICard {
 
 	public GameInfoCard(float x, float y, Texture texture) {
 		super(x, y, texture);
-		setColor(1f, 1f, 1f, 0.65f);
+		setColor(1f, 1f, 1f, 0.75f);
 		setHasShadow(false);
 		setClipping(false);
 		setDimensions(CARD_WIDTH, CARD_HEIGHT);
@@ -41,7 +41,7 @@ public class GameInfoCard extends dUICard {
 		bestComboText.setColor(comboLabel.getColor());
 		
 		dividerImage = new dImage(0,0, BoundsAssetManager.getTexture("card"));
-		dividerImage.setDimensions(5f,CARD_HEIGHT/2f);
+		dividerImage.setDimensions(3f,CARD_HEIGHT/2f);
 		dividerImage.setColor(Color.GRAY);
 		
 		this.addObject(coinText, dUICard.LEFT, dUICard.CENTER);

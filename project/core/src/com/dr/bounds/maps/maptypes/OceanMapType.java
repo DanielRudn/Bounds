@@ -15,8 +15,9 @@ public class OceanMapType extends MapType {
 	public OceanMapType(int type, Player player, MapGenerator generator) {
 		super(type, player, generator);
 		MIN_WIDTH = 64;
-		typeName = "Sky";
-		bgColor = new Color(91f/256f, 213f/256f, 219f/256f, 1f);
+		typeName = "Ocean";
+		//bgColor = new Color(91f/256f, 213f/256f, 219f/256f, 1f);
+		bgColor = new Color(13f/256f, 71f/256f, 161f/256f, 1f);
 		super.setScoreIncrementAmount(1);
 		// add 8 obstacles 
 		for(int x = 0; x < 8; x++)

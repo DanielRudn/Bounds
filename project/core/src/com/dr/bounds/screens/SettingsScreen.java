@@ -18,55 +18,52 @@ import com.dr.bounds.MainGame;
 
 public class SettingsScreen extends dScreen implements AnimationStatusListener {
 
+	private final static float HEIGHT = 448f;
 	private dAnimation showAnim, hideAnim;
 	private dImage circleImage, gearImage;
 	private dButton googleButton;
-	private dUICard expandedCard;
 	private final static int SHOW_ANIM_ID = 777, HIDE_ANIM_ID = 888;
 	private dText settingsText;
 	private dToggleCard soundCard, vibrationCard;
 	
 	public SettingsScreen(float x, float y) {
-		super(x, y, BoundsAssetManager.getTexture("circle"));
+		super(x, y, BoundsAssetManager.getTexture("card"));
 		this.setColor(0f, 188f/256f, 212f/256f, 1f);
-		this.setClickable(true);
-		this.setHasShadow(true);
-		this.setDimensions(92f, 92f);
+		this.setPadding(16f);
+		this.setClickable(false);
+		this.setHasShadow(false);
+		this.setDimensions(MainGame.VIRTUAL_WIDTH, HEIGHT);
 		circleImage = new dImage(-256,0, BoundsAssetManager.getTexture("circle"));
 		circleImage.setColor(this.getColor());
 		gearImage = new dImage(0, 0, BoundsAssetManager.getTexture("gear.png"));
 		showAnim = new ExpandAnimation(circleImage, 3f, this, SHOW_ANIM_ID, circleImage.getColor(), MainGame.VIRTUAL_HEIGHT*2f);
 		hideAnim = new ShrinkAnimation(circleImage, 2f, this, HIDE_ANIM_ID, 92f, MainGame.VIRTUAL_HEIGHT * 2f);
-		
-		expandedCard = new dUICard(0,0, BoundsAssetManager.getTexture("card"));
-		expandedCard.setDimensions(MainGame.VIRTUAL_WIDTH, 444f);
-		expandedCard.setHasShadow(false);
-		expandedCard.setAlpha(0f);
-		expandedCard.setPadding(16f);
-		expandedCard.addObject(circleImage, dUICard.CENTER, dUICard.CENTER);
-		expandedCard.addObject(gearImage, dUICard.LEFT, dUICard.BOTTOM);
+
+		this.addObject(circleImage, dUICard.LEFT, dUICard.BOTTOM);
+		this.addObject(gearImage, dUICard.LEFT, dUICard.BOTTOM);
+		gearImage.setPos(gearImage.getX() + this.getPadding()*3f, gearImage.getY() - this.getPadding()*3f);
 		
 		settingsText = new dText(0,0, 48f, "SETTINGS");
 		settingsText.setColor(0f, 0f, 0f, 0f);
-		expandedCard.addObject(settingsText, dUICard.CENTER, dUICard.TOP);
+		this.addObject(settingsText, dUICard.CENTER, dUICard.TOP);
 		
-		soundCard = new dToggleCard(0,0, BoundsAssetManager.getTexture("card"), BoundsAssetManager.getTexture("button"), BoundsAssetManager.getTexture("circle"), "SOUND", expandedCard.getWidth(), 64f);
+		soundCard = new dToggleCard(0,0, BoundsAssetManager.getTexture("card"), BoundsAssetManager.getTexture("button"), BoundsAssetManager.getTexture("circle"), "SOUND", this.getWidth(), 64f);
 		soundCard.setToggleColor(this.getColor());
 		soundCard.setHasShadow(false);
 		soundCard.setAlpha(0f);
-		expandedCard.addObjectUnder(soundCard, expandedCard.getIndexOf(settingsText));
+		this.addObjectUnder(soundCard, this.getIndexOf(settingsText));
 		
-		vibrationCard = new dToggleCard(0,0, BoundsAssetManager.getTexture("card"), BoundsAssetManager.getTexture("button"), BoundsAssetManager.getTexture("circle"), "VIBRATION", expandedCard.getWidth(), 64f);
+		vibrationCard = new dToggleCard(0,0, BoundsAssetManager.getTexture("card"), BoundsAssetManager.getTexture("button"), BoundsAssetManager.getTexture("circle"), "VIBRATION", this.getWidth(), 64f);
 		vibrationCard.setToggleColor(this.getColor());
 		vibrationCard.setHasShadow(false);
 		vibrationCard.setAlpha(0f);
-		expandedCard.addObjectUnder(vibrationCard, expandedCard.getIndexOf(soundCard));
+		this.addObjectUnder(vibrationCard, this.getIndexOf(soundCard));
 		
 		googleButton = new dButton(0, 0, BoundsAssetManager.getTexture("googleButton.png"),"", BoundsAssetManager.getTexture("circle"), 2f);
-		expandedCard.addObject(googleButton, dUICard.RIGHT, dUICard.BOTTOM);
+		this.addObject(googleButton, dUICard.RIGHT, dUICard.BOTTOM);
 		googleButton.setY(googleButton.getY() - 48f);
 		
-		expandedCard.setX(-expandedCard.getWidth() * 1.5f);
+		this.setX(-this.getWidth() * 1.5f);
 	}
 	
 	@Override
@@ -74,21 +71,15 @@ public class SettingsScreen extends dScreen implements AnimationStatusListener {
 	{
 		super.render(batch);
 		gearImage.render(batch);
-		expandedCard.render(batch);
 	}
 	
 	@Override
 	public void update(float delta)
 	{
 		super.update(delta);
-		expandedCard.update(delta);
 		if(this.isOpen())
 		{
-			expandedCard.setPos(0,MainGame.camera.position.y + MainGame.VIRTUAL_HEIGHT / 2f - expandedCard.getHeight());
-		}
-		if(this.isClicked() && hideAnim.isActive() == false)
-		{
-			showAnim.start();
+			this.setPos(0,MainGame.camera.position.y + MainGame.VIRTUAL_HEIGHT / 2f - this.getHeight());
 		}
 		if(showAnim.isActive())
 		{
@@ -98,8 +89,6 @@ public class SettingsScreen extends dScreen implements AnimationStatusListener {
 		{
 			hideAnim.update(delta);
 		}
-//		circleImage.setPos(this.getPos());
-		gearImage.setPos(this.getX() + 46f - gearImage.getWidth() / 2f,this.getY() + 40f - gearImage.getHeight() / 2f);
 		
 		// TODO: FIX
 		if(MainGame.requestHandler.isConnected())
@@ -112,10 +101,17 @@ public class SettingsScreen extends dScreen implements AnimationStatusListener {
 		}
 		// TODO: FIX ^
 	}
+	
+	@Override
+	public void show()
+	{
+		super.show();
+		showAnim.start();
+	}
 
 	@Override
 	public void goBack() {
-		if(showAnim.isActive() == false && hideAnim.isActive() == false && expandedCard.getX() == 0)
+		if(showAnim.isActive() == false && hideAnim.isActive() == false && this.getX() == 0)
 		{
 			hideAnim.start();
 		}
@@ -123,7 +119,7 @@ public class SettingsScreen extends dScreen implements AnimationStatusListener {
 	
 	public boolean isOpen()
 	{
-		return expandedCard.getX() == 0;
+		return this.getX() == 0;
 	}
 
 	@Override
@@ -134,13 +130,16 @@ public class SettingsScreen extends dScreen implements AnimationStatusListener {
 	{
 		if(ID == SHOW_ANIM_ID)
 		{
-			expandedCard.setPos(0,MainGame.camera.position.y + MainGame.VIRTUAL_HEIGHT / 2f - expandedCard.getHeight());
-			circleImage.setDimensions(this.getWidth(), this.getHeight());
-			circleImage.setPos(this.getX(), this.getY());
+			this.setPos(0,MainGame.camera.position.y + MainGame.VIRTUAL_HEIGHT / 2f - this.getHeight());
+			this.setAlpha(0);
+			circleImage.setDimensions(1, 1);
+			circleImage.setPos(this.getX() + this.getPadding(), this.getY() + this.getHeight() - this.getPadding() * 2f);
 		}
 		else if(ID == HIDE_ANIM_ID)
 		{
-			this.setDimensions(92f, 92f);
+			this.setClipping(true);
+			this.setColor(0f, 188f/256f, 212f/256f, 0f);
+			circleImage.setAlpha(1f);
 		}
 	}
 
@@ -163,13 +162,9 @@ public class SettingsScreen extends dScreen implements AnimationStatusListener {
 			{
 				soundCard.setX(dTweener.ExponentialEaseOut(time, -MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_WIDTH, duration / 2f));
 				vibrationCard.setX(dTweener.ExponentialEaseOut(time - 0.15f, -MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_WIDTH, duration / 2f));
-				googleButton.setX(dTweener.ExponentialEaseOut(time - 0.2f, -MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_WIDTH * 2f - expandedCard.getPadding() - googleButton.getWidth(), duration / 2f));
+				googleButton.setX(dTweener.ExponentialEaseOut(time - 0.2f, -MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_WIDTH * 2f - this.getPadding() - googleButton.getWidth(), duration / 2f));
 				gearImage.setOriginCenter();
 				gearImage.getSprite().setRotation(dTweener.ExponentialEaseOut(time, 0, 360, duration / 2f));
-			}
-			if(circleImage.getWidth() >= this.getWidth() && this.getWidth() != 0)
-			{
-				this.setDimensions(0, 0);
 			}
 		}
 		else if(ID == HIDE_ANIM_ID)
@@ -185,7 +180,7 @@ public class SettingsScreen extends dScreen implements AnimationStatusListener {
 						dTweener.LinearEase(time, 0f, 1f, duration / 4f),
 							dTweener.LinearEase(time, 0f, 1f, duration / 4f), 1f);
 				circleImage.setX(dTweener.LinearEase(time, 128f, -192f, duration / 4f));
-				googleButton.setX(dTweener.ExponentialEaseOut(time - 0.1f, MainGame.VIRTUAL_WIDTH - expandedCard.getPadding() - googleButton.getWidth(), -MainGame.VIRTUAL_WIDTH, duration / 4f));
+				googleButton.setX(dTweener.ExponentialEaseOut(time - 0.1f, MainGame.VIRTUAL_WIDTH - this.getPadding() - googleButton.getWidth(), -MainGame.VIRTUAL_WIDTH, duration / 4f));
 				soundCard.setX(dTweener.ExponentialEaseOut(time - 0.15f, 0, -MainGame.VIRTUAL_WIDTH,  duration / 4f));
 				vibrationCard.setX(dTweener.ExponentialEaseOut(time, 0, -MainGame.VIRTUAL_WIDTH, duration / 4f));
 			}
@@ -196,12 +191,18 @@ public class SettingsScreen extends dScreen implements AnimationStatusListener {
 			}
 			else
 			{
-				expandedCard.setX(-MainGame.VIRTUAL_WIDTH * 1.5f);
+				this.setX(-MainGame.VIRTUAL_WIDTH * 1.5f);
 			}
 		}
 	}
 	
 	@Override
 	public void onAnimationFinish(int ID) { 
+		if(ID == SHOW_ANIM_ID)
+		{
+			this.setClipping(false);
+			this.setColor(circleImage.getColor());
+			circleImage.setAlpha(0f);
+		}
 	}
 }

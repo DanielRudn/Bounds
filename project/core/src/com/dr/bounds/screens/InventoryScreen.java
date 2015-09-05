@@ -86,6 +86,7 @@ public class InventoryScreen extends dScreen {
 			{
 				this.addObjectToRightOf(items.get(x), this.getIndexOf(items.get(x-1)));
 			}
+
 			
 		}
 		

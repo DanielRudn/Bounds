@@ -8,7 +8,9 @@ import com.DR.dLib.animations.dAnimation;
 import com.DR.dLib.ui.dImage;
 import com.DR.dLib.ui.dScreen;
 import com.DR.dLib.ui.dText;
+import com.DR.dLib.ui.dToggleCard;
 import com.DR.dLib.ui.dUICard;
+import com.DR.dLib.utils.dUtils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,6 +19,7 @@ import com.dr.bounds.BoundsAssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 import com.dr.bounds.maps.MapGenerator;
+import com.dr.bounds.maps.MapTypeFactory;
 import com.dr.bounds.ui.CircleImageButton;
 
 public class MenuScreen extends dScreen implements AnimationStatusListener {
@@ -30,7 +33,7 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 	private dImage titleImage;
 	// BUTTONS
 	private dText playText;
-	private CircleImageButton shopButton, inventoryButton, leaderboardsButton, achievementsButton;
+	private CircleImageButton shopButton, settingsButton, inventoryButton, leaderboardsButton, achievementsButton;
 	private SettingsScreen settingsScreen;
 	// shop screen
 	private ShopScreen shopScreen = null;
@@ -75,6 +78,8 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		
 		shopButton = new CircleImageButton(0, 0, BoundsAssetManager.getTexture("replay.png"), Color.WHITE);
 		shopButton.setColor(buttonColor);
+		settingsButton = new CircleImageButton(0, 0, BoundsAssetManager.getTexture("gear.png"), Color.WHITE);
+		settingsButton.setColor(buttonColor);
 		inventoryButton = new CircleImageButton(0, 0, BoundsAssetManager.getTexture("homeIcon.png"), Color.WHITE);
 		inventoryButton.setColor(buttonColor);
 		leaderboardsButton = new CircleImageButton(0, 0, BoundsAssetManager.getTexture("leaderboardsIcon.png"), Color.WHITE);
@@ -84,15 +89,13 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		
 		addObject(titleImage, dUICard.CENTER, dUICard.CENTER);
 		addObjectUnder(playText, dUICard.CENTER, this.getIndexOf(titleImage));
-		addObject(settingsScreen, dUICard.LEFT, dUICard.BOTTOM);
-		addObjectToRightOf(inventoryButton, this.getIndexOf(settingsScreen));
+		addObject(settingsButton, dUICard.LEFT, dUICard.BOTTOM);
+		addObjectToRightOf(inventoryButton, this.getIndexOf(settingsButton));
 		addObjectToRightOf(achievementsButton, this.getIndexOf(inventoryButton));
 		addObjectToRightOf(leaderboardsButton, this.getIndexOf(achievementsButton));
 		addObjectToRightOf(shopButton, this.getIndexOf(leaderboardsButton));
-		this.removeObject(this.getIndexOf(settingsScreen));
-		addObject(settingsScreen, dUICard.LEFT, dUICard.BOTTOM);
 		
-		showButtonsAnimation = new SlideInOrderAnimation(2f, this, SHOW_BUTTONS_ID, 0, -256f, new dObject[]{playText, settingsScreen, inventoryButton, achievementsButton, leaderboardsButton, shopButton});
+		showButtonsAnimation = new SlideInOrderAnimation(2f, this, SHOW_BUTTONS_ID, 0, -256f, new dObject[]{playText, settingsButton, inventoryButton, achievementsButton, leaderboardsButton, shopButton});
 	}
 	
 	@Override
@@ -128,7 +131,7 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		{
 			showButtonsAnimation.update(delta);
 		}
-
+		
 		if(settingsScreen.isOpen())
 		{
 			canPlay = false;
@@ -146,10 +149,15 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 				{
 					if(shopScreen == null)
 					{
-						shopScreen = new ShopScreen(0,0, BoundsAssetManager.getTexture("card"), player);
+						shopScreen = new ShopScreen(getX(), getY(), BoundsAssetManager.getTexture("card"), player);
 					}
 					switchScreen(shopScreen, false);
 					canPlay = false;
+				}
+				else if(settingsButton.isClicked() && canPlay)
+				{
+					this.addObject(settingsScreen, dUICard.LEFT_NO_PADDING, dUICard.BOTTOM_NO_PADDING);
+					settingsScreen.show();
 				}
 				else if(inventoryButton.isClicked() && canPlay)
 				{
@@ -163,7 +171,7 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 					inventoryScreen.show();
 					canPlay = false;
 				}
-				else if(MainGame.getVirtualMouseY() <= shopButton.getY() && canPlay) // only start if the players tap is above the button row
+				else if(dUtils.getVirtualMouseY() <= shopButton.getY() && canPlay) // only start if the players tap is above the button row
 				{
 					MainGame.gameScreen = new GameScreen(0, 0, BoundsAssetManager.getTexture("card.png"), player, gen.getMapType());
 					switchScreen(MainGame.gameScreen);
@@ -179,7 +187,7 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		super.show();
 		setPos(0, MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT / 2f);
 		playText.setY(playText.getY() + 256f);
-		settingsScreen.setY(settingsScreen.getY() + 256f);
+		settingsButton.setY(settingsButton.getY() + 256f);
 		shopButton.setY(shopButton.getY() + 256f);
 		leaderboardsButton.setY(leaderboardsButton.getY() + 256f);
 		inventoryButton.setY(inventoryButton.getY() + 256f);

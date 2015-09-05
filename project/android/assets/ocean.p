@@ -139,7 +139,7 @@ lowMin: 15000.0
 lowMax: 15000.0
 - Count - 
 min: 0
-max: 50
+max: 15
 - Emission - 
 lowMin: 0.0
 lowMax: 0.0
@@ -171,10 +171,10 @@ active: false
 - Y Offset - 
 active: false
 - Spawn Shape - 
-shape: square
+shape: line
 - Spawn Width - 
-lowMin: 0.0
-lowMax: 0.0
+lowMin: 720.0
+lowMax: 720.0
 highMin: 720.0
 highMax: 720.0
 relative: false
@@ -248,8 +248,8 @@ active: false
 - Tint - 
 colorsCount: 3
 colors0: 0.0
-colors1: 0.90588236
-colors2: 0.5254902
+colors1: 0.45490196
+colors2: 0.2627451
 timelineCount: 1
 timeline0: 0.0
 - Transparency - 
