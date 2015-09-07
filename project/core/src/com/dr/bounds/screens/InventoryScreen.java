@@ -9,6 +9,7 @@ import com.DR.dLib.ui.dImage;
 import com.DR.dLib.ui.dScreen;
 import com.DR.dLib.ui.dText;
 import com.DR.dLib.ui.dUICard;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.dr.bounds.BoundsAssetManager;
 import com.dr.bounds.MainGame;
@@ -21,6 +22,8 @@ public class InventoryScreen extends dScreen {
 	private Player player;
 	// Darker cards containing info.
 	private dUICard topCard, bottomCard;
+	// Color of darker cards
+	private Color accentColor;
 	// List of items
 	private ArrayList<dButton> items;
 	// Animations
@@ -32,16 +35,19 @@ public class InventoryScreen extends dScreen {
 		this.setPadding(24f);
 		this.setPaddingLeft(88f);
 		this.setHasShadow(true);
-		this.setColor(225f/256f, 225f/256f, 225f/256f, 1f);
+	//	this.setColor(225f/256f, 225f/256f, 225f/256f, 1f); light grey
+		this.setColor(251f/256f, 251f/256f, 251f/256f, 1f);
 		this.setDimensions(WIDTH, HEIGHT);
 		this.player = p;
 		player.setUpdatable(false);
 		
+	//	accentColor = new Color(111f/256f, 111f/256f, 111f/256f, 1f);
+		accentColor = new Color(24f/256f, 166f/256f, 206f/256f, 1f);
 		topCard = new dUICard(0, 0, BoundsAssetManager.getTexture("card"));
 		topCard.setDimensions(WIDTH, 92f);
 		topCard.setHasShadow(false);
-		topCard.setColor(111f/256f, 111f/256f, 111f/256f, 1f);
-		dText titleText = new dText(0, 0, 72f, "Inventory");
+		topCard.setColor(accentColor);
+		dText titleText = new dText(0, 0, 64f, "Inventory");
 		titleText.setColor(this.getColor());
 		dUICard coinInfo = new dUICard(0, 0, BoundsAssetManager.getTexture("card"));
 		coinInfo.setHasShadow(false);
@@ -61,7 +67,7 @@ public class InventoryScreen extends dScreen {
 		
 		bottomCard = new dUICard(0, 0, BoundsAssetManager.getTexture("card"));
 		bottomCard.setDimensions(WIDTH, 92f);
-		bottomCard.setColor(111f/256f, 111f/256f, 111f/256f, 1f);
+		bottomCard.setColor(accentColor);
 		bottomCard.setHasShadow(false);
 		
 		this.addObject(topCard, dUICard.LEFT_NO_PADDING, dUICard.TOP_NO_PADDING);

@@ -1,6 +1,7 @@
 package com.dr.bounds.screens;
 
 import com.DR.dLib.dObject;
+import com.DR.dLib.animations.AlphaFadeAnimation;
 import com.DR.dLib.animations.AnimationStatusListener;
 import com.DR.dLib.animations.SlideExponentialAnimation;
 import com.DR.dLib.animations.SlideInOrderAnimation;
@@ -26,9 +27,8 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 
 	// animations
 	private SlideInOrderAnimation showButtonsAnimation;
-	private final int SHOW_BUTTONS_ID = 123;
-	private dAnimation hideAnimation;
-	private final int HIDE_ANIM_ID = 12345;
+	private final int SHOW_BUTTONS_ID = 123, HIDE_ANIM_ID = 12345, FADE_ANIM_ID = 321;
+	private dAnimation hideAnimation, fadeAnimation;
 	// title
 	private dImage titleImage;
 	// BUTTONS
@@ -46,6 +46,8 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 	private MapGenerator gen;
 	// whether the player can tap to play since the menu has various other screens.
 	private boolean canPlay = true;
+	// fade image
+	private dImage fadeImage;
 	
 	public MenuScreen(float x, float y, Texture texture, Player p) {
 		super(x, y, texture);
@@ -60,7 +62,11 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		//setColor(52f/256f, 73f/256f, 94f/256f,1f);
 		setColor(236f/256f, 239f/256f, 241f/256f, 0f);
 		// hide anim only waits 1.5f and switches MainGame.currentScreen to gameScreen.
-		hideAnimation = new SlideExponentialAnimation(1.5f, this, HIDE_ANIM_ID, 0, 0, this);
+		hideAnimation = new SlideExponentialAnimation(0.1f, this, HIDE_ANIM_ID, 0, 0, this);
+		fadeImage = new dImage(0, 0, BoundsAssetManager.getTexture("card"));
+		fadeImage.setDimensions(MainGame.VIRTUAL_WIDTH, MainGame.VIRTUAL_HEIGHT);
+		fadeImage.setColor(Color.BLACK) ;
+		fadeAnimation = new AlphaFadeAnimation(1f, this, FADE_ANIM_ID, new dObject[]{fadeImage});
 		this.setHideAnimation(hideAnimation);
 		this.player = p;
 		
@@ -111,6 +117,10 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		{
 			nextScreen.render(batch);
 		}
+		if(fadeAnimation.isActive() && fadeImage.getColor().a != 1f)
+		{
+			fadeImage.render(batch);
+		}
 	}
 	
 	@Override
@@ -130,6 +140,10 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		if(showButtonsAnimation.isActive())
 		{
 			showButtonsAnimation.update(delta);
+		}
+		if(fadeAnimation.isActive())
+		{
+			fadeAnimation.update(delta);
 		}
 		
 		if(settingsScreen.isOpen())
@@ -195,6 +209,24 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		showButtonsAnimation.start();
 		nextScreen = null;
 	}
+	
+	public void show(boolean fade)
+	{
+		if(fade)
+		{
+			super.show();
+			gen = new MapGenerator(player);
+			gen.generateSeed();
+			// TODO: might remove
+			gen.generateFirstSet();
+			gen.update(1f/60f); // TODO: FIX.
+			fadeAnimation.start();
+		}
+		else
+		{
+			super.show();
+		}
+	}
 
 	@Override
 	public void goBack() {
@@ -243,8 +275,10 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 
 	@Override
 	public void onAnimationStart(int ID, float duration) {
-		if(ID == HIDE_ANIM_ID)
+		if(ID == FADE_ANIM_ID)
 		{
+			fadeImage.setAlpha(1f);
+			fadeImage.setPos(this.getPos());
 		}
 	}
 
@@ -261,6 +295,10 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 			MainGame.previousScreen = this;
 			nextScreen.show();
 			nextScreen = null;
+		}
+		else if(ID == FADE_ANIM_ID)
+		{
+			fadeImage.setAlpha(0f);
 		}
 	}
 

@@ -42,7 +42,6 @@ public class MainGame extends ApplicationAdapter {
 	public static MenuScreen menuScreen;
 	public static GameScreen gameScreen;
 	
-	public static boolean isPlaying = false;
 	public static boolean isSoundEnabled = false;
 	public static boolean isVibrationEnabled = true;
 	

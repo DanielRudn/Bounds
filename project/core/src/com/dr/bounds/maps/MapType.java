@@ -7,12 +7,12 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.dr.bounds.BoundsAssetManager;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 import com.dr.bounds.maps.obstacles.CoinSet;
+import com.dr.bounds.screens.GameScreen;
 
 public abstract class MapType {
 
@@ -64,6 +64,9 @@ public abstract class MapType {
 	protected boolean hideParticleEffect = false;
 	// amount to increment score by since the MapTypes can vary in difficulty and award different amounts of score
 	private int scoreIncrementAmount = 1;
+	
+	// temp
+	private int checkCount = 0;
 	
 	public MapType(int type, Player player, MapGenerator generator)
 	{
@@ -223,9 +226,15 @@ public abstract class MapType {
 	 */
 	private void checkCollision(int index)
 	{
-		if(gen.hadCollision() == false && obstacles.get(index).hadCollision(player))
+		if(gen.hadCollision() == false && (obstacles.get(index).getY()+obstacles.get(index).getHeight()) >= (MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT))
 		{
-			gen.setHadCollision(true);
+			checkCount++;
+			System.out.println("Checked collision " + checkCount + " Times");
+			// only check for collision if the obstacle is on screen
+			if(obstacles.get(index).hadCollision(player))
+			{
+				gen.setHadCollision(true);
+			}
 		}
 	}
 	

@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dr.bounds.BoundsAssetManager;
 import com.dr.bounds.MainGame;
+import com.dr.bounds.maps.MapTypeFactory;
 import com.dr.bounds.ui.CircleImageButton;
 
 public class PauseScreen extends dScreen implements AnimationStatusListener {
@@ -28,10 +29,12 @@ public class PauseScreen extends dScreen implements AnimationStatusListener {
 	// hide animation
 	private dAnimation hideAnim;
 	private static final int HIDE_ANIM_ID = 05312015;
+	// whether to unpause and conitnue the game after hide animation
+	private boolean unpause = false;
 	
 //	private GameScreen gs;
 	
-	public PauseScreen(float x, float y, Texture texture, GameScreen gameScreen) {
+	public PauseScreen(float x, float y, Texture texture) {
 		super(x, y, texture);
 		this.setPadding(128f);
 		this.setColor(0f, 0f, 0f, 0f);
@@ -63,12 +66,17 @@ public class PauseScreen extends dScreen implements AnimationStatusListener {
 	{
 		super.update(delta);
 		resumeButton.update(delta);
-		if(resumeButton.isClicked() && hideAnim.isActive() == false)
+		if(resumeButton.isClicked())
+		{
+			this.hide();
+			unpause = true;
+		}
+		else if(menuButton.isClicked())
 		{
 			this.hide();
 		}
 	}
-	
+
 	@Override
 	public void show()
 	{
@@ -116,10 +124,17 @@ public class PauseScreen extends dScreen implements AnimationStatusListener {
 		{
 			if(time <= duration / 2f)
 			{
-				this.setAlpha(dTweener.LinearEase(time, 0.25f, -0.25f, duration / 2f));
+				if (unpause)
+				{
+					this.setAlpha(dTweener.LinearEase(time, 0.25f, -0.25f, duration / 2f));
+				} 
+				else 
+				{
+					this.setAlpha(dTweener.LinearEase(time, 0.25f, 0.75f, duration / 2f));
+				}
 				pauseText.setX(dTweener.ExponentialEaseOut(time, MainGame.VIRTUAL_WIDTH/2f - pauseText.getWidth()/2f, -MainGame.VIRTUAL_WIDTH, duration / 2f));
 			}
-			else 
+			else
 			{
 				hideAnim.stop();
 			}
@@ -135,11 +150,21 @@ public class PauseScreen extends dScreen implements AnimationStatusListener {
 		}
 		else if(ID == HIDE_ANIM_ID)
 		{
-			this.removeObject(this.getIndexOf(menuButton));
-			this.removeObject(this.getIndexOf(resetButton));
-			this.removeObject(this.getIndexOf(resumeButton));
-			this.removeObject(this.getIndexOf(pauseText));
-			isActive = false;
+			if(unpause)
+			{
+				this.removeObject(this.getIndexOf(menuButton));
+				this.removeObject(this.getIndexOf(resetButton));
+				this.removeObject(this.getIndexOf(resumeButton));
+				this.removeObject(this.getIndexOf(pauseText));
+				isActive = false;
+				unpause = false;
+			}
+			else
+			{
+				MainGame.camera.position.y = MainGame.VIRTUAL_HEIGHT / 2f;
+				MainGame.currentScreen = MainGame.menuScreen;
+				MainGame.menuScreen.show(true);
+			}
 		}
 	}
 	

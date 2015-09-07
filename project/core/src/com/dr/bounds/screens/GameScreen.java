@@ -67,7 +67,7 @@ public class GameScreen extends dScreen implements AnimationStatusListener {
 		gameOverScreen = new GameOverScreen(getX(), getY(), texture, player);
 		gameOverScreen.hide();
 		
-		pauseScreen = new PauseScreen(getX(), getY(), texture, this);
+		pauseScreen = new PauseScreen(getX(), getY(), texture);
 		
 		comboText = new dText(0,0,64f,"COMBO: 0");
 		comboText.setColor(Color.WHITE);
@@ -195,10 +195,6 @@ public class GameScreen extends dScreen implements AnimationStatusListener {
 		super.render(batch);
 		mapGen.render(batch);
 		player.render(batch);
-		if(pauseScreen.isPaused())
-		{
-			pauseScreen.render(batch);
-		}
 		batch.setProjectionMatrix(uiCam.combined);
 		scoreText.render(batch);
 		coinInfo.render(batch);
@@ -207,6 +203,10 @@ public class GameScreen extends dScreen implements AnimationStatusListener {
 			comboText.render(batch);
 		}
 		batch.setProjectionMatrix(MainGame.camera.combined);	
+		if(pauseScreen.isPaused())
+		{
+			pauseScreen.render(batch);
+		}
 		gameOverScreen.render(batch);
 	}
 	
@@ -261,7 +261,10 @@ public class GameScreen extends dScreen implements AnimationStatusListener {
 		}
 		MainGame.camera.position.y = MainGame.VIRTUAL_HEIGHT / 2f;
 		reset();*/
-		pauseScreen.show();
+		if(!this.deathAnim.isActive())
+		{
+			pauseScreen.show();
+		}
 	}
 
 	@Override
