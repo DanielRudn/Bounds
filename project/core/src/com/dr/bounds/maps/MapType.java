@@ -57,8 +57,6 @@ public abstract class MapType {
 	private static Color firstTop, firstBottom, secondTop, secondBottom;
 	// Rectangles for background colors and changing
 	protected Rectangle firstBG, secondBG;
-	// rectangle for collision
-	protected static final Rectangle useless = new Rectangle();
 	// test
 	private static boolean switchColors = false;
 	// particle effect in the background
@@ -223,9 +221,9 @@ public abstract class MapType {
 	 * Checks collision using obstacles bounding rectangle by default
 	 * @param index index of current obstacle
 	 */
-	protected void checkCollision(int index)
+	private void checkCollision(int index)
 	{
-		if(gen.hadCollision() == false && Intersector.intersectRectangles(player.getBoundingRectangle(), obstacles.get(index).getBoundingRectangle(), useless)) // FIX
+		if(gen.hadCollision() == false && obstacles.get(index).hadCollision(player))
 		{
 			gen.setHadCollision(true);
 		}

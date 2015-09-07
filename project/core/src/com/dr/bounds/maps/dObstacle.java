@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Rectangle;
 import com.dr.bounds.MainGame;
 import com.dr.bounds.Player;
 
@@ -16,11 +18,14 @@ public class dObstacle extends dObject{
 	// whether or not the obstacle is under the screen and needs to be re-generated up top
 	private boolean regenerate = false;
 	// whether or not the player[s] have passed the obstacle and need to be given a point
-	private boolean passed = false;
+	protected boolean passed = false;
 	// whether or not we counted the score for this obstacle
 	private boolean incrementedScore = false;
 	// player object to check for score updates
 	private Player player;
+	// rectangle for collision
+	protected static final Rectangle useless = new Rectangle();
+	
 	protected final static ShapeRenderer sr = new ShapeRenderer();
 	
 	public dObstacle(float x, float y, Texture texture, Player p) {
@@ -69,6 +74,21 @@ public class dObstacle extends dObject{
 		{
 			passed = true;
 		}
+	}
+	
+	/**
+	 * Whether or not the player had a collision with this obstacle.
+	 * Default implementation just checks whether both bounding rectangles intersect.
+	 * @param player
+	 * @return True if there is a collision.
+	 */
+	public boolean hadCollision(Player player)
+	{
+		if(passed == false) // only check obstacles which have not been passed yet.
+		{
+			return Intersector.intersectRectangles(player.getBoundingRectangle(), this.getBoundingRectangle(), useless);
+		}
+		return false;
 	}
 
 	public boolean shouldRegenerate()

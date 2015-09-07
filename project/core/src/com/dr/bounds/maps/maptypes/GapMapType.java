@@ -44,15 +44,4 @@ public class GapMapType extends MapType {
 		obstacles.get(index).setY(obstacles.get(getPreviousIndex(index)).getY() - MIN_DISTANCE - MapGenerator.rng.nextInt(MAX_DISTANCE));
 	}
 	
-	@Override
-	protected void checkCollision(int index)
-	{
-		if(!gen.hadCollision() &&
-				Intersector.intersectRectangles(player.getBoundingRectangle(), obstacles.get(index).getBoundingRectangle(), useless) || 
-				Intersector.intersectRectangles(player.getBoundingRectangle(), ((GapObstacle)obstacles.get(index)).getRightBoundRectangle(), useless))
-		{
-			gen.setHadCollision(true);
-		}
-	}
-	
 }

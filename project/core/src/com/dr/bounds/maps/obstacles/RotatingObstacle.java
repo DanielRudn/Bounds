@@ -3,6 +3,7 @@ package com.dr.bounds.maps.obstacles;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Intersector;
 import com.dr.bounds.Player;
 import com.dr.bounds.maps.MapGenerator;
 import com.dr.bounds.maps.dObstacle;
@@ -32,7 +33,6 @@ public class RotatingObstacle extends dObstacle {
 		batch.begin();
 	}
 	
-	
 	@Override
 	public void update(float delta)
 	{
@@ -47,6 +47,19 @@ public class RotatingObstacle extends dObstacle {
 		}
 		setOriginCenter();
 		getSprite().setRotation(rotation);
+	}
+	
+	@Override
+	public boolean hadCollision(Player player)
+	{
+			return (Intersector.distanceSegmentPoint(this.getSprite().getVertices()[0], this.getSprite().getVertices()[1],
+					this.getSprite().getVertices()[15], this.getSprite().getVertices()[16],
+					player.getX() + player.getWidth()/2f,
+					player.getY() + player.getHeight()/2f) <= player.getWidth() / 2f) || 
+					(Intersector.distanceSegmentPoint(this.getSprite().getVertices()[5], this.getSprite().getVertices()[6],
+				this.getSprite().getVertices()[10], this.getSprite().getVertices()[11],
+				player.getX() + player.getWidth()/2f,
+				player.getY() + player.getHeight()/2f) <= player.getWidth() / 2f);
 	}
 	
 	public void setRotation(float r)

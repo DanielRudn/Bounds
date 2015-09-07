@@ -28,20 +28,6 @@ public class OceanMapType extends MapType {
 		}
 		super.particleEffect.load(Gdx.files.internal("ocean.p"), Gdx.files.internal(""));
 	}
-	
-	@Override
-	protected void checkCollision(int index)
-	{
-		super.checkCollision(index);
-		if(gen.hadCollision() == false && Intersector.intersectRectangles(player.getBoundingRectangle(), ((FishObstacle)obstacles.get(index)).getBodyRectangle(), useless))
-		{
-			gen.setHadCollision(true);
-		}
-		else if(gen.hadCollision() == false && Intersector.intersectRectangles(player.getBoundingRectangle(), ((FishObstacle)obstacles.get(index)).getMouthRectangle(), useless))
-		{
-			gen.setHadCollision(true);
-		}
-	}
 
 	@Override
 	protected void generateObstacle(int index)

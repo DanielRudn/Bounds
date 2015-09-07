@@ -3,6 +3,7 @@ package com.dr.bounds.maps.obstacles;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Vector2;
 import com.dr.bounds.Player;
 
 public class SpikeObstacle extends MovingObstacle {
@@ -42,4 +43,20 @@ public class SpikeObstacle extends MovingObstacle {
 		getSprite().setRotation(angle);
 	}
 	
+	@Override
+	public boolean hadCollision(Player player)
+	{
+		if(passed == false)
+		{
+			return hadCirclularCollision(this.getPos(), player.getPos(), this.getWidth(), player.getWidth());
+		}
+		return false;
+	}
+	
+	private boolean hadCirclularCollision(Vector2 f, Vector2 i, float obstacleWidth, float playerWidth)
+	{
+		float radiusPlanet = obstacleWidth / 2f;
+		float radiusPlayer = playerWidth / 2f;
+		return Math.pow((f.x + radiusPlanet) - (i.x + radiusPlayer), 2) + Math.pow((f.y + radiusPlanet) - (i.y + radiusPlayer), 2) <= Math.pow(radiusPlanet + radiusPlayer, 2); 
+	}
 }

@@ -30,25 +30,6 @@ public class RotatingMapType extends MapType{
 	}
 	
 	@Override
-	protected void checkCollision(int index)
-	{
-		if(Intersector.distanceSegmentPoint(getObstacles().get(index).getSprite().getVertices()[0], getObstacles().get(index).getSprite().getVertices()[1],
-				getObstacles().get(index).getSprite().getVertices()[15], getObstacles().get(index).getSprite().getVertices()[16],
-				player.getX() + player.getWidth()/2f,
-				player.getY() + player.getHeight()/2f) <= player.getWidth() / 2f)
-		{
-			gen.setHadCollision(true);
-		}
-		if(Intersector.distanceSegmentPoint(getObstacles().get(index).getSprite().getVertices()[5], getObstacles().get(index).getSprite().getVertices()[6],
-				getObstacles().get(index).getSprite().getVertices()[10], getObstacles().get(index).getSprite().getVertices()[11],
-				player.getX() + player.getWidth()/2f,
-				player.getY() + player.getHeight()/2f) <= player.getWidth() / 2f)
-		{
-			gen.setHadCollision(true);
-		}
-	}
-	
-	@Override
 	protected void generateObstacle(int index)
 	{
 		((RotatingObstacle)obstacles.get(index)).setRotation(0);

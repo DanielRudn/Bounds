@@ -140,7 +140,7 @@ public class MenuScreen extends dScreen implements AnimationStatusListener {
 		if(nextScreen != null)
 		{
 			nextScreen.update(delta);
-		}
+		} 
 		else
 		{
 			if(Gdx.input.justTouched() && !hideAnimation.isActive())

@@ -25,15 +25,6 @@ public class SpikeMapType extends MapType{
 			this.getObstacles().add(new SpikeObstacle(0,0,BoundsAssetManager.getTexture("spike2.png"), player));
 		}
 	}
-	
-	@Override
-	protected void checkCollision(int index)
-	{
-		if(gen.hadCollision() == false && hadCirclularCollision(obstacles.get(index).getPos(), player.getPos(), index))
-		{
-			gen.setHadCollision(true);
-		}
-	}
 
 	private boolean hadCirclularCollision(Vector2 f, Vector2 i, int index)
 	{

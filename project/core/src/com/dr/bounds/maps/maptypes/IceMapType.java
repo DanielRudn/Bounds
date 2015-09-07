@@ -23,16 +23,6 @@ public class IceMapType extends MapType {
 	}
 	
 	@Override
-	protected void checkCollision(int index)
-	{
-		super.checkCollision(index);
-		if(gen.hadCollision() == false && Intersector.intersectRectangles(player.getBoundingRectangle(), ((IceObstacle)obstacles.get(index)).getBottomRectangle(), useless))
-		{
-			gen.setHadCollision(true);
-		}
-	}
-	
-	@Override
 	protected void generateObstacle(int index)
 	{
 		obstacles.get(index).setX(16 + MapGenerator.rng.nextInt((int) (MainGame.VIRTUAL_WIDTH - obstacles.get(index).getWidth())));

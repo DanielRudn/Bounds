@@ -47,6 +47,7 @@ public class ShopItemCard extends dUICard implements AnimationStatusListener {
 		super(x, y, texture);
 		this.setClickable(true, BoundsAssetManager.getTexture("circle"));
 		this.setDimensions(CARD_WIDTH, CARD_HEIGHT);
+		this.setPaddingTop(12f);
 		player = p;
 		
 		skinID = id;
