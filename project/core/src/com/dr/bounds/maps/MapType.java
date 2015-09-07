@@ -66,7 +66,7 @@ public abstract class MapType {
 	private int scoreIncrementAmount = 1;
 	
 	// temp
-	private int checkCount = 0;
+	private int checkCount = 0, count2 = 0;
 	
 	public MapType(int type, Player player, MapGenerator generator)
 	{
@@ -226,10 +226,8 @@ public abstract class MapType {
 	 */
 	private void checkCollision(int index)
 	{
-		if(gen.hadCollision() == false && (obstacles.get(index).getY()+obstacles.get(index).getHeight()) >= (MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT))
+		if(gen.hadCollision() == false && (obstacles.get(index).getY() + obstacles.get(index).getHeight()) >= (MainGame.camera.position.y - MainGame.VIRTUAL_HEIGHT))
 		{
-			checkCount++;
-			System.out.println("Checked collision " + checkCount + " Times");
 			// only check for collision if the obstacle is on screen
 			if(obstacles.get(index).hadCollision(player))
 			{
