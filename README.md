@@ -1,6 +1,6 @@
 # **Bounds** #
-***
 ## Unfinished ##
+***
 
 ### What is Bounds? ###
 A 2D endless runner where you move side to side to dodge obstacles in many different environments.
