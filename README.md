@@ -17,4 +17,8 @@ A 2D endless runner where you move side to side to dodge obstacles in many diffe
 ***
 
 ## Screenshots ##
-[Link to gameplay video:](http://gfycat.com/HarshMediocreCrownofthornsstarfish)
+[Link to gameplay video](http://gfycat.com/HarshMediocreCrownofthornsstarfish)
+
+![Game Over Screen](http://i.imgur.com/BDOrbVI.png)
+![Inventory](http://i.imgur.com/aGlmIrP.png)
+![Title Screen](http://i.imgur.com/lfqOUAc.png)
