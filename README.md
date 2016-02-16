@@ -1,6 +1,8 @@
 # Bounds #
 ***
 ## Unfinished ##
+
+### What is Bounds? ###
 A 2D endless runner where you move side to side to dodge obstacles in many different environments. Collect coins to buy skins in the shop. 
 
 ### How do I get set up? ###
