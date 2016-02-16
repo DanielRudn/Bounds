@@ -2,7 +2,7 @@
 ***
 
 ### What is Bounds? ###
-A 2D endless runner where you move side to side to dodge obstacles in many different environments. (Game is not finished)
+A 2D endless runner where you move side to side to dodge obstacles in many different environments.
 
 ### How do I get set up? ###
 
