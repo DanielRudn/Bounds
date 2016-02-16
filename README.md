@@ -17,4 +17,4 @@ A 2D endless runner where you move side to side to dodge obstacles in many diffe
 ***
 
 ## Screenshots ##
-![Bounds Gameplay](https://giant.gfycat.com/HarshMediocreCrownofthornsstarfish.gif)
+![Bounds Gameplay](http://gfycat.com/HarshMediocreCrownofthornsstarfish#format=GIF)
