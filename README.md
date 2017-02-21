@@ -6,7 +6,7 @@ A 2D endless runner where you move side to side to dodge obstacles in many diffe
 
 ### How do I get set up? ###
 
-* #### To use with Eclipse:
+#### To use with Eclipse:
   1. Make sure Eclipse has the Gradle integration plugin in order to import the plugin which can be downloaded from ```http://dist.springsource.com/release/TOOLS/gradle (latest release)``` as well as the Eclipse ADT plugin which is located at the repo  ```https://dl-ssl.google.com/android/eclipse/```
   1. Make sure the Android SDK is downloaded from ```https://developer.android.com/sdk/index.html#Other```
   1. Pull this repository
